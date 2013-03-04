@@ -13,7 +13,8 @@ namespace Simulator {
     enum logTags {
         program = ConsoleColor.Green,
         serial,
-        serialServer
+        serialServer,
+        roomba
     }
 
     public partial class frmMain : Form {
@@ -28,6 +29,8 @@ namespace Simulator {
                 lTag = "SERI";
             } else if (tag == logTags.serial) {
                 lTag = "BYTE";
+            } else if (tag == logTags.roomba) {
+                lTag = "ROOM";
             }
             ConsoleColor oldColor = Console.ForegroundColor;
             Console.ForegroundColor = (ConsoleColor)tag;
@@ -53,7 +56,6 @@ namespace Simulator {
             //Find the serial port names
             foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
                 serialPortToolStripMenuItem.Items.Add(comPort.Description);
-                Console.WriteLine(string.Format("{0} – {1}", comPort.Name, comPort.Description));
             }
         }
 

@@ -14,12 +14,12 @@ namespace Simulator {
         program = ConsoleColor.Green,
         serial,
         serialServer,
-        roomba
+        roomba = ConsoleColor.Yellow
     }
 
     public partial class frmMain : Form {
         private static serialServer serSock;
-        static ManualResetEvent _quitEvent = new ManualResetEvent(false);
+        private static clsRoomba roomba;
 
         static void log(string x, logTags tag) {
             string lTag = "";
@@ -30,7 +30,7 @@ namespace Simulator {
             } else if (tag == logTags.serial) {
                 lTag = "BYTE";
             } else if (tag == logTags.roomba) {
-                lTag = "ROOM";
+                lTag = "RMBA";
             }
             ConsoleColor oldColor = Console.ForegroundColor;
             Console.ForegroundColor = (ConsoleColor)tag;
@@ -47,6 +47,9 @@ namespace Simulator {
             serSock.setLogFunction(log);
 
             serSock.setMessageHandler(messageHandlerSocket);
+
+
+            roomba = new clsRoomba(log);
         }
 
         private void messageHandlerSocket(int bRead, int prevByte) {

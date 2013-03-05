@@ -21,6 +21,12 @@ namespace Simulator {
         private static serialServer serSock;
         private static clsRoomba roomba;
 
+        static int command = 0;
+        static int byteCount = 0;
+        static int currentByteCount = 0;
+
+        List<int> dataBytes = new List<int>();
+
         static void log(string x, logTags tag) {
             string lTag = "";
             if (tag == logTags.program) {
@@ -53,9 +59,73 @@ namespace Simulator {
         }
 
         private void messageHandlerSocket(int bRead, int prevByte) {
+
+            int[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
+            bool isMainCommand = false;
+
+            if (command == 0) {
+
+                for (int i = 0; i < mainCommands.Length; i++) {
+
+                    if (mainCommands[i, 0] == bRead) {
+
+                        isMainCommand = true;
+                        byteCount = mainCommands[i, 1];
+
+                        if (byteCount == 0) {
+
+                            switch (mainCommands[i, 0]) {
+                                case 128: /* roomba.start */ break;
+                                case 130: /* roomba.control */ break;
+                                case 131: /* roomba.safe */ break;
+                                case 132: /* roomba.full */ break;
+                                case 133: /* roomba.power */ break;
+                                case 134: /* roomba.spot */ break;
+                                case 135: /* roomba.clean */ break;
+                                case 136: /* roomba.max */ break;
+                                case 140: /* roomba.song */ break;
+                            }
+
+                        } else {
+                            command = mainCommands[i, 0];
+                        }
+
+                        break;
+                    }
+                }
+
+                log(isMainCommand ? "true" : "false", logTags.serial);
+
+            } else {
+
+                currentByteCount++;
+                dataBytes.Add(bRead);
+
+                if (currentByteCount == byteCount) {
+
+                    switch (command) {
+                        // call function, pass int list dataBytes as argument.
+                        case 129: /* roomba.baud 1 */ break;
+                        case 137: /* roomba.drive 4 */ break;
+                        case 145: /* roomba.drive wheels 4 */ break;
+                        case 138: /* roomba.motors 1 */ break;
+                        case 144: /* roomba.pwm motors 3 */ break;
+                        case 146: /* roomba.drive pwm 4 */ break;
+                        case 139: /* roomba.leds 3 */ break;
+                    }
+
+                    /* reset to prepare for new receive */
+                    dataBytes.Clear();
+                    command = 0;
+                    byteCount = 0;
+                    currentByteCount = 0;
+                      
+                }
+            }
         }
 
-        private void frmMain_Load(object sender, EventArgs e) {
+        private void frmMain_Load(object sender, EventArgs e)
+        {
             //Find the serial port names
             foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
                 serialPortToolStripMenuItem.Items.Add(comPort.Description);

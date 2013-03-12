@@ -72,7 +72,7 @@ namespace Simulator {
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,-1} };
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
             bool isMainCommand = false;
 
             // if no current command, or command of undefined length
@@ -86,7 +86,7 @@ namespace Simulator {
                         clearRegisters();
                         byteCount = mainCommands[i, 1];
 
-                        if (byteCount == 0) {
+                        if (byteCount == 0 && command != 140) {
 
                             switch (mainCommands[i, 0]) {
                                 case 128: roomba.start(); break;

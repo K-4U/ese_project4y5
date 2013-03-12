@@ -1,9 +1,0 @@
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.frmMain.resources
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.Properties.Resources.resources
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.csproj.GenerateResource.Cache
-E:\repositories\git\ese_project4y5\Simulator\bin\Debug\Simulator.exe.config
-E:\repositories\git\ese_project4y5\Simulator\bin\Debug\Simulator.exe
-E:\repositories\git\ese_project4y5\Simulator\bin\Debug\Simulator.pdb
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.csprojResolveAssemblyReference.cache
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.exe
-E:\repositories\git\ese_project4y5\Simulator\obj\Debug\Simulator.pdb

@@ -21,11 +21,11 @@ namespace Simulator {
         private static serialServer serSock;
         private static clsRoomba roomba;
 
-        static int command = 0;
-        static int byteCount = 0;
-        static int currentByteCount = 0;
+        static byte command = 0;
+        static byte byteCount = 0;
+        static byte currentByteCount = 0;
 
-        List<int> dataBytes = new List<int>();
+        List<byte> dataBytes = new List<byte>();
 
         static void log(string x, logTags tag) {
             string lTag = "";
@@ -58,9 +58,9 @@ namespace Simulator {
             roomba = new clsRoomba(log);
         }
 
-        private void messageHandlerSocket(int bRead, int prevByte) {
+        private void messageHandlerSocket(byte bRead, byte prevByte) {
 
-            int[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
             bool isMainCommand = false;
 
             if (command == 0) {
@@ -76,14 +76,13 @@ namespace Simulator {
 
                             switch (mainCommands[i, 0]) {
                                 case 128: /* roomba.start */ break;
-                                case 130: /* roomba.control */ break;
+                                case 130:
                                 case 131: /* roomba.safe */ break;
                                 case 132: /* roomba.full */ break;
                                 case 133: /* roomba.power */ break;
                                 case 134: /* roomba.spot */ break;
                                 case 135: /* roomba.clean */ break;
                                 case 136: /* roomba.max */ break;
-                                case 140: /* roomba.song */ break;
                             }
 
                         } else {
@@ -112,6 +111,7 @@ namespace Simulator {
                         case 144: /* roomba.pwm motors 3 */ break;
                         case 146: /* roomba.drive pwm 4 */ break;
                         case 139: /* roomba.leds 3 */ break;
+                        case 140: /* roomba.song */ break;
                     }
 
                     /* reset to prepare for new receive */
@@ -124,8 +124,7 @@ namespace Simulator {
             }
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
-        {
+        private void frmMain_Load(object sender, EventArgs e){
             //Find the serial port names
             foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
                 serialPortToolStripMenuItem.Items.Add(comPort.Description);

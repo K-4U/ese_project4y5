@@ -53,12 +53,12 @@ namespace Simulator {
         public delegate void logDelegate(String x, logTags tag);
         private logDelegate log = new logDelegate(logDummy);
 
-        public delegate void serialMsgReceivedDelegate(int bRead, int prevByte);
+        public delegate void serialMsgReceivedDelegate(byte bRead, byte prevByte);
         private serialMsgReceivedDelegate msgReceived = new serialMsgReceivedDelegate(msgReceivedDummy);
 
         #region "Dummies"
         private static void logDummy(string x, logTags tag) { }
-        private static void msgReceivedDummy(int bRead, int prevByte) { }
+        private static void msgReceivedDummy(byte bRead, byte prevByte) { }
         #endregion
 
         private Thread serialThread;
@@ -142,16 +142,17 @@ namespace Simulator {
 
 
         private void listener() {
-            int bRead = 0;
-            int prevByte = 0;
+            byte bRead = 0;
+            byte prevByte = 0;
 
             while (keepGoing) {
                 prevByte = bRead;
                 try {
-                    bRead = port.ReadByte();
+                    bRead = (byte) port.ReadByte();
                 } catch (System.IO.IOException) {
                     //Probably ended
                     //Don't do a thing
+                    break;
                 }
                 msgReceived(bRead, prevByte);
             }

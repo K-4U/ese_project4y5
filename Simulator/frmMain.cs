@@ -18,13 +18,12 @@ namespace Simulator {
     }
 
     public partial class frmMain : Form {
+
         private static serialServer serSock;
         private static clsRoomba roomba;
 
         static byte command = 0;
         static byte byteCount = 0;
-        static byte currentByteCount = 0;
-
         List<byte> dataBytes = new List<byte>();
 
         static void log(string x, logTags tag) {
@@ -43,7 +42,6 @@ namespace Simulator {
             //Console.Write(String.Format("[{0}]\t", lTag));
             Console.WriteLine(String.Format("[{0}]\t{1}", lTag, x));
             Console.ForegroundColor = oldColor;
-
         }
 
         public frmMain() {
@@ -58,31 +56,47 @@ namespace Simulator {
             roomba = new clsRoomba(log);
         }
 
+        void clearRegisters() {
+            // call song command, then clear regs.
+            byte[] storeTemp = { };
+            if (command == 140) {
+                storeTemp[0] = dataBytes[0];
+                storeTemp[1] = dataBytes[1];
+                dataBytes.RemoveRange(0, 1);
+                roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
+            }
+            byteCount = 0;
+            dataBytes.Clear();
+        }
+
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
+
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,-1} };
             bool isMainCommand = false;
 
-            if (command == 0) {
+            // if no current command, or command of undefined length
+            if (command == 0 || command == 140) {
 
                 for (int i = 0; i < mainCommands.Length; i++) {
 
                     if (mainCommands[i, 0] == bRead) {
 
                         isMainCommand = true;
+                        clearRegisters();
                         byteCount = mainCommands[i, 1];
 
                         if (byteCount == 0) {
 
                             switch (mainCommands[i, 0]) {
-                                case 128: /* roomba.start */ break;
+                                case 128: roomba.start(); break;
                                 case 130:
-                                case 131: /* roomba.safe */ break;
-                                case 132: /* roomba.full */ break;
-                                case 133: /* roomba.power */ break;
-                                case 134: /* roomba.spot */ break;
-                                case 135: /* roomba.clean */ break;
-                                case 136: /* roomba.max */ break;
+                                case 131: roomba.safe(); break;
+                                case 132: roomba.full(); break;
+                                case 133: roomba.power(); break;
+                                case 134: roomba.spot(); break;
+                                case 135: roomba.clean(); break;
+                                case 136: roomba.max(); break;
                             }
 
                         } else {
@@ -97,28 +111,36 @@ namespace Simulator {
 
             } else {
 
-                currentByteCount++;
                 dataBytes.Add(bRead);
 
-                if (currentByteCount == byteCount) {
+                if (dataBytes.Count == byteCount && command != 140) {
 
                     switch (command) {
-                        // call function, pass int list dataBytes as argument.
-                        case 129: /* roomba.baud 1 */ break;
-                        case 137: /* roomba.drive 4 */ break;
-                        case 145: /* roomba.drive wheels 4 */ break;
-                        case 138: /* roomba.motors 1 */ break;
-                        case 144: /* roomba.pwm motors 3 */ break;
-                        case 146: /* roomba.drive pwm 4 */ break;
-                        case 139: /* roomba.leds 3 */ break;
-                        case 140: /* roomba.song */ break;
+
+                        /*
+                         *  call functions, pass int list dataBytes as argument.
+                         */
+
+                        case 137:   roomba.drive(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
+                                    break;
+                        case 145:   roomba.driveDirect(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
+                                    break;
+                        case 138:   roomba.motors(dataBytes[0]); 
+                                    break;
+                        case 144:   roomba.pwmMotors(dataBytes[0], dataBytes[1], dataBytes[2]);
+                                    break;
+                        case 146:   roomba.drivePwm(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
+                                    break;
+                        case 139:   roomba.leds(dataBytes[0], dataBytes[1], dataBytes[2]);
+                                    break;
+
+                        case 129: // baud is not implemented
+                        default: break;
                     }
 
                     /* reset to prepare for new receive */
-                    dataBytes.Clear();
                     command = 0;
-                    byteCount = 0;
-                    currentByteCount = 0;
+                    clearRegisters();
                       
                 }
             }

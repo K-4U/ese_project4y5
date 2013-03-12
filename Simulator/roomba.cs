@@ -9,7 +9,7 @@ namespace Simulator {
         #region Errors
         [Serializable]
         public class notInCorrectMode : Exception {
-            public notInCorrectMode() : base() { }
+            public notInCorrectMode(string function) : base(function) { }
         }
         #endregion
 
@@ -268,12 +268,20 @@ namespace Simulator {
             log("Switching mode to passive", TAG);
         }
         public void safe() {
-            this.currentMode = eRoombaModes.Safe;
-            log("Switching mode to safe", TAG);
+            if (this.currentMode != eRoombaModes.Off) {
+                this.currentMode = eRoombaModes.Safe;
+                log("Switching mode to safe", TAG);
+            } else {
+                throw new notInCorrectMode("safe");
+            }
         }
         public void full() {
-            this.currentMode = eRoombaModes.Full;
-            log("Switching mode to full", TAG);
+            if (this.currentMode != eRoombaModes.Off) {
+                this.currentMode = eRoombaModes.Full;
+                log("Switching mode to full", TAG);
+            } else {
+                throw new notInCorrectMode("full");
+            }
         }
 
         public void power() {
@@ -287,7 +295,7 @@ namespace Simulator {
                 log("Starting spot mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("spot");
             }
         }
 
@@ -296,7 +304,7 @@ namespace Simulator {
                 log("Starting clean mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("clean");
             }
         }
 
@@ -305,7 +313,7 @@ namespace Simulator {
                 log("Starting max clean mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("max");
             }
         }
 
@@ -313,7 +321,7 @@ namespace Simulator {
             if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
                 log(String.Format("Storing a song in {0}",songNumber), TAG);
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("song");
             }
         }
 
@@ -333,7 +341,7 @@ namespace Simulator {
                     log(String.Format("Driving @ {0}mm/s in a radius of {1} degrees", this.drivingState.velocity,this.drivingState.radius),TAG);
                 }
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("drive");
             }
         }
 
@@ -353,7 +361,7 @@ namespace Simulator {
                     log(String.Format("Driving @ {0}mm/s left, {1}mm/s right", this.drivingState.leftSpeed, this.drivingState.rightSpeed), TAG);
                 }
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("driveDirect");
             }
         }
 
@@ -373,24 +381,24 @@ namespace Simulator {
                     log(String.Format("Driving @ {0} left, {1} right", this.drivingState.leftPWM, this.drivingState.rightPWM), TAG);
                 }
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("drivePwm");
             }
         }
 
         private void printMotorState() {
-            string logString = String.Format("Motor state:\r\n\t\tMain brush state:\t{0}\r\n\t\tMain brush direction:\t{1}\r\n\t\tMain brush pwm:\t{2}", (this.motorState.mainBrush ? "On" : "Off"), (this.motorState.mainBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.mainBrushPwm);
-            logString += String.Format("\r\n\t\tSide brush state:\t{0}\r\n\t\tSide brush direction:\t{1}\r\n\t\tSide brush pwm:\t{2}", (this.motorState.sideBrush ? "On" : "Off"), (this.motorState.sideBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.sideBrushPwm);
-            logString += String.Format("\r\n\t\tVacuum state:\t{0}\r\n\t\tVacuum pwm:\t{1}", (this.motorState.vacuum ? "On" : "Off"), this.motorState.vacuumPwm);
+            string logString = String.Format("Motor state:\r\n\tMain brush state:\t{0}\r\n\tMain brush direction:\t{1}\r\n\tMain brush pwm:\t\t{2}", (this.motorState.mainBrush ? "On" : "Off"), (this.motorState.mainBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.mainBrushPwm);
+            logString += String.Format("\r\n\tSide brush state:\t{0}\r\n\tSide brush direction:\t{1}\r\n\tSide brush pwm:\t\t{2}", (this.motorState.sideBrush ? "On" : "Off"), (this.motorState.sideBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.sideBrushPwm);
+            logString += String.Format("\r\n\tVacuum state:\t\t{0}\r\n\tVacuum pwm:\t\t{1}", (this.motorState.vacuum ? "On" : "Off"), this.motorState.vacuumPwm);
             log(logString, logTags.roomba);
         }
 
         public void motors(byte newValue) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
-                this.motorState.mainBrushDirection = ((newValue & (1 << 4)) == 1 ? eDirection.opposite : eDirection.defaultDir);
-                this.motorState.sideBrushDirection = ((newValue & (1 << 3)) == 1 ? eDirection.opposite : eDirection.defaultDir);
-                this.motorState.mainBrush = ((newValue & (1 << 2)) == 1);
-                this.motorState.vacuum = ((newValue & (1 << 1)) == 1);
-                this.motorState.sideBrush = ((newValue & (1 << 0)) == 1);
+                this.motorState.mainBrushDirection = ((newValue & (1 << 4)) != 0 ? eDirection.opposite : eDirection.defaultDir);
+                this.motorState.sideBrushDirection = ((newValue & (1 << 3)) != 0 ? eDirection.opposite : eDirection.defaultDir);
+                this.motorState.mainBrush = ((newValue & (1 << 2)) != 0);
+                this.motorState.vacuum = ((newValue & (1 << 1)) != 0);
+                this.motorState.sideBrush = ((newValue & (1 << 0)) != 0);
 
 
                 if (this.motorState.mainBrush == true) {
@@ -411,7 +419,7 @@ namespace Simulator {
 
                 this.printMotorState();
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("motors");
             }
         }
 
@@ -442,7 +450,7 @@ namespace Simulator {
                 }
                 this.printMotorState();
             }else{
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("pwmMotors");
             }
         }
 
@@ -457,16 +465,16 @@ namespace Simulator {
 
         public void leds(byte ledBits, byte cleanPowerColor, byte cleanPowerIntensity) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
-                this.ledState.checkRobot = ((ledBits & (1 << 3)) == 1);
-                this.ledState.dock = ((ledBits & (1 << 2)) == 1);
-                this.ledState.spot = ((ledBits & (1 << 1)) == 1);
-                this.ledState.debris = ((ledBits & (1 << 0)) == 1);
+                this.ledState.checkRobot = ((ledBits & (1 << 3)) != 0);
+                this.ledState.dock = ((ledBits & (1 << 2)) != 0);
+                this.ledState.spot = ((ledBits & (1 << 1)) != 0);
+                this.ledState.debris = ((ledBits & (1 << 0)) != 0);
                 this.ledState.ledColor = cleanPowerColor;
                 this.ledState.ledIntensity = cleanPowerIntensity;
 
                 this.printLeds();
             } else {
-                throw new notInCorrectMode();
+                throw new notInCorrectMode("leds");
             }
         }
         

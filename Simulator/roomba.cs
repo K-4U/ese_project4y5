@@ -114,18 +114,20 @@ namespace Simulator {
         #endregion 
 
         #region Variables
-        private roombaModes currentMode = roombaModes.Off;
+        private eRoombaModes currentMode = eRoombaModes.Off;
         private sensorList sensors;
         private stDrivingState drivingState;
+        private stMotors motorState;
+        private stLeds ledState;
 
         #region Enums
-        enum roombaModes {
+        enum eRoombaModes {
             Off = 0x00,
             Passive,
             Safe,
             Full
         }
-        enum direction {
+        enum eDirection {
             defaultDir = 0x00,
             opposite
         }
@@ -142,18 +144,30 @@ namespace Simulator {
         }
         struct stMotors {
             public bool mainBrush;
-            public direction 
+            public int mainBrushPwm;
+            public eDirection mainBrushDirection;
             public bool vacuum;
+            public int vacuumPwm;
             public bool sideBrush;
+            public int sideBrushPwm;
+            public eDirection sideBrushDirection;
+        }
 
+        struct stLeds {
+            public bool checkRobot;
+            public bool dock;
+            public bool spot;
+            public bool debris;
+            public byte ledColor;
+            public byte ledIntensity;
         }
         #endregion
         #endregion
 
         #region Private
-        private bool checkMode(params roombaModes[] paramList) {
+        private bool checkMode(params eRoombaModes[] paramList) {
             bool ret = false;
-            foreach (roombaModes o in paramList) {
+            foreach (eRoombaModes o in paramList) {
                 ret = (this.currentMode == o);
                 if (ret == true) {
                     break;
@@ -169,6 +183,8 @@ namespace Simulator {
             log("Initializing", TAG);
             this.drivingState = new stDrivingState();
             this.sensors = new sensorList();
+            this.motorState = new stMotors();
+            this.ledState = new stLeds();
             //Init list of sensors:
             log("Adding sensors", TAG);
             sensors.Add(new sensor("Bump and wheel drops", 7, 1));
@@ -244,59 +260,57 @@ namespace Simulator {
             log("Initialized", TAG);
         }
 
-       
-
         public void start() {
-            if (this.currentMode == roombaModes.Off) {
+            if (this.currentMode == eRoombaModes.Off) {
                 Console.Beep();
             }
-            this.currentMode = roombaModes.Passive;
+            this.currentMode = eRoombaModes.Passive;
             log("Switching mode to passive", TAG);
         }
         public void safe() {
-            this.currentMode = roombaModes.Safe;
+            this.currentMode = eRoombaModes.Safe;
             log("Switching mode to safe", TAG);
         }
         public void full() {
-            this.currentMode = roombaModes.Full;
+            this.currentMode = eRoombaModes.Full;
             log("Switching mode to full", TAG);
         }
 
         public void power() {
             //Powers down the Roomba
-            this.currentMode = roombaModes.Passive;
+            this.currentMode = eRoombaModes.Passive;
             log("Powering down", TAG);
         }
 
         public void spot() {
-            if (this.checkMode(roombaModes.Full, roombaModes.Safe, roombaModes.Passive)) {
+            if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
                 log("Starting spot mode", TAG);
-                this.currentMode = roombaModes.Passive;
+                this.currentMode = eRoombaModes.Passive;
             } else {
                 throw new notInCorrectMode();
             }
         }
 
         public void clean() {
-            if (this.checkMode(roombaModes.Full, roombaModes.Safe, roombaModes.Passive)) {
+            if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
                 log("Starting clean mode", TAG);
-                this.currentMode = roombaModes.Passive;
+                this.currentMode = eRoombaModes.Passive;
             } else {
                 throw new notInCorrectMode();
             }
         }
 
         public void max() {
-            if (this.checkMode(roombaModes.Full, roombaModes.Safe, roombaModes.Passive)) {
+            if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
                 log("Starting max clean mode", TAG);
-                this.currentMode = roombaModes.Passive;
+                this.currentMode = eRoombaModes.Passive;
             } else {
                 throw new notInCorrectMode();
             }
         }
 
-        public void song(int songNumber, int noteCount, params byte[] arguments) {
-            if (this.checkMode(roombaModes.Full, roombaModes.Safe, roombaModes.Passive)) {
+        public void song(byte songNumber, byte noteCount, params byte[] arguments) {
+            if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
                 log(String.Format("Storing a song in {0}",songNumber), TAG);
             } else {
                 throw new notInCorrectMode();
@@ -304,7 +318,7 @@ namespace Simulator {
         }
 
         public void drive(byte velocHigh, byte velocLow, byte radiusHigh, byte radiusLow) {
-            if (this.checkMode(roombaModes.Safe, roombaModes.Full)) {
+            if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
                 this.drivingState.velocity = (velocHigh << 8) | velocLow;
                 this.drivingState.radius = (radiusHigh << 8) | radiusLow;
                 this.drivingState.leftPWM = 0;
@@ -324,7 +338,7 @@ namespace Simulator {
         }
 
         public void driveDirect(byte velocRightHigh, byte velocRightLow, byte velocLeftHigh, byte velocLeftLow) {
-            if (this.checkMode(roombaModes.Safe, roombaModes.Full)) {
+            if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
                 this.drivingState.velocity = 0;
                 this.drivingState.radius = 0;
                 this.drivingState.leftPWM = 0;
@@ -343,8 +357,8 @@ namespace Simulator {
             }
         }
 
-        public void drivePWM(byte pwmRightHigh, byte pwmRightLow, byte pwmLeftHigh, byte pwmLeftLow) {
-            if (this.checkMode(roombaModes.Safe, roombaModes.Full)) {
+        public void drivePwm(byte pwmRightHigh, byte pwmRightLow, byte pwmLeftHigh, byte pwmLeftLow) {
+            if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
                 this.drivingState.velocity = 0;
                 this.drivingState.radius = 0;
                 this.drivingState.leftSpeed = 0;
@@ -363,14 +377,98 @@ namespace Simulator {
             }
         }
 
-        public void motors(byte newValue) {
-            if (this.checkMode(roombaModes.Safe, roombaModes.Full)) {
+        private void printMotorState() {
+            string logString = String.Format("Motor state:\r\n\t\tMain brush state:\t{0}\r\n\t\tMain brush direction:\t{1}\r\n\t\tMain brush pwm:\t{2}", (this.motorState.mainBrush ? "On" : "Off"), (this.motorState.mainBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.mainBrushPwm);
+            logString += String.Format("\r\n\t\tSide brush state:\t{0}\r\n\t\tSide brush direction:\t{1}\r\n\t\tSide brush pwm:\t{2}", (this.motorState.sideBrush ? "On" : "Off"), (this.motorState.sideBrushDirection == eDirection.defaultDir ? "Default" : "Opposite"), this.motorState.sideBrushPwm);
+            logString += String.Format("\r\n\t\tVacuum state:\t{0}\r\n\t\tVacuum pwm:\t{1}", (this.motorState.vacuum ? "On" : "Off"), this.motorState.vacuumPwm);
+            log(logString, logTags.roomba);
+        }
 
+        public void motors(byte newValue) {
+            if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
+                this.motorState.mainBrushDirection = ((newValue & (1 << 4)) == 1 ? eDirection.opposite : eDirection.defaultDir);
+                this.motorState.sideBrushDirection = ((newValue & (1 << 3)) == 1 ? eDirection.opposite : eDirection.defaultDir);
+                this.motorState.mainBrush = ((newValue & (1 << 2)) == 1);
+                this.motorState.vacuum = ((newValue & (1 << 1)) == 1);
+                this.motorState.sideBrush = ((newValue & (1 << 0)) == 1);
+
+
+                if (this.motorState.mainBrush == true) {
+                    this.motorState.mainBrushPwm = (this.motorState.mainBrushDirection == eDirection.defaultDir ? 128 : -128);
+                } else {
+                    this.motorState.mainBrushPwm = 0;
+                }
+                if (this.motorState.sideBrush == true) {
+                    this.motorState.sideBrushPwm = (this.motorState.sideBrushDirection == eDirection.defaultDir ? 128 : -128);
+                } else {
+                    this.motorState.sideBrushPwm = 0;
+                }
+                if(this.motorState.vacuum == true){
+                    this.motorState.vacuumPwm = 128;
+                }else{
+                    this.motorState.vacuumPwm = 0;
+                }
+
+                this.printMotorState();
             } else {
                 throw new notInCorrectMode();
             }
         }
 
+        public void pwmMotors(byte mainBrushPwm, byte sideBrushPwm, byte vacuumPwm) {
+            if(this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)){
+                this.motorState.mainBrushPwm = mainBrushPwm;
+                this.motorState.sideBrushPwm = sideBrushPwm;
+                this.motorState.vacuumPwm = vacuumPwm;
+
+                if(this.motorState.mainBrushPwm == 0){
+                    this.motorState.mainBrush = false;
+                }else if(this.motorState.mainBrushPwm < 0){
+                    this.motorState.mainBrushDirection = eDirection.opposite;
+                    this.motorState.mainBrush = true;
+                }else if(this.motorState.mainBrushPwm > 0){
+                    this.motorState.mainBrushDirection = eDirection.defaultDir;
+                    this.motorState.mainBrush = true;
+                }
+
+                if(this.motorState.sideBrushPwm == 0){
+                    this.motorState.sideBrush = false;
+                }else if(this.motorState.sideBrushPwm < 0){
+                    this.motorState.sideBrushDirection = eDirection.opposite;
+                    this.motorState.sideBrush = true;
+                }else if(this.motorState.sideBrushPwm > 0){
+                    this.motorState.sideBrushDirection = eDirection.defaultDir;
+                    this.motorState.sideBrush = true;
+                }
+                this.printMotorState();
+            }else{
+                throw new notInCorrectMode();
+            }
+        }
+
+        private void printLeds() {
+            string logStr = String.Format("LED State: \r\n\t\tCheck Robot:\t{0}", (this.ledState.checkRobot == true ? "On" : "Off"));
+            logStr += String.Format("\r\n\t\tDock:\t\t{0}", (this.ledState.dock == true ? "On" : "Off"));
+            logStr += String.Format("\r\n\t\tSpot:\t\t{0}", (this.ledState.spot == true ? "On" : "Off"));
+            logStr += String.Format("\r\n\t\tDebris:\t\t{0}", (this.ledState.debris == true ? "On" : "Off"));
+            logStr += String.Format("\r\n\t\tColor pwm:\t{0}", this.ledState.ledColor);
+            logStr += String.Format("\r\n\t\tIntensity:\t{0}", this.ledState.ledIntensity);
+        }
+
+        public void leds(byte ledBits, byte cleanPowerColor, byte cleanPowerIntensity) {
+            if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
+                this.ledState.checkRobot = ((ledBits & (1 << 3)) == 1);
+                this.ledState.dock = ((ledBits & (1 << 2)) == 1);
+                this.ledState.spot = ((ledBits & (1 << 1)) == 1);
+                this.ledState.debris = ((ledBits & (1 << 0)) == 1);
+                this.ledState.ledColor = cleanPowerColor;
+                this.ledState.ledIntensity = cleanPowerIntensity;
+
+                this.printLeds();
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
         
     }
 }

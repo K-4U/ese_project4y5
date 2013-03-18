@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Simulator {
+
     enum logTags {
         program = ConsoleColor.Green,
         serial = ConsoleColor.Blue,
@@ -46,6 +47,7 @@ namespace Simulator {
         }
 
         static void send(byte[] bytes) {
+            serSock.send(bytes);
         }
 
         public frmMain() {

@@ -82,7 +82,7 @@ namespace Simulator {
                         if (mainCommands[i, 0] == bRead) {
                             command = mainCommands[i, 0];
                             byteCount = mainCommands[i, 1];
-                            log(String.Format("Main command received: {0}", bRead), logTags.serial);
+                            log(String.Format("Main command received: {0}", bRead), logTags.program);
                             break; // no need to keep looping
                         }
                     }
@@ -90,7 +90,7 @@ namespace Simulator {
                 } else {
 
                     dataBytes.Add(bRead);
-                    log(String.Format("Databyte received: {0}", bRead), logTags.serial);
+                    log(String.Format("Databyte received: {0}", bRead), logTags.program);
 
                     // dynamic byte count
                     if (command == 140 && dataBytes.Count == 2) {
@@ -120,11 +120,11 @@ namespace Simulator {
                         case 139: roomba.leds(dataBytes[0], dataBytes[1], dataBytes[2]); break;
                         case 140: storeTemp[0] = dataBytes[0];
                                   storeTemp[1] = dataBytes[1];
-                                  dataBytes.RemoveRange(0, 1);
+                                  dataBytes.RemoveRange(0, 2);
                                   roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
                                   break;
                         case 148: storeTemp[0] = dataBytes[0];
-                                  dataBytes.RemoveRange(0, 0);
+                                  dataBytes.RemoveRange(0, 1);
                                   roomba.startStream(storeTemp[0], dataBytes.ToArray());
                                   break;
                         case 150: roomba.pauseResumeStream(dataBytes[0]); break;

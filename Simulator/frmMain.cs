@@ -136,6 +136,12 @@ namespace Simulator {
             foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
                 serialPortToolStripMenuItem.Items.Add(comPort.Description);
             }
+
+            //HACK!
+            if (serialPortToolStripMenuItem.Items.Count == 1) {
+                serialPortToolStripMenuItem.SelectedIndex = 0;
+                connectToolStripMenuItem_Click(sender, e);
+            }
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
@@ -159,6 +165,10 @@ namespace Simulator {
             } catch (serialException exc) {
                 log(String.Format("ERROR: {0}\r\nStack{1}", exc.Message, exc.StackTrace), logTags.serialServer);
             }
+        }
+
+        private void serialPortToolStripMenuItem_Click(object sender, EventArgs e) {
+
         }
     }
 }

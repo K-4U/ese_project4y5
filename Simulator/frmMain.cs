@@ -65,7 +65,7 @@ namespace Simulator {
 
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2} };
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2}, {148,1} };
             byte[] storeTemp = {0,0};
 
             try {
@@ -81,13 +81,17 @@ namespace Simulator {
                             break; // no need to keep looping
                         }
                     }
+
                 } else {
+
                     dataBytes.Add(bRead);
                     log(String.Format("Databyte received: {0}", bRead), logTags.serial);
 
                     // dynamic byte count
                     if (command == 140 && dataBytes.Count == 2) {
                         byteCount = (byte)((dataBytes[1]*2) + (byte)2);
+                    } else if (command == 148 && dataBytes.Count == 1) {
+                        byteCount = (byte)(dataBytes[1] + (byte)1);
                     }
 
                 }
@@ -113,6 +117,10 @@ namespace Simulator {
                                   storeTemp[1] = dataBytes[1];
                                   dataBytes.RemoveRange(0, 1);
                                   roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
+                                  break;
+                        case 148: storeTemp[0] = dataBytes[0];
+                                  dataBytes.RemoveRange(0, 0);
+                                  roomba.startStream(storeTemp[0], dataBytes.ToArray());
                                   break;
                         case 129: // baud is not implemented
                         default: break;

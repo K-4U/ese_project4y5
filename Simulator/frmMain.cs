@@ -45,6 +45,9 @@ namespace Simulator {
             Console.ForegroundColor = oldColor;
         }
 
+        static void send(byte[] bytes) {
+        }
+
         public frmMain() {
             InitializeComponent();
             //Load serial server:
@@ -54,7 +57,7 @@ namespace Simulator {
             serSock.setMessageHandler(messageHandlerSocket);
 
 
-            roomba = new clsRoomba(log);
+            roomba = new clsRoomba(log, send);
         }
 
         void clearRegisters() {
@@ -162,6 +165,7 @@ namespace Simulator {
 
             try {
                 serSock.connect();
+                this.tsLblStatus.Text = "Status: Connected";
             } catch (serialException exc) {
                 log(String.Format("ERROR: {0}\r\nStack{1}", exc.Message, exc.StackTrace), logTags.serialServer);
             }

@@ -58,95 +58,75 @@ namespace Simulator {
         }
 
         void clearRegisters() {
-            // call song command, then clear regs.
-            byte[] storeTemp = { };
-            if (command == 140) {
-                storeTemp[0] = dataBytes[0];
-                storeTemp[1] = dataBytes[1];
-                dataBytes.RemoveRange(0, 1);
-                roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
-            }
+            command = 0;
             byteCount = 0;
             dataBytes.Clear();
         }
 
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2} };
+            byte[] storeTemp = {0,0};
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,0} };
-            bool isMainCommand = false;
             try {
-                // if no current command, or command of undefined length
-                if (command == 0 || command == 140) {
 
-                    for (int i = 0; i < mainCommands.Length/2; i++) {
+                // decide: is this a mainCommand or a databyte
+                if (command == 0) {
 
+                    for (int i = 0; i < mainCommands.Length / 2; i++) {
                         if (mainCommands[i, 0] == bRead) {
-
-                            isMainCommand = true;
-                            clearRegisters();
+                            command = mainCommands[i, 0];
                             byteCount = mainCommands[i, 1];
-
-                            if (byteCount == 0 && command != 140) {
-
-                                switch (mainCommands[i, 0]) {
-                                    case 128: roomba.start(); break;
-                                    case 130:
-                                    case 131: roomba.safe(); break;
-                                    case 132: roomba.full(); break;
-                                    case 133: roomba.power(); break;
-                                    case 134: roomba.spot(); break;
-                                    case 135: roomba.clean(); break;
-                                    case 136: roomba.max(); break;
-                                }
-
-                            } else {
-                                command = mainCommands[i, 0];
-                            }
-
-                            break;
+                            log(String.Format("Main command received: {0}", bRead), logTags.serial);
+                            break; // no need to keep looping
                         }
                     }
-
-                    log(isMainCommand ? "true" : "false", logTags.serial);
-
                 } else {
-
                     dataBytes.Add(bRead);
+                    log(String.Format("Databyte received: {0}", bRead), logTags.serial);
 
-                    if (dataBytes.Count == byteCount && command != 140) {
-
-                        switch (command) {
-
-                            /*
-                             *  call functions, pass int list dataBytes as argument.
-                             */
-
-                            case 137: roomba.drive(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
-                                break;
-                            case 145: roomba.driveDirect(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
-                                break;
-                            case 138: roomba.motors(dataBytes[0]);
-                                break;
-                            case 144: roomba.pwmMotors(dataBytes[0], dataBytes[1], dataBytes[2]);
-                                break;
-                            case 146: roomba.drivePwm(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]);
-                                break;
-                            case 139: roomba.leds(dataBytes[0], dataBytes[1], dataBytes[2]);
-                                break;
-
-                            case 129: // baud is not implemented
-                            default: break;
-                        }
-
-                        /* reset to prepare for new receive */
-                        command = 0;
-                        clearRegisters();
-
+                    // dynamic byte count
+                    if (command == 140 && dataBytes.Count == 2) {
+                        byteCount = (byte)((dataBytes[1]*2) + (byte)2);
                     }
+
                 }
+
+                if (dataBytes.Count == byteCount) {
+
+                    switch (command) {
+                        case 128: roomba.start(); break;
+                        case 130: // catch this one, set to safe.
+                        case 131: roomba.safe(); break;
+                        case 132: roomba.full(); break;
+                        case 133: roomba.power(); break;
+                        case 134: roomba.spot(); break;
+                        case 135: roomba.clean(); break;
+                        case 136: roomba.max(); break;
+                        case 137: roomba.drive(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]); break;
+                        case 145: roomba.driveDirect(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]); break;
+                        case 138: roomba.motors(dataBytes[0]); break;
+                        case 144: roomba.pwmMotors(dataBytes[0], dataBytes[1], dataBytes[2]); break;
+                        case 146: roomba.drivePwm(dataBytes[0], dataBytes[1], dataBytes[2], dataBytes[3]); break;
+                        case 139: roomba.leds(dataBytes[0], dataBytes[1], dataBytes[2]); break;
+                        case 140: storeTemp[0] = dataBytes[0];
+                                  storeTemp[1] = dataBytes[1];
+                                  dataBytes.RemoveRange(0, 1);
+                                  roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
+                                  break;
+                        case 129: // baud is not implemented
+                        default: break;
+                    }
+
+
+                    clearRegisters();
+                }
+
             } catch (clsRoomba.notInCorrectMode excep) {
                 log(String.Format("Not in correct mode when calling function {0}", excep.TargetSite.Name), logTags.program);
+
+
+                clearRegisters();
             }
 
         }

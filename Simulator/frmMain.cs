@@ -65,7 +65,7 @@ namespace Simulator {
 
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2}, {148,1} };
+            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2}, {148,1}, {150,1} };
             byte[] storeTemp = {0,0};
 
             try {
@@ -122,6 +122,7 @@ namespace Simulator {
                                   dataBytes.RemoveRange(0, 0);
                                   roomba.startStream(storeTemp[0], dataBytes.ToArray());
                                   break;
+                        case 150: roomba.pauseResumeStream(dataBytes[0]); break;
                         case 129: // baud is not implemented
                         default: break;
                     }

@@ -32,8 +32,28 @@ namespace Simulator {
                 return this.packetId;
             }
 
-            public byte[] getValue() {
+            virtual public byte[] getValue() {
                 return this.dataBytes;
+            }
+
+            public void setValue(int newValue) {
+                if (this.dataCount == 2) {
+                    this.dataBytes[0] = (byte)(newValue >> 8);
+                    this.dataBytes[1] = (byte)(newValue & 0xFF);
+                }else{
+                    this.dataBytes[0] = (byte)(newValue & 0xFF);
+                }
+            }
+        }
+
+        private class resetSensor : sensor {
+
+            public resetSensor(string name, int packetId, int dataCount) : base(name, packetId,dataCount){
+            }
+            public override byte[] getValue() {
+                byte[] t = (byte[])base.getValue().Clone();
+                base.setValue(0);
+                return t;
             }
         }
 
@@ -93,6 +113,16 @@ namespace Simulator {
                 return toReturn.getValue();
             }
 
+            public void setSensorValue(int packetId, int newValue) {
+                for (int i = 0; i < sList.Count - 1; i++) {
+                    if (sList[i].getPacketId() == packetId) {
+                        sList[i].setValue(newValue);
+                        break;
+                    }
+                }
+            }
+
+
             public byte[] getGroup(int groupId) {
                 sensorGroup currentGroup = new sensorGroup(0, 0, 0, 0);
                 foreach (sensorGroup group in gList) {
@@ -128,6 +158,7 @@ namespace Simulator {
         private stLeds ledState;
         private stStream stream;
         private Thread streamThread;
+        private Thread drivingThread;
 
         #region Enums
         enum eRoombaModes {
@@ -198,20 +229,36 @@ namespace Simulator {
                     List<byte> btoSend = new List<byte>();
                     btoSend.Add(19);
                     int byteCount = 0;
-                    btoSend.Add((byte)this.stream.packetCount);
+                    btoSend.Add(5);
                     foreach (int packetId in this.stream.packets) {
                         byteCount++;
                         btoSend.Add((byte)packetId);
                         byte[] bToAdd = this.sensors.getSensorValue(packetId);
-                        byteCount += bToAdd.Length;
-                        btoSend.Concat(bToAdd);
+                        foreach (byte data in bToAdd) {
+                            byteCount++;
+                            btoSend.Add(data);
+                        }
                     }
                     //Fix length
                     btoSend[1] = (byte)byteCount;
 
                     this.send(btoSend.ToArray());
-                    Thread.Sleep(1000);
+                    
                 }
+                Thread.Sleep(1000);
+            }
+        }
+
+        private void motorThreadFunc() {
+            while (true) {
+                if (this.drivingState.isDriving) {
+                    int avg = (this.drivingState.leftSpeed + this.drivingState.rightSpeed) / 2;
+                    byte[] sValue = this.sensors.getSensorValue(19);
+                    avg += (sValue[0] << 8) | (sValue[1]);
+
+                    this.sensors.setSensorValue(19, avg);
+                }
+                Thread.Sleep(1000);
             }
         }
         #endregion
@@ -242,8 +289,8 @@ namespace Simulator {
             sensors.Add(new sensor("Infrared Character Left", 52, 1));
             sensors.Add(new sensor("Infrared Character Right", 53, 1));
             sensors.Add(new sensor("Buttons", 18, 1));
-            sensors.Add(new sensor("Distance", 19, 2));
-            sensors.Add(new sensor("Angle", 20, 2));
+            sensors.Add(new resetSensor("Distance", 19, 2));
+            sensors.Add(new resetSensor("Angle", 20, 2));
             sensors.Add(new sensor("Charging State", 21, 1));
             sensors.Add(new sensor("Voltage", 22, 2));
             sensors.Add(new sensor("Current", 23, 2));
@@ -426,6 +473,8 @@ namespace Simulator {
                 } else {
                     this.drivingState.isDriving = true;
                     log(String.Format("Driving @ {0}mm/s left, {1}mm/s right", this.drivingState.leftSpeed, this.drivingState.rightSpeed), TAG);
+                    this.drivingThread = new Thread(motorThreadFunc);
+                    this.drivingThread.Start();
                 }
             } else {
                 throw new notInCorrectMode();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Simulator {
@@ -9,7 +10,7 @@ namespace Simulator {
         #region Errors
         [Serializable]
         public class notInCorrectMode : Exception {
-            public notInCorrectMode(string function) : base(function) { }
+            public notInCorrectMode() : base() { }
         }
         #endregion
 
@@ -113,12 +114,20 @@ namespace Simulator {
         private const logTags TAG = logTags.roomba;
         #endregion 
 
+        #region Callbacks
+        public delegate void sendDelegate(byte[] bytes);
+        private sendDelegate send = new sendDelegate(sendDummy);
+        private static void sendDummy(byte[] bytes) { }
+        #endregion
+
         #region Variables
         private eRoombaModes currentMode = eRoombaModes.Off;
         private sensorList sensors;
         private stDrivingState drivingState;
         private stMotors motorState;
         private stLeds ledState;
+        private stStream stream;
+        private Thread streamThread;
 
         #region Enums
         enum eRoombaModes {
@@ -161,6 +170,12 @@ namespace Simulator {
             public byte ledColor;
             public byte ledIntensity;
         }
+
+        struct stStream {
+            public bool doStream;
+            public int packetCount;
+            public List<int> packets;
+        }
         #endregion
         #endregion
 
@@ -175,16 +190,42 @@ namespace Simulator {
             }
             return ret;
         }
+
+        private void streamFunc() {
+            while (true) {
+                if (this.stream.doStream) {
+                    //Build packet:
+                    List<byte> btoSend = new List<byte>();
+                    btoSend.Add(19);
+                    int byteCount = 0;
+                    btoSend.Add((byte)this.stream.packetCount);
+                    foreach (int packetId in this.stream.packets) {
+                        byteCount++;
+                        btoSend.Add((byte)packetId);
+                        byte[] bToAdd = this.sensors.getSensorValue(packetId);
+                        byteCount += bToAdd.Length;
+                        btoSend.Concat(bToAdd);
+                    }
+                    //Fix length
+                    btoSend[1] = (byte)byteCount;
+
+                    this.send(btoSend.ToArray());
+                    Thread.Sleep(1000);
+                }
+            }
+        }
         #endregion
 
-        public clsRoomba(logDelegate logFunc) {
+        public clsRoomba(logDelegate logFunc, sendDelegate sendFunc) {
             log += new logDelegate(logFunc);
+            this.send += new sendDelegate(sendFunc);
 
             log("Initializing", TAG);
             this.drivingState = new stDrivingState();
             this.sensors = new sensorList();
             this.motorState = new stMotors();
             this.ledState = new stLeds();
+            this.stream = new stStream();
             //Init list of sensors:
             log("Adding sensors", TAG);
             sensors.Add(new sensor("Bump and wheel drops", 7, 1));
@@ -272,7 +313,7 @@ namespace Simulator {
                 this.currentMode = eRoombaModes.Safe;
                 log("Switching mode to safe", TAG);
             } else {
-                throw new notInCorrectMode("safe");
+                throw new notInCorrectMode();
             }
         }
         public void full() {
@@ -280,7 +321,7 @@ namespace Simulator {
                 this.currentMode = eRoombaModes.Full;
                 log("Switching mode to full", TAG);
             } else {
-                throw new notInCorrectMode("full");
+                throw new notInCorrectMode();
             }
         }
 
@@ -295,7 +336,7 @@ namespace Simulator {
                 log("Starting spot mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode("spot");
+                throw new notInCorrectMode();
             }
         }
 
@@ -304,7 +345,7 @@ namespace Simulator {
                 log("Starting clean mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode("clean");
+                throw new notInCorrectMode();
             }
         }
 
@@ -313,15 +354,41 @@ namespace Simulator {
                 log("Starting max clean mode", TAG);
                 this.currentMode = eRoombaModes.Passive;
             } else {
-                throw new notInCorrectMode("max");
+                throw new notInCorrectMode();
             }
         }
 
         public void song(byte songNumber, byte noteCount, params byte[] arguments) {
             if (this.checkMode(eRoombaModes.Full, eRoombaModes.Safe, eRoombaModes.Passive)) {
-                log(String.Format("Storing a song in {0}",songNumber), TAG);
+                log(String.Format("Storing a song in {0}", songNumber), TAG);
             } else {
-                throw new notInCorrectMode("song");
+                throw new notInCorrectMode();
+            }
+        }
+
+        public void startStream(byte number, params byte[] packets){
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)){
+                this.stream.doStream = true;
+                this.stream.packetCount = number;
+                this.stream.packets = new List<int>();
+                log(String.Format("Starting a stream of {0} packets:", number), TAG);
+                foreach (byte packet in packets) {
+                    this.stream.packets.Add(packet);
+                    log(String.Format("- {0}", packet), TAG);
+                }
+                this.streamThread = new Thread(streamFunc);
+                this.streamThread.Start();
+                
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
+
+        public void pauseResumeStream(byte newState) {
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
+                this.stream.doStream = (newState == 1);
+            } else {
+                throw new notInCorrectMode();
             }
         }
 
@@ -341,7 +408,7 @@ namespace Simulator {
                     log(String.Format("Driving @ {0}mm/s in a radius of {1} degrees", this.drivingState.velocity,this.drivingState.radius),TAG);
                 }
             } else {
-                throw new notInCorrectMode("drive");
+                throw new notInCorrectMode();
             }
         }
 
@@ -361,7 +428,7 @@ namespace Simulator {
                     log(String.Format("Driving @ {0}mm/s left, {1}mm/s right", this.drivingState.leftSpeed, this.drivingState.rightSpeed), TAG);
                 }
             } else {
-                throw new notInCorrectMode("driveDirect");
+                throw new notInCorrectMode();
             }
         }
 
@@ -381,7 +448,7 @@ namespace Simulator {
                     log(String.Format("Driving @ {0} left, {1} right", this.drivingState.leftPWM, this.drivingState.rightPWM), TAG);
                 }
             } else {
-                throw new notInCorrectMode("drivePwm");
+                throw new notInCorrectMode();
             }
         }
 
@@ -419,7 +486,7 @@ namespace Simulator {
 
                 this.printMotorState();
             } else {
-                throw new notInCorrectMode("motors");
+                throw new notInCorrectMode();
             }
         }
 
@@ -450,7 +517,7 @@ namespace Simulator {
                 }
                 this.printMotorState();
             }else{
-                throw new notInCorrectMode("pwmMotors");
+                throw new notInCorrectMode();
             }
         }
 
@@ -474,9 +541,11 @@ namespace Simulator {
 
                 this.printLeds();
             } else {
-                throw new notInCorrectMode("leds");
+                throw new notInCorrectMode();
             }
         }
+
+        
         
     }
 }

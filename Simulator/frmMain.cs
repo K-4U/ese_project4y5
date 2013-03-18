@@ -96,7 +96,7 @@ namespace Simulator {
                     if (command == 140 && dataBytes.Count == 2) {
                         byteCount = (byte)((dataBytes[1]*2) + (byte)2);
                     } else if (command == 148 && dataBytes.Count == 1) {
-                        byteCount = (byte)(dataBytes[1] + (byte)1);
+                        byteCount = (byte)(dataBytes[0] + (byte)1);
                     }
 
                 }

@@ -245,7 +245,7 @@ namespace Simulator {
                     this.send(btoSend.ToArray());
                     
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
             }
         }
 
@@ -413,31 +413,6 @@ namespace Simulator {
             }
         }
 
-        public void startStream(byte number, params byte[] packets){
-            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)){
-                this.stream.doStream = true;
-                this.stream.packetCount = number;
-                this.stream.packets = new List<int>();
-                log(String.Format("Starting a stream of {0} packets:", number), TAG);
-                foreach (byte packet in packets) {
-                    this.stream.packets.Add(packet);
-                    log(String.Format("- {0}", packet), TAG);
-                }
-                this.streamThread = new Thread(streamFunc);
-                this.streamThread.Start();
-                
-            } else {
-                throw new notInCorrectMode();
-            }
-        }
-
-        public void pauseResumeStream(byte newState) {
-            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
-                this.stream.doStream = (newState == 1);
-            } else {
-                throw new notInCorrectMode();
-            }
-        }
 
         public void drive(byte velocHigh, byte velocLow, byte radiusHigh, byte radiusLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
@@ -594,7 +569,74 @@ namespace Simulator {
             }
         }
 
-        
+        public void getSensor(byte packetId) {
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
+                List<byte> bToSend = new List<byte>();
+                bToSend.Add(142);
+                if (packetId < 7 || packetId > 99) {
+                    //Group
+                    foreach (byte b in this.sensors.getGroup(packetId)) {
+                        bToSend.Add(b);
+                    }
+                } else {
+                    foreach (byte b in this.sensors.getSensorValue(packetId)) {
+                        bToSend.Add(b);
+                    }
+                }
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
+
+        public void querySensor(byte number, params byte[] packets){
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
+                List<byte> btoSend = new List<byte>();
+                btoSend.Add(149);
+                int byteCount = 0;
+                btoSend.Add(42); // Dummy figure
+                foreach (int packetId in packets) {
+                    byteCount++;
+                    btoSend.Add((byte)packetId);
+                    byte[] bToAdd = this.sensors.getSensorValue(packetId);
+                    foreach (byte data in bToAdd) {
+                        byteCount++;
+                        btoSend.Add(data);
+                    }
+                }
+                //Fix length
+                btoSend[1] = (byte)byteCount;
+
+                this.send(btoSend.ToArray());
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
+
+        public void startStream(byte number, params byte[] packets){
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)){
+                this.stream.doStream = true;
+                this.stream.packetCount = number;
+                this.stream.packets = new List<int>();
+                log(String.Format("Starting a stream of {0} packets:", number), TAG);
+                foreach (byte packet in packets) {
+                    this.stream.packets.Add(packet);
+                    log(String.Format("- {0}", packet), TAG);
+                }
+                this.streamThread = new Thread(streamFunc);
+                this.streamThread.Start();
+                
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
+
+        public void pauseResumeStream(byte newState) {
+            if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
+                this.stream.doStream = (newState == 1);
+            } else {
+                throw new notInCorrectMode();
+            }
+        }
         
     }
 }

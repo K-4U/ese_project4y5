@@ -57,6 +57,52 @@ namespace Simulator {
             }
         }
 
+        private class distanceSensor : resetSensor {
+            private int left;
+            private int right;
+
+            public distanceSensor(string name, int packetId, int dataCount)
+                : base(name, packetId, dataCount) {
+            }
+
+            public void setValue(int leftSpeed, int rightSpeed) {
+                int avg = (leftSpeed + rightSpeed) / 2;
+                byte[] sValue = base.getValue();
+                avg += (sValue[0] << 8) | (sValue[1]);
+                this.left += leftSpeed;
+                this.right += rightSpeed;
+                base.setValue(avg);
+            }
+
+            public override byte[] getValue() {
+                byte[] t = (byte[])base.getValue().Clone();
+                this.left = 0;
+                this.right = 0;
+                return t;
+            }
+
+            public int getLeft() {
+                return this.left;
+            }
+            public int getRight() {
+                return this.right;
+            }
+        }
+
+        private class angleSensor : resetSensor {
+            public angleSensor(string name, int packetId, int dataCount)
+                : base(name, packetId, dataCount) {
+            }
+
+            public void setValue(int leftDistance, int rightDistance) {
+                double d = (leftDistance - rightDistance);
+                double f = d / WHEELBASE;
+                double t = Math.Tanh(f) * (180 / Math.PI);
+
+                base.setValue((int)t);
+            }
+        }
+
         private class sensorGroup {
             private int groupId;
             private int min;
@@ -148,6 +194,10 @@ namespace Simulator {
         public delegate void sendDelegate(byte[] bytes);
         private sendDelegate send = new sendDelegate(sendDummy);
         private static void sendDummy(byte[] bytes) { }
+        #endregion
+
+        #region Constants
+        private const int WHEELBASE = 258;
         #endregion
 
         #region Variables
@@ -252,11 +302,12 @@ namespace Simulator {
         private void motorThreadFunc() {
             while (true) {
                 if (this.drivingState.isDriving) {
-                    int avg = (this.drivingState.leftSpeed + this.drivingState.rightSpeed) / 2;
-                    byte[] sValue = this.sensors.getSensorValue(19);
-                    avg += (sValue[0] << 8) | (sValue[1]);
+                    distanceSensor dSensor = (distanceSensor) this.sensors.getSensor(19);
+                    dSensor.setValue(this.drivingState.leftSpeed, this.drivingState.rightSpeed);
 
-                    this.sensors.setSensorValue(19, avg);
+                    angleSensor aSensor = (angleSensor)this.sensors.getSensor(20);
+                    aSensor.setValue(dSensor.getLeft(), dSensor.getRight());
+
                 }
                 Thread.Sleep(1000);
             }
@@ -289,8 +340,8 @@ namespace Simulator {
             sensors.Add(new sensor("Infrared Character Left", 52, 1));
             sensors.Add(new sensor("Infrared Character Right", 53, 1));
             sensors.Add(new sensor("Buttons", 18, 1));
-            sensors.Add(new resetSensor("Distance", 19, 2));
-            sensors.Add(new resetSensor("Angle", 20, 2));
+            sensors.Add(new distanceSensor("Distance", 19, 2));
+            sensors.Add(new angleSensor("Angle", 20, 2));
             sensors.Add(new sensor("Charging State", 21, 1));
             sensors.Add(new sensor("Voltage", 22, 2));
             sensors.Add(new sensor("Current", 23, 2));
@@ -572,7 +623,7 @@ namespace Simulator {
         public void getSensor(byte packetId) {
             if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
                 List<byte> bToSend = new List<byte>();
-                bToSend.Add(142);
+                bToSend.Add(19);
                 if (packetId < 7 || packetId > 99) {
                     //Group
                     foreach (byte b in this.sensors.getGroup(packetId)) {
@@ -583,6 +634,8 @@ namespace Simulator {
                         bToSend.Add(b);
                     }
                 }
+
+                this.send(bToSend.ToArray());
             } else {
                 throw new notInCorrectMode();
             }

@@ -70,7 +70,29 @@ namespace Simulator {
 
         private void messageHandlerSocket(byte bRead, byte prevByte) {
 
-            byte[,] mainCommands = { {128,0}, {129,1}, {130,0}, {131,0}, {132,0}, {133,0}, {134,0}, {135,0}, {136,0}, {137,4}, {145,4}, {138,1}, {144,3}, {146,4}, {139,3}, {140,2}, {148,1}, {150,1} };
+            byte[,] mainCommands = { /* {command,databytes} */
+                                     {128,0}
+                                    ,{129,1}
+                                    ,{130,0}
+                                    ,{131,0}
+                                    ,{132,0}
+                                    ,{133,0}
+                                    ,{134,0}
+                                    ,{135,0}
+                                    ,{136,0}
+                                    ,{137,4}
+                                    ,{145,4}
+                                    ,{138,1}
+                                    ,{144,3}
+                                    ,{146,4}
+                                    ,{139,3}
+                                    ,{140,2}
+                                    ,{142,1}
+                                    ,{148,1}
+                                    ,{149,1}
+                                    ,{150,1}
+                                   };
+
             byte[] storeTemp = {0,0};
 
             try {
@@ -95,7 +117,7 @@ namespace Simulator {
                     // dynamic byte count
                     if (command == 140 && dataBytes.Count == 2) {
                         byteCount = (byte)((dataBytes[1]*2) + (byte)2);
-                    } else if (command == 148 && dataBytes.Count == 1) {
+                    } else if ((command == 148 || command == 149 ) && dataBytes.Count == 1) {
                         byteCount = (byte)(dataBytes[0] + (byte)1);
                     }
 
@@ -123,24 +145,28 @@ namespace Simulator {
                                   dataBytes.RemoveRange(0, 2);
                                   roomba.song(storeTemp[0], storeTemp[1], dataBytes.ToArray());
                                   break;
+                        case 142: roomba.getSensor(dataBytes[0]); break;
                         case 148: storeTemp[0] = dataBytes[0];
                                   dataBytes.RemoveRange(0, 1);
                                   roomba.startStream(storeTemp[0], dataBytes.ToArray());
+                                  break;
+                        case 149: storeTemp[0] = dataBytes[0];
+                                  dataBytes.RemoveRange(0, 1);
+                                  roomba.querySensor(storeTemp[0], dataBytes.ToArray());
                                   break;
                         case 150: roomba.pauseResumeStream(dataBytes[0]); break;
                         case 129: // baud is not implemented
                         default: break;
                     }
 
-
                     clearRegisters();
                 }
 
             } catch (clsRoomba.notInCorrectMode excep) {
+
                 log(String.Format("Not in correct mode when calling function {0}", excep.TargetSite.Name), logTags.program);
-
-
                 clearRegisters();
+
             }
 
         }

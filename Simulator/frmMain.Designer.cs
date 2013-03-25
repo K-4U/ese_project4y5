@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsLblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -31,10 +32,12 @@
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbRoom = new System.Windows.Forms.PictureBox();
+            this.tim500 = new System.Windows.Forms.Timer(this.components);
+            this.tim100 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -98,21 +101,31 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             // 
-            // pictureBox1
+            // pbRoom
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 24);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(858, 571);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.pbRoom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbRoom.Location = new System.Drawing.Point(0, 24);
+            this.pbRoom.Name = "pbRoom";
+            this.pbRoom.Size = new System.Drawing.Size(858, 571);
+            this.pbRoom.TabIndex = 2;
+            this.pbRoom.TabStop = false;
+            this.pbRoom.Paint += new System.Windows.Forms.PaintEventHandler(this.pbRoom_paint);
+            // 
+            // tim500
+            // 
+            this.tim500.Interval = 500;
+            // 
+            // tim100
+            // 
+            this.tim100.Enabled = true;
+            this.tim100.Tick += new System.EventHandler(this.tim100_Tick);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 617);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pbRoom);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -124,7 +137,7 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,7 +153,9 @@
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbRoom;
+        private System.Windows.Forms.Timer tim500;
+        private System.Windows.Forms.Timer tim100;
     }
 }
 

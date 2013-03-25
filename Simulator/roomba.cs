@@ -55,6 +55,13 @@ namespace Simulator {
                 base.setValue(0);
                 return t;
             }
+            public byte[] getValue(bool doReset) {
+                byte[] t = (byte[])base.getValue().Clone();
+                if (doReset) {
+                    base.setValue(0);
+                }
+                return t;
+            }
         }
 
         private class distanceSensor : resetSensor {
@@ -68,7 +75,7 @@ namespace Simulator {
             public void setValue(int leftSpeed, int rightSpeed) {
                 int avg = (leftSpeed + rightSpeed) / 2;
                 byte[] sValue = base.getValue();
-                avg += (sValue[0] << 8) | (sValue[1]);
+                avg += BitConverter.ToInt16(sValue, 0);
                 this.left += leftSpeed;
                 this.right += rightSpeed;
                 base.setValue(avg);
@@ -225,12 +232,12 @@ namespace Simulator {
         #region Structs
         struct stDrivingState {
             public bool isDriving;
-            public int velocity;
-            public int radius;
+            /*public int velocity;
+            public int radius;*/
             public int rightSpeed;
             public int leftSpeed;
-            public int rightPWM;
-            public int leftPWM;
+            /*public int rightPWM;
+            public int leftPWM;*/
         }
         struct stMotors {
             public bool mainBrush;
@@ -489,12 +496,13 @@ namespace Simulator {
 
         public void driveDirect(byte velocRightHigh, byte velocRightLow, byte velocLeftHigh, byte velocLeftLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
-                this.drivingState.velocity = 0;
+                /*this.drivingState.velocity = 0;
                 this.drivingState.radius = 0;
                 this.drivingState.leftPWM = 0;
-                this.drivingState.rightPWM = 0;
-                this.drivingState.leftSpeed = (velocLeftHigh << 8) | velocLeftLow;
-                this.drivingState.rightSpeed = (velocRightHigh << 8) | velocRightLow;
+                this.drivingState.rightPWM = 0;*/
+                
+                this.drivingState.leftSpeed = BitConverter.ToInt16(new byte[]{velocLeftHigh, velocLeftLow},0);
+                this.drivingState.rightSpeed = BitConverter.ToInt16(new byte[] { velocRightHigh, velocRightLow }, 0);
                 if (this.drivingState.leftSpeed == 0 && this.drivingState.rightSpeed == 0) {
                     this.drivingState.isDriving = false;
                     log("Stopped driving", TAG);
@@ -644,6 +652,16 @@ namespace Simulator {
             }
         }
 
+        public int[] getSpeed() {
+            return new int[] {this.drivingState.leftSpeed,this.drivingState.rightSpeed};
+        }
+
+        public int getAngle() {
+            angleSensor aSensor = (angleSensor)this.sensors.getSensor(20);
+            byte[] angle = aSensor.getValue(false);
+            return BitConverter.ToInt16(angle, 0);
+        }
+
         public void querySensor(byte number, params byte[] packets){
             if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
                 List<byte> btoSend = new List<byte>();
@@ -693,6 +711,8 @@ namespace Simulator {
                 throw new notInCorrectMode();
             }
         }
+
         
+
     }
 }

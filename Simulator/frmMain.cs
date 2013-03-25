@@ -27,6 +27,9 @@ namespace Simulator {
         static byte command = 0;
         static byte byteCount = 0;
         List<byte> dataBytes = new List<byte>();
+
+
+        Dictionary<String, drawObject> drawObjects = new Dictionary<string, drawObject>();
         #endregion 
 
         static void log(string x, logTags tag) {
@@ -47,17 +50,57 @@ namespace Simulator {
             Console.ForegroundColor = oldColor;
         }
 
+        #region Draw
+        public void initDrawers() {
+            drawObjects.Add("roomba", new drawRoomba(this.pbRoom.Width/2, this.pbRoom.Height/2, 0));
+        }
+        public void doDraw(Graphics g) {
+            g.FillRectangle(new SolidBrush(this.pbRoom.BackColor), 0, 0, this.pbRoom.Width, this.pbRoom.Height);
+            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+                item.Value.draw(g);
+            }
+        }
+
+        #endregion
+
         #region Form events
         public frmMain() {
             InitializeComponent();
+            initDrawers();
+
             //Load serial server:
             serSock = new serialServer();
             serSock.setLogFunction(log);
 
             serSock.setMessageHandler(messageHandlerSocket);
 
-
             roomba = new clsRoomba(log, send);
+
+            roomba.start();
+            roomba.safe();
+
+            byte[] drBytesLeft = BitConverter.GetBytes(100);
+            byte[] drBytesRight = BitConverter.GetBytes(101);
+            roomba.driveDirect(drBytesRight[0], drBytesRight[1], drBytesLeft[0], drBytesLeft[1]);
+        }
+
+        private void pbRoom_paint(object sender, PaintEventArgs e) {
+            doDraw(e.Graphics);
+        }
+
+        private void tim100_Tick(object sender, EventArgs e) {
+            if (drawObjects.ContainsKey("roomba")) {
+                ((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0],roomba.getSpeed()[1]);
+            }
+            bool doRedraw = false;
+            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+                if (item.Value.timer(100)) {
+                    doRedraw = true;
+                }
+            }
+            if (doRedraw) {
+                doDraw(this.pbRoom.CreateGraphics());
+            }
         }
 
         private void frmMain_Load(object sender, EventArgs e) {
@@ -217,6 +260,10 @@ namespace Simulator {
         }
 
         #endregion
+
+        
+
+        
 
     }
 }

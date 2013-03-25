@@ -467,6 +467,8 @@ namespace Simulator {
 
         public void drive(byte velocHigh, byte velocLow, byte radiusHigh, byte radiusLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
+                log("Drive is not supported!", logTags.error);
+                /*
                 this.drivingState.velocity = (velocHigh << 8) | velocLow;
                 this.drivingState.radius = (radiusHigh << 8) | radiusLow;
                 this.drivingState.leftPWM = 0;
@@ -479,7 +481,7 @@ namespace Simulator {
                 } else {
                     this.drivingState.isDriving = true;
                     log(String.Format("Driving @ {0}mm/s in a radius of {1} degrees", this.drivingState.velocity,this.drivingState.radius),TAG);
-                }
+                }*/
             } else {
                 throw new notInCorrectMode();
             }
@@ -509,7 +511,8 @@ namespace Simulator {
 
         public void drivePwm(byte pwmRightHigh, byte pwmRightLow, byte pwmLeftHigh, byte pwmLeftLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
-                this.drivingState.velocity = 0;
+                log("DrivePWM is not supported!", logTags.error);
+                /*this.drivingState.velocity = 0;
                 this.drivingState.radius = 0;
                 this.drivingState.leftSpeed = 0;
                 this.drivingState.rightSpeed = 0;
@@ -521,7 +524,7 @@ namespace Simulator {
                 } else {
                     this.drivingState.isDriving = true;
                     log(String.Format("Driving @ {0} left, {1} right", this.drivingState.leftPWM, this.drivingState.rightPWM), TAG);
-                }
+                }*/
             } else {
                 throw new notInCorrectMode();
             }

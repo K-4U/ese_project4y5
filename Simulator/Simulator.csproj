@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="COMPortInfo.cs" />
+    <Compile Include="drawObjects.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

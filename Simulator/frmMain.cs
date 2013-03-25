@@ -20,13 +20,14 @@ namespace Simulator {
     }
 
     public partial class frmMain : Form {
-
+        #region Variables
         private static serialServer serSock;
         private static clsRoomba roomba;
 
         static byte command = 0;
         static byte byteCount = 0;
         List<byte> dataBytes = new List<byte>();
+        #endregion 
 
         static void log(string x, logTags tag) {
             string lTag = "";
@@ -46,10 +47,7 @@ namespace Simulator {
             Console.ForegroundColor = oldColor;
         }
 
-        static void send(byte[] bytes) {
-            serSock.send(bytes);
-        }
-
+        #region Form events
         public frmMain() {
             InitializeComponent();
             //Load serial server:
@@ -62,6 +60,53 @@ namespace Simulator {
             roomba = new clsRoomba(log, send);
         }
 
+        private void frmMain_Load(object sender, EventArgs e) {
+            //Find the serial port names
+            foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
+                serialPortToolStripMenuItem.Items.Add(comPort.Description);
+            }
+
+            //HACK!
+            if (serialPortToolStripMenuItem.Items.Count == 1) {
+                serialPortToolStripMenuItem.SelectedIndex = 0;
+                connectToolStripMenuItem_Click(sender, e);
+            }
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
+            if (serSock.isConnected()) {
+                serSock.disconnect();
+            }
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e) {
+            String selectedPort = "";
+            foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
+                if (comPort.Description == serialPortToolStripMenuItem.SelectedItem.ToString()) {
+                    selectedPort = comPort.Name;
+                }
+            }
+
+            serSock.init(selectedPort, Properties.Settings.Default.baudRate);
+
+            try {
+                serSock.connect();
+                this.tsLblStatus.Text = "Status: Connected";
+            } catch (serialException exc) {
+                log(String.Format("ERROR: {0}\r\nStack{1}", exc.Message, exc.StackTrace), logTags.serialServer);
+            }
+        }
+
+        private void serialPortToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        #endregion
+
+        #region Serial
+        static void send(byte[] bytes) {
+            serSock.send(bytes);
+        }
         void clearRegisters() {
             command = 0;
             byteCount = 0;
@@ -171,45 +216,7 @@ namespace Simulator {
 
         }
 
-        private void frmMain_Load(object sender, EventArgs e){
-            //Find the serial port names
-            foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
-                serialPortToolStripMenuItem.Items.Add(comPort.Description);
-            }
+        #endregion
 
-            //HACK!
-            if (serialPortToolStripMenuItem.Items.Count == 1) {
-                serialPortToolStripMenuItem.SelectedIndex = 0;
-                connectToolStripMenuItem_Click(sender, e);
-            }
-        }
-
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
-            if (serSock.isConnected()) {
-                serSock.disconnect();
-            }
-        }
-
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e) {
-            String selectedPort = "";
-            foreach (COMPortInfo comPort in COMPortInfo.GetCOMPortsInfo()) {
-                if (comPort.Description == serialPortToolStripMenuItem.SelectedItem.ToString()) {
-                    selectedPort = comPort.Name;
-                }
-            }
-
-            serSock.init(selectedPort, Properties.Settings.Default.baudRate);
-
-            try {
-                serSock.connect();
-                this.tsLblStatus.Text = "Status: Connected";
-            } catch (serialException exc) {
-                log(String.Format("ERROR: {0}\r\nStack{1}", exc.Message, exc.StackTrace), logTags.serialServer);
-            }
-        }
-
-        private void serialPortToolStripMenuItem_Click(object sender, EventArgs e) {
-
-        }
     }
 }

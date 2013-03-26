@@ -123,7 +123,6 @@
             // 
             // tim10
             // 
-            this.tim10.Enabled = true;
             this.tim10.Interval = 10;
             this.tim10.Tick += new System.EventHandler(this.tim10_Tick);
             // 

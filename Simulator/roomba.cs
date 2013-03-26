@@ -500,9 +500,9 @@ namespace Simulator {
                 this.drivingState.radius = 0;
                 this.drivingState.leftPWM = 0;
                 this.drivingState.rightPWM = 0;*/
-                
-                this.drivingState.leftSpeed = BitConverter.ToInt16(new byte[]{velocLeftHigh, velocLeftLow},0);
-                this.drivingState.rightSpeed = BitConverter.ToInt16(new byte[] { velocRightHigh, velocRightLow }, 0);
+
+                this.drivingState.leftSpeed = BitConverter.ToInt16(new byte[] { velocLeftLow, velocLeftHigh }, 0);
+                this.drivingState.rightSpeed = BitConverter.ToInt16(new byte[] { velocRightLow, velocRightHigh }, 0);
                 if (this.drivingState.leftSpeed == 0 && this.drivingState.rightSpeed == 0) {
                     this.drivingState.isDriving = false;
                     log("Stopped driving", TAG);

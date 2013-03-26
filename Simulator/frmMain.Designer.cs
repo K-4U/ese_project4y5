@@ -35,6 +35,7 @@
             this.pbRoom = new System.Windows.Forms.PictureBox();
             this.tim500 = new System.Windows.Forms.Timer(this.components);
             this.tim100 = new System.Windows.Forms.Timer(this.components);
+            this.tim10 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).BeginInit();
@@ -44,9 +45,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsLblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 595);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 754);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(858, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1542, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -62,7 +63,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(858, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1542, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -106,7 +107,7 @@
             this.pbRoom.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbRoom.Location = new System.Drawing.Point(0, 24);
             this.pbRoom.Name = "pbRoom";
-            this.pbRoom.Size = new System.Drawing.Size(858, 571);
+            this.pbRoom.Size = new System.Drawing.Size(1542, 730);
             this.pbRoom.TabIndex = 2;
             this.pbRoom.TabStop = false;
             this.pbRoom.Paint += new System.Windows.Forms.PaintEventHandler(this.pbRoom_paint);
@@ -120,11 +121,17 @@
             this.tim100.Enabled = true;
             this.tim100.Tick += new System.EventHandler(this.tim100_Tick);
             // 
+            // tim10
+            // 
+            this.tim10.Enabled = true;
+            this.tim10.Interval = 10;
+            this.tim10.Tick += new System.EventHandler(this.tim10_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(858, 617);
+            this.ClientSize = new System.Drawing.Size(1542, 776);
             this.Controls.Add(this.pbRoom);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -156,6 +163,7 @@
         private System.Windows.Forms.PictureBox pbRoom;
         private System.Windows.Forms.Timer tim500;
         private System.Windows.Forms.Timer tim100;
+        private System.Windows.Forms.Timer tim10;
     }
 }
 

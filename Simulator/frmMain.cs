@@ -66,6 +66,9 @@ namespace Simulator {
         #region Form events
         public frmMain() {
             InitializeComponent();
+
+            this.WindowState = FormWindowState.Maximized;
+
             initDrawers();
 
             //Load serial server:
@@ -76,12 +79,12 @@ namespace Simulator {
 
             roomba = new clsRoomba(log, send);
 
-            roomba.start();
-            roomba.safe();
+            //roomba.start();
+            //roomba.safe();
 
-            byte[] drBytesLeft = BitConverter.GetBytes(100);
-            byte[] drBytesRight = BitConverter.GetBytes(101);
-            roomba.driveDirect(drBytesRight[0], drBytesRight[1], drBytesLeft[0], drBytesLeft[1]);
+            byte[] drBytesLeft = BitConverter.GetBytes(1500);
+            byte[] drBytesRight = BitConverter.GetBytes(500);
+            //roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
         }
 
         private void pbRoom_paint(object sender, PaintEventArgs e) {
@@ -95,6 +98,21 @@ namespace Simulator {
             bool doRedraw = false;
             foreach (KeyValuePair<String, drawObject> item in drawObjects) {
                 if (item.Value.timer(100)) {
+                    doRedraw = true;
+                }
+            }
+            if (doRedraw) {
+                doDraw(this.pbRoom.CreateGraphics());
+            }
+        }
+
+        private void tim10_Tick(object sender, EventArgs e) {
+            if (drawObjects.ContainsKey("roomba")) {
+                ((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0], roomba.getSpeed()[1]);
+            }
+            bool doRedraw = false;
+            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+                if (item.Value.timer(10)) {
                     doRedraw = true;
                 }
             }
@@ -260,6 +278,8 @@ namespace Simulator {
         }
 
         #endregion
+
+       
 
         
 

@@ -83,8 +83,8 @@ namespace Simulator {
             //roomba.start();
             //roomba.safe();
 
-            byte[] drBytesLeft = BitConverter.GetBytes(100);
-            byte[] drBytesRight = BitConverter.GetBytes(0);
+            byte[] drBytesLeft = BitConverter.GetBytes(0);
+            byte[] drBytesRight = BitConverter.GetBytes(-100);
             //roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
         }
 

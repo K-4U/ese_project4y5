@@ -136,6 +136,20 @@ namespace Simulator.drawObjects {
 					int leftWheelSpeed = Math.Abs(leftWheel.speed);
 					int rightWheelSpeed = Math.Abs(rightWheel.speed);
 
+					int rotationPointOnAxis = 0;
+
+					if (leftWheelSpeed != rightWheelSpeed) {
+						int smallestSpeed = (leftWheelSpeed < rightWheelSpeed ? leftWheelSpeed : rightWheelSpeed);
+						int biggestSpeed = (smallestSpeed == leftWheelSpeed ? rightWheelSpeed : leftWheelSpeed);
+						int negativeOrPositive = (rightWheelSpeed > leftWheelSpeed ? -1 : 1);
+
+						rotationPointOnAxis = negativeOrPositive * (100 - ((smallestSpeed / biggestSpeed) * 100));
+					}
+
+					rotationPointOnAxis = (int)Math.Round((((double)rotationPointOnAxis + 100) / 200) * WHEELBASE);
+
+
+					/*					
 					//BaseSpeed is the speed at which BOTH of the wheels should have traveled
 					//before the other one decided to go a little faster
 					int baseSpeed = -leftWheel.speed;
@@ -157,7 +171,7 @@ namespace Simulator.drawObjects {
 					PointF pointBoth = degreesToXY((float)this.angle - 90, (float)baseSpeed);
 					this.leftWheel = doBuffer(this.leftWheel, pointBoth);
 					this.rightWheel = doBuffer(this.rightWheel, pointBoth);
-
+					*/
 
 					//Here we calculate the X and Y for drawing
 					//It is the top left corner of the roomba

@@ -53,7 +53,7 @@ namespace Simulator {
 
         #region Draw
         public void initDrawers() {
-            drawObjects.Add("roomba", new drawRoomba(this.pbRoom.Width/2, this.pbRoom.Height/2, 0));
+            drawObjects.Add("roomba", new drawRoomba(this.pbRoom.Width /2, this.pbRoom.Height / 2, 0));
         }
         public void doDraw(Graphics g) {
             g.FillRectangle(new SolidBrush(this.pbRoom.BackColor), 0, 0, this.pbRoom.Width, this.pbRoom.Height);
@@ -80,8 +80,8 @@ namespace Simulator {
 
             roomba = new clsRoomba(log, send);
 
-            //roomba.start();
-            //roomba.safe();
+            roomba.start();
+            roomba.safe();
 
             byte[] drBytesLeft = BitConverter.GetBytes(0);
             byte[] drBytesRight = BitConverter.GetBytes(-100);
@@ -92,9 +92,17 @@ namespace Simulator {
             doDraw(e.Graphics);
         }
 
+		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (drawObjects.ContainsKey("roomba")) {
+				drawObjects["roomba"].reset();
+				roomba.driveDirect(0, 0, 0, 0);
+				doDraw(this.pbRoom.CreateGraphics());
+			}
+		}
+
         private void tim100_Tick(object sender, EventArgs e) {
             if (drawObjects.ContainsKey("roomba")) {
-                ((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0],roomba.getSpeed()[1]);
+                //((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0],roomba.getSpeed()[1]);
             }
             bool doRedraw = false;
             foreach (KeyValuePair<String, drawObject> item in drawObjects) {
@@ -107,10 +115,22 @@ namespace Simulator {
             }
         }
 
+		private void tim1000_Tick(object sender, EventArgs e) {
+			bool doRedraw = false;
+			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+				if (item.Value.timer(1000)) {
+					doRedraw = true;
+				}
+			}
+			if (doRedraw) {
+				doDraw(this.pbRoom.CreateGraphics());
+			}
+		}
+
         private void tim10_Tick(object sender, EventArgs e) {
-            if (drawObjects.ContainsKey("roomba")) {
-                ((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0], roomba.getSpeed()[1]);
-            }
+			if (drawObjects.ContainsKey("roomba")) {
+				((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0], roomba.getSpeed()[1]);
+			}
             bool doRedraw = false;
             foreach (KeyValuePair<String, drawObject> item in drawObjects) {
                 if (item.Value.timer(10)) {
@@ -279,6 +299,10 @@ namespace Simulator {
         }
 
         #endregion
+
+		
+
+		
 
        
 

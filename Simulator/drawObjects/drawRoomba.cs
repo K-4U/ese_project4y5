@@ -20,12 +20,19 @@ namespace Simulator.drawObjects {
 		private Pen rightWheelPen = Pens.Red;
 		private int angle;
 		private Rectangle innerLoc;
+		private bufferedPoint centerPoint;
 
 		struct wheel {
 			public float bufferX;
 			public float bufferY;
 			public int speed;
 			public Point pos;
+		}
+
+		struct bufferedPoint {
+			public Point pos;
+			public float bufferX;
+			public float bufferY;
 		}
 
 		private bool isDriving = false;
@@ -45,6 +52,10 @@ namespace Simulator.drawObjects {
 
 			this.wheelPos = degreesToXY(this.angle + 90, WHEELWIDTH);
 
+			this.centerPoint.pos.X = base.loc.X + (base.loc.Width / 2);
+			this.centerPoint.pos.Y = base.loc.Y + (base.loc.Height / 2);
+
+
 			this.paths = new List<Point>();
 		}
 
@@ -59,13 +70,13 @@ namespace Simulator.drawObjects {
 			}
 
 			//Comment this for no wheels
-			g.DrawLine(this.leftWheelPen, this.leftWheel.pos.X - (this.wheelPos.X / 2), this.leftWheel.pos.Y - (this.wheelPos.Y / 2),
+			/*g.DrawLine(this.leftWheelPen, this.leftWheel.pos.X - (this.wheelPos.X / 2), this.leftWheel.pos.Y - (this.wheelPos.Y / 2),
 				this.leftWheel.pos.X + (this.wheelPos.X / 2), this.leftWheel.pos.Y + (this.wheelPos.Y / 2));
 			g.DrawLine(this.rightWheelPen, this.rightWheel.pos.X - (this.wheelPos.X / 2), this.rightWheel.pos.Y - (this.wheelPos.Y / 2),
 				this.rightWheel.pos.X + (this.wheelPos.X / 2), this.rightWheel.pos.Y + (this.wheelPos.Y / 2));
 
 			//Comment this for no axis
-			g.DrawLine(this.p, this.leftWheel.pos, this.rightWheel.pos);
+			g.DrawLine(this.p, this.leftWheel.pos, this.rightWheel.pos);*/
 		}
 
 		private static PointF degreesToXY(float degrees, float radius) {
@@ -78,6 +89,35 @@ namespace Simulator.drawObjects {
 		}
 
 		private wheel doBuffer(wheel target, PointF toAdd) {
+			target.bufferX += toAdd.X;
+			target.bufferY += toAdd.Y;
+
+			toAdd.X = toAdd.X / BUFFERMAX;
+			toAdd.Y = toAdd.Y / BUFFERMAX;
+
+			if (target.bufferX >= BUFFERMAX) {
+				toAdd.X = target.bufferX / BUFFERMAX;
+				target.bufferX -= BUFFERMAX;
+			} else if (target.bufferX <= -BUFFERMAX) {
+				toAdd.X = target.bufferX / BUFFERMAX;
+				target.bufferX += BUFFERMAX;
+			}
+
+			if (target.bufferY >= BUFFERMAX) {
+				toAdd.Y = target.bufferY / BUFFERMAX;
+				target.bufferY -= BUFFERMAX;
+			} else if (target.bufferY <= -BUFFERMAX) {
+				toAdd.Y = target.bufferY / BUFFERMAX;
+				target.bufferY += BUFFERMAX;
+			}
+
+			target.pos.X -= (int)toAdd.X;
+			target.pos.Y -= (int)toAdd.Y;
+
+			return target;
+		}
+
+		private bufferedPoint doBuffer(bufferedPoint target, PointF toAdd) {
 			target.bufferX += toAdd.X;
 			target.bufferY += toAdd.Y;
 
@@ -136,23 +176,38 @@ namespace Simulator.drawObjects {
 					int leftWheelSpeed = Math.Abs(leftWheel.speed);
 					int rightWheelSpeed = Math.Abs(rightWheel.speed);
 
-					int rotationPointOnAxis = 0;
+					/*int rotationPointOnAxis = 0;
+					int smallestSpeedAbs = (leftWheelSpeed < rightWheelSpeed ? leftWheelSpeed : rightWheelSpeed);
+					int biggestSpeedAbs = (smallestSpeedAbs == leftWheelSpeed ? rightWheelSpeed : leftWheelSpeed);
+
+					int smallestSpeed = (leftWheelSpeed < rightWheelSpeed ? leftWheel.speed : rightWheel.speed);
+					int biggestSpeed = (leftWheelSpeed > rightWheelSpeed ? rightWheel.speed : leftWheel.speed);
 
 					if (leftWheelSpeed != rightWheelSpeed) {
-						int smallestSpeed = (leftWheelSpeed < rightWheelSpeed ? leftWheelSpeed : rightWheelSpeed);
-						int biggestSpeed = (smallestSpeed == leftWheelSpeed ? rightWheelSpeed : leftWheelSpeed);
 						int negativeOrPositive = (rightWheelSpeed > leftWheelSpeed ? -1 : 1);
-
-						rotationPointOnAxis = negativeOrPositive * (100 - ((smallestSpeed / biggestSpeed) * 100));
+						rotationPointOnAxis = negativeOrPositive * (100 - ((smallestSpeedAbs / biggestSpeedAbs) * 100));
 					}
 
 					rotationPointOnAxis = (int)Math.Round((((double)rotationPointOnAxis + 100) / 200) * WHEELBASE);
+					*/
 
+					//Basespeed + diff and angle
+					//Centerpoint stays on the same spot on the axis
+					//This means that it travels the distance that both wheels travel on their own
+					//Including the HALF of the distance the fastest wheel moves away.
+					float distanceTraveled = ((leftWheel.speed + rightWheel.speed) / 2);
+					PointF newPoint = degreesToXY((float)this.angle-90, -distanceTraveled);
 
-					/*					
+					this.centerPoint = doBuffer(this.centerPoint, newPoint);
+					base.loc.X = this.centerPoint.pos.X - (base.loc.Width / 2);
+					base.loc.Y = this.centerPoint.pos.Y - (base.loc.Height / 2);
+
 					//BaseSpeed is the speed at which BOTH of the wheels should have traveled
 					//before the other one decided to go a little faster
-					int baseSpeed = -leftWheel.speed;
+
+					//int movingSpeed = ((biggestSpeed - smallestSpeed) / 2);
+
+					/*int baseSpeed = -leftWheel.speed;
 					if (rightWheelSpeed > leftWheelSpeed) {
 						baseSpeed = rightWheel.speed - (int)(d * 2);
 						this.rightWheel.pos.X = this.leftWheel.pos.X + (int)point.X;
@@ -173,9 +228,11 @@ namespace Simulator.drawObjects {
 					this.rightWheel = doBuffer(this.rightWheel, pointBoth);
 					*/
 
+					
+
 					//Here we calculate the X and Y for drawing
 					//It is the top left corner of the roomba
-					PointF diff = new PointF();
+					/*PointF diff = new PointF();
 					if (this.leftWheel.pos.X > this.rightWheel.pos.X) {
 						diff.X = ((leftWheel.pos.X - rightWheel.pos.X) / 2);
 						base.loc.X = (int)rightWheel.pos.X + (int)diff.X;
@@ -194,16 +251,16 @@ namespace Simulator.drawObjects {
 						diff.Y = ((rightWheel.pos.Y - leftWheel.pos.Y) / 2);
 						base.loc.Y = (int)leftWheel.pos.Y + (int)diff.Y;
 						base.loc.Y -= (roombaHeightInPx / 2);
-					}
+					}*/
 
 					//And the center point, so that we can log the points where the roomba has been
-					Point center = new Point(base.loc.X + (base.loc.Width / 2), base.loc.Y + (base.loc.Height / 2));
+					//Point center = new Point(base.loc.X + (base.loc.Width / 2), base.loc.Y + (base.loc.Height / 2));
 					if (this.paths.Count == 0) {
 						//Always add
-						this.paths.Add(center);
+						this.paths.Add(centerPoint.pos);
 					} else if (this.paths.Count > 0) {
-						if (!this.paths[this.paths.Count - 1].Equals(center)) {
-							this.paths.Add(center);
+						if (!this.paths[this.paths.Count - 1].Equals(centerPoint.pos)) {
+							this.paths.Add(centerPoint.pos);
 						}
 
 						if (this.paths.Count > MAXLENGTHOFPATH) {
@@ -223,13 +280,9 @@ namespace Simulator.drawObjects {
 		}
 
 		public void setSpeed(int left, int right) {
-			if (left != 0 || right != 0) {
-				isDriving = true;
-			} else {
-				isDriving = false;
-			}
-			this.leftWheel.speed = left;
-			this.rightWheel.speed = right;
+			isDriving = (left != 0 || right != 0);
+			this.leftWheel.speed = left /10;
+			this.rightWheel.speed = right / 10;
 		}
 	}
 }

@@ -1,3 +1,9 @@
+
+# Archives
+*.zip
+*.rar
+*.7zp
+
 # Compiled Object files
 *.slo
 *.lo

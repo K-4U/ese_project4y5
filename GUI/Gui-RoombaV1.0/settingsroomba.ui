@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QSlider" name="VacuumSlider">
+  <widget class="QSlider" name="horizontalSlider_2">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -104,7 +104,7 @@
     <string>Today's date</string>
    </property>
   </widget>
-  <widget class="QSlider" name="MotorSlider">
+  <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
      <x>20</x>

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core network gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,16 +17,26 @@ SOURCES += main.cpp\
     controllingroomba.cpp \
     settingsroomba.cpp \
     information.cpp \
-    dysplaylogs.cpp
+    RoombaConnect.cpp \
+    ../resources/jsoncommand.cpp \
+    ../resources/json.cpp \
+    ../resources/clslog.cpp \
+    ../resources/clsevent.cpp \
+    displaylogs.cpp
 
 HEADERS  += roomba.h \
     controllingroomba.h \
     settingsroomba.h \
     information.h \
-    dysplaylogs.h
+    RoombaConnect.h \
+    ../resources/jsoncommand.h \
+    ../resources/json.h \
+    ../resources/clslog.h \
+    ../resources/clsevent.h \
+    displaylogs.h
 
 FORMS    += roomba.ui \
     controllingroomba.ui \
     settingsroomba.ui \
     information.ui \
-    dysplaylogs.ui
+    displaylogs.ui

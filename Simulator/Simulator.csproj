@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="COMPortInfo.cs" />
+    <Compile Include="drawObjects\drawer.cs" />
     <Compile Include="drawObjects\drawRoomba.cs" />
     <Compile Include="drawObjects\drawObject.cs" />
+    <Compile Include="drawObjects\drawTable.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

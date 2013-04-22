@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Simulator.drawObjects {
 	public class drawRoomba : drawObject {
@@ -73,6 +74,15 @@ namespace Simulator.drawObjects {
 
 			//Comment this for no axis
 			g.DrawLine(this.p, this.leftWheel.pos, this.rightWheel.pos);*/
+		}
+
+		public override void checkCollision(RectangleF toCheck) {
+			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
+			if (!collisionArea.IsEmpty) {
+				//TODO: Check WHERE it collides, trigger appropiate sensor
+				//For now, just print it
+				Debug.WriteLine("Roomba collided!");
+			}
 		}
 
 		public override void _reset() {

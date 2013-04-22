@@ -24,6 +24,8 @@ namespace Simulator.drawObjects {
         //Returns if it should be redrawn
         virtual public bool timer(int ms) { return false; }
 
+		virtual public void checkCollision(RectangleF toCheck) { }
+
 		// Reset to center of drawing.
 		public void reset() {
 			this.loc = new RectangleF(this.origLoc.X, this.origLoc.Y, this.origLoc.Width, this.origLoc.Height);
@@ -31,6 +33,5 @@ namespace Simulator.drawObjects {
 		}
 
 		virtual public void _reset() { }
-
     }
 }

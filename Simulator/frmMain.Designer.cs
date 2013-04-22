@@ -113,7 +113,6 @@
 			this.pbRoom.Size = new System.Drawing.Size(1542, 730);
 			this.pbRoom.TabIndex = 2;
 			this.pbRoom.TabStop = false;
-			this.pbRoom.Paint += new System.Windows.Forms.PaintEventHandler(this.pbRoom_paint);
 			// 
 			// tim500
 			// 

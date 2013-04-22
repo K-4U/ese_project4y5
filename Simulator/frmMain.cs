@@ -29,8 +29,9 @@ namespace Simulator {
         static byte byteCount = 0;
         List<byte> dataBytes = new List<byte>();
 
+		private drawer mDrawer;
 
-        Dictionary<String, drawObject> drawObjects = new Dictionary<string, drawObject>();
+        
         #endregion 
 
         static void log(string x, logTags tag) {
@@ -52,16 +53,11 @@ namespace Simulator {
         }
 
         #region Draw
-        public void initDrawers() {
-            drawObjects.Add("roomba", new drawRoomba(this.pbRoom.Width /2, this.pbRoom.Height / 2, 0));
-        }
-        public void doDraw(Graphics g) {
-            g.FillRectangle(new SolidBrush(this.pbRoom.BackColor), 0, 0, this.pbRoom.Width, this.pbRoom.Height);
-            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
-                item.Value.draw(g);
-            }
-        }
-
+		private void initDrawers() {
+			mDrawer = new drawer(ref this.pbRoom);
+			mDrawer.addToDrawer("roomba", new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, 0));
+			mDrawer.addToDrawer("table", new drawTable(200, 200));
+		}
         #endregion
 
         #region Form events
@@ -70,7 +66,7 @@ namespace Simulator {
 
             this.WindowState = FormWindowState.Maximized;
 
-            initDrawers();
+			this.initDrawers();
 
             //Load serial server:
             serSock = new serialServer();
@@ -83,63 +79,32 @@ namespace Simulator {
             roomba.start();
             roomba.safe();
 
-            byte[] drBytesLeft = BitConverter.GetBytes(200);
-            byte[] drBytesRight = BitConverter.GetBytes(-100);
+            byte[] drBytesLeft = BitConverter.GetBytes(1000);
+            byte[] drBytesRight = BitConverter.GetBytes(1100);
             roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
         }
 
-        private void pbRoom_paint(object sender, PaintEventArgs e) {
-            doDraw(e.Graphics);
-        }
-
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (drawObjects.ContainsKey("roomba")) {
+			/*if (drawObjects.ContainsKey("roomba")) {
 				drawObjects["roomba"].reset();
 				roomba.driveDirect(0, 0, 0, 0);
 				doDraw(this.pbRoom.CreateGraphics());
-			}
+			}*/
 		}
 
         private void tim100_Tick(object sender, EventArgs e) {
-            if (drawObjects.ContainsKey("roomba")) {
-                //((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0],roomba.getSpeed()[1]);
-            }
-            bool doRedraw = false;
-            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
-                if (item.Value.timer(100)) {
-                    doRedraw = true;
-                }
-            }
-            if (doRedraw) {
-                doDraw(this.pbRoom.CreateGraphics());
-            }
+			this.mDrawer.timer(100);
         }
 
 		private void tim1000_Tick(object sender, EventArgs e) {
-			bool doRedraw = false;
-			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
-				if (item.Value.timer(1000)) {
-					doRedraw = true;
-				}
-			}
-			if (doRedraw) {
-				doDraw(this.pbRoom.CreateGraphics());
-			}
+			this.mDrawer.timer(1000);
 		}
 
         private void tim10_Tick(object sender, EventArgs e) {
-			if (drawObjects.ContainsKey("roomba")) {
-				((drawRoomba)drawObjects["roomba"]).setSpeed(roomba.getSpeed()[0], roomba.getSpeed()[1]);
+			if (this.mDrawer.get("roomba") != null) {
+				((drawRoomba)this.mDrawer.get("roomba")).setSpeed(roomba.getSpeed()[0], roomba.getSpeed()[1]);
 			}
-            bool doRedraw = false;
-            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
-                if (item.Value.timer(10)) {
-                    doRedraw = true;
-                }
-            }
-            if (doRedraw) {
-                doDraw(this.pbRoom.CreateGraphics());
-            }
+			this.mDrawer.timer(10);
         }
 
         private void frmMain_Load(object sender, EventArgs e) {

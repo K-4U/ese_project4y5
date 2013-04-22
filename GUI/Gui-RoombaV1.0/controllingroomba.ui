@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>720</width>
+    <width>544</width>
     <height>376</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="pushButton_5">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>230</x>
      <y>340</y>
      <width>161</width>
      <height>23</height>
@@ -55,8 +55,8 @@
   <widget class="QCheckBox" name="checkBox_4">
    <property name="geometry">
     <rect>
-     <x>580</x>
-     <y>140</y>
+     <x>280</x>
+     <y>30</y>
      <width>70</width>
      <height>21</height>
     </rect>
@@ -68,18 +68,18 @@
   <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>41</y>
+     <x>240</x>
+     <y>130</y>
      <width>256</width>
-     <height>281</height>
+     <height>192</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>580</x>
-     <y>170</y>
+     <x>280</x>
+     <y>60</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -143,8 +143,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>20</y>
+     <x>240</x>
+     <y>110</y>
      <width>161</width>
      <height>16</height>
     </rect>
@@ -156,7 +156,7 @@
   <widget class="QPushButton" name="pushButton_6">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>430</x>
      <y>340</y>
      <width>91</width>
      <height>23</height>
@@ -164,94 +164,6 @@
    </property>
    <property name="text">
     <string>Close</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbConnect">
-   <property name="geometry">
-    <rect>
-     <x>520</x>
-     <y>40</y>
-     <width>131</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Connect</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="leHost">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>100</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Local host</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lePoort">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>100</y>
-     <width>113</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>11223</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>470</x>
-     <y>80</y>
-     <width>71</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;ip adres&gt;</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>80</y>
-     <width>91</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;poortnummer&gt;</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="stud">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>130</y>
-     <width>81</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Niet verbonden</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>200</y>
-     <width>131</width>
-     <height>101</height>
-    </rect>
    </property>
   </widget>
  </widget>

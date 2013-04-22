@@ -3,7 +3,7 @@
 #include "controllingroomba.h"
 #include "settingsroomba.h"
 #include "information.h"
-#include "dysplaylogs.h"
+#include "displaylogs.h"
 
 Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
@@ -41,7 +41,8 @@ void Roomba::on_pushButton_4_clicked()
 
 void Roomba::on_pushButton_5_clicked()
 {
-    DysplayLogs *dysplay_logs = new DysplayLogs();
-    dysplay_logs->show();
+    DisplayLogs *display_logs = new DisplayLogs();
+    display_logs->show();
     this->close();
 }
+

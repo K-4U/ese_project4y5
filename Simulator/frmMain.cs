@@ -83,9 +83,9 @@ namespace Simulator {
             roomba.start();
             roomba.safe();
 
-            byte[] drBytesLeft = BitConverter.GetBytes(0);
+            byte[] drBytesLeft = BitConverter.GetBytes(200);
             byte[] drBytesRight = BitConverter.GetBytes(-100);
-            //roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
+            roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
         }
 
         private void pbRoom_paint(object sender, PaintEventArgs e) {

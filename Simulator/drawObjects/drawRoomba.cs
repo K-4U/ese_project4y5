@@ -97,6 +97,23 @@ namespace Simulator.drawObjects {
 		}
 
 		private void calculateTravelDistance() {
+			//Calculate the angle at which the roomba is turning. angleAdj.
+			//We know that the difference between the wheels will give us a
+			//Triangle with equivalent legs
+			//When we aply some magic formulas to that(see below)
+			//We get the angle the roomba has rotated
+			//double d = (this.leftWheel.speed - this.rightWheel.speed) / 2;
+			//double f = (d / WHEELBASE);
+			//double angleAdj = (Math.Tanh(f) * (180 / Math.PI));
+			//angleAdj = angleAdj * 2;
+
+			//We then add that to the global angle
+			//if (this.leftWheel.speed < 0 || this.rightWheel.speed > 0) {
+				//this.angle -= angleAdj;
+			//} else if (this.leftWheel.speed > 0 || this.rightWheel.speed < 0) {
+				//this.angle += angleAdj;
+			//}
+
 			//Now, we calculate the position that one of the wheels move
 			double leftWheelSpeed = Math.Abs(leftWheel.speed);
 			double rightWheelSpeed = Math.Abs(rightWheel.speed);
@@ -112,31 +129,36 @@ namespace Simulator.drawObjects {
 
 			rotationPointOnAxis = (double) ( ( ( (double)rotationPointOnAxis + 100) / 200) * WHEELBASE);
 
-			double dDistance = rightWheel.speed * TIMEFACTOR;
+			double distanceTraveled = ((leftWheel.speed + rightWheel.speed) / 2); //Divided by 100 because speed is in seconds, and this function is in 0.01 seconds
+			
 
+			double dDistance = leftWheel.speed - rightWheel.speed;
 			//Calculate the angle at which the roomba is turning. angleAdj.
 			//We know that the difference between the wheels will give us a
 			//Triangle with equivalent legs
 			//When we aply some magic formulas to that(see below)
 			//We get the angle the roomba has rotated
 			double d = dDistance / 2;
-			double f = (d / rotationPointOnAxis);
+			//double f = (d / rotationPointOnAxis);
+			double f = (d / WHEELBASE);
 			double sinCalc = Math.Asin(f);
 			double angleAdj = ((sinCalc / Math.PI) * 180);
 			angleAdj = angleAdj * 2;
 
 			//We then add that to the global angle
-			if (this.leftWheel.speed < 0 || this.rightWheel.speed > 0) {
-				this.angle -= angleAdj;
-			} else if (this.leftWheel.speed > 0 || this.rightWheel.speed < 0) {
+			//if (this.leftWheel.speed < 0 || this.rightWheel.speed > 0) {
+				//this.angle -= angleAdj;
+			//} else if (this.leftWheel.speed > 0 || this.rightWheel.speed < 0) {
 				this.angle += angleAdj;
-			}
+			//}
+
+
 
 			//Basespeed + diff and angle
 			//Centerpoint stays on the same spot on the axis
 			//This means that it travels the distance that both wheels travel on their own
 			//Including the HALF of the distance the fastest wheel moves away.
-			double distanceTraveled = ((leftWheel.speed + rightWheel.speed) / 2); //Divided by 100 because speed is in seconds, and this function is in 0.01 seconds
+			
 			PointF newPoint = degreesToXY((float)this.angle - 90, distanceTraveled);
 
 			doAdd(ref this.centerPoint, newPoint);

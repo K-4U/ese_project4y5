@@ -2,7 +2,8 @@
 #include "ui_displaylogs.h"
 #include "roomba.h"
 
-DisplayLogs::DisplayLogs(QWidget *parent) :
+
+DisplayLogs::DisplayLogs(QWidget *parent):
     QWidget(parent),
     ui(new Ui::DisplayLogs)
 {

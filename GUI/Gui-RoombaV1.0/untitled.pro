@@ -22,7 +22,7 @@ SOURCES += main.cpp\
     ../resources/json.cpp \
     ../resources/clslog.cpp \
     ../resources/clsevent.cpp \
-    displaylogs.cpp
+    displayLogs.cpp
 
 HEADERS  += roomba.h \
     controllingroomba.h \
@@ -33,7 +33,7 @@ HEADERS  += roomba.h \
     ../resources/json.h \
     ../resources/clslog.h \
     ../resources/clsevent.h \
-    displaylogs.h
+    displayLogs.h
 
 FORMS    += roomba.ui \
     controllingroomba.ui \

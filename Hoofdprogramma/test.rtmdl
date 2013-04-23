@@ -8,7 +8,7 @@
 	generate_guids_all TRUE
 	is_unit TRUE
 	is_loaded TRUE
-	quid "514704F901A6"
+	quid "5176778400A2"
 	defaults (object defaults
 		rightMargin 0.000000
 		leftMargin 0.000000
@@ -36,9 +36,1771 @@
 			(object UseCaseDiagram "Main"
 				quid "3619364703E4")))
 	root_category (object Class_Category "Logical View"
-		quid "514704F901A7"
+		quid "5176778400A3"
 		exportControl "Public"
 		logical_models (list unit_reference_list
+			(object Class_Utility "TCPCONSTANTS"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::Cpp"
+						name "ClassKind"
+						value ("ClassKindSet" 0))
+					(object Attribute
+						tool "OT::CppTargetRTS"
+						name "GenerateDescriptor"
+						value ("GenerateDescriptorSet" 2))
+					(object Attribute
+						tool "OT::Cpp"
+						name "GenerateClass"
+						value FALSE)
+					(object Attribute
+						tool "OT::Cpp"
+						name "GenerateCopyConstructor"
+						value FALSE)
+					(object Attribute
+						tool "OT::Cpp"
+						name "GenerateDefaultConstructor"
+						value FALSE)
+					(object Attribute
+						tool "OT::Cpp"
+						name "GenerateAssignmentOperator"
+						value FALSE)
+					(object Attribute
+						tool "OT::Cpp"
+						name "DestructorVirtual"
+						value FALSE)
+					(object Attribute
+						tool "OT::Cpp"
+						name "GenerateDestructor"
+						value FALSE))
+				quid "36FFD8100213"
+				used_nodes (list uses_relationship_list
+					(object Uses_Relationship
+						quid "3A9163D20310"
+						supplier  "Logical View::RTClasses::RTString"
+						quidu "37E928FA039F"))
+				class_attributes (list class_attribute_list
+					(object ClassAttribute "BUFF_LEN"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "AttributeKind"
+								value ("AttributeKindSet" 2)))
+						quid "36FFD8220213"
+						initv "100"
+						type "int"
+						scope "Classifier"
+						visibility "Public")
+					(object ClassAttribute "NUM_MESSAGES"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "AttributeKind"
+								value ("AttributeKindSet" 1))
+							(object Attribute
+								tool "OT::Cpp"
+								name "InitializerKind"
+								value ("InitializerKindSet" 0)))
+						quid "36FFD86F031C"
+						initv "10000"
+						type "int"
+						scope "Classifier"
+						visibility "Public")
+					(object ClassAttribute "MASTER_HOST"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "AttributeKind"
+								value ("AttributeKindSet" 1))
+							(object Attribute
+								tool "OT::Cpp"
+								name "InitializerKind"
+								value ("InitializerKindSet" 0)))
+						quid "36FFD89D0242"
+						initv 
+|"127.0.0.1"
+						
+						type "char[]"
+						scope "Classifier"
+						visibility "Public")
+					(object ClassAttribute "DEFAULT_PORT"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "InitializerKind"
+								value ("InitializerKindSet" 0))
+							(object Attribute
+								tool "OT::Cpp"
+								name "AttributeKind"
+								value ("AttributeKindSet" 1)))
+						quid "47E426F50119"
+						initv 
+|"11223"
+						
+						type "char[]"
+						scope "Classifier"
+						visibility "Public")
+					(object ClassAttribute "DEFAULT_BUFLEN"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "AttributeKind"
+								value ("AttributeKindSet" 2))
+							(object Attribute
+								tool "OT::Cpp"
+								name "InitializerKind"
+								value ("InitializerKindSet" 0)))
+						quid "47E4ED1B0157"
+						initv "255"
+						type "int"
+						scope "Classifier"
+						visibility "Public"))
+				language "C++")
+			(object Capsule "tcpCapsule"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::Cpp"
+						name "HeaderPreface"
+						value (value Text 
+|//zet windowsversie op XP
+|#define WINVER 0x0501
+|
+|#include <winsock2.h> 
+|#include <ws2tcpip.h> 
+|#include <stdio.h>
+|#include <TCPCONSTANTS.h>
+						)))
+				quid "517678490259"
+				used_nodes (list uses_relationship_list
+					(object Uses_Relationship
+						quid "517688AB0109"
+						supplier  "Logical View::TCPCONSTANTS"
+						quidu "36FFD8100213"))
+				structure (object CapsuleCollaboration "Structure"
+					quid "51767849025D"
+					ports (list portsList
+						(object Port "mainConnection"
+							quid "5176786302E2"
+							classifier  "Logical View::tcpProtocol"
+							quidu "5176788B0049"
+							isRelay FALSE)
+						(object Port "timer"
+							quid "51767E6302F6"
+							classifier  "Logical View::RTClasses::Timing"
+							quidu "37E9292C018C"
+							isRelay FALSE
+							isWired FALSE
+							visibility "Protected")))
+				class_attributes (list class_attribute_list
+					(object ClassAttribute "ClientSocket"
+						quid "51767C6A007B"
+						type "SOCKET")
+					(object ClassAttribute "hints"
+						quid "51767C8E0284"
+						type "addrinfo")
+					(object ClassAttribute "iResult"
+						quid "51767CA60105"
+						type "int")
+					(object ClassAttribute "ListenSocket"
+						quid "51767CBA036D"
+						initv "INVALID_SOCKET"
+						type "SOCKET")
+					(object ClassAttribute "ptr"
+						quid "51767CCB03B3"
+						initv "NULL"
+						type "addrinfo *")
+					(object ClassAttribute "recvbuf"
+						quid "51767CDD01E5"
+						type "char[DEFAULT_BUFLEN]")
+					(object ClassAttribute "result"
+						quid "51767CF6001A"
+						initv "NULL"
+						type "addrinfo *")
+					(object ClassAttribute "wsaData"
+						quid "51767D050092"
+						type "WSADATA"))
+				statemachine (object State_Machine
+					quid "51767849025A"
+					State (object State "TOP"
+						quid "51767849025B"
+						states (list States
+							(object InitialPt "Initial"
+								quid "51767849025C")
+							(object State "Reset"
+								quid "51767D3D02F0"
+								entryAction (object Action
+									quid "51767D70016B"
+									body 
+|// hier een zinvolle actie opnemen om te reageren op fouten
+|// voorlopig na een timeout opnieuw beginnen
+|cout << "in reset terecht gekomen" << endl;
+|timer.informIn(RTTimespec(4,0));
+									)
+								states (list States
+									(object InitialPt "Initial"
+										quid "51767D3D02F8")
+									(object JuncPt "J51767DEF03C6"
+										quid "51767DEF03C6"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767E19024A"
+										quid "51767E19024A"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767E2302AF"
+										quid "51767E2302AF"
+										externallyVisible TRUE)
+									(object JuncPt "J51767EF30081"
+										quid "51767EF30081"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767EF80069"
+										quid "51767EF80069"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767F110127"
+										quid "51767F110127"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767F1803CE"
+										quid "51767F1803CE"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J51767F5E00A7"
+										quid "51767F5E00A7"
+										isEntry TRUE
+										externallyVisible TRUE)))
+							(object ChoicePt "InitializeWinsock"
+								quid "51767D7D011E"
+								guard (object Guard
+									quid "51767DAC02C1"
+									expression 
+|// Initialize Winsock
+|iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+|if (iResult != 0) {
+|    printf("WSAStartup failed: %d\n", iResult);
+|}
+|return (iResult==0);
+|
+|//The WSAStartup function is called to initiate use of WS2_32.dll.
+|//The WSADATA structure contains information about 
+|//the Windows Sockets implementation. 
+|//The MAKEWORD(2,2) parameter of WSAStartup makes a request 
+|//for version 2.2 of Winsock on the system, and sets the passed 
+|//version as the highest version of Windows Sockets support 
+|//that the caller can use.
+|
+|
+									))
+							(object ChoicePt "addressCorrect"
+								quid "51767DF5039C"
+								guard (object Guard
+									quid "51767F7A0136"
+									expression 
+|result = NULL;
+|ptr = NULL;
+|
+|
+|ZeroMemory( &hints, sizeof(hints) );
+|hints.ai_family = AF_INET;
+|hints.ai_socktype = SOCK_STREAM;
+|hints.ai_protocol = IPPROTO_TCP;
+|hints.ai_flags = AI_PASSIVE;
+|
+|// Resolve the local address and port to be used by the server
+|iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+|if ( iResult != 0 ) {
+|    printf("getaddrinfo failed: %d\n", iResult);
+|    WSACleanup();
+|	return false;
+|}
+|else
+|{
+|	return true;
+|}
+|
+									))
+							(object ChoicePt "validSocket"
+								quid "51767EA1031D"
+								guard (object Guard
+									quid "51767F7F01FD"
+									expression 
+|//Call the socket function and return its value to the ListenSocket 
+|//variable. For this server application, use the first IP address 
+|//returned by the call to getaddrinfo that matched the address family, 
+|//socket type, and protocol specified in the hints parameter. 
+|//In this example, a TCP stream socket for IPv4 was requested with an 
+|//address family of IPv4, a socket type of SOCK_STREAM and a protocol 
+|//of IPPROTO_TCP. So an IPv4 address is requested for the ListenSocket. 
+|
+|//If the server application wants to listen on IPv6, then the address 
+|//family needs to be set to AF_INET6 in the hints parameter. 
+|//If a server wants to listen on both IPv6 and IPv4, two listen sockets 
+|//must be created, one for IPv6 and one for IPv4. These two sockets 
+|//must be handled separately by the application.
+|
+|//Windows Vista and later offer the ability to create a single IPv6 
+|//socket that is put in dual stack mode to listen on both IPv6 and IPv4. 
+|//For more information on this feature, see Dual-Stack Sockets.
+|
+|// Create a SOCKET for the server to listen for client connections
+|ListenSocket = INVALID_SOCKET;
+|ClientSocket = INVALID_SOCKET;
+|
+|ListenSocket = socket(result->ai_family, 
+|                      result->ai_socktype, 
+|					  result->ai_protocol);
+|
+|if (ListenSocket == INVALID_SOCKET) {
+|    printf("Error at socket(): %ld\n", WSAGetLastError());
+|    freeaddrinfo(result);
+|    WSACleanup();
+|    return false;
+|}
+|else
+|{
+|	return true;
+|}
+									))
+							(object ChoicePt "bindingSuccesfull"
+								quid "51767EAD0333"
+								guard (object Guard
+									quid "51767F840231"
+									expression 
+|//Binding
+|//For a server to accept client connections, it must be bound to a 
+|//network address within the system. The following code demonstrates 
+|//how to bind a socket that has already been created to an IP address 
+|//and port. Client applications use the IP address and port to connect 
+|//to the host network.
+|
+|//The sockaddr structure holds information regarding the address family,
+|//IP address, and port number. 
+|
+|//Call the bind function, passing the created socket and sockaddr 
+|//structure returned from the getaddrinfo function as parameters. 
+|//Check for general errors.
+|
+|
+|// Setup the TCP listening socket
+|iResult = bind( ListenSocket, 
+|                result->ai_addr, 
+|				(int)result->ai_addrlen);
+|if (iResult == SOCKET_ERROR) 
+|{
+|    printf("bind failed: %d\n", WSAGetLastError());
+|    freeaddrinfo(result);
+|    closesocket(ListenSocket);
+|    WSACleanup();
+|    return false;
+|}
+|else
+|{
+|	return true;
+|}
+									))
+							(object ChoicePt "listening"
+								quid "51767EBA0075"
+								guard (object Guard
+									quid "51767F8B0019"
+									expression 
+|//Listening on a Socket
+|//After the socket is bound to an IP address and port on the system, 
+|//the server must then listen on that IP address and port for incoming 
+|//connection requests.
+|
+|//Call the listen function, passing as parameters the created socket 
+|//and a value for the backlog, maximum length of the queue of pending 
+|//connections to accept. In this example, the backlog parameter was set 
+|//to SOMAXCONN. This value is a special constant that instructs the 
+|//Winsock provider for this socket to allow a maximum reasonable number 
+|//of pending connections in the queue. 
+|//Check the return value for general errors. 
+|if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
+|    printf( "Error at bind(): %ld\n", WSAGetLastError() );
+|    closesocket(ListenSocket);
+|    WSACleanup();
+|    return false;
+|}
+|else
+|{
+|	cout << "listening to port: " << DEFAULT_PORT << endl;
+|	return true;
+|}
+|
+									))
+							(object ChoicePt "acceptConnection"
+								quid "51767EC702FE"
+								guard (object Guard
+									quid "51767F900271"
+									expression 
+|//Accepting a Connection
+|//Once the socket is listening for a connection, the program must 
+|//handle connection requests on that socket.
+|
+|//To accept a connection on a socket
+|//Create a temporary SOCKET object called ClientSocket for accepting 
+|//connections from clients.
+|
+|//Normally a server application would create a continuous loop that 
+|//checks for connections requests. If a connection request occurs, 
+|//call the accept function to handle the request. 
+|//Note that in this basic example, the code only accepts a single 
+|//connection. 
+|
+|//When the client connection has been accepted, a server would normally 
+|//pass the accepted connection to a worker thread or an I/O completion 
+|//port and continue accepting additional connections. In this basic 
+|//example, the server continues to the next step. 
+|
+|ClientSocket = INVALID_SOCKET;
+|
+|// Accept a client socket
+|ClientSocket = accept(ListenSocket, NULL, NULL);
+|if (ClientSocket == INVALID_SOCKET) {
+|    printf("accept failed: %d\n", WSAGetLastError());
+|    closesocket(ListenSocket);
+|    WSACleanup();
+|    return false;
+|}
+|else
+|{
+|	return true;
+|}
+|
+									))
+							(object ChoicePt "getBytes"
+								quid "51767F2600E6"
+								guard (object Guard
+									quid "51767F9600F8"
+									expression 
+|
+|int recvbuflen = DEFAULT_BUFLEN;
+|int iSendResult = 0;
+|
+|
+|// Receive bytes
+|// and test peer for shutting down the connection
+|do
+|{
+|	iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+|	if (iResult > 0) 
+|	{
+|		printf("Bytes received by socket capsule: %d\n", iResult);
+|		for (int i = 0; i < iResult; i++)
+|		{
+|			cout << recvbuf[i];
+|		}
+|		cout << endl;
+|
+|		// send data to the application capsule via the port appPort
+|		mainConnection.dataReceived(RTString(recvbuf)).send();
+|
+|        // Echo the buffer back to the sender
+|        iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
+|        if (iSendResult == SOCKET_ERROR) {
+|            printf("send failed: %d\n", WSAGetLastError());
+|            closesocket(ClientSocket);
+|            WSACleanup();
+|            return 1;
+|        }
+|        printf("Bytes sent: %d\n", iSendResult);
+|	}
+|	else
+|	{
+|		cout << "iResult <= 0 " << "is: " << iResult << endl;
+|	}
+|}
+|while (iResult > 0);
+|
+|if (iResult<=0)
+|{
+|	printf("Connection closing...\n");
+|	return false;
+|}
+|else
+|{
+|	return true;
+|}
+|
+									))
+							(object ChoicePt "shutdownConnection"
+								quid "51767F490047"
+								guard (object Guard
+									quid "51767F9B0136"
+									expression 
+|// connection has been closed by the client
+|// shutdown the send half of the connection since no more data can be sent
+|iResult = shutdown(ClientSocket, SD_SEND);
+|if (iResult == SOCKET_ERROR) {
+|   	printf("shutdown failed: %d\n", WSAGetLastError());
+|    freeaddrinfo(result);
+|    closesocket(ListenSocket);
+|   	closesocket(ClientSocket);
+|   	WSACleanup();
+|   	return false;
+|}
+|else
+|{
+|	return true;
+|}
+|
+|
+|
+									)))
+						transitions (list transition_list
+							(object Trans "Initial"
+								quid "51767D9700E1"
+								source  ":TOP:Initial"
+								target  ":TOP:InitializeWinsock")
+							(object Trans "False"
+								quid "51767DEF03C5"
+								sourceRegion 0
+								source  ":TOP:InitializeWinsock"
+								target  ":TOP:Reset:J51767DEF03C6")
+							(object Trans "True"
+								quid "51767E1102D3"
+								sourceRegion 1
+								source  ":TOP:InitializeWinsock"
+								target  ":TOP:addressCorrect")
+							(object Trans "False"
+								quid "51767E190249"
+								sourceRegion 0
+								source  ":TOP:addressCorrect"
+								target  ":TOP:Reset:J51767E19024A")
+							(object Trans "viaResetToInit"
+								quid "51767E2302AE"
+								source  ":TOP:Reset:J51767E2302AF"
+								target  ":TOP:InitializeWinsock"
+								eventGuards (list eventGuardsList
+									(object EventGuard
+										quid "51767E6602F4"
+										Event (object PortEvent
+											quid "51767E6602F5"
+											ports (list portsList
+												ports  ":Structure:timer"
+												quidu "51767E6302F6")
+											signals (list signalsList
+												signals  ":base:timeout"
+												quidu "3DF743000081")))))
+							(object Trans "True"
+								quid "51767EDC00FC"
+								sourceRegion 1
+								source  ":TOP:addressCorrect"
+								target  ":TOP:validSocket")
+							(object Trans "True"
+								quid "51767EE100DB"
+								sourceRegion 1
+								source  ":TOP:validSocket"
+								target  ":TOP:bindingSuccesfull")
+							(object Trans "True"
+								quid "51767EE602C6"
+								sourceRegion 1
+								source  ":TOP:bindingSuccesfull"
+								target  ":TOP:listening")
+							(object Trans "True"
+								quid "51767EED007A"
+								sourceRegion 1
+								source  ":TOP:listening"
+								target  ":TOP:acceptConnection")
+							(object Trans "False"
+								quid "51767EF3007F"
+								sourceRegion 0
+								source  ":TOP:validSocket"
+								target  ":TOP:Reset:J51767EF30081")
+							(object Trans "False"
+								quid "51767EF80067"
+								sourceRegion 0
+								source  ":TOP:bindingSuccesfull"
+								target  ":TOP:Reset:J51767EF80069")
+							(object Trans "False"
+								quid "51767F110125"
+								sourceRegion 0
+								source  ":TOP:listening"
+								target  ":TOP:Reset:J51767F110127")
+							(object Trans "False"
+								quid "51767F1803CC"
+								sourceRegion 0
+								source  ":TOP:acceptConnection"
+								target  ":TOP:Reset:J51767F1803CE")
+							(object Trans "True"
+								quid "51767F370190"
+								sourceRegion 1
+								source  ":TOP:acceptConnection"
+								target  ":TOP:getBytes"
+								action (object Action
+									quid "51767FCC02AA"
+									body 
+|// stuur SOCKET ook naar de applicatie zodat deze ook kan zenden
+|// terwijl deze capsule als server wacht op ontvangen data
+|mainConnection.sock(ClientSocket).send();
+									))
+							(object Trans "True"
+								quid "51767F3C0278"
+								sourceRegion 1
+								source  ":TOP:getBytes"
+								target  ":TOP:getBytes")
+							(object Trans "False"
+								quid "51767F5E00A5"
+								sourceRegion 0
+								source  ":TOP:shutdownConnection"
+								target  ":TOP:Reset:J51767F5E00A7")
+							(object Trans "False"
+								quid "51767F6103C6"
+								sourceRegion 0
+								source  ":TOP:getBytes"
+								target  ":TOP:shutdownConnection"
+								action (object Action
+									quid "517680150129"
+									body 
+|// doorgeven dat socket niet meer is aangesloten
+|mainConnection.noSock().send();
+									))
+							(object Trans "True"
+								quid "51767F680318"
+								sourceRegion 1
+								source  ":TOP:shutdownConnection"
+								target  ":TOP:acceptConnection"))))
+				statediagram (object State_Diagram "State Diagram"
+					quid "51767849025E"
+					items (list diagram_item_list
+						(object StateView "Perimeter" "TOP" @1
+							quid "517678490260"
+							pos (840,615)
+							quidu "51767849025B")
+						(object StateView "StartState" "Initial" @2
+							quid "517678490261"
+							pos (180,180)
+							quidu "51767849025C")
+						(object StateView "Normal" "Reset" @3
+							quid "51767D3D0280"
+							pos (664,618)
+							quidu "51767D3D02F0"
+							label (object ItemLabel
+								quid "51767D3D02F1"
+								pos (664,573)
+								max_width 88)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object JuncPtVw ":TOP:Reset:J51767DEF03C6" @4
+									quid "51767DEF03CA"
+									pos (666,528)
+									quidu "51767DEF03C6"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767E19024A" @5
+									quid "51767E19024E"
+									pos (731,528)
+									quidu "51767E19024A"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767E2302AF" @6
+									quid "51767E2302B3"
+									pos (642,528)
+									quidu "51767E2302AF"
+									positionBySuperclass FALSE
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767EF30081" @7
+									quid "51767EF30085"
+									pos (784,574)
+									quidu "51767EF30081"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767EF80069" @8
+									quid "51767EF8006D"
+									pos (784,624)
+									quidu "51767EF80069"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767F110127" @9
+									quid "51767F11012B"
+									pos (784,670)
+									quidu "51767F110127"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767F1803CE" @10
+									quid "51767F1803D2"
+									pos (680,708)
+									quidu "51767F1803CE"
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:Reset:J51767F5E00A7" @11
+									quid "51767F5E00AB"
+									pos (544,662)
+									quidu "51767F5E00A7"
+									boundIconAutoAdjust TRUE))
+							statediagram (object State_Diagram ""
+								quid "51767D55012F"
+								items (list diagram_item_list
+									(object StateView "Perimeter" "Reset" @12
+										quid "51767D550131"
+										pos (840,615)
+										quidu "51767D3D02F0"
+										boundIcons (list boundIconsList
+											(object JuncPtVw ":TOP:Reset:J51767DEF03C6" @13
+												quid "51767DEF03C7"
+												pos (855,96)
+												quidu "51767DEF03C6"
+												juncPtIcon (object JuncPtIcon @14
+													quid "51767DEF03C8"
+													pos (855,186)
+													label (object ItemLabel
+														quid "51767DEF03C9"
+														pos (895,156)
+														max_width 78)))
+											(object JuncPtVw ":TOP:Reset:J51767E19024A" @15
+												quid "51767E19024B"
+												pos (1260,96)
+												quidu "51767E19024A"
+												juncPtIcon (object JuncPtIcon @16
+													quid "51767E19024C"
+													pos (1260,186)
+													label (object ItemLabel
+														quid "51767E19024D"
+														pos (1300,156))))
+											(object JuncPtVw ":TOP:Reset:J51767E2302AF" @17
+												quid "51767E2302B0"
+												pos (447,96)
+												quidu "51767E2302AF"
+												positionBySuperclass FALSE
+												juncPtIcon (object JuncPtIcon @18
+													quid "51767E2302B1"
+													pos (447,186)
+													label (object ItemLabel
+														quid "51767E2302B2"
+														pos (487,156)
+														positionBySuperclass FALSE
+														max_width 216)
+													positionBySuperclass FALSE))
+											(object JuncPtVw ":TOP:Reset:J51767EF30081" @19
+												quid "51767EF30082"
+												pos (1584,363)
+												quidu "51767EF30081"
+												juncPtIcon (object JuncPtIcon @20
+													quid "51767EF30083"
+													pos (1494,363)
+													label (object ItemLabel
+														quid "51767EF30084"
+														pos (1524,403))))
+											(object JuncPtVw ":TOP:Reset:J51767EF80069" @21
+												quid "51767EF8006A"
+												pos (1584,647)
+												quidu "51767EF80069"
+												juncPtIcon (object JuncPtIcon @22
+													quid "51767EF8006B"
+													pos (1494,647)
+													label (object ItemLabel
+														quid "51767EF8006C"
+														pos (1524,687))))
+											(object JuncPtVw ":TOP:Reset:J51767F110127" @23
+												quid "51767F110128"
+												pos (1584,920)
+												quidu "51767F110127"
+												juncPtIcon (object JuncPtIcon @24
+													quid "51767F110129"
+													pos (1494,920)
+													label (object ItemLabel
+														quid "51767F11012A"
+														pos (1524,960))))
+											(object JuncPtVw ":TOP:Reset:J51767F1803CE" @25
+												quid "51767F1803CF"
+												pos (945,1134)
+												quidu "51767F1803CE"
+												juncPtIcon (object JuncPtIcon @26
+													quid "51767F1803D0"
+													pos (945,1044)
+													label (object ItemLabel
+														quid "51767F1803D1"
+														pos (985,1074))))
+											(object JuncPtVw ":TOP:Reset:J51767F5E00A7" @27
+												quid "51767F5E00A8"
+												pos (96,867)
+												quidu "51767F5E00A7"
+												juncPtIcon (object JuncPtIcon @28
+													quid "51767F5E00A9"
+													pos (186,867)
+													label (object ItemLabel
+														quid "51767F5E00AA"
+														pos (156,907))))))
+									(object StateView "StartState" "Initial" @29
+										quid "51767D550132"
+										pos (180,180)
+										quidu "51767D3D02F8"))
+								filterFlags 1))
+						(object ChoicePtVw "InitializeWinsock" @30
+							quid "51767D7D0004"
+							pos (679,263)
+							quidu "51767D7D011E"
+							label (object ItemLabel
+								quid "51767D7D0124"
+								pos (658,167)
+								positionBySuperclass FALSE
+								max_width 247)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @31
+									quid "51767D7D011F"
+									pos (641,256)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @32
+									quid "51767D7D0120"
+									pos (686,225)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @33
+									quid "51767D7D0122"
+									pos (672,301)
+									positionBySuperclass FALSE))
+							angle 6.475172
+							reversed TRUE)
+						(object ChoicePtVw "addressCorrect" @34
+							quid "51767DF5034D"
+							pos (983,327)
+							quidu "51767DF5039C"
+							label (object ItemLabel
+								quid "51767DF503A2"
+								pos (1074,194)
+								positionBySuperclass FALSE
+								max_width 222)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @35
+									quid "51767DF5039D"
+									pos (983,289)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @36
+									quid "51767DF5039E"
+									pos (1021,327)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @37
+									quid "51767DF503A0"
+									pos (945,327)
+									positionBySuperclass FALSE))
+							angle 1.570796
+							reversed TRUE)
+						(object ChoicePtVw "validSocket" @38
+							quid "51767EA102DD"
+							pos (1127,439)
+							quidu "51767EA1031D"
+							label (object ItemLabel
+								quid "51767EA10323"
+								pos (1257,359)
+								positionBySuperclass FALSE
+								max_width 175)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @39
+									quid "51767EA1031E"
+									pos (1127,401)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @40
+									quid "51767EA1031F"
+									pos (1165,439)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @41
+									quid "51767EA10321"
+									pos (1089,439)
+									positionBySuperclass FALSE))
+							angle 1.570796
+							reversed TRUE)
+						(object ChoicePtVw "bindingSuccesfull" @42
+							quid "51767EAD0332"
+							pos (1191,647)
+							quidu "51767EAD0333"
+							label (object ItemLabel
+								quid "51767EAD0339"
+								pos (1390,529)
+								uses_fill_color FALSE
+								positionBySuperclass FALSE
+								max_width 259)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @43
+									quid "51767EAD0334"
+									pos (1191,609)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @44
+									quid "51767EAD0335"
+									pos (1229,647)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @45
+									quid "51767EAD0337"
+									pos (1153,647)
+									positionBySuperclass FALSE))
+							angle 1.570796
+							reversed TRUE)
+						(object ChoicePtVw "listening" @46
+							quid "51767EBA0074"
+							pos (1063,887)
+							quidu "51767EBA0075"
+							label (object ItemLabel
+								quid "51767EBA007B"
+								pos (1234,866)
+								uses_fill_color FALSE
+								positionBySuperclass FALSE
+								max_width 119)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @47
+									quid "51767EBA0076"
+									pos (1101,887)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @48
+									quid "51767EBA0077"
+									pos (1063,925)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @49
+									quid "51767EBA0079"
+									pos (1063,849)
+									positionBySuperclass FALSE))
+							angle 3.141593
+							reversed TRUE)
+						(object ChoicePtVw "acceptConnection" @50
+							quid "51767EC702FD"
+							pos (727,983)
+							quidu "51767EC702FE"
+							label (object ItemLabel
+								quid "51767EC70306"
+								pos (955,1027)
+								uses_fill_color FALSE
+								positionBySuperclass FALSE
+								max_width 272)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @51
+									quid "51767EC702FF"
+									pos (765,983)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @52
+									quid "51767EC70300"
+									pos (727,1021)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @53
+									quid "51767EC70303"
+									pos (727,945)
+									positionBySuperclass FALSE))
+							angle 3.141593
+							reversed TRUE)
+						(object ChoicePtVw "getBytes" @54
+							quid "51767F26009D"
+							pos (487,871)
+							quidu "51767F2600E6"
+							label (object ItemLabel
+								quid "51767F2600ED"
+								pos (423,1003)
+								positionBySuperclass FALSE
+								max_width 128)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @55
+									quid "51767F2600E8"
+									pos (525,871)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @56
+									quid "51767F2600E9"
+									pos (487,909)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @57
+									quid "51767F2600EB"
+									pos (487,833)
+									positionBySuperclass FALSE))
+							angle 3.141593
+							reversed TRUE)
+						(object ChoicePtVw "shutdownConnection" @58
+							quid "51767F490001"
+							pos (391,727)
+							quidu "51767F490047"
+							label (object ItemLabel
+								quid "51767F49004F"
+								pos (277,600)
+								positionBySuperclass FALSE
+								max_width 313)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ChoicePtPtVw "in" @59
+									quid "51767F49004A"
+									pos (391,765)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "true" @60
+									quid "51767F49004B"
+									pos (353,727)
+									positionBySuperclass FALSE)
+								(object ChoicePtPtVw "false" @61
+									quid "51767F49004D"
+									pos (429,727)
+									positionBySuperclass FALSE))
+							angle 4.712389
+							reversed TRUE)
+						(object TransView ":TOP:Initial:Initial" @62
+							quid "51767D950389"
+							uses_fill_color FALSE
+							quidu "51767D9700E1"
+							label (object SegLabel @63
+								quid "51767D9700E3"
+								pos (420,219)
+								max_width 75
+								pctDist 0.498855
+								height 0
+								orientation 1)
+							client @2
+							supplier @31
+							vertices (list Points
+								(208,184)
+								(633,254))
+							line_style 6144)
+						(object TransView ":TOP:InitializeWinsock:False" @64
+							quid "51767DEF0086"
+							uses_fill_color FALSE
+							quidu "51767DEF03C5"
+							label (object SegLabel @65
+								quid "51767DEF03CB"
+								pos (714,413)
+								max_width 78
+								pctDist 0.498711
+								height 45)
+							client @33
+							supplier @4
+							vertices (list Points
+								(672,306)
+								(666,518))
+							line_style 6144)
+						(object TransView ":TOP:InitializeWinsock:True" @66
+							quid "51767E100218"
+							uses_fill_color FALSE
+							quidu "51767E1102D3"
+							label (object SegLabel @67
+								quid "51767E1102D4"
+								pos (833,256)
+								max_width 69
+								pctDist 0.499639
+								height 0
+								orientation 1)
+							client @32
+							supplier @35
+							vertices (list Points
+								(691,226)
+								(975,287))
+							line_style 6144)
+						(object TransView ":TOP:addressCorrect:False" @68
+							quid "51767E180238"
+							uses_fill_color FALSE
+							quidu "51767E190249"
+							label (object SegLabel @69
+								quid "51767E19024F"
+								pos (869,459)
+								max_width 78
+								pctDist 0.500954
+								height 45)
+							client @37
+							supplier @5
+							vertices (list Points
+								(940,330)
+								(736,521))
+							line_style 6144)
+						(object TransView ":TOP:Reset:J51767E2302AF:viaResetToInit" @70
+							quid "51767E220358"
+							uses_fill_color FALSE
+							quidu "51767E2302AE"
+							label (object SegLabel @71
+								quid "51767E2302B4"
+								pos (440,335)
+								positionBySuperclass FALSE
+								max_width 216
+								pctDist 1.682474
+								height 87)
+							positionBySuperclass FALSE
+							client @6
+							supplier @31
+							vertices (list Points
+								(633,522)
+								(522,450)
+								(525,384)
+								(637,260))
+							line_style 6144)
+						(object TransView ":TOP:addressCorrect:True" @72
+							quid "51767EDB0156"
+							uses_fill_color FALSE
+							quidu "51767EDC00FC"
+							label (object SegLabel @73
+								quid "51767EDC00FE"
+								pos (1072,362)
+								max_width 69
+								pctDist 0.500000
+								height 0
+								orientation 1)
+							client @36
+							supplier @39
+							vertices (list Points
+								(1024,328)
+								(1120,396))
+							line_style 6144)
+						(object TransView ":TOP:validSocket:True" @74
+							quid "51767EE0019D"
+							uses_fill_color FALSE
+							quidu "51767EE100DB"
+							label (object SegLabel @75
+								quid "51767EE100DD"
+								pos (1177,521)
+								max_width 69
+								pctDist 0.496925
+								height 0)
+							client @40
+							supplier @43
+							vertices (list Points
+								(1165,442)
+								(1189,601))
+							line_style 6144)
+						(object TransView ":TOP:bindingSuccesfull:True" @76
+							quid "51767EE302B3"
+							uses_fill_color FALSE
+							quidu "51767EE602C6"
+							label (object SegLabel @77
+								quid "51767EE602C8"
+								pos (1165,765)
+								max_width 69
+								pctDist 0.498308
+								height 0)
+							client @44
+							supplier @47
+							vertices (list Points
+								(1226,650)
+								(1104,881))
+							line_style 6144)
+						(object TransView ":TOP:listening:True" @78
+							quid "51767EEB03B9"
+							uses_fill_color FALSE
+							quidu "51767EED007A"
+							label (object SegLabel @79
+								quid "51767EED007C"
+								pos (913,953)
+								max_width 69
+								pctDist 0.500000
+								height 0)
+							client @48
+							supplier @51
+							vertices (list Points
+								(1056,925)
+								(770,981))
+							line_style 6144)
+						(object TransView ":TOP:validSocket:False" @80
+							quid "51767EF20141"
+							uses_fill_color FALSE
+							quidu "51767EF3007F"
+							label (object SegLabel @81
+								quid "51767EF30086"
+								pos (954,546)
+								max_width 78
+								pctDist 0.502794
+								height 45)
+							client @41
+							supplier @7
+							vertices (list Points
+								(1083,441)
+								(791,569))
+							line_style 6144)
+						(object TransView ":TOP:bindingSuccesfull:False" @82
+							quid "51767EF700A8"
+							uses_fill_color FALSE
+							quidu "51767EF80067"
+							label (object SegLabel @83
+								quid "51767EF8006F"
+								pos (966,680)
+								max_width 78
+								pctDist 0.499141
+								height 45)
+							client @45
+							supplier @8
+							vertices (list Points
+								(1145,646)
+								(792,624))
+							line_style 6144)
+						(object TransView ":TOP:listening:False" @84
+							quid "51767F100267"
+							uses_fill_color FALSE
+							quidu "51767F110125"
+							label (object SegLabel @85
+								quid "51767F11012C"
+								pos (901,797)
+								max_width 78
+								pctDist 0.496568
+								height 44)
+							client @49
+							supplier @9
+							vertices (list Points
+								(1057,844)
+								(791,674))
+							line_style 6144)
+						(object TransView ":TOP:acceptConnection:False" @86
+							quid "51767F1801E6"
+							uses_fill_color FALSE
+							quidu "51767F1803CC"
+							label (object SegLabel @87
+								quid "51767F1803D3"
+								pos (661,835)
+								max_width 78
+								pctDist 0.498334
+								height 44)
+							client @53
+							supplier @10
+							vertices (list Points
+								(726,937)
+								(681,715))
+							line_style 6144)
+						(object TransView ":TOP:acceptConnection:True" @88
+							quid "51767F3503E4"
+							uses_fill_color FALSE
+							quidu "51767F370190"
+							label (object SegLabel @89
+								quid "51767F370192"
+								pos (624,944)
+								max_width 69
+								pctDist 0.501248
+								height 0)
+							client @52
+							supplier @55
+							vertices (list Points
+								(720,1016)
+								(528,873))
+							line_style 6144)
+						(object TransView ":TOP:getBytes:True" @90
+							quid "51767F3C0277"
+							uses_fill_color FALSE
+							quidu "51767F3C0278"
+							label (object SegLabel @91
+								quid "51767F3C027A"
+								pos (565,996)
+								positionBySuperclass FALSE
+								max_width 69
+								pctDist 0.501635
+								height 0
+								orientation 1)
+							positionBySuperclass FALSE
+							client @56
+							supplier @55
+							vertices (list Points
+								(487,913)
+								(500,984)
+								(572,997)
+								(526,875))
+							line_style 6144)
+						(object TransView ":TOP:shutdownConnection:False" @92
+							quid "51767F5D0267"
+							uses_fill_color FALSE
+							quidu "51767F5E00A5"
+							label (object SegLabel @93
+								quid "51767F5E00AC"
+								pos (464,656)
+								max_width 78
+								pctDist 0.505989
+								height 43)
+							client @61
+							supplier @11
+							vertices (list Points
+								(433,723)
+								(536,666))
+							line_style 6144)
+						(object TransView ":TOP:getBytes:False" @94
+							quid "51767F6100C8"
+							uses_fill_color FALSE
+							quidu "51767F6103C6"
+							label (object SegLabel @95
+								quid "51767F6103C8"
+								pos (375,829)
+								positionBySuperclass FALSE
+								max_width 78
+								pctDist 0.811426
+								height 61)
+							positionBySuperclass FALSE
+							client @57
+							supplier @59
+							vertices (list Points
+								(481,828)
+								(394,767))
+							line_style 6144)
+						(object TransView ":TOP:shutdownConnection:True" @96
+							quid "51767F640243"
+							uses_fill_color FALSE
+							quidu "51767F680318"
+							label (object SegLabel @97
+								quid "51767F68031A"
+								pos (272,757)
+								positionBySuperclass FALSE
+								max_width 69
+								pctDist 0.064730
+								height 57
+								orientation 1)
+							positionBySuperclass FALSE
+							client @60
+							supplier @51
+							vertices (list Points
+								(350,730)
+								(244,938)
+								(309,1016)
+								(516,1094)
+								(784,1078)
+								(765,987))
+							line_style 6144))
+					filterFlags 1)
+				language "C++"
+				structureDiagram (object CollaborationDiagram "Structure Diagram"
+					quid "517678490262"
+					items (list diagram_item_list
+						(object CapsulePerimeterVw "Structure" @98
+							quid "517678490264"
+							pos (840,615)
+							quidu "51767849025D"
+							boundIcons (list boundIconsList
+								(object PortVw ":Structure:mainConnection" @99
+									quid "5176786603C0"
+									pos (1268,96)
+									quidu "5176786302E2"
+									label (object ItemLabel
+										quid "5176786603C3"
+										pos (1277,132)
+										positionBySuperclass FALSE
+										nlines 2
+										max_width 291
+										label "mainConnection")
+									positionBySuperclass FALSE)))
+						(object PortVw ":Structure:timer" @100
+							quid "51767E6602E5"
+							pos (308,388)
+							quidu "51767E6302F6"
+							label (object ItemLabel
+								quid "51767E6602E8"
+								pos (317,424)
+								positionBySuperclass FALSE
+								nlines 2
+								max_width 125
+								label "timer")
+							positionBySuperclass FALSE))
+					filterFlags 521))
+			(object Capsule "topCap"
+				quid "5176795702F3"
+				structure (object CapsuleCollaboration "Structure"
+					quid "5176795702F7"
+					classifierRoles (list classifierRolesList
+						(object CapsuleRole "mainCapsuleR1"
+							quid "51767A0803AD"
+							classifier  "Logical View::mainCapsule"
+							quidu "517679F9026D"
+							genericity "fixed")
+						(object CapsuleRole "tcpCapsuleR1"
+							quid "51767A1301E5"
+							classifier  "Logical View::tcpCapsule"
+							quidu "517678490259"
+							genericity "fixed"))
+					connectors (list connectorsList
+						(object Connector "C51767AB70083"
+							quid "51767AB70083"
+							connectorCardinality  constValue "*"
+							ends (list endsList
+								ends  ":Structure:mainCapsuleR1:tcpConnection"
+								ends  ":Structure:tcpCapsuleR1:mainConnection"))))
+				statemachine (object State_Machine
+					quid "5176795702F4"
+					State (object State "TOP"
+						quid "5176795702F5"
+						states (list States
+							(object InitialPt "Initial"
+								quid "5176795702F6"))))
+				statediagram (object State_Diagram "State Diagram"
+					quid "5176795702F8"
+					items (list diagram_item_list
+						(object StateView "Perimeter" "TOP" @101
+							quid "5176795702FA"
+							pos (840,615)
+							quidu "5176795702F5")
+						(object StateView "StartState" "Initial" @102
+							quid "5176795702FB"
+							pos (180,180)
+							quidu "5176795702F6"))
+					filterFlags 1)
+				language "C++"
+				structureDiagram (object CollaborationDiagram "Structure Diagram"
+					quid "5176795702FC"
+					items (list diagram_item_list
+						(object CapsulePerimeterVw "Structure" @103
+							quid "5176795702FE"
+							pos (840,615)
+							quidu "5176795702F7")
+						(object CapsuleRoleVw ":Structure:mainCapsuleR1" @104
+							quid "51767A080231"
+							pos (1240,442)
+							quidu "51767A0803AD"
+							width 304
+							label (object ItemLabel
+								quid "51767A0803AE"
+								pos (1240,401)
+								positionBySuperclass FALSE
+								nlines 2
+								max_width 266
+								label "mainCapsuleR1")
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ConnectionPtVw ":Structure:mainCapsuleR1:tcpConnection" @105
+									quid "51767A480002"
+									pos (1088,432)
+									label (object ItemLabel
+										quid "51767A480007"
+										pos (926,522)
+										positionBySuperclass FALSE
+										nlines 2
+										max_width 269
+										label "tcpConnection")
+									positionBySuperclass FALSE)))
+						(object CapsuleRoleVw ":Structure:tcpCapsuleR1" @106
+							quid "51767A120369"
+							pos (333,442)
+							quidu "51767A1301E5"
+							width 282
+							label (object ItemLabel
+								quid "51767A1301E6"
+								pos (333,401)
+								positionBySuperclass FALSE
+								nlines 2
+								max_width 244
+								label "tcpCapsuleR1")
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object ConnectionPtVw ":Structure:tcpCapsuleR1:mainConnection" @107
+									quid "51767A6F035E"
+									pos (474,432)
+									label (object ItemLabel
+										quid "51767A6F035F"
+										pos (621,289)
+										positionBySuperclass FALSE
+										nlines 2
+										max_width 291
+										label "mainConnection")
+									positionBySuperclass FALSE)))
+						(object ConnectorVw ":Structure:C51767AB70083" @108
+							quid "51767AB502C0"
+							stereotype TRUE
+							uses_fill_color FALSE
+							quidu "51767AB70083"
+							label (object SegLabel @109
+								quid "51767AB70086"
+								pos (779,477)
+								positionBySuperclass FALSE
+								max_width 253
+								pctDist 0.501689
+								height 45)
+							positionBySuperclass FALSE
+							client @105
+							supplier @107
+							vertices (list Points
+								(1076,432)
+								(484,432))
+							line_style 6144))
+					filterFlags 521))
+			(object Capsule "mainCapsule"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::Cpp"
+						name "HeaderPreface"
+						value (value Text 
+|//zet windowsversie op XP
+|#define WINVER 0x0501
+|
+|#include <winsock2.h> 
+|#include <ws2tcpip.h> 
+|#include <stdio.h>
+						)))
+				quid "517679F9026D"
+				structure (object CapsuleCollaboration "Structure"
+					quid "517679F90271"
+					classifierRoles (list classifierRolesList
+						(object CapsuleRole "instanceTcpCapsule"
+							quid "517687990395"
+							classifier  "Logical View::tcpCapsule"
+							quidu "517678490259"
+							genericity "fixed"))
+					ports (list portsList
+						(object Port "tcpConnection"
+							quid "51767A460171"
+							classifier  "Logical View::tcpProtocol"
+							quidu "5176788B0049"
+							isConjugated TRUE
+							isRelay FALSE)
+						(object Port "frame"
+							quid "51768809029A"
+							classifier  "Logical View::RTClasses::Frame"
+							quidu "37E9291F0276"
+							isRelay FALSE
+							isWired FALSE
+							visibility "Protected")))
+				class_attributes (list class_attribute_list
+					(object ClassAttribute "clientSocket"
+						quid "517680DE029D"
+						type "SOCKET"))
+				statemachine (object State_Machine
+					quid "517679F9026E"
+					State (object State "TOP"
+						quid "517679F9026F"
+						states (list States
+							(object InitialPt "Initial"
+								quid "517679F90270")
+							(object State "KlaarVoorData"
+								quid "5176811001F8"
+								states (list States
+									(object InitialPt "Initial"
+										quid "517681100201")
+									(object JuncPt "J51768119018A"
+										quid "51768119018A"
+										isEntry TRUE
+										externallyVisible TRUE)
+									(object JuncPt "J5176823800F4"
+										quid "5176823800F4"
+										externallyVisible TRUE)
+									(object JuncPt "J5176823800F9"
+										quid "5176823800F9"
+										isEntry TRUE
+										externallyVisible TRUE))))
+						transitions (list transition_list
+							(object Trans "Initial"
+								quid "517681190188"
+								source  ":TOP:Initial"
+								target  ":TOP:KlaarVoorData:J51768119018A"
+								action (object Action
+									quid "517683FA02D5"
+									body 
+|//maak object voor de tcp verbinding
+|frame.incarnate(instanceTcpCapsule,tcpCapsule,EmptyObject,ThreadUserInterface);
+									))
+							(object Trans "dataReceived"
+								quid "5176823800F1"
+								source  ":TOP:KlaarVoorData:J5176823800F4"
+								target  ":TOP:KlaarVoorData:J5176823800F9"
+								action (object Action
+									quid "517682BB00B9"
+									body 
+|cout << "Data received" << *rtdata << endl;
+									)
+								eventGuards (list eventGuardsList
+									(object EventGuard
+										quid "517682740018"
+										Event (object PortEvent
+											quid "517682740019"
+											ports (list portsList
+												ports  ":Structure:tcpConnection"
+												quidu "51767A460171")
+											signals (list signalsList
+												signals  ":base:dataReceived"
+												quidu "51767A28030A"))))))))
+				statediagram (object State_Diagram "State Diagram"
+					quid "517679F90272"
+					items (list diagram_item_list
+						(object StateView "Perimeter" "TOP" @110
+							quid "517679F90274"
+							pos (840,615)
+							quidu "517679F9026F")
+						(object StateView "StartState" "Initial" @111
+							quid "517679F90275"
+							pos (180,180)
+							quidu "517679F90270"
+							positionBySuperclass FALSE)
+						(object StateView "Normal" "KlaarVoorData" @112
+							quid "5176811001A9"
+							pos (551,394)
+							quidu "5176811001F8"
+							width 320
+							label (object ItemLabel
+								quid "5176811001FB"
+								pos (551,349)
+								max_width 216)
+							positionBySuperclass FALSE
+							boundIcons (list boundIconsList
+								(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @113
+									quid "517681190192"
+									pos (442,304)
+									quidu "51768119018A"
+									positionBySuperclass FALSE
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @114
+									quid "5176823800F8"
+									pos (711,366)
+									quidu "5176823800F4"
+									positionBySuperclass FALSE
+									boundIconAutoAdjust TRUE)
+								(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @115
+									quid "5176823800FD"
+									pos (711,450)
+									quidu "5176823800F9"
+									positionBySuperclass FALSE
+									boundIconAutoAdjust TRUE))
+							statediagram (object State_Diagram ""
+								quid "51768119018B"
+								items (list diagram_item_list
+									(object StateView "Perimeter" "KlaarVoorData" @116
+										quid "51768119018D"
+										pos (840,615)
+										quidu "5176811001F8"
+										boundIcons (list boundIconsList
+											(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @117
+												quid "51768119018F"
+												pos (335,96)
+												quidu "51768119018A"
+												positionBySuperclass FALSE
+												juncPtIcon (object JuncPtIcon @118
+													quid "517681190190"
+													pos (335,186)
+													label (object ItemLabel
+														quid "517681190191"
+														pos (375,155)
+														positionBySuperclass FALSE
+														max_width 75)
+													positionBySuperclass FALSE))
+											(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @119
+												quid "5176823800F5"
+												pos (1584,447)
+												quidu "5176823800F4"
+												juncPtIcon (object JuncPtIcon @120
+													quid "5176823800F6"
+													pos (1494,447)
+													label (object ItemLabel
+														quid "5176823800F7"
+														pos (1524,487)
+														max_width 209)))
+											(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @121
+												quid "5176823800FA"
+												pos (1584,941)
+												quidu "5176823800F9"
+												juncPtIcon (object JuncPtIcon @122
+													quid "5176823800FB"
+													pos (1494,941)
+													label (object ItemLabel
+														quid "5176823800FC"
+														pos (1524,981)
+														max_width 209)))))
+									(object StateView "StartState" "Initial" @123
+										quid "51768119018E"
+										pos (180,180)
+										quidu "517681100201"))
+								filterFlags 1))
+						(object TransView ":TOP:Initial:Initial" @124
+							quid "517681180254"
+							uses_fill_color FALSE
+							quidu "517681190188"
+							label (object SegLabel @125
+								quid "517681190193"
+								pos (343,209)
+								positionBySuperclass FALSE
+								max_width 75
+								pctDist 0.521181
+								height 43)
+							positionBySuperclass FALSE
+							client @111
+							supplier @113
+							vertices (list Points
+								(206,192)
+								(433,300))
+							line_style 6144)
+						(object TransView ":TOP:KlaarVoorData:J5176823800F4:dataReceived" @126
+							quid "517682350103"
+							uses_fill_color FALSE
+							quidu "5176823800F1"
+							label (object SegLabel @127
+								quid "5176823800FE"
+								pos (968,408)
+								positionBySuperclass FALSE
+								max_width 209
+								pctDist 0.500000
+								height 180)
+							positionBySuperclass FALSE
+							client @114
+							supplier @115
+							vertices (list Points
+								(719,366)
+								(788,366)
+								(788,450)
+								(719,450))
+							line_style 6144))
+					filterFlags 1)
+				language "C++"
+				structureDiagram (object CollaborationDiagram "Structure Diagram"
+					quid "517679F90276"
+					items (list diagram_item_list
+						(object CapsulePerimeterVw "Structure" @128
+							quid "517679F90278"
+							pos (840,615)
+							quidu "517679F90271"
+							boundIcons (list boundIconsList
+								(object PortVw ":Structure:tcpConnection" @129
+									quid "51767A460121"
+									pos (96,719)
+									quidu "51767A460171"
+									label (object ItemLabel
+										quid "51767A480003"
+										pos (105,755)
+										nlines 2
+										max_width 269
+										label "tcpConnection"))))
+						(object CapsuleRoleVw ":Structure:instanceTcpCapsule" @130
+							quid "5176879B02F5"
+							pos (480,197)
+							quidu "517687990395"
+							width 386
+							height 189
+							label (object ItemLabel
+								quid "5176879B02F9"
+								pos (480,151)
+								nlines 2
+								max_width 338
+								label "instanceTcpCapsule")
+							boundIcons (list boundIconsList
+								(object ConnectionPtVw ":Structure:instanceTcpCapsule:mainConnection" @131
+									quid "5176879B02F7"
+									pos (477,102)
+									label (object ItemLabel
+										quid "5176879B02F8"
+										pos (477,-1)
+										nlines 2
+										max_width 291
+										label "mainConnection"))))
+						(object PortVw ":Structure:frame" @132
+							quid "5176880C0102"
+							pos (486,576)
+							quidu "51768809029A"
+							label (object ItemLabel
+								quid "5176880C0104"
+								pos (495,612)
+								nlines 2
+								max_width 138
+								label "frame")))
+					filterFlags 521))
+			(object Protocol "tcpProtocol"
+				quid "5176788B0049"
+				statemachine (object State_Machine
+					quid "5176788B004A"
+					State (object State "TOP"
+						quid "5176788B004B"
+						states (list States
+							(object InitialPt "Initial"
+								quid "5176788B004C"))))
+				collaborations (list collaborationsList
+					(object Collaboration "Collaboration1"
+						quid "5176788B004D"))
+				protocolRoles (list protocolRolesList
+					(object ProtocolRole "base"
+						quid "51767A2200F5"
+						outSignals (list outSignalsList
+							(object Signal "dataReceived"
+								quid "51767A28030A"
+								dataType  "Logical View::RTClasses::RTString"
+								quidu "37E928FA039F")
+							(object Signal "sock"
+								quid "51767FD203A4"
+								dataType  "unsigned")
+							(object Signal "noSock"
+								quid "5176801A0022"
+								dataType  "void"))))
+				statediagram (object State_Diagram "State Diagram"
+					quid "5176788B004E"
+					items (list diagram_item_list
+						(object StateView "Perimeter" "TOP" @133
+							quid "5176788B0050"
+							pos (840,615)
+							quidu "5176788B004B")
+						(object StateView "StartState" "Initial" @134
+							quid "5176788B0051"
+							pos (180,180)
+							quidu "5176788B004C"))
+					filterFlags 1)
+				language "C++")
 			(object Class_Category "RTClasses"
 				is_unit TRUE
 				is_loaded FALSE
@@ -47,10 +1809,141 @@
 				quid "37F129B10358"))
 		logical_presentations (list unit_reference_list
 			(object ClassDiagram "Main"
-				quid "3619364703D4")))
+				quid "3619364703D4"
+				items (list diagram_item_list
+					(object CapsuleVw "tcpCapsule" @135
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51767849018B"
+						pos (880,592)
+						label (object ItemLabel
+							quid "51767849018C"
+							pos (515,359)
+							max_width 730
+							label "tcpCapsule")
+						stereotype (object ItemLabel
+							quid "517678490265"
+							pos (515,318)
+							anchor 10
+							max_width 730
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "517678490259"
+						compartment (object Compartment
+							quid "517678490255"
+							pos (515,417)
+							anchor 2
+							nlines 13
+							max_width 728
+							justify 1)
+						width 748
+						height 704
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)))))
 	root_subsystem (object SubSystem "Component View"
-		quid "514704F901A9"
+		quid "5176778400A5"
 		physical_models (list unit_reference_list
+			(object Component "ourProgram"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::CppExec"
+						name "TopCapsule"
+						value (value Event 
+|[event_ui
+|	description='topCap'
+|	caption='Select...']
+|"Logical View::topCap" 5176795702F3
+						))
+					(object Attribute
+						tool "C++ Generation"
+						name "CodeGenMakeType"
+						value ("MakeTypeSet" 2))
+					(object Attribute
+						tool "C++ Compilation"
+						name "CompilationMakeType"
+						value ("MakeTypeSet" 2))
+					(object Attribute
+						tool "C++ Compilation"
+						name "TargetConfiguration"
+						value (value Event 
+|[event_ui
+|	description='NT40MingwT.x86-mingw-gnu-QT5'
+|	caption='Select...']
+|NT40MingwT.x86-mingw-gnu-QT5
+						))
+					(object Attribute
+						tool "C++ Generation"
+						name "CommonPreface"
+						value (value Text 
+|#include <iostream>
+|using namespace std;
+						))
+					(object Attribute
+						tool "OT::CppExec"
+						name "PhysicalThreads"
+						value (value Event 
+|[EigenThread { ThreadUserInterface }
+|	ImplementationClass='RTPeerController'
+|	Priority='DEFAULT_MAIN_PRIORITY'
+|	StackSize='20000']
+|[MainThread
+|	ImplementationClass='RTPeerController'
+|	Priority='DEFAULT_MAIN_PRIORITY'
+|	StackSize='20000']
+|[TimerThread
+|	ImplementationClass='RTTimerController'
+|	Priority='DEFAULT_TIMER_PRIORITY'
+|	StackSize='20000']
+|
+						)))
+				quid "5176841E008B"
+				stereotype ""
+				visible_modules (list dependency_list
+					(object Dependency_Relationship
+						quid "517685AD00B8"
+						supplier  "Component View::RTComponents::RTComponent"
+						quidu "37F129B2001B"
+						supplier_is_spec TRUE)
+					(object Dependency_Relationship
+						quid "517686AE00BD"
+						supplier  "Component View::tcpIpLib"
+						quidu "51768615018F"
+						supplier_is_spec TRUE))
+				componentClassReferences (list componentClassReferencesList
+					componentClassReferences  "Logical View::topCap"
+					quidu "5176795702F3"
+					componentClassReferences  "Logical View::mainCapsule"
+					quidu "517679F9026D"
+					componentClassReferences  "Logical View::tcpProtocol"
+					quidu "5176788B0049"
+					componentClassReferences  "Logical View::RTClasses::RTString"
+					quidu "37E928FA039F"
+					componentClassReferences  "Logical View::RTClasses::RTDataObject"
+					quidu "37E928C20351"
+					componentClassReferences  "Logical View::tcpCapsule"
+					quidu "517678490259"
+					componentClassReferences  "Logical View::RTClasses::Timing"
+					quidu "37E9292C018C"
+					componentClassReferences  "Logical View::TCPCONSTANTS"
+					quidu "36FFD8100213")
+				componentType "C++ Executable"
+				componentEnvironment "C++ TargetRTS")
+			(object Component "tcpIpLib"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::CppExtLib"
+						name "Libraries"
+						value (value Event 
+|"C:/MinGW/lib/libws2_32.a"
+|
+						)))
+				quid "51768615018F"
+				stereotype ""
+				componentType "C++ External Library"
+				componentEnvironment "C++ TargetRTS")
 			(object SubSystem "RTComponents"
 				is_unit TRUE
 				is_loaded FALSE
@@ -59,10 +1952,111 @@
 				quid "37F129B1035A"))
 		physical_presentations (list unit_reference_list
 			(object Module_Diagram "Main"
-				quid "36641F810172")))
+				quid "36641F810172"
+				items (list diagram_item_list
+					(object ComponentVw "Component View::ourProgram" @136
+						quid "5176859B0172"
+						pos (1434,513)
+						label (object ItemLabel
+							quid "5176859B0173"
+							pos (1352,531)
+							nlines 2
+							max_width 313
+							label "ourProgram")
+						stereotype (object ItemLabel
+							quid "5176859B0175"
+							pos (1352,470)
+							anchor 10
+							max_width 313
+							label "<<C++ Executable>>")
+						icon_style "Icon"
+						quidu "5176841E008B"
+						width 564
+						height 162
+						annotation 1
+						autoResize TRUE)
+					(object ComponentVw "Component View::RTComponents::RTComponent" @137
+						quid "5176859C02A3"
+						pos (832,829)
+						label (object ItemLabel
+							quid "5176859C02A4"
+							pos (735,843)
+							nlines 2
+							max_width 373
+							label "RTComponent")
+						stereotype (object ItemLabel
+							quid "5176859C02A6"
+							pos (735,782)
+							anchor 10
+							max_width 373
+							label "<<C++ External Library>>")
+						icon_style "Icon"
+						quidu "37F129B2001B"
+						width 672
+						height 186
+						annotation 1
+						autoResize TRUE)
+					(object ModVisView "" @138
+						quid "517685AC0182"
+						stereotype TRUE
+						uses_fill_color FALSE
+						quidu "517685AD00B8"
+						client @136
+						supplier @137
+						vertices (list Points
+							(1281,588)
+							(989,740))
+						line_style 6144)
+					(object ComponentVw "Component View::tcpIpLib" @139
+						quid "517686A800C3"
+						pos (592,401)
+						label (object ItemLabel
+							quid "517686A800C4"
+							pos (495,419)
+							nlines 2
+							max_width 373
+							label "tcpIpLib")
+						stereotype (object ItemLabel
+							quid "517686A800C6"
+							pos (495,358)
+							anchor 10
+							max_width 373
+							label "<<C++ External Library>>")
+						icon_style "Icon"
+						quidu "51768615018F"
+						width 672
+						height 162
+						annotation 1
+						autoResize TRUE)
+					(object ModVisView "" @140
+						quid "517686AD00DB"
+						stereotype TRUE
+						uses_fill_color FALSE
+						quidu "517686AE00BD"
+						client @136
+						supplier @139
+						vertices (list Points
+							(1159,474)
+							(909,442))
+						line_style 6144)))))
 	process_structure (object Processes "Deployment View"
 		quid "3619364703C8"
 		ProcsNDevs (list
+			(object Processor "ourProgramRun"
+				quid "51768E5901BE"
+				targetOS "Windows-NT"
+				targetCPU "x86"
+				targetAddress "127.0.0.1"
+				targetScriptDir "$TARGET_SCRIPTS\\win32"
+				processes (list processes
+					(object Process "ourProgramInstance"
+						quid "51768E650226"
+						component  "Component View::ourProgram"
+						quidu "5176841E008B"
+						targetParameters "-obslisten=30508"
+						targetMode "Basic"
+						targetPort 30508))
+				scheduling "Preemptive")
 			(object Process_Diagram "Main"
 				quid "3619364703CA")))
 	properties (object Properties
@@ -2896,4 +4890,4 @@
 				tool "RTJava Project"
 				name "HiddenTool"
 				value FALSE))
-		quid "514704F901AB"))
+		quid "5176778400A7"))

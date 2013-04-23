@@ -1,5 +1,5 @@
 [General]
-ModelFile=Roomba.rtmdl
+ModelFile=test.rtmdl
 Version=Rational Rose RealTime 6.6
 DefaultLanguage=C++
 DefaultRTS=C++ TargetRTS

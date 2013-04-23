@@ -1,0 +1,21 @@
+ourProgram_SYSTARGET = RTSystem/ourProgram.dep
+ourProgram_SYSDEPS = \
+	C:/Users/Maarten/Desktop/Test/test.rtmdl \
+	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
+	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
+
+ourProgram_SYSTARGET_CS = RTSystem/ourProgram.dep
+ourProgram_SYSDEPS_CS = \
+	RTSystem/ourProgram.cpp \
+	RTSystem/ourProgram.h \
+	TCPCONSTANTS.cpp \
+	TCPCONSTANTS.h \
+	mainCapsule.cpp \
+	mainCapsule.h \
+	tcpCapsule.cpp \
+	tcpCapsule.h \
+	tcpProtocol.cpp \
+	tcpProtocol.h \
+	topCap.cpp \
+	topCap.h
+

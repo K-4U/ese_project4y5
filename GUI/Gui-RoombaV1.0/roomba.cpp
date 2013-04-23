@@ -7,8 +7,11 @@
 
 Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Roomba)
+    ui(new Ui::Roomba),
+    server()
 {
+    this->server = new clsServerConn("145.74.196.59", 1337);
+
     ui->setupUi(this);
 }
 
@@ -46,3 +49,8 @@ void Roomba::on_pushButton_5_clicked()
     this->close();
 }
 
+
+void Roomba::on_pbConnect_clicked()
+{
+    this->server->doConnect();
+}

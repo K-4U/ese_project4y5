@@ -2,6 +2,8 @@
 #define ROOMBA_H
 
 #include <QMainWindow>
+#include "RoombaConnect.h"
+using namespace client;
 
 namespace Ui {
 class Roomba;
@@ -24,8 +26,11 @@ private slots:
 
     void on_pushButton_5_clicked();
 
+    void on_pbConnect_clicked();
+
 private:
     Ui::Roomba *ui;
+    clsServerConn *server;
 };
 
 #endif // ROOMBA_H

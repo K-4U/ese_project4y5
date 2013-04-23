@@ -1,0 +1,9 @@
+Makefile_TARGETS = \
+	Makefile.dep \
+	src/Makefile \
+	build/Makefile
+
+Makefile_DEPS = \
+	"C:/Documents and Settings/esgr/My Documents/rosert/2009-2010/WarmeDrankenAutomaatMetGui20100510/WarmeDrankenAutomaatMetGui/WarmeDrankenAutomaat.rtmdl" \
+	"C:/Program Files/Rational/Rose RealTime/C++/RTComponents.rtcmppkg"
+

@@ -1,0 +1,112 @@
+
+(object PetalRT
+	version 60010
+	_written "Rose RealTime 6.6.2057.0"
+	charSet 0)
+
+(list toUnit
+	capsulePaths (list capsulePathsList
+		(object CapsulePath "/aCacaoreservoir:0"
+			capsulePathProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BAFC546011B"
+			classifier  "Logical View::DomainLogic::AWarmeDrankenAutomaat"
+			quidu "4BAD1B160242"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "4BAFC546011C"
+					classifier  "Logical View::DomainLogic::ACacaoreservoir"
+					quidu "4BAD1BFD0128"
+					capsuleRole  ":Structure:aCacaoreservoir"
+					quidu "4BAD2AB70242"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/aCacaoreservoir:ACacaoreservoir")
+		(object CapsulePath "/aBesturingseenheid:0/aMaakCacao:0"
+			capsulePathProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BAFC550005D"
+			classifier  "Logical View::DomainLogic::AWarmeDrankenAutomaat"
+			quidu "4BAD1B160242"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "4BAFC550005E"
+					classifier  "Logical View::DomainLogic::ABesturingseenheid"
+					quidu "4BAD1CB20119"
+					capsuleRole  ":Structure:aBesturingseenheid"
+					quidu "4BAD1D120138"
+					capsuleRoleCardinality 0)
+				(object CapsulePathElement ""
+					quid "4BAFC550005F"
+					classifier  "Logical View::DomainLogic::AMaakCacao"
+					quidu "4BAD2595006D"
+					capsuleRole  ":Structure:aMaakCacao"
+					quidu "4BAD29700109"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/aMaakCacao:AMaakCacao")
+		(object CapsulePath "/"
+			capsulePathProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BDC47E202A0"
+			classifier  "Logical View::DomainLogic::AWarmeDrankenAutomaat"
+			quidu "4BAD1B160242"
+			capsulePathString ":AWarmeDrankenAutomaat")
+		(object CapsulePath "/aUserInterface:0"
+			capsulePathProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BDC489D02A1"
+			classifier  "Logical View::DomainLogic::AWarmeDrankenAutomaat"
+			quidu "4BAD1B160242"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "4BDC489D02A2"
+					classifier  "Logical View::UserInterface::AUserInterface"
+					quidu "4BAFBF8C03D8"
+					capsuleRole  ":Structure:aUserInterface"
+					quidu "4BAFC04B006D"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/aUserInterface:AUserInterface"))
+	daemons (list daemonsList
+		(object BehaviorDaemon "0/aMaakCacaoR1:AMaakCacao-TOP"
+			daemonProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BAFC556029F"
+			capsuleInstance  "/aBesturingseenheid:0/aMaakCacao:0"
+			quidu "4BAFC550005D"
+			State  ":TOP")
+		(object BehaviorDaemon "0/aCacaoreservoirR1:ACacaoreservoir-TOP"
+			daemonProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BAFC55E0157"
+			capsuleInstance  "/aCacaoreservoir:0"
+			quidu "4BAFC546011B"
+			State  ":TOP")
+		(object BehaviorDaemon "0/aMaakCacaoR1:AMaakCacao-maakCacao"
+			daemonProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BAFC57A03D8"
+			capsuleInstance  "/aBesturingseenheid:0/aMaakCacao:0"
+			quidu "4BAFC550005D"
+			State  ":TOP:maakCacao")
+		(object PortDaemon "0/pUserInterface/aUserInterface:0_Probe"
+			daemonProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BDC48C6006D"
+			capsuleInstance  "/aUserInterface:0"
+			quidu "4BDC489D02A1"
+			classifier  "Logical View::UserInterface::AUserInterface"
+			quidu "4BAFBF8C03D8"
+			port  ":Structure:pUserInterface"
+			quidu "4BAFBFBA03A9"
+			injectMessages (list injectMessagesList
+				(object InjectMessage "pUserInterface/cacao"
+					quid "4BDC48E3006D"
+					msgSignal  ":base:cacao"
+					quidu "4BADCBF5004E"
+					msgPriority "General"
+					msgData "void")))
+		(object MSCDaemon "Trace9"
+			daemonProcess "Deployment View::WarmeDrankenAutomaatProcessor::WarmeDrankenAutomaatComponentInstance"
+			quid "4BDC525C00EA"
+			capsuleInstance  "/"
+			quidu "4BDC47E202A0"
+			daemonTracingFlag TRUE
+			daemonEventBuffer 50
+			capsulePaths (list capsulePathsList
+				capsulePaths  "/aBesturingseenheid:0/aMaakCacao:0"
+				quidu "4BAFC550005D"
+				capsulePaths  "/aCacaoreservoir:0"
+				quidu "4BAFC546011B"
+				capsulePaths  "/aUserInterface:0"
+				quidu "4BDC489D02A1"))))

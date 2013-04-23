@@ -1,0 +1,37 @@
+WarmeDrankenAutomaatComponent_SYSTARGET = RTSystem/WarmeDrankenAutomaatComponent.dep
+WarmeDrankenAutomaatComponent_SYSDEPS = \
+	"C:/Documents and Settings/esgr/My Documents/rosert/2009-2010/WarmeDrankenAutomaatMetGui20100510/WarmeDrankenAutomaatMetGui/WarmeDrankenAutomaat.rtmdl" \
+	"C:/Program Files/Rational/Rose RealTime/C++/RTComponents.rtcmppkg" \
+	"C:/Program Files/Rational/Rose RealTime/C++/RTClasses.rtlogpkg"
+
+WarmeDrankenAutomaatComponent_SYSTARGET_CS = RTSystem/WarmeDrankenAutomaatComponent.dep
+WarmeDrankenAutomaatComponent_SYSDEPS_CS = \
+	RTSystem/WarmeDrankenAutomaatComponent.cpp \
+	RTSystem/WarmeDrankenAutomaatComponent.h \
+	CKlep.cpp \
+	CKlep.h \
+	ABesturingseenheid.cpp \
+	ABesturingseenheid.h \
+	ACacaoreservoir.cpp \
+	ACacaoreservoir.h \
+	AMaakCacao.cpp \
+	AMaakCacao.h \
+	AWarmeDrankenAutomaat.cpp \
+	AWarmeDrankenAutomaat.h \
+	PGuiInit.cpp \
+	PGuiInit.h \
+	PReservoir.cpp \
+	PReservoir.h \
+	PUserInterface.cpp \
+	PUserInterface.h \
+	AGui.cpp \
+	AGui.h \
+	ATCPServer_QtSocket.cpp \
+	ATCPServer_QtSocket.h \
+	AUserInterface.cpp \
+	AUserInterface.h \
+	PGuiConnection.cpp \
+	PGuiConnection.h \
+	TCPCONSTANTS.cpp \
+	TCPCONSTANTS.h
+

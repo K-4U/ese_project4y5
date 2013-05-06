@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::TCPCONSTANTS'
+// {{{RME classifier 'Logical View::TCPIP::TCPCONSTANTS'
 
 #if defined( PRAGMA ) && ! defined( PRAGMA_IMPLEMENTED )
 #pragma implementation "TCPCONSTANTS.h"

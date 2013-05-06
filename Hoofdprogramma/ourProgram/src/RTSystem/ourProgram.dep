@@ -1,6 +1,6 @@
 ourProgram_SYSTARGET = RTSystem/ourProgram.dep
 ourProgram_SYSDEPS = \
-	C:/Users/Maarten/Desktop/Test/test.rtmdl \
+	E:/repositories/git/ese_project4y5/Hoofdprogramma/test.rtmdl \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
 
@@ -10,12 +10,20 @@ ourProgram_SYSDEPS_CS = \
 	RTSystem/ourProgram.h \
 	TCPCONSTANTS.cpp \
 	TCPCONSTANTS.h \
-	mainCapsule.cpp \
-	mainCapsule.h \
+	jsonCommand.cpp \
+	jsonCommand.h \
+	jsonProtocol.cpp \
+	jsonProtocol.h \
+	jsonTranslateCapsule.cpp \
+	jsonTranslateCapsule.h \
 	tcpCapsule.cpp \
 	tcpCapsule.h \
 	tcpProtocol.cpp \
 	tcpProtocol.h \
+	tcpTopCapsule.cpp \
+	tcpTopCapsule.h \
+	mainCapsule.cpp \
+	mainCapsule.h \
 	topCap.cpp \
 	topCap.h
 

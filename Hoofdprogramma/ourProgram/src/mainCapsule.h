@@ -8,7 +8,6 @@
 #endif
 
 #include <RTSystem/ourProgram.h>
-#include <tcpProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -47,17 +46,8 @@ private:
 
 	// }}}USR
 	// }}}RME
-	// {{{RME classAttribute 'clientSocket'
-	SOCKET clientSocket;
-	// }}}RME
 
 protected:
-	// {{{RME capsuleRole 'instanceTcpCapsule'
-	RTActorRef instanceTcpCapsule;
-	// }}}RME
-	// {{{RME port 'tcpConnection'
-	tcpProtocol::Conjugate tcpConnection;
-	// }}}RME
 	// {{{RME port 'frame'
 	Frame::Base frame;
 	// }}}RME
@@ -65,21 +55,6 @@ protected:
 public:
 	mainCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~mainCapsule_Actor( void );
-	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
-
-protected:
-	// {{{RME transition ':TOP:Initial:Initial'
-	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
-	// }}}RME
-	// {{{RME transition ':TOP:KlaarVoorData:J5176823800F4:dataReceived'
-	INLINE_METHODS void transition2_dataReceived( const RTString * rtdata, tcpProtocol::Conjugate * rtport );
-	// }}}RME
-
-private:
-	INLINE_CHAINS void chain1_Initial( void );
-	INLINE_CHAINS void chain2_dataReceived( void );
-
-public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 
@@ -90,11 +65,7 @@ public:
 	static const RTStateId rtg_parent_state[];
 
 private:
-	static const RTComponentDescriptor rtg_capsule_roles[];
 	static const RTPortDescriptor rtg_ports[];
-
-public:
-	static const RTFieldDescriptor rtg_mainCapsule_fields[];
 };
 #undef SUPER
 

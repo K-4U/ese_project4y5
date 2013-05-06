@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::tcpProtocol'
+// {{{RME classifier 'Logical View::TCPIP::tcpProtocol'
 
 #ifndef tcpProtocol_H
 #define tcpProtocol_H

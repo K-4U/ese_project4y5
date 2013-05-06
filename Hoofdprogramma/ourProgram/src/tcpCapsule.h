@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::tcpCapsule'
+// {{{RME classifier 'Logical View::TCPIP::tcpCapsule'
 
 #ifndef tcpCapsule_H
 #define tcpCapsule_H

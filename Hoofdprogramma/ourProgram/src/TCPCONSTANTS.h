@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::TCPCONSTANTS'
+// {{{RME classifier 'Logical View::TCPIP::TCPCONSTANTS'
 
 #ifndef TCPCONSTANTS_H
 #define TCPCONSTANTS_H

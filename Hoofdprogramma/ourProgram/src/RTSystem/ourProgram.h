@@ -16,6 +16,8 @@ using namespace std;
 // }}}USR
 // }}}RME
 
+extern RTController * ThreadJsonTranslate;
+
 extern RTController * ThreadUserInterface;
 
 #endif /* RTSystem_ourProgram_H */

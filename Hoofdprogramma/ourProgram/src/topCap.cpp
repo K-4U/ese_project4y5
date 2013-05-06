@@ -6,9 +6,8 @@
 
 #include <RTSystem/ourProgram.h>
 #include <topCap.h>
-#include <tcpProtocol.h>
 extern const RTActorClass mainCapsule;
-extern const RTActorClass tcpCapsule;
+extern const RTActorClass tcpTopCapsule;
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
 // {{{USR
@@ -36,38 +35,6 @@ static const char * const rtg_state_names[] =
 	"TOP"
 };
 
-static const RTInterfaceDescriptor rtg_interfaces_mainCapsuleR1[] =
-{
-	{
-		"tcpConnection"
-	  , 1
-	}
-};
-
-static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
-{
-	{
-		0
-	  , &tcpProtocol::Base::rt_class
-	}
-};
-
-static const RTInterfaceDescriptor rtg_interfaces_tcpCapsuleR1[] =
-{
-	{
-		"mainConnection"
-	  , 1
-	}
-};
-
-static const RTBindingDescriptor rtg_bindings_tcpCapsuleR1[] =
-{
-	{
-		0
-	  , &tcpProtocol::Conjugate::rt_class
-	}
-};
-
 #define SUPER RTActor
 
 topCap_Actor::topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
@@ -77,46 +44,6 @@ topCap_Actor::topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 
 topCap_Actor::~topCap_Actor( void )
 {
-}
-
-int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex )
-{
-	switch( rtg_compId )
-	{
-	case 1:
-		// mainCapsuleR1
-		switch( rtg_portId )
-		{
-		case 0:
-			// tcpConnection
-			if( rtg_repIndex < 1 )
-			{
-				// tcpCapsuleR1/mainConnection
-				return tcpCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
-			}
-			break;
-		default:
-			break;
-		}
-	case 2:
-		// tcpCapsuleR1
-		switch( rtg_portId )
-		{
-		case 0:
-			// mainConnection
-			if( rtg_repIndex < 1 )
-			{
-				// mainCapsuleR1/tcpConnection
-				return mainCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
-			}
-			break;
-		default:
-			break;
-		}
-	default:
-		break;
-	}
-	return RTActor::_followOutV( rtg_end, rtg_compId, rtg_portId, rtg_repIndex );
 }
 
 void topCap_Actor::rtsBehavior( int signalIndex, int portIndex )
@@ -186,23 +113,23 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 1
-	  , rtg_interfaces_mainCapsuleR1
-	  , 1
-	  , rtg_bindings_mainCapsuleR1
+	  , 0
+	  , (const RTInterfaceDescriptor *)0
+	  , 0
+	  , (const RTBindingDescriptor *)0
 	}
   , {
-		"tcpCapsuleR1"
-	  , &tcpCapsule
-	  , RTOffsetOf( topCap_Actor, tcpCapsuleR1 )
+		"tcpTopCapsuleR1"
+	  , &tcpTopCapsule
+	  , RTOffsetOf( topCap_Actor, tcpTopCapsuleR1 )
 	  , 2
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 1
-	  , rtg_interfaces_tcpCapsuleR1
-	  , 1
-	  , rtg_bindings_tcpCapsuleR1
+	  , 0
+	  , (const RTInterfaceDescriptor *)0
+	  , 0
+	  , (const RTBindingDescriptor *)0
 	}
 };
 

@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::tcpProtocol'
+// {{{RME classifier 'Logical View::TCPIP::tcpProtocol'
 
 #if defined( PRAGMA ) && ! defined( PRAGMA_IMPLEMENTED )
 #pragma implementation "tcpProtocol.h"

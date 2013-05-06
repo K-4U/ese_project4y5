@@ -7,20 +7,27 @@
 #include <RTSystem/ourProgram.h>
 extern const RTActorClass topCap;
 
+RTController * ThreadJsonTranslate = (RTController *)0;
+
 RTController * ThreadUserInterface = (RTController *)0;
 
 #if USE_THREADS
 static RTPeerController * EigenThreadRTS = (RTPeerController *)0;
 static RTThread * OTPhysThr_EigenThread = (RTThread *)0;
+static RTPeerController * OtherThreadRTS = (RTPeerController *)0;
+static RTThread * OTPhysThr_OtherThread = (RTThread *)0;
 
 void _rtg_createThreads( RTDebugger * debugger )
 {
 	EigenThreadRTS = new RTPeerController( debugger, "EigenThread" );
 	OTPhysThr_EigenThread = new RTThread( EigenThreadRTS, 20000, DEFAULT_MAIN_PRIORITY );
+	OtherThreadRTS = new RTPeerController( debugger, "OtherThread" );
+	OTPhysThr_OtherThread = new RTThread( OtherThreadRTS, 20000, DEFAULT_MAIN_PRIORITY );
 }
 
 void _rtg_mapLogicalThreads( RTController * controller )
 {
+	ThreadJsonTranslate = OtherThreadRTS;
 	ThreadUserInterface = EigenThreadRTS;
 }
 
@@ -28,11 +35,14 @@ void _rtg_deleteThreads( void )
 {
 	delete OTPhysThr_EigenThread;
 	delete EigenThreadRTS;
+	delete OTPhysThr_OtherThread;
+	delete OtherThreadRTS;
 }
 #else
 
 void _rtg_mapLogicalThreads( RTController * controller )
 {
+	ThreadJsonTranslate = controller;
 	ThreadUserInterface = controller;
 }
 #endif

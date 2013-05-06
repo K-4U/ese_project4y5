@@ -1,4 +1,4 @@
-// {{{RME classifier 'Logical View::tcpCapsule'
+// {{{RME classifier 'Logical View::TCPIP::tcpCapsule'
 
 #if defined( PRAGMA ) && ! defined( PRAGMA_IMPLEMENTED )
 #pragma implementation "tcpCapsule.h"

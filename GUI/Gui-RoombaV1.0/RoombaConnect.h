@@ -22,7 +22,6 @@ namespace client{
 
     /*!
      * \brief Class that has a connection to the server
-     * \author Koen Beckers (K-4U)
      */
     class clsServerConn : public QObject
     {
@@ -47,7 +46,6 @@ namespace client{
              * \param toSend jsonCommand that should be sent
              */
             void sendCommand(jsonCommand &toSend);
-
 
 
         private:
@@ -76,7 +74,7 @@ namespace client{
              */
             void handleEventReceived(QVariantMap data);
 
-signals:
+        signals:
             /*!
              * \brief Emitted when the client has a succesfull connection to the server
              */
@@ -116,7 +114,6 @@ signals:
             bool isConnected;
             bool isConnecting;
             bool inString;
-
 
     };
 }

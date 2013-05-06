@@ -4,7 +4,8 @@
 
 Controllingroomba::Controllingroomba(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Controllingroomba)
+    ui(new Ui::Controllingroomba),
+    log(LOGTAGS_ROOMBA)
 {
     ui->setupUi(this);
 }
@@ -19,4 +20,16 @@ void Controllingroomba::on_pushButton_6_clicked()
     Roomba *roomba = new Roomba();
     roomba->show();
     this->close();
+}
+
+void Controllingroomba::on_pbUpload_clicked()
+{
+
+    QString Manualcommand = ui->txtManualcommands->toPlainText();
+
+    this->log << Manualcommand << endl;
+
+
+
+    ui->txtManualcommands->clear();
 }

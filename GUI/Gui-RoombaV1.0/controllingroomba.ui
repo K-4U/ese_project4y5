@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton_5">
+  <widget class="QPushButton" name="pbUpload">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -63,16 +63,6 @@
    </property>
    <property name="text">
     <string>Connected</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="listWidget">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>130</y>
-     <width>256</width>
-     <height>192</height>
-    </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -164,6 +154,16 @@
    </property>
    <property name="text">
     <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="txtManualcommands">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>261</width>
+     <height>171</height>
+    </rect>
    </property>
   </widget>
  </widget>

@@ -10,7 +10,7 @@ Roomba::Roomba(QWidget *parent) :
     ui(new Ui::Roomba),
     server()
 {
-    this->server = new clsServerConn("145.74.196.59", 1337);
+    this->server = new clsServerConn("145.74.199.121", 1337);
 
     ui->setupUi(this);
 }

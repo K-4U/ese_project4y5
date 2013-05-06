@@ -9,7 +9,7 @@ namespace client{
         ,hostName(hostName)
         ,port(port)
         ,depth(0)
-        ,log(LOGTAGS_UI)
+        ,log(LOGTAGS_SERVER)
         ,isConnected(false)
         ,isConnecting(false)
         ,inString(false)

@@ -1,7 +1,9 @@
 #ifndef CONTROLLINGROOMBA_H
 #define CONTROLLINGROOMBA_H
 
+#include "../resources/clslog.h"
 #include <QWidget>
+using namespace K4U;
 
 namespace Ui {
 class Controllingroomba;
@@ -18,8 +20,11 @@ public:
 private slots:
     void on_pushButton_6_clicked();
 
+    void on_pbUpload_clicked();
+
 private:
     Ui::Controllingroomba *ui;
+    clsLog log;
 };
 
 #endif // CONTROLLINGROOMBA_H

@@ -125,23 +125,14 @@ clsLog& clsLog::operator <<(int msg){
 std::string clsLog::getTag(){
     string ret = "";
     switch(this->tag){
-        case LOGTAGS_IRC:
-            ret = "IRC";
+        case LOGTAGS_ROOMBA:
+            ret = "ROOMBA";
             break;
         case LOGTAGS_MAIN:
             ret = "MAIN";
             break;
-        case LOGTAGS_USER:
-            ret= "USER";
-            break;
         case LOGTAGS_SERVER:
-            ret = "SRVR";
-            break;
-        case LOGTAGS_UI:
-            ret = "UI";
-            break;
-        case LOGTAGS_WEB:
-            ret = "WEB";
+            ret = "SERVER";
             break;
 		case LOGTAGS_EVENT:
 			ret = "EVNT";

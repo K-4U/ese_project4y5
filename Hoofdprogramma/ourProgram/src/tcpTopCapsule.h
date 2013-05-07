@@ -46,8 +46,8 @@ protected:
 	// {{{RME capsuleRole 'tcpInstance'
 	RTActorRef tcpInstance;
 	// }}}RME
-	// {{{RME capsuleRole 'jsonTranslateInstance'
-	RTActorRef jsonTranslateInstance;
+	// {{{RME capsuleRole 'jsonTranslateCapsuleR1'
+	RTActorRef jsonTranslateCapsuleR1;
 	// }}}RME
 	// {{{RME port 'internalJsonPort'
 	jsonProtocol::Conjugate internalJsonPort;
@@ -62,6 +62,10 @@ public:
 	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 
 protected:
+	// {{{RME enter ':TOP:S1'
+	INLINE_METHODS void enter2_S1( void );
+	// }}}RME
+	virtual void enterStateV( void );
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME

@@ -106,9 +106,9 @@ const RTStateId topCap_Actor::rtg_parent_state[] =
 const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 {
 	{
-		"mainCapsuleR1"
-	  , &mainCapsule
-	  , RTOffsetOf( topCap_Actor, mainCapsuleR1 )
+		"tcpTopCapsuleR1"
+	  , &tcpTopCapsule
+	  , RTOffsetOf( topCap_Actor, tcpTopCapsuleR1 )
 	  , 1
 	  , RTComponentDescriptor::Fixed
 	  , 1
@@ -119,9 +119,9 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , (const RTBindingDescriptor *)0
 	}
   , {
-		"tcpTopCapsuleR1"
-	  , &tcpTopCapsule
-	  , RTOffsetOf( topCap_Actor, tcpTopCapsuleR1 )
+		"mainCapsuleR1"
+	  , &mainCapsule
+	  , RTOffsetOf( topCap_Actor, mainCapsuleR1 )
 	  , 2
 	  , RTComponentDescriptor::Fixed
 	  , 1

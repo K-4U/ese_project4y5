@@ -11,12 +11,6 @@
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
-//zet windowsversie op XP
-#define WINVER 0x0501
-
-#include <winsock2.h> 
-#include <ws2tcpip.h> 
-#include <stdio.h>
 
 // }}}USR
 // }}}RME

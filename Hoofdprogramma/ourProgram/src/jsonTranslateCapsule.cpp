@@ -16,13 +16,13 @@
 static const RTRelayDescriptor rtg_relays[] =
 {
 	{
-		"jsonPort"
-	  , &jsonProtocol::Base::rt_class
+		"tcpPort"
+	  , &tcpProtocol::Conjugate::rt_class
 	  , 1 // cardinality
 	}
   , {
-		"tcpPort"
-	  , &tcpProtocol::Conjugate::rt_class
+		"jsonPort"
+	  , &jsonProtocol::Base::rt_class
 	  , 1 // cardinality
 	}
 };
@@ -64,19 +64,19 @@ int jsonTranslateCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_port
 	switch( rtg_portId )
 	{
 	case 0:
-		// jsonPort
+		// tcpPort
 		if( rtg_repIndex < 1 )
 		{
-			rtg_end.port = &jsonPort;
+			rtg_end.port = &tcpPort;
 			rtg_end.index = rtg_repIndex;
 			return 1;
 		}
 		break;
 	case 1:
-		// tcpPort
+		// jsonPort
 		if( rtg_repIndex < 1 )
 		{
-			rtg_end.port = &tcpPort;
+			rtg_end.port = &jsonPort;
 			rtg_end.index = rtg_repIndex;
 			return 1;
 		}
@@ -91,19 +91,34 @@ int jsonTranslateCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_port
 INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const RTString * rtdata, tcpProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	cout << "-- Data received" << *rtdata << endl;
+	cout << "J: Data received: " << *rtdata << endl;
 	int i;
-	while(rtdata[i] != NULL){
-		char b = *rtdata[i];
-		cout << "b = " << b << endl;
-		if(b == '{' || b == '['){
-			this->depth++;
-		}else if(b == '}' || b == ']'){
-			this->depth--;
-		}
+	for(i=0;i<strlen(rtdata->Contents);i++){
+		char b = rtdata->Contents[i];
+	    cout << "J: b = " << b << endl;
+	    //Very basic JSON completeness checking..
+	    if(b == '"'){
+	        this->inString = !this->inString;
+	    }
+	    if(!this->inString){
+	    	if(b == '{' || b == '['){
+	    		this->depth++;
+	    	}else if(b == '}' || b == ']'){
+	    		this->depth--;
+	    	}else if(depth == 0){
+	            b = 0;
+	        }
+	    }
 		this->jsonBuffer.append(&b);
+	    if(this->jsonBuffer.size() >= 2 && this->depth == 0){
+	        //We should've received a complete JSON message.
+	        
+	        //And clear buffer
+	        this->jsonBuffer.clear();
+	    }
 	}
-	cout << "Buffer: " << this->jsonBuffer << endl;
+	cout << "J: Buffer: " << this->jsonBuffer << endl;
+
 	// }}}USR
 }
 // }}}RME
@@ -112,7 +127,32 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 INLINE_METHODS void jsonTranslateCapsule_Actor::transition2_Initial( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
-	cout << "JsonTranslateCapsule initialized" << endl;
+	cout << "JsonTranslateCapsule Initialized" << endl;
+
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:J5188EA8C00E2:socketConnected'
+INLINE_METHODS void jsonTranslateCapsule_Actor::transition3_socketConnected( const unsigned * rtdata, tcpProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	cout << "Socket connected!" << endl;
+
+	//Todo: Trigger event for main application to know this has happened.
+	this->socket = *rtdata;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:J5188EB280304:socketDisconnected'
+INLINE_METHODS void jsonTranslateCapsule_Actor::transition4_socketDisconnected( const void * rtdata, tcpProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	cout << "Socket disconnected!" << endl;
+
+	//Todo: Trigger event for main application to know this has happened.
+	this->socket = 0;
 	// }}}USR
 }
 // }}}RME
@@ -125,6 +165,28 @@ INLINE_CHAINS void jsonTranslateCapsule_Actor::chain2_Initial( void )
 	transition2_Initial( msg->data, msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+}
+
+INLINE_CHAINS void jsonTranslateCapsule_Actor::chain3_socketConnected( void )
+{
+	// transition ':TOP:J5188EA8C00E2:socketConnected'
+	rtgChainBegin( 1, "socketConnected" );
+	exitToChainState( 1, rtg_parent_state );
+	rtgTransitionBegin();
+	transition3_socketConnected( (const unsigned *)msg->data, (tcpProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	processHistory();
+}
+
+INLINE_CHAINS void jsonTranslateCapsule_Actor::chain4_socketDisconnected( void )
+{
+	// transition ':TOP:J5188EB280304:socketDisconnected'
+	rtgChainBegin( 1, "socketDisconnected" );
+	exitToChainState( 1, rtg_parent_state );
+	rtgTransitionBegin();
+	transition4_socketDisconnected( msg->data, (tcpProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	processHistory();
 }
 
 INLINE_CHAINS void jsonTranslateCapsule_Actor::chain1_dataReceived( void )
@@ -157,6 +219,21 @@ void jsonTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 					break;
 				}
 				break;
+			case 1:
+				// {{{RME port 'tcpPort'
+				switch( signalIndex )
+				{
+				case tcpProtocol::Conjugate::rti_sock:
+					chain3_socketConnected();
+					return;
+				case tcpProtocol::Conjugate::rti_noSock:
+					chain4_socketDisconnected();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
 			default:
 				break;
 			}
@@ -176,7 +253,7 @@ void jsonTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 					break;
 				}
 				break;
-			case 2:
+			case 1:
 				// {{{RME port 'tcpPort'
 				switch( signalIndex )
 				{
@@ -213,11 +290,11 @@ const RTActor_class jsonTranslateCapsule_Actor::rtg_class =
   , &jsonTranslateCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 3
+  , 2
   , jsonTranslateCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 3
+  , 5
   , jsonTranslateCapsule_Actor::rtg_jsonTranslateCapsule_fields
 };
 
@@ -230,42 +307,33 @@ const RTStateId jsonTranslateCapsule_Actor::rtg_parent_state[] =
 const RTPortDescriptor jsonTranslateCapsule_Actor::rtg_ports[] =
 {
 	{
-		"jsonPort"
-	  , (const char *)0
-	  , &jsonProtocol::Base::rt_class
-	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonTranslateCapsule_Actor::jsonPort )
-	  , 1 // cardinality
-	  , 1
-	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
-	}
-  , {
 		"tcpPort"
 	  , (const char *)0
 	  , &tcpProtocol::Conjugate::rt_class
 	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonTranslateCapsule_Actor::tcpPort )
 	  , 1 // cardinality
-	  , 2
+	  , 1
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
 	}
   , {
-		"frame"
+		"jsonPort"
 	  , (const char *)0
-	  , &Frame::Base::rt_class
-	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonTranslateCapsule_Actor::frame )
+	  , &jsonProtocol::Base::rt_class
+	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonTranslateCapsule_Actor::jsonPort )
 	  , 1 // cardinality
-	  , 3
-	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
+	  , 2
+	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
 	}
 };
 
 const RTFieldDescriptor jsonTranslateCapsule_Actor::rtg_jsonTranslateCapsule_fields[] =
 {
-	// {{{RME classAttribute 'jsonReader'
+	// {{{RME classAttribute 'depth'
 	{
-		"jsonReader"
-	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonReader )
+		"depth"
+	  , RTOffsetOf( jsonTranslateCapsule_Actor, depth )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
-	  , (const RTObject_class *)0
+	  , &RTType_int
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0
@@ -284,12 +352,36 @@ const RTFieldDescriptor jsonTranslateCapsule_Actor::rtg_jsonTranslateCapsule_fie
 		// }}}RME
 	}
 	// }}}RME
-	// {{{RME classAttribute 'depth'
+	// {{{RME classAttribute 'jsonReader'
   , {
-		"depth"
-	  , RTOffsetOf( jsonTranslateCapsule_Actor, depth )
+		"jsonReader"
+	  , RTOffsetOf( jsonTranslateCapsule_Actor, jsonReader )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
-	  , &RTType_int
+	  , (const RTObject_class *)0
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'socket'
+  , {
+		"socket"
+	  , RTOffsetOf( jsonTranslateCapsule_Actor, socket )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , (const RTObject_class *)0
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'inString'
+  , {
+		"inString"
+	  , RTOffsetOf( jsonTranslateCapsule_Actor, inString )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0

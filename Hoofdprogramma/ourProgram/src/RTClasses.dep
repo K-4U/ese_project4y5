@@ -1,0 +1,11 @@
+RTClasses_TARGET = RTClasses.predep
+RTClasses_DEPS =
+RTClasses_TARGET_CS = RTClasses.dep
+RTClasses_DEPS_CS = \
+	RTDataObject.cpp \
+	RTDataObject.h \
+	RTString.cpp \
+	RTString.h \
+	Timing.cpp \
+	Timing.h
+

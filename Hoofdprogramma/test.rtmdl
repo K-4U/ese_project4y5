@@ -18,7 +18,7 @@
 		clipIconLabels TRUE
 		defaultFont (object Font
 			size 8
-			face "MS Sans Serif"
+			face "Consolas"
 			bold FALSE
 			italics FALSE
 			underline FALSE
@@ -40,19 +40,24 @@
 		exportControl "Public"
 		logical_models (list unit_reference_list
 			(object Capsule "topCap"
+				attributes (list Attribute_Set
+					(object Attribute
+						tool "OT::Cpp"
+						name "HeaderPreface"
+						value (value Text "")))
 				quid "5176795702F3"
 				structure (object CapsuleCollaboration "Structure"
 					quid "5176795702F7"
 					classifierRoles (list classifierRolesList
-						(object CapsuleRole "mainCapsuleR1"
-							quid "51767A0803AD"
-							classifier  "Logical View::mainCapsule"
-							quidu "517679F9026D"
-							genericity "fixed")
 						(object CapsuleRole "tcpTopCapsuleR1"
-							quid "518769020006"
+							quid "5188DAE703A0"
 							classifier  "Logical View::TCPIP::tcpTopCapsule"
 							quidu "51875E79036D"
+							genericity "fixed")
+						(object CapsuleRole "mainCapsuleR1"
+							quid "5188E41C02D9"
+							classifier  "Logical View::mainCapsule"
+							quidu "517679F9026D"
 							genericity "fixed")))
 				statemachine (object State_Machine
 					quid "5176795702F4"
@@ -81,46 +86,37 @@
 							quid "5176795702FE"
 							pos (840,615)
 							quidu "5176795702F7")
-						(object CapsuleRoleVw ":Structure:mainCapsuleR1" @4
-							quid "51767A080231"
-							pos (1240,442)
-							quidu "51767A0803AD"
-							width 304
+						(object CapsuleRoleVw ":Structure:tcpTopCapsuleR1" @4
+							quid "5188DAE700EA"
+							pos (429,426)
+							quidu "5188DAE703A0"
+							width 378
 							label (object ItemLabel
-								quid "51767A0803AE"
-								pos (1240,401)
+								quid "5188DAE703A2"
+								pos (429,378)
 								positionBySuperclass FALSE
 								nlines 2
-								max_width 266
-								label "mainCapsuleR1")
-							positionBySuperclass FALSE)
-						(object CapsuleRoleVw ":Structure:tcpTopCapsuleR1" @5
-							quid "5187690100B8"
-							pos (359,426)
-							quidu "518769020006"
-							width 334
-							label (object ItemLabel
-								quid "518769020018"
-								pos (359,385)
-								positionBySuperclass FALSE
-								nlines 2
-								max_width 303
+								max_width 288
 								label "tcpTopCapsuleR1")
-							positionBySuperclass FALSE))
+							positionBySuperclass FALSE)
+						(object CapsuleRoleVw ":Structure:mainCapsuleR1" @5
+							quid "5188E41C0022"
+							pos (1103,472)
+							quidu "5188E41C02D9"
+							width 342
+							label (object ItemLabel
+								quid "5188E41C02DA"
+								pos (1103,424)
+								nlines 2
+								max_width 256
+								label "mainCapsuleR1")))
 					filterFlags 521))
 			(object Capsule "mainCapsule"
 				attributes (list Attribute_Set
 					(object Attribute
 						tool "OT::Cpp"
 						name "HeaderPreface"
-						value (value Text 
-|//zet windowsversie op XP
-|#define WINVER 0x0501
-|
-|#include <winsock2.h> 
-|#include <ws2tcpip.h> 
-|#include <stdio.h>
-						)))
+						value (value Text "")))
 				quid "517679F9026D"
 				structure (object CapsuleCollaboration "Structure"
 					quid "517679F90271"
@@ -163,10 +159,14 @@
 						(object PortVw ":Structure:frame" @9
 							quid "5176880C0102"
 							pos (486,576)
+							font (object Font
+								face "MS Sans Serif")
 							quidu "51768809029A"
 							label (object ItemLabel
 								quid "5176880C0104"
 								pos (495,612)
+								font (object Font
+									face "MS Sans Serif")
 								nlines 2
 								max_width 138
 								label "frame")))
@@ -549,7 +549,7 @@
 |				(int)result->ai_addrlen);
 |if (iResult == SOCKET_ERROR) 
 |{
-|    printf("bind failed: %d\n", WSAGetLastError());
+|    printf("S: bind failed: %d\n", WSAGetLastError());
 |    freeaddrinfo(result);
 |    closesocket(ListenSocket);
 |    WSACleanup();
@@ -578,14 +578,14 @@
 |//of pending connections in the queue. 
 |//Check the return value for general errors. 
 |if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-|    printf( "Error at bind(): %ld\n", WSAGetLastError() );
+|    printf( "S: Error at bind(): %ld\n", WSAGetLastError() );
 |    closesocket(ListenSocket);
 |    WSACleanup();
 |    return false;
 |}
 |else
 |{
-|	cout << "listening to port: " << DEFAULT_PORT << endl;
+|	cout << "S: listening to port: " << DEFAULT_PORT << endl;
 |	return true;
 |}
 |
@@ -619,7 +619,7 @@
 |// Accept a client socket
 |ClientSocket = accept(ListenSocket, NULL, NULL);
 |if (ClientSocket == INVALID_SOCKET) {
-|    printf("accept failed: %d\n", WSAGetLastError());
+|    printf("S: accept failed: %d\n", WSAGetLastError());
 |    closesocket(ListenSocket);
 |    WSACleanup();
 |    return false;
@@ -647,36 +647,40 @@
 |	iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 |	if (iResult > 0) 
 |	{
-|		printf("Bytes received by socket capsule: %d\n", iResult);
+|		printf("S: Bytes received by socket capsule: %d\n", iResult);
 |		for (int i = 0; i < iResult; i++)
 |		{
-|			cout << recvbuf[i];
+|			cout << "S: " << recvbuf[i] << endl;
 |		}
-|		cout << endl;
 |
 |		// send data to the application capsule via the port appPort
 |		mainConnection.dataReceived(RTString(recvbuf)).send();
 |
+|        //Clear buffer:
+|        int i;
+|        for(i=0;i<DEFAULT_BUFLEN;i++){
+|            recvbuf[i] = 0;
+|        }
 |        // Echo the buffer back to the sender
-|        iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
+|        /*iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
 |        if (iSendResult == SOCKET_ERROR) {
 |            printf("send failed: %d\n", WSAGetLastError());
 |            closesocket(ClientSocket);
 |            WSACleanup();
 |            return 1;
 |        }
-|        printf("Bytes sent: %d\n", iSendResult);
+|        printf("Bytes sent: %d\n", iSendResult);*/
 |	}
 |	else
 |	{
-|		cout << "iResult <= 0 " << "is: " << iResult << endl;
+|		cout << "S: iResult <= 0 " << "is: " << iResult << endl;
 |	}
 |}
 |while (iResult > 0);
 |
 |if (iResult<=0)
 |{
-|	printf("Connection closing...\n");
+|	printf("S: Connection closing...\n");
 |	return false;
 |}
 |else
@@ -694,7 +698,7 @@
 |// shutdown the send half of the connection since no more data can be sent
 |iResult = shutdown(ClientSocket, SD_SEND);
 |if (iResult == SOCKET_ERROR) {
-|   	printf("shutdown failed: %d\n", WSAGetLastError());
+|   	printf("S: shutdown failed: %d\n", WSAGetLastError());
 |    freeaddrinfo(result);
 |    closesocket(ListenSocket);
 |   	closesocket(ClientSocket);
@@ -795,6 +799,8 @@
 |// stuur SOCKET ook naar de applicatie zodat deze ook kan zenden
 |// terwijl deze capsule als server wacht op ontvangen data
 |mainConnection.sock(ClientSocket).send();
+|
+|cout << "S: Connection received!" << endl;
 											))
 									(object Trans "True"
 										quid "51767F3C0278"
@@ -836,6 +842,8 @@
 								(object StateView "Normal" "Reset" @12
 									quid "51767D3D0280"
 									pos (664,618)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767D3D02F0"
 									label (object ItemLabel
 										quid "51767D3D02F1"
@@ -899,9 +907,13 @@
 														juncPtIcon (object JuncPtIcon @23
 															quid "51767DEF03C8"
 															pos (855,186)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767DEF03C9"
 																pos (895,156)
+																font (object Font
+																	face "MS Sans Serif")
 																max_width 78)))
 													(object JuncPtVw ":TOP:Reset:J51767E19024A" @24
 														quid "51767E19024B"
@@ -910,9 +922,13 @@
 														juncPtIcon (object JuncPtIcon @25
 															quid "51767E19024C"
 															pos (1260,186)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767E19024D"
-																pos (1300,156))))
+																pos (1300,156)
+																font (object Font
+																	face "MS Sans Serif"))))
 													(object JuncPtVw ":TOP:Reset:J51767E2302AF" @26
 														quid "51767E2302B0"
 														pos (447,96)
@@ -921,9 +937,13 @@
 														juncPtIcon (object JuncPtIcon @27
 															quid "51767E2302B1"
 															pos (447,186)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767E2302B2"
 																pos (487,156)
+																font (object Font
+																	face "MS Sans Serif")
 																positionBySuperclass FALSE
 																max_width 216)
 															positionBySuperclass FALSE))
@@ -934,9 +954,13 @@
 														juncPtIcon (object JuncPtIcon @29
 															quid "51767EF30083"
 															pos (1494,363)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767EF30084"
-																pos (1524,403))))
+																pos (1524,403)
+																font (object Font
+																	face "MS Sans Serif"))))
 													(object JuncPtVw ":TOP:Reset:J51767EF80069" @30
 														quid "51767EF8006A"
 														pos (1584,647)
@@ -944,9 +968,13 @@
 														juncPtIcon (object JuncPtIcon @31
 															quid "51767EF8006B"
 															pos (1494,647)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767EF8006C"
-																pos (1524,687))))
+																pos (1524,687)
+																font (object Font
+																	face "MS Sans Serif"))))
 													(object JuncPtVw ":TOP:Reset:J51767F110127" @32
 														quid "51767F110128"
 														pos (1584,920)
@@ -954,9 +982,13 @@
 														juncPtIcon (object JuncPtIcon @33
 															quid "51767F110129"
 															pos (1494,920)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767F11012A"
-																pos (1524,960))))
+																pos (1524,960)
+																font (object Font
+																	face "MS Sans Serif"))))
 													(object JuncPtVw ":TOP:Reset:J51767F1803CE" @34
 														quid "51767F1803CF"
 														pos (945,1134)
@@ -964,9 +996,13 @@
 														juncPtIcon (object JuncPtIcon @35
 															quid "51767F1803D0"
 															pos (945,1044)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767F1803D1"
-																pos (985,1074))))
+																pos (985,1074)
+																font (object Font
+																	face "MS Sans Serif"))))
 													(object JuncPtVw ":TOP:Reset:J51767F5E00A7" @36
 														quid "51767F5E00A8"
 														pos (96,867)
@@ -974,9 +1010,13 @@
 														juncPtIcon (object JuncPtIcon @37
 															quid "51767F5E00A9"
 															pos (186,867)
+															font (object Font
+																face "MS Sans Serif")
 															label (object ItemLabel
 																quid "51767F5E00AA"
-																pos (156,907))))))
+																pos (156,907)
+																font (object Font
+																	face "MS Sans Serif"))))))
 											(object StateView "StartState" "Initial" @38
 												quid "51767D550132"
 												pos (180,180)
@@ -985,10 +1025,14 @@
 								(object ChoicePtVw "InitializeWinsock" @39
 									quid "51767D7D0004"
 									pos (679,263)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767D7D011E"
 									label (object ItemLabel
 										quid "51767D7D0124"
 										pos (658,167)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 247)
 									positionBySuperclass FALSE
@@ -1010,10 +1054,14 @@
 								(object ChoicePtVw "addressCorrect" @43
 									quid "51767DF5034D"
 									pos (983,327)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767DF5039C"
 									label (object ItemLabel
 										quid "51767DF503A2"
 										pos (1074,194)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 222)
 									positionBySuperclass FALSE
@@ -1035,10 +1083,14 @@
 								(object ChoicePtVw "validSocket" @47
 									quid "51767EA102DD"
 									pos (1127,439)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767EA1031D"
 									label (object ItemLabel
 										quid "51767EA10323"
 										pos (1257,359)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 175)
 									positionBySuperclass FALSE
@@ -1060,10 +1112,14 @@
 								(object ChoicePtVw "bindingSuccesfull" @51
 									quid "51767EAD0332"
 									pos (1191,647)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767EAD0333"
 									label (object ItemLabel
 										quid "51767EAD0339"
 										pos (1390,529)
+										font (object Font
+											face "MS Sans Serif")
 										uses_fill_color FALSE
 										positionBySuperclass FALSE
 										max_width 259)
@@ -1086,10 +1142,14 @@
 								(object ChoicePtVw "listening" @55
 									quid "51767EBA0074"
 									pos (1063,887)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767EBA0075"
 									label (object ItemLabel
 										quid "51767EBA007B"
 										pos (1234,866)
+										font (object Font
+											face "MS Sans Serif")
 										uses_fill_color FALSE
 										positionBySuperclass FALSE
 										max_width 119)
@@ -1112,10 +1172,14 @@
 								(object ChoicePtVw "acceptConnection" @59
 									quid "51767EC702FD"
 									pos (727,983)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767EC702FE"
 									label (object ItemLabel
 										quid "51767EC70306"
 										pos (955,1027)
+										font (object Font
+											face "MS Sans Serif")
 										uses_fill_color FALSE
 										positionBySuperclass FALSE
 										max_width 272)
@@ -1138,10 +1202,14 @@
 								(object ChoicePtVw "getBytes" @63
 									quid "51767F26009D"
 									pos (487,871)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767F2600E6"
 									label (object ItemLabel
 										quid "51767F2600ED"
 										pos (423,1003)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 128)
 									positionBySuperclass FALSE
@@ -1163,10 +1231,14 @@
 								(object ChoicePtVw "shutdownConnection" @67
 									quid "51767F490001"
 									pos (391,727)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767F490047"
 									label (object ItemLabel
 										quid "51767F49004F"
 										pos (277,600)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 313)
 									positionBySuperclass FALSE
@@ -1187,11 +1259,15 @@
 									reversed TRUE)
 								(object TransView ":TOP:Initial:Initial" @71
 									quid "51767D950389"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767D9700E1"
 									label (object SegLabel @72
 										quid "51767D9700E3"
 										pos (420,219)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 75
 										pctDist 0.498855
 										height 0
@@ -1204,11 +1280,15 @@
 									line_style 6144)
 								(object TransView ":TOP:InitializeWinsock:False" @73
 									quid "51767DEF0086"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767DEF03C5"
 									label (object SegLabel @74
 										quid "51767DEF03CB"
 										pos (714,413)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.498711
 										height 45)
@@ -1220,11 +1300,15 @@
 									line_style 6144)
 								(object TransView ":TOP:InitializeWinsock:True" @75
 									quid "51767E100218"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767E1102D3"
 									label (object SegLabel @76
 										quid "51767E1102D4"
 										pos (833,256)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.499639
 										height 0
@@ -1237,11 +1321,15 @@
 									line_style 6144)
 								(object TransView ":TOP:addressCorrect:False" @77
 									quid "51767E180238"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767E190249"
 									label (object SegLabel @78
 										quid "51767E19024F"
 										pos (869,459)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.500954
 										height 45)
@@ -1253,11 +1341,15 @@
 									line_style 6144)
 								(object TransView ":TOP:Reset:J51767E2302AF:viaResetToInit" @79
 									quid "51767E220358"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767E2302AE"
 									label (object SegLabel @80
 										quid "51767E2302B4"
 										pos (440,335)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 216
 										pctDist 1.682474
@@ -1273,11 +1365,15 @@
 									line_style 6144)
 								(object TransView ":TOP:addressCorrect:True" @81
 									quid "51767EDB0156"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EDC00FC"
 									label (object SegLabel @82
 										quid "51767EDC00FE"
 										pos (1072,362)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.500000
 										height 0
@@ -1290,11 +1386,15 @@
 									line_style 6144)
 								(object TransView ":TOP:validSocket:True" @83
 									quid "51767EE0019D"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EE100DB"
 									label (object SegLabel @84
 										quid "51767EE100DD"
 										pos (1177,521)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.496925
 										height 0)
@@ -1306,11 +1406,15 @@
 									line_style 6144)
 								(object TransView ":TOP:bindingSuccesfull:True" @85
 									quid "51767EE302B3"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EE602C6"
 									label (object SegLabel @86
 										quid "51767EE602C8"
 										pos (1165,765)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.498308
 										height 0)
@@ -1322,11 +1426,15 @@
 									line_style 6144)
 								(object TransView ":TOP:listening:True" @87
 									quid "51767EEB03B9"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EED007A"
 									label (object SegLabel @88
 										quid "51767EED007C"
 										pos (913,953)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.500000
 										height 0)
@@ -1338,11 +1446,15 @@
 									line_style 6144)
 								(object TransView ":TOP:validSocket:False" @89
 									quid "51767EF20141"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EF3007F"
 									label (object SegLabel @90
 										quid "51767EF30086"
 										pos (954,546)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.502794
 										height 45)
@@ -1354,11 +1466,15 @@
 									line_style 6144)
 								(object TransView ":TOP:bindingSuccesfull:False" @91
 									quid "51767EF700A8"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767EF80067"
 									label (object SegLabel @92
 										quid "51767EF8006F"
 										pos (966,680)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.499141
 										height 45)
@@ -1370,11 +1486,15 @@
 									line_style 6144)
 								(object TransView ":TOP:listening:False" @93
 									quid "51767F100267"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F110125"
 									label (object SegLabel @94
 										quid "51767F11012C"
 										pos (901,797)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.496568
 										height 44)
@@ -1386,11 +1506,15 @@
 									line_style 6144)
 								(object TransView ":TOP:acceptConnection:False" @95
 									quid "51767F1801E6"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F1803CC"
 									label (object SegLabel @96
 										quid "51767F1803D3"
 										pos (661,835)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.498334
 										height 44)
@@ -1402,11 +1526,15 @@
 									line_style 6144)
 								(object TransView ":TOP:acceptConnection:True" @97
 									quid "51767F3503E4"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F370190"
 									label (object SegLabel @98
 										quid "51767F370192"
 										pos (624,944)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 69
 										pctDist 0.501248
 										height 0)
@@ -1418,11 +1546,15 @@
 									line_style 6144)
 								(object TransView ":TOP:getBytes:True" @99
 									quid "51767F3C0277"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F3C0278"
 									label (object SegLabel @100
 										quid "51767F3C027A"
 										pos (565,996)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 69
 										pctDist 0.501635
@@ -1439,11 +1571,15 @@
 									line_style 6144)
 								(object TransView ":TOP:shutdownConnection:False" @101
 									quid "51767F5D0267"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F5E00A5"
 									label (object SegLabel @102
 										quid "51767F5E00AC"
 										pos (464,656)
+										font (object Font
+											face "MS Sans Serif")
 										max_width 78
 										pctDist 0.505989
 										height 43)
@@ -1455,11 +1591,15 @@
 									line_style 6144)
 								(object TransView ":TOP:getBytes:False" @103
 									quid "51767F6100C8"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F6103C6"
 									label (object SegLabel @104
 										quid "51767F6103C8"
 										pos (375,829)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 78
 										pctDist 0.811426
@@ -1473,11 +1613,15 @@
 									line_style 6144)
 								(object TransView ":TOP:shutdownConnection:True" @105
 									quid "51767F640243"
+									font (object Font
+										face "MS Sans Serif")
 									uses_fill_color FALSE
 									quidu "51767F680318"
 									label (object SegLabel @106
 										quid "51767F68031A"
 										pos (272,757)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										max_width 69
 										pctDist 0.064730
@@ -1507,10 +1651,14 @@
 										(object PortVw ":Structure:mainConnection" @108
 											quid "5176786603C0"
 											pos (1584,484)
+											font (object Font
+												face "MS Sans Serif")
 											quidu "5176786302E2"
 											label (object ItemLabel
 												quid "5176786603C3"
 												pos (1593,520)
+												font (object Font
+													face "MS Sans Serif")
 												positionBySuperclass FALSE
 												nlines 2
 												max_width 291
@@ -1519,293 +1667,26 @@
 								(object PortVw ":Structure:timer" @109
 									quid "51767E6602E5"
 									pos (308,388)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51767E6302F6"
 									label (object ItemLabel
 										quid "51767E6602E8"
 										pos (317,424)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										nlines 2
 										max_width 125
 										label "timer")
 									positionBySuperclass FALSE))
 							filterFlags 521))
-					(object Capsule "jsonTranslateCapsule"
-						quid "51875E6E03D0"
-						structure (object CapsuleCollaboration "Structure"
-							quid "51875E6E03D4"
-							ports (list portsList
-								(object Port "jsonPort"
-									quid "51875FB30221"
-									classifier  "Logical View::TCPIP::jsonProtocol"
-									quidu "51875F9A015E"
-									isRelay FALSE)
-								(object Port "tcpPort"
-									quid "51875FB80177"
-									classifier  "Logical View::TCPIP::tcpProtocol"
-									quidu "5176788B0049"
-									isConjugated TRUE
-									isRelay FALSE)
-								(object Port "frame"
-									quid "5187796F0181"
-									classifier  "Logical View::RTClasses::Frame"
-									quidu "37E9291F0276"
-									isRelay FALSE
-									isWired FALSE
-									visibility "Protected")))
-						class_attributes (list class_attribute_list
-							(object ClassAttribute "jsonReader"
-								quid "5187705E0065"
-								type "Json::Reader")
-							(object ClassAttribute "jsonBuffer"
-								quid "518771140392"
-								type "std::string")
-							(object ClassAttribute "depth"
-								quid "518771880345"
-								type "int"))
-						statemachine (object State_Machine
-							quid "51875E6E03D1"
-							State (object State "TOP"
-								quid "51875E6E03D2"
-								states (list States
-									(object InitialPt "Initial"
-										quid "51875E6E03D3")
-									(object State "KlaarVoorData"
-										quid "5187655E01B2"
-										states (list States
-											(object InitialPt "Initial"
-												quid "5187655E01B3")
-											(object JuncPt "J51768119018A"
-												quid "5187655E01B4"
-												isEntry TRUE
-												externallyVisible TRUE)
-											(object JuncPt "J5176823800F4"
-												quid "5187655E01B5"
-												externallyVisible TRUE)
-											(object JuncPt "J5176823800F9"
-												quid "5187655E01B6"
-												isEntry TRUE
-												externallyVisible TRUE))))
-								transitions (list transition_list
-									(object Trans "dataReceived"
-										quid "5187655E01C3"
-										source  ":TOP:KlaarVoorData:J5176823800F4"
-										target  ":TOP:KlaarVoorData:J5176823800F9"
-										action (object Action
-											quid "5187655E01C6"
-											body 
-|cout << "-- Data received" << *rtdata << endl;
-|int i;
-|while(rtdata[i] != NULL){
-|	char b = *rtdata[i];
-|	cout << "b = " << b << endl;
-|	if(b == '{' || b == '['){
-|		this->depth++;
-|	}else if(b == '}' || b == ']'){
-|		this->depth--;
-|	}
-|	this->jsonBuffer.append(&b);
-|}
-|cout << "Buffer: " << this->jsonBuffer << endl;
-											)
-										eventGuards (list eventGuardsList
-											(object EventGuard
-												quid "51877EF902F8"
-												Event (object PortEvent
-													quid "51877EF902F9"
-													ports (list portsList
-														ports  ":Structure:tcpPort"
-														quidu "51875FB80177")
-													signals (list signalsList
-														signals  ":base:dataReceived"
-														quidu "51767A28030A")))))
-									(object Trans "Initial"
-										quid "51876565022A"
-										source  ":TOP:Initial"
-										target  ":TOP:KlaarVoorData:J51768119018A"
-										action (object Action
-											quid "518779610269"
-											body 
-|cout << "JsonTranslateCapsule initialized" << endl;
-											)))))
-						statediagram (object State_Diagram "State Diagram"
-							quid "51875E6E03D5"
-							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @110
-									quid "51875E6E03D7"
-									pos (840,615)
-									quidu "51875E6E03D2")
-								(object StateView "StartState" "Initial" @111
-									quid "51875E6E03D8"
-									pos (180,180)
-									quidu "51875E6E03D3"
-									positionBySuperclass FALSE)
-								(object StateView "Normal" "KlaarVoorData" @112
-									quid "5187655E01AE"
-									pos (592,442)
-									quidu "5187655E01B2"
-									width 320
-									label (object ItemLabel
-										quid "5187655E01C9"
-										pos (592,397)
-										max_width 216)
-									positionBySuperclass FALSE
-									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @113
-											quid "5187655E01C1"
-											pos (751,415)
-											quidu "5187655E01B5"
-											positionBySuperclass FALSE
-											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @114
-											quid "5187655E01C8"
-											pos (751,495)
-											quidu "5187655E01B6"
-											positionBySuperclass FALSE
-											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @115
-											quid "5187655E01CB"
-											pos (488,352)
-											quidu "5187655E01B4"
-											positionBySuperclass FALSE
-											boundIconAutoAdjust TRUE))
-									statediagram (object State_Diagram ""
-										quid "5187655E01AF"
-										items (list diagram_item_list
-											(object StateView "Perimeter" "KlaarVoorData" @116
-												quid "5187655E01B1"
-												pos (840,615)
-												uses_fill_color FALSE
-												quidu "5187655E01B2"
-												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @117
-														quid "5187655E01B7"
-														pos (360,96)
-														quidu "5187655E01B4"
-														positionBySuperclass FALSE
-														juncPtIcon (object JuncPtIcon @118
-															quid "5187655E01B8"
-															pos (360,186)
-															label (object ItemLabel
-																quid "5187655E01B9"
-																pos (400,156)
-																uses_fill_color FALSE
-																positionBySuperclass FALSE
-																max_width 75)
-															positionBySuperclass FALSE))
-													(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @119
-														quid "5187655E01BA"
-														pos (1584,447)
-														quidu "5187655E01B5"
-														juncPtIcon (object JuncPtIcon @120
-															quid "5187655E01BB"
-															pos (1494,447)
-															label (object ItemLabel
-																quid "5187655E01BC"
-																pos (1524,487)
-																uses_fill_color FALSE
-																max_width 209)))
-													(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @121
-														quid "5187655E01BD"
-														pos (1584,938)
-														quidu "5187655E01B6"
-														positionBySuperclass FALSE
-														juncPtIcon (object JuncPtIcon @122
-															quid "5187655E01BE"
-															pos (1494,938)
-															label (object ItemLabel
-																quid "5187655E01BF"
-																pos (1524,978)
-																uses_fill_color FALSE
-																positionBySuperclass FALSE
-																max_width 209)
-															positionBySuperclass FALSE))))
-											(object StateView "StartState" "Initial" @123
-												quid "5187655E01C0"
-												pos (180,180)
-												quidu "5187655E01B3"))
-										filterFlags 1))
-								(object TransView ":TOP:KlaarVoorData:J5176823800F4:dataReceived" @124
-									quid "5187655E01C2"
-									uses_fill_color FALSE
-									quidu "5187655E01C3"
-									label (object SegLabel @125
-										quid "5187655E01C7"
-										pos (989,455)
-										uses_fill_color FALSE
-										positionBySuperclass FALSE
-										max_width 209
-										pctDist 0.507042
-										height 164)
-									positionBySuperclass FALSE
-									client @113
-									supplier @114
-									vertices (list Points
-										(759,414)
-										(825,413)
-										(825,494)
-										(759,494))
-									line_style 6144)
-								(object TransView ":TOP:Initial:Initial" @126
-									quid "518765640121"
-									uses_fill_color FALSE
-									quidu "51876565022A"
-									label (object SegLabel @127
-										quid "51876565022B"
-										pos (342,270)
-										positionBySuperclass FALSE
-										max_width 75
-										pctDist 0.500777
-										height 0
-										orientation 1)
-									positionBySuperclass FALSE
-									client @111
-									supplier @115
-									vertices (list Points
-										(205,193)
-										(479,346))
-									line_style 6144))
-							filterFlags 1)
-						language "C++"
-						structureDiagram (object CollaborationDiagram "Structure Diagram"
-							quid "51875E6E03D9"
-							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @128
-									quid "51875E6E03DB"
-									pos (840,615)
-									quidu "51875E6E03D4"
-									boundIcons (list boundIconsList
-										(object PortVw ":Structure:jsonPort" @129
-											quid "51875FB203CA"
-											pos (678,96)
-											quidu "51875FB30221"
-											label (object ItemLabel
-												quid "51875FB30225"
-												pos (687,132)
-												nlines 2
-												max_width 209
-												label "jsonPort"))
-										(object PortVw ":Structure:tcpPort" @130
-											quid "51875FB70298"
-											pos (96,400)
-											quidu "51875FB80177"
-											label (object ItemLabel
-												quid "51875FB8017A"
-												pos (105,436)
-												nlines 2
-												max_width 219
-												label "tcpPort"))))
-								(object PortVw ":Structure:frame" @131
-									quid "5187797003A7"
-									pos (306,138)
-									quidu "5187796F0181"
-									label (object ItemLabel
-										quid "5187797003AA"
-										pos (315,174)
-										nlines 2
-										max_width 138
-										label "frame")))
-							filterFlags 521))
 					(object Capsule "tcpTopCapsule"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "HeaderPreface"
+								value (value Text "")))
 						quid "51875E79036D"
 						structure (object CapsuleCollaboration "Structure"
 							quid "51875E790371"
@@ -1814,11 +1695,11 @@
 									quid "51875EA901A5"
 									classifier  "Logical View::TCPIP::tcpCapsule"
 									quidu "517678490259"
-									genericity "fixed")
-								(object CapsuleRole "jsonTranslateInstance"
-									quid "51875EAB00F7"
+									genericity "optional")
+								(object CapsuleRole "jsonTranslateCapsuleR1"
+									quid "5188E9A30035"
 									classifier  "Logical View::TCPIP::jsonTranslateCapsule"
-									quidu "51875E6E03D0"
+									quidu "5188E92D03D2"
 									genericity "fixed"))
 							ports (list portsList
 								(object Port "internalJsonPort"
@@ -1836,19 +1717,19 @@
 									isWired FALSE
 									visibility "Protected"))
 							connectors (list connectorsList
-								(object Connector "C5187612802DF"
-									quid "5187612802DF"
-									connectorCardinality  constValue "*"
-									ends (list endsList
-										ends  ":Structure:jsonTranslateInstance:jsonPort"
-										ends  ":Structure:internalJsonPort"
-										quidu "51875FA2029B"))
-								(object Connector "C51877A6900AA"
-									quid "51877A6900AA"
+								(object Connector "C5188E9B0034B"
+									quid "5188E9B0034B"
 									connectorCardinality  constValue "*"
 									ends (list endsList
 										ends  ":Structure:tcpInstance:mainConnection"
-										ends  ":Structure:jsonTranslateInstance:tcpPort"))))
+										ends  ":Structure:jsonTranslateCapsuleR1:tcpPort"))
+								(object Connector "C5188E9BB0106"
+									quid "5188E9BB0106"
+									connectorCardinality  constValue "*"
+									ends (list endsList
+										ends  ":Structure:jsonTranslateCapsuleR1:jsonPort"
+										ends  ":Structure:internalJsonPort"
+										quidu "51875FA2029B"))))
 						statemachine (object State_Machine
 							quid "51875E79036E"
 							State (object State "TOP"
@@ -1857,222 +1738,708 @@
 									(object InitialPt "Initial"
 										quid "51875E790370")
 									(object State "S1"
-										quid "518765DE010C"
+										quid "5188E9C503A7"
+										entryAction (object Action
+											quid "5188EA1B0246"
+											body 
+|cout << "tcpTopCapsule initialized" << endl;
+											)
 										states (list States
 											(object InitialPt "Initial"
-												quid "518765DE0114")
-											(object JuncPt "J518765E203AD"
-												quid "518765E203AD"
+												quid "5188E9C503AF")
+											(object JuncPt "J5188E9CA014D"
+												quid "5188E9CA014D"
 												isEntry TRUE
 												externallyVisible TRUE))))
 								transitions (list transition_list
 									(object Trans "Initial"
-										quid "518765E203AC"
+										quid "5188E9CA014C"
 										source  ":TOP:Initial"
-										target  ":TOP:S1:J518765E203AD"
+										target  ":TOP:S1:J5188E9CA014D"
 										action (object Action
-											quid "51877A08016C"
-											body 
-|//maak object voor de tcp verbinding
-|//frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);
-|
-|//maak object voor de tcp verbinding
-|frame.incarnate(jsonTranslateInstance,jsonTranslateCapsule,EmptyObject,ThreadJsonTranslate);
-											)))))
+											quid "5188E9E100FD"
+											body "frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);")))))
 						statediagram (object State_Diagram "State Diagram"
 							quid "51875E790372"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @132
+								(object StateView "Perimeter" "TOP" @110
 									quid "51875E790374"
 									pos (840,615)
 									quidu "51875E79036F")
-								(object StateView "StartState" "Initial" @133
+								(object StateView "StartState" "Initial" @111
 									quid "51875E790375"
 									pos (180,180)
 									quidu "51875E790370"
 									positionBySuperclass FALSE)
-								(object StateView "Normal" "S1" @134
-									quid "518765DE00D5"
-									pos (694,453)
-									quidu "518765DE010C"
+								(object StateView "Normal" "S1" @112
+									quid "5188E9C5035F"
+									pos (696,458)
+									quidu "5188E9C503A7"
 									label (object ItemLabel
-										quid "518765DE010D"
-										pos (694,408)
-										max_width 41)
+										quid "5188E9C503A9"
+										pos (696,413)
+										max_width 31)
+									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:S1:J518765E203AD" @135
-											quid "518765E203B5"
-											pos (574,401)
-											quidu "518765E203AD"
-											positionBySuperclass FALSE
+										(object JuncPtVw ":TOP:S1:J5188E9CA014D" @113
+											quid "5188E9CA0155"
+											pos (576,406)
+											quidu "5188E9CA014D"
 											boundIconAutoAdjust TRUE))
 									statediagram (object State_Diagram ""
-										quid "518765E203AE"
+										quid "5188E9CA014E"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "S1" @136
-												quid "518765E203B0"
+											(object StateView "Perimeter" "S1" @114
+												quid "5188E9CA0150"
 												pos (840,615)
-												quidu "518765DE010C"
+												quidu "5188E9C503A7"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:S1:J518765E203AD" @137
-														quid "518765E203B2"
+													(object JuncPtVw ":TOP:S1:J5188E9CA014D" @115
+														quid "5188E9CA0152"
 														pos (96,311)
-														quidu "518765E203AD"
-														juncPtIcon (object JuncPtIcon @138
-															quid "518765E203B3"
+														quidu "5188E9CA014D"
+														juncPtIcon (object JuncPtIcon @116
+															quid "5188E9CA0153"
 															pos (186,311)
 															label (object ItemLabel
-																quid "518765E203B4"
+																quid "5188E9CA0154"
 																pos (156,351))))))
-											(object StateView "StartState" "Initial" @139
-												quid "518765E203B1"
+											(object StateView "StartState" "Initial" @117
+												quid "5188E9CA0151"
 												pos (180,180)
-												quidu "518765DE0114"))
+												quidu "5188E9C503AF"))
 										filterFlags 1))
-								(object TransView ":TOP:Initial:Initial" @140
-									quid "518765E101A4"
+								(object TransView ":TOP:Initial:Initial" @118
+									quid "5188E9C901DF"
 									uses_fill_color FALSE
-									quidu "518765E203AC"
-									label (object SegLabel @141
-										quid "518765E203B6"
-										pos (406,256)
-										positionBySuperclass FALSE
-										max_width 75
-										pctDist 0.498504
+									quidu "5188E9CA014C"
+									label (object SegLabel @119
+										quid "5188E9CA0156"
+										pos (408,260)
+										max_width 113
+										pctDist 0.502319
 										height 44)
-									positionBySuperclass FALSE
-									client @133
-									supplier @135
+									client @111
+									supplier @113
 									vertices (list Points
-										(205,193)
-										(565,396))
+										(204,194)
+										(567,401))
 									line_style 6144))
 							filterFlags 1)
 						language "C++"
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "51875E790376"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @142
+								(object CapsulePerimeterVw "Structure" @120
 									quid "51875E790378"
 									pos (840,615)
 									quidu "51875E790371")
-								(object CapsuleRoleVw ":Structure:tcpInstance" @143
+								(object CapsuleRoleVw ":Structure:tcpInstance" @121
 									quid "51875EA80233"
-									pos (301,778)
+									pos (301,749)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51875EA901A5"
 									width 282
 									label (object ItemLabel
 										quid "51875EA901A9"
-										pos (301,737)
+										pos (301,708)
 										positionBySuperclass FALSE
 										nlines 2
 										max_width 209
 										label "tcpInstance")
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ConnectionPtVw ":Structure:tcpInstance:mainConnection" @144
+										(object ConnectionPtVw ":Structure:tcpInstance:mainConnection" @122
 											quid "51875EA901A7"
-											pos (442,768)
+											pos (442,738)
+											font (object Font
+												face "MS Sans Serif")
 											label (object ItemLabel
 												quid "51875EA901A8"
-												pos (608,813)
+												pos (508,873)
+												font (object Font
+													face "MS Sans Serif")
 												positionBySuperclass FALSE
 												nlines 2
 												max_width 291
 												label "mainConnection")
 											positionBySuperclass FALSE)))
-								(object CapsuleRoleVw ":Structure:jsonTranslateInstance" @145
-									quid "51875EAA027A"
-									pos (1286,810)
-									quidu "51875EAB00F7"
-									width 428
+								(object CapsuleRoleVw ":Structure:jsonTranslateCapsuleR1" @123
+									quid "5188E9A2019F"
+									pos (1228,778)
+									quidu "5188E9A30035"
+									width 504
 									label (object ItemLabel
-										quid "51875EAB00F8"
-										pos (1286,769)
+										quid "5188E9A3003E"
+										pos (1228,730)
 										positionBySuperclass FALSE
 										nlines 2
-										max_width 359
-										label "jsonTranslateInstance")
+										max_width 400
+										label "jsonTranslateCapsuleR1")
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ConnectionPtVw ":Structure:jsonTranslateInstance:jsonPort" @146
-											quid "51875FB30223"
-											pos (1232,720)
+										(object ConnectionPtVw ":Structure:jsonTranslateCapsuleR1:tcpPort" @124
+											quid "5188E9A30039"
+											pos (976,736)
 											label (object ItemLabel
-												quid "51875FB30248"
-												pos (1232,617)
-												nlines 2
-												max_width 209
-												label "jsonPort"))
-										(object ConnectionPtVw ":Structure:jsonTranslateInstance:tcpPort" @147
-											quid "51875FB80179"
-											pos (1072,768)
-											label (object ItemLabel
-												quid "51875FB8017D"
-												pos (1016,911)
+												quid "5188E9A3003A"
+												pos (990,914)
 												positionBySuperclass FALSE
 												nlines 2
-												max_width 219
+												max_width 241
 												label "tcpPort")
+											positionBySuperclass FALSE)
+										(object ConnectionPtVw ":Structure:jsonTranslateCapsuleR1:jsonPort" @125
+											quid "5188E9A3003C"
+											pos (1120,688)
+											label (object ItemLabel
+												quid "5188E9A3003D"
+												pos (1120,599)
+												positionBySuperclass FALSE
+												nlines 2
+												max_width 241
+												label "jsonPort")
 											positionBySuperclass FALSE)))
-								(object PortVw ":Structure:internalJsonPort" @148
+								(object PortVw ":Structure:internalJsonPort" @126
 									quid "51875FA200C5"
-									pos (1232,356)
+									pos (1119,340)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51875FA2029B"
 									label (object ItemLabel
 										quid "51875FA202A3"
-										pos (1241,392)
+										pos (1128,376)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										nlines 2
 										max_width 291
 										label "internalJsonPort")
 									positionBySuperclass FALSE)
-								(object PortVw ":Structure:frame" @149
+								(object PortVw ":Structure:frame" @127
 									quid "51876CA20367"
 									pos (436,276)
+									font (object Font
+										face "MS Sans Serif")
 									quidu "51876CA10104"
 									label (object ItemLabel
 										quid "51876CA2036A"
 										pos (445,312)
+										font (object Font
+											face "MS Sans Serif")
 										positionBySuperclass FALSE
 										nlines 2
 										max_width 138
 										label "frame")
 									positionBySuperclass FALSE)
-								(object ConnectorVw ":Structure:C5187612802DF" @150
-									quid "518761280013"
+								(object ConnectorVw ":Structure:C5188E9B0034B" @128
+									quid "5188E9AF0305"
 									stereotype TRUE
 									uses_fill_color FALSE
-									quidu "5187612802DF"
-									label (object SegLabel @151
-										quid "5187612902CD"
-										pos (1188,552)
-										max_width 253
-										pctDist 0.493671
+									quidu "5188E9B0034B"
+									label (object SegLabel @129
+										quid "5188E9B0034D"
+										pos (706,693)
+										max_width 209
+										pctDist 0.496260
 										height 44)
-									client @146
-									supplier @148
+									client @122
+									supplier @124
 									vertices (list Points
-										(1232,708)
-										(1232,392))
+										(452,737)
+										(964,736))
 									line_style 6144)
-								(object ConnectorVw ":Structure:C51877A6900AA" @152
-									quid "51877A670227"
+								(object ConnectorVw ":Structure:C5188E9BB0106" @130
+									quid "5188E9BA0229"
 									stereotype TRUE
 									uses_fill_color FALSE
-									quidu "51877A6900AA"
-									label (object SegLabel @153
-										quid "51877A6900AE"
-										pos (756,724)
-										max_width 256
-										pctDist 0.500000
-										height 45)
-									client @144
-									supplier @147
+									quidu "5188E9BB0106"
+									label (object SegLabel @131
+										quid "5188E9BB0109"
+										pos (1078,541)
+										max_width 209
+										pctDist 0.450000
+										height 41)
+									client @125
+									supplier @126
 									vertices (list Points
-										(452,768)
-										(1060,768))
+										(1119,676)
+										(1119,376))
 									line_style 6144))
+							filterFlags 521))
+					(object Capsule "jsonTranslateCapsule"
+						attributes (list Attribute_Set
+							(object Attribute
+								tool "OT::Cpp"
+								name "HeaderPreface"
+								value (value Text 
+|//zet windowsversie op XP
+|#define WINVER 0x0501
+|
+|#include <winsock2.h> 
+|#include <ws2tcpip.h> 
+|#include <stdio.h>
+								)))
+						quid "5188E92D03D2"
+						structure (object CapsuleCollaboration "Structure"
+							quid "5188E92D03D6"
+							ports (list portsList
+								(object Port "tcpPort"
+									quid "5188E9710106"
+									classifier  "Logical View::TCPIP::tcpProtocol"
+									quidu "5176788B0049"
+									isConjugated TRUE
+									isRelay FALSE)
+								(object Port "jsonPort"
+									quid "5188E97C01FA"
+									classifier  "Logical View::TCPIP::jsonProtocol"
+									quidu "51875F9A015E"
+									isRelay FALSE)))
+						class_attributes (list class_attribute_list
+							(object ClassAttribute "depth"
+								quid "5188E938029E"
+								type "int")
+							(object ClassAttribute "jsonBuffer"
+								quid "5188E93A017B"
+								type "std::string")
+							(object ClassAttribute "jsonReader"
+								quid "5188E93B0378"
+								type "Json::Reader")
+							(object ClassAttribute "socket"
+								quid "5188E93D017A"
+								type "SOCKET")
+							(object ClassAttribute "inString"
+								quid "5188ED6B01FB"
+								type "bool"))
+						statemachine (object State_Machine
+							quid "5188E92D03D3"
+							State (object State "TOP"
+								quid "5188E92D03D4"
+								states (list States
+									(object InitialPt "Initial"
+										quid "5188E92D03D5")
+									(object State "KlaarVoorData"
+										quid "5188E9510280"
+										states (list States
+											(object InitialPt "Initial"
+												quid "5188E9510282")
+											(object JuncPt "J51768119018A"
+												quid "5188E9510283"
+												isEntry TRUE
+												externallyVisible TRUE)
+											(object JuncPt "J5176823800F4"
+												quid "5188E9510284"
+												externallyVisible TRUE)
+											(object JuncPt "J5176823800F9"
+												quid "5188E9510285"
+												isEntry TRUE
+												externallyVisible TRUE)))
+									(object JuncPt "J5188EA8C00E2"
+										quid "5188EA8C00E2"
+										isEntry TRUE)
+									(object JuncPt "J5188EA8C00E6"
+										quid "5188EA8C00E6")
+									(object JuncPt "J5188EB280304"
+										quid "5188EB280304"
+										isEntry TRUE)
+									(object JuncPt "J5188EB280308"
+										quid "5188EB280308"))
+								transitions (list transition_list
+									(object Trans "dataReceived"
+										quid "5188E9510292"
+										source  ":TOP:KlaarVoorData:J5176823800F4"
+										target  ":TOP:KlaarVoorData:J5176823800F9"
+										action (object Action
+											quid "5188E9510293"
+											body 
+|cout << "J: Data received: " << *rtdata << endl;
+|int i;
+|for(i=0;i<strlen(rtdata->Contents);i++){
+|	char b = rtdata->Contents[i];
+|    cout << "J: b = " << b << endl;
+|    //Very basic JSON completeness checking..
+|    if(b == '"'){
+|        this->inString = !this->inString;
+|    }
+|    if(!this->inString){
+|    	if(b == '{' || b == '['){
+|    		this->depth++;
+|    	}else if(b == '}' || b == ']'){
+|    		this->depth--;
+|    	}else if(depth == 0){
+|            b = 0;
+|        }
+|    }
+|	this->jsonBuffer.append(&b);
+|    if(this->jsonBuffer.size() >= 2 && this->depth == 0){
+|        //We should've received a complete JSON message.
+|        Json::Value msg;
+|        bool parsingSuccessful = this>jsonReader.parse( this->jsonBuffer, msg );
+|        if (!parsingSuccessful){
+|            // report to the user the failure and their locations in the document.
+|            std::cout  << "Failed to parse configuration\n"
+|                       << this->jsonReader.getFormattedErrorMessages();
+|            return;
+|        }
+|        //Fetch command
+|        jsonCommand newCommand;
+|
+|
+|        //And clear buffer
+|        this->jsonBuffer.clear();
+|    }
+|}
+|cout << "J: Buffer: " << this->jsonBuffer << endl;
+|
+											)
+										eventGuards (list eventGuardsList
+											(object EventGuard
+												quid "5188E98A0332"
+												Event (object PortEvent
+													quid "5188E98A0333"
+													ports (list portsList
+														ports  ":Structure:tcpPort"
+														quidu "5188E9710106")
+													signals (list signalsList
+														signals  ":base:dataReceived"
+														quidu "51767A28030A")))))
+									(object Trans "Initial"
+										quid "5188E95A020E"
+										source  ":TOP:Initial"
+										target  ":TOP:KlaarVoorData:J51768119018A"
+										action (object Action
+											quid "5188E96B015E"
+											body 
+|cout << "JsonTranslateCapsule Initialized" << endl;
+|
+											))
+									(object Trans "socketConnected"
+										quid "5188EA8C00E1"
+										source  ":TOP:J5188EA8C00E2"
+										target  ":TOP:J5188EA8C00E6"
+										action (object Action
+											quid "5188EB630389"
+											body 
+|cout << "Socket connected!" << endl;
+|
+|//Todo: Trigger event for main application to know this has happened.
+|this->socket = *rtdata;
+											)
+										eventGuards (list eventGuardsList
+											(object EventGuard
+												quid "5188EB22026C"
+												Event (object PortEvent
+													quid "5188EB22026D"
+													ports (list portsList
+														ports  ":Structure:tcpPort"
+														quidu "5188E9710106")
+													signals (list signalsList
+														signals  ":base:sock"
+														quidu "51767FD203A4")))))
+									(object Trans "socketDisconnected"
+										quid "5188EB280303"
+										source  ":TOP:J5188EB280304"
+										target  ":TOP:J5188EB280308"
+										action (object Action
+											quid "5188EB55027F"
+											body 
+|cout << "Socket disconnected!" << endl;
+|
+|//Todo: Trigger event for main application to know this has happened.
+|this->socket = 0;
+											)
+										eventGuards (list eventGuardsList
+											(object EventGuard
+												quid "5188EB3101E7"
+												Event (object PortEvent
+													quid "5188EB3101E8"
+													ports (list portsList
+														ports  ":Structure:tcpPort"
+														quidu "5188E9710106")
+													signals (list signalsList
+														signals  ":base:noSock"
+														quidu "5176801A0022"))))))))
+						statediagram (object State_Diagram "State Diagram"
+							quid "5188E92D03D7"
+							items (list diagram_item_list
+								(object StateView "Perimeter" "TOP" @132
+									quid "5188E92D03D9"
+									pos (840,615)
+									quidu "5188E92D03D4"
+									boundIcons (list boundIconsList
+										(object JuncPtVw ":TOP:J5188EA8C00E2" @133
+											quid "5188EA8C00E3"
+											pos (503,1134)
+											quidu "5188EA8C00E2"
+											positionBySuperclass FALSE
+											juncPtIcon (object JuncPtIcon @134
+												quid "5188EA8C00E4"
+												pos (503,1044)
+												hidden TRUE
+												label (object ItemLabel
+													quid "5188EA8C00E5"
+													pos (560,1061)
+													hidden TRUE
+													positionBySuperclass FALSE)
+												positionBySuperclass FALSE))
+										(object JuncPtVw ":TOP:J5188EA8C00E6" @135
+											quid "5188EA8C00E7"
+											pos (323,1134)
+											quidu "5188EA8C00E6"
+											positionBySuperclass FALSE
+											juncPtIcon (object JuncPtIcon @136
+												quid "5188EA8C00E8"
+												pos (323,1044)
+												label (object ItemLabel
+													quid "5188EA8C00E9"
+													pos (380,1061)
+													hidden TRUE
+													positionBySuperclass FALSE)
+												positionBySuperclass FALSE))
+										(object JuncPtVw ":TOP:J5188EB280304" @137
+											quid "5188EB280305"
+											pos (1372,1134)
+											quidu "5188EB280304"
+											positionBySuperclass FALSE
+											juncPtIcon (object JuncPtIcon @138
+												quid "5188EB280306"
+												pos (1372,1044)
+												hidden TRUE
+												label (object ItemLabel
+													quid "5188EB280307"
+													pos (1429,1061)
+													hidden TRUE
+													positionBySuperclass FALSE)
+												positionBySuperclass FALSE))
+										(object JuncPtVw ":TOP:J5188EB280308" @139
+											quid "5188EB280309"
+											pos (1192,1134)
+											quidu "5188EB280308"
+											positionBySuperclass FALSE
+											juncPtIcon (object JuncPtIcon @140
+												quid "5188EB28030A"
+												pos (1192,1044)
+												label (object ItemLabel
+													quid "5188EB28030B"
+													pos (1249,1061)
+													hidden TRUE
+													positionBySuperclass FALSE)
+												positionBySuperclass FALSE))))
+								(object StateView "StartState" "Initial" @141
+									quid "5188E92D03DA"
+									pos (180,180)
+									quidu "5188E92D03D5")
+								(object StateView "Normal" "KlaarVoorData" @142
+									quid "5188E951027C"
+									pos (640,522)
+									font (object Font
+										face "MS Sans Serif")
+									quidu "5188E9510280"
+									width 320
+									label (object ItemLabel
+										quid "5188E9510298"
+										pos (640,477)
+										max_width 216)
+									positionBySuperclass FALSE
+									boundIcons (list boundIconsList
+										(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @143
+											quid "5188E9510290"
+											pos (799,495)
+											quidu "5188E9510284"
+											positionBySuperclass FALSE
+											boundIconAutoAdjust TRUE)
+										(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @144
+											quid "5188E9510297"
+											pos (799,575)
+											quidu "5188E9510285"
+											positionBySuperclass FALSE
+											boundIconAutoAdjust TRUE)
+										(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @145
+											quid "5188E951029A"
+											pos (546,432)
+											quidu "5188E9510283"
+											boundIconAutoAdjust TRUE))
+									statediagram (object State_Diagram ""
+										quid "5188E951027D"
+										items (list diagram_item_list
+											(object StateView "Perimeter" "KlaarVoorData" @146
+												quid "5188E951027F"
+												pos (840,615)
+												uses_fill_color FALSE
+												quidu "5188E9510280"
+												boundIcons (list boundIconsList
+													(object JuncPtVw ":TOP:KlaarVoorData:J51768119018A" @147
+														quid "5188E9510286"
+														pos (405,96)
+														quidu "5188E9510283"
+														positionBySuperclass FALSE
+														juncPtIcon (object JuncPtIcon @148
+															quid "5188E9510287"
+															pos (405,186)
+															font (object Font
+																face "MS Sans Serif")
+															label (object ItemLabel
+																quid "5188E9510288"
+																pos (445,156)
+																font (object Font
+																	face "MS Sans Serif")
+																uses_fill_color FALSE
+																positionBySuperclass FALSE
+																max_width 75)
+															positionBySuperclass FALSE))
+													(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F4" @149
+														quid "5188E9510289"
+														pos (1584,447)
+														quidu "5188E9510284"
+														juncPtIcon (object JuncPtIcon @150
+															quid "5188E951028A"
+															pos (1494,447)
+															font (object Font
+																face "MS Sans Serif")
+															label (object ItemLabel
+																quid "5188E951028B"
+																pos (1524,487)
+																font (object Font
+																	face "MS Sans Serif")
+																uses_fill_color FALSE
+																max_width 209)))
+													(object JuncPtVw ":TOP:KlaarVoorData:J5176823800F9" @151
+														quid "5188E951028C"
+														pos (1584,938)
+														quidu "5188E9510285"
+														positionBySuperclass FALSE
+														juncPtIcon (object JuncPtIcon @152
+															quid "5188E951028D"
+															pos (1494,938)
+															font (object Font
+																face "MS Sans Serif")
+															label (object ItemLabel
+																quid "5188E951028E"
+																pos (1524,978)
+																font (object Font
+																	face "MS Sans Serif")
+																uses_fill_color FALSE
+																positionBySuperclass FALSE
+																max_width 209)
+															positionBySuperclass FALSE))))
+											(object StateView "StartState" "Initial" @153
+												quid "5188E951028F"
+												pos (180,180)
+												quidu "5188E9510282"))
+										filterFlags 1))
+								(object TransView ":TOP:Initial:Initial" @154
+									quid "5188E9590277"
+									uses_fill_color FALSE
+									quidu "5188E95A020E"
+									label (object SegLabel @155
+										quid "5188E95A0211"
+										pos (370,311)
+										max_width 113
+										pctDist 0.500000
+										height 0
+										orientation 1)
+									client @141
+									supplier @145
+									vertices (list Points
+										(203,196)
+										(537,426))
+									line_style 6144)
+								(object TransView ":TOP:J5188EA8C00E2:socketConnected" @156
+									quid "5188EA8C00E0"
+									uses_fill_color FALSE
+									quidu "5188EA8C00E1"
+									label (object SegLabel @157
+										quid "5188EA8C00EA"
+										pos (409,989)
+										positionBySuperclass FALSE
+										max_width 241
+										pctDist 0.753247
+										height 55
+										orientation 1)
+									positionBySuperclass FALSE
+									client @133
+									supplier @136
+									vertices (list Points
+										(503,1124)
+										(503,1044)
+										(352,1044))
+									line_style 6144)
+								(object TransView ":TOP:J5188EB280304:socketDisconnected" @158
+									quid "5188EB280302"
+									uses_fill_color FALSE
+									quidu "5188EB280303"
+									label (object SegLabel @159
+										quid "5188EB28030C"
+										pos (1319,989)
+										positionBySuperclass FALSE
+										max_width 288
+										pctDist 0.575758
+										height 55
+										orientation 1)
+									positionBySuperclass FALSE
+									client @137
+									supplier @140
+									vertices (list Points
+										(1372,1124)
+										(1372,1044)
+										(1221,1044))
+									line_style 6144)
+								(object TransView ":TOP:KlaarVoorData:J5176823800F4:dataReceived" @160
+									quid "5188E9510291"
+									font (object Font
+										face "MS Sans Serif")
+									uses_fill_color FALSE
+									quidu "5188E9510292"
+									label (object SegLabel @161
+										quid "5188E9510296"
+										pos (1105,535)
+										font (object Font
+											face "MS Sans Serif")
+										uses_fill_color FALSE
+										positionBySuperclass FALSE
+										max_width 209
+										pctDist 0.502304
+										height 230)
+									positionBySuperclass FALSE
+									client @143
+									supplier @144
+									vertices (list Points
+										(807,494)
+										(875,494)
+										(875,575)
+										(807,575))
+									line_style 6144))
+							filterFlags 1)
+						language "C++"
+						structureDiagram (object CollaborationDiagram "Structure Diagram"
+							quid "5188E92D03DB"
+							items (list diagram_item_list
+								(object CapsulePerimeterVw "Structure" @162
+									quid "5188E92D03DD"
+									pos (840,615)
+									quidu "5188E92D03D6"
+									boundIcons (list boundIconsList
+										(object PortVw ":Structure:tcpPort" @163
+											quid "5188E97100C6"
+											pos (96,406)
+											quidu "5188E9710106"
+											label (object ItemLabel
+												quid "5188E97202E9"
+												pos (105,442)
+												nlines 2
+												max_width 241
+												label "tcpPort"))
+										(object PortVw ":Structure:jsonPort" @164
+											quid "5188E97C01B2"
+											pos (991,96)
+											quidu "5188E97C01FA"
+											label (object ItemLabel
+												quid "5188E97E0001"
+												pos (1000,132)
+												nlines 2
+												max_width 241
+												label "jsonPort")))))
 							filterFlags 521))
 					(object Protocol "tcpProtocol"
 						quid "5176788B0049"
@@ -2103,11 +2470,11 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "5176788B004E"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @154
+								(object StateView "Perimeter" "TOP" @165
 									quid "5176788B0050"
 									pos (840,615)
 									quidu "5176788B004B")
-								(object StateView "StartState" "Initial" @155
+								(object StateView "StartState" "Initial" @166
 									quid "5176788B0051"
 									pos (180,180)
 									quidu "5176788B004C"))
@@ -2135,44 +2502,355 @@
 										quidu "518764D2025A"))))
 						statediagram (object State_Diagram "State Diagram"
 							filterFlags 1)
+						language "C++")
+					(object Protocol "NewProtocol1"
+						quid "5188EEF2019D"
+						statemachine (object State_Machine
+							quid "5188EEF2019E"
+							State (object State "TOP"
+								quid "5188EEF2019F"
+								states (list States
+									(object InitialPt "Initial"
+										quid "5188EEF201A0"))))
+						collaborations (list collaborationsList
+							(object Collaboration "Collaboration1"
+								quid "5188EEF201A1"))
+						statediagram (object State_Diagram "State Diagram"
+							quid "5188EEF201A2"
+							items (list diagram_item_list
+								(object StateView "Perimeter" "TOP" @167
+									quid "5188EEF201A4"
+									pos (840,615)
+									quidu "5188EEF2019F")
+								(object StateView "StartState" "Initial" @168
+									quid "5188EEF201A5"
+									pos (180,180)
+									quidu "5188EEF201A0"))
+							filterFlags 1)
 						language "C++"))
 				logical_presentations (list unit_reference_list)))
 		logical_presentations (list unit_reference_list
 			(object ClassDiagram "Main"
 				quid "3619364703D4"
 				items (list diagram_item_list
-					(object CapsuleVw "tcpCapsule" @156
+					(object CapsuleVw "mainCapsule" @169
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "51767849018B"
-						pos (880,592)
+						quid "5188D8110030"
+						pos (1997,774)
 						label (object ItemLabel
-							quid "51767849018C"
-							pos (515,336)
-							max_width 730
+							quid "5188D8110031"
+							pos (1833,735)
+							max_width 328
+							label "mainCapsule")
+						stereotype (object ItemLabel
+							quid "5188D8110037"
+							pos (1833,701)
+							anchor 10
+							max_width 328
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "517679F9026D"
+						compartment (object Compartment
+							quid "5188D8110042"
+							pos (1833,787)
+							anchor 2
+							nlines 4
+							max_width 322
+							justify 1)
+						width 346
+						height 301
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleVw "topCap" @170
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D812025A"
+						pos (1602,330)
+						label (object ItemLabel
+							quid "5188D812025B"
+							pos (1487,322)
+							max_width 230
+							label "topCap")
+						stereotype (object ItemLabel
+							quid "5188D812025C"
+							pos (1487,284)
+							anchor 10
+							max_width 230
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "5176795702F3"
+						width 248
+						height 248
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleVw "tcpTopCapsule" @171
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D81D00EB"
+						pos (958,746)
+						label (object ItemLabel
+							quid "5188D81D00EC"
+							pos (619,669)
+							max_width 678
+							label "tcpTopCapsule")
+						stereotype (object ItemLabel
+							quid "5188D81D00ED"
+							pos (619,631)
+							anchor 10
+							max_width 678
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "51875E79036D"
+						compartment (object Compartment
+							quid "5188D81D00F1"
+							pos (619,768)
+							anchor 2
+							nlines 5
+							max_width 676
+							justify 1)
+						width 696
+						height 386
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleVw "tcpCapsule" @172
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D825023F"
+						pos (357,1437)
+						label (object ItemLabel
+							quid "5188D8250240"
+							pos (9,1199)
+							max_width 696
 							label "tcpCapsule")
 						stereotype (object ItemLabel
-							quid "517678490265"
-							pos (515,295)
+							quid "5188D8250241"
+							pos (9,1165)
 							anchor 10
-							max_width 730
+							max_width 696
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "517678490259"
 						compartment (object Compartment
-							quid "517678490255"
-							pos (515,437)
+							quid "5188D8250244"
+							pos (9,1293)
 							anchor 2
 							nlines 13
-							max_width 728
+							max_width 659
 							justify 1)
-						width 748
-						height 750
+						width 714
+						height 699
 						annotation 8
 						autoResize TRUE
-						showPorts TRUE)))))
+						showPorts TRUE)
+					(object CapsuleRoleRelVw ":Structure:tcpInstance" @173
+						quid "5188D8250272"
+						uses_fill_color FALSE
+						quidu "51875EA901A5"
+						label (object SegLabel @174
+							quid "5188D8250273"
+							pos (159,1005)
+							max_width 225
+							label "tcpInstance"
+							pctDist -1.358516
+							height 431)
+						client @172
+						supplier @171
+						vertices (list Points
+							(659,1087)
+							(788,939))
+						line_style 6144
+						label (object SegLabel @175
+							quid "5188D8250275"
+							pos (54,1019)
+							hidden TRUE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist -1.763679
+							height 500))
+					(object ProtocolVw "jsonProtocol" @176
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D82C02EB"
+						pos (1531,1487)
+						label (object ItemLabel
+							quid "5188D82C02EC"
+							pos (1263,1430)
+							max_width 537
+							label "jsonProtocol")
+						stereotype (object ItemLabel
+							quid "5188D82C02ED"
+							pos (1263,1396)
+							anchor 10
+							max_width 537
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "51875F9A015E"
+						compartment (object Compartment
+							quid "5188D82C02F0"
+							pos (1263,1519)
+							anchor 2
+							nlines 2
+							max_width 513
+							justify 1)
+						width 555
+						height 264
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object PortRelVw ":Structure:internalJsonPort" @177
+						quid "5188D82C0321"
+						uses_fill_color FALSE
+						quidu "51875FA2029B"
+						label (object SegLabel @178
+							quid "5188D82C0322"
+							pos (1464,1174)
+							positionBySuperclass FALSE
+							max_width 338
+							label "internalJsonPort"
+							pctDist 0.229393
+							height 139
+							orientation 1)
+						positionBySuperclass FALSE
+						client @176
+						supplier @171
+						vertices (list Points
+							(1428,1354)
+							(1107,939))
+						line_style 6144
+						label (object SegLabel @179
+							quid "5188D82C0325"
+							pos (1830,76)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 1.457964
+							height 1100
+							orientation 1)
+						label (object SegLabel @180
+							quid "5188D82C0323"
+							pos (1884,124)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 1.322626
+							height 1114
+							orientation 1))
+					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @181
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D84A017F"
+						pos (2067,1599)
+						label (object ItemLabel
+							quid "5188D84A0180"
+							pos (1897,1480)
+							max_width 340
+							label "jsonCommand")
+						icon_style "Decoration"
+						quidu "518764D2025A"
+						compartment (object Compartment
+							quid "5188D84A0181"
+							pos (1897,1569)
+							anchor 2
+							nlines 4
+							max_width 209
+							justify 1)
+						width 358
+						height 254
+						annotation 8
+						autoResize TRUE)
+					(object ProtocolVw "tcpProtocol" @182
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "5188D852010D"
+						pos (289,2234)
+						label (object ItemLabel
+							quid "5188D852010E"
+							pos (73,2139)
+							max_width 433
+							label "tcpProtocol")
+						stereotype (object ItemLabel
+							quid "5188D852010F"
+							pos (73,2105)
+							anchor 10
+							max_width 433
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "5176788B0049"
+						compartment (object Compartment
+							quid "5188D8520113"
+							pos (73,2233)
+							anchor 2
+							nlines 4
+							max_width 419
+							justify 1)
+						width 451
+						height 340
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object PortRelVw ":Structure:mainConnection" @183
+						quid "5188D8520145"
+						uses_fill_color FALSE
+						quidu "5176786302E2"
+						label (object SegLabel @184
+							quid "5188D8520146"
+							pos (145,2509)
+							positionBySuperclass FALSE
+							max_width 288
+							label "mainConnection"
+							pctDist -1.646853
+							height 117)
+						positionBySuperclass FALSE
+						client @182
+						supplier @172
+						vertices (list Points
+							(302,2063)
+							(326,1786))
+						line_style 6144
+						label (object SegLabel @185
+							quid "5188D8520149"
+							pos (270,1862)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist -0.201965
+							height 38)
+						label (object SegLabel @186
+							quid "5188D8520147"
+							pos (207,1919)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist -0.532096
+							height 41
+							orientation 1))))))
 	root_subsystem (object SubSystem "Component View"
 		quid "5176778400A5"
 		physical_models (list unit_reference_list
@@ -2273,9 +2951,10 @@
 					componentClassReferences  "Logical View::TCPIP::jsonProtocol"
 					quidu "51875F9A015E"
 					componentClassReferences  "Logical View::TCPIP::jsonCommand"
-					quidu "518764D2025A"
-					componentClassReferences  "Logical View::TCPIP::jsonTranslateCapsule"
-					quidu "51875E6E03D0")
+					quidu "518764D2025A")
+				componentPackageReferences (list componentPackageReferencesList
+					componentPackageReferences  "Logical View::TCPIP"
+					quidu "51875B0A0238")
 				componentType "C++ Executable"
 				componentEnvironment "C++ TargetRTS")
 			(object Component "tcpIpLib"
@@ -2322,9 +3001,11 @@
 			(object Module_Diagram "Main"
 				quid "36641F810172"
 				items (list diagram_item_list
-					(object ComponentVw "Component View::ourProgram" @157
+					(object ComponentVw "Component View::ourProgram" @187
 						quid "5176859B0172"
 						pos (1514,433)
+						font (object Font
+							face "MS Sans Serif")
 						label (object ItemLabel
 							quid "5176859B0173"
 							pos (1432,451)
@@ -2343,9 +3024,11 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ComponentVw "Component View::RTComponents::RTComponent" @158
+					(object ComponentVw "Component View::RTComponents::RTComponent" @188
 						quid "5176859C02A3"
 						pos (2192,925)
+						font (object Font
+							face "MS Sans Serif")
 						label (object ItemLabel
 							quid "5176859C02A4"
 							pos (2095,939)
@@ -2364,20 +3047,22 @@
 						height 186
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @159
+					(object ModVisView "" @189
 						quid "517685AC0182"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517685AD00B8"
-						client @157
-						supplier @158
+						client @187
+						supplier @188
 						vertices (list Points
 							(1610,508)
 							(2067,837))
 						line_style 6144)
-					(object ComponentVw "Component View::tcpIpLib" @160
+					(object ComponentVw "Component View::tcpIpLib" @190
 						quid "517686A800C3"
 						pos (592,401)
+						font (object Font
+							face "MS Sans Serif")
 						label (object ItemLabel
 							quid "517686A800C4"
 							pos (495,419)
@@ -2396,20 +3081,22 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @161
+					(object ModVisView "" @191
 						quid "517686AD00DB"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517686AE00BD"
-						client @157
-						supplier @160
+						client @187
+						supplier @190
 						vertices (list Points
 							(1244,422)
 							(909,410))
 						line_style 6144)
-					(object ComponentVw "Component View::jsonLib" @162
+					(object ComponentVw "Component View::jsonLib" @192
 						quid "51876F7902A7"
 						pos (903,944)
+						font (object Font
+							face "MS Sans Serif")
 						label (object ItemLabel
 							quid "51876F7902A8"
 							pos (806,962)
@@ -2418,7 +3105,7 @@
 							label "jsonLib")
 						stereotype (object ItemLabel
 							quid "51876F7902A9"
-							pos (806,905)
+							pos (806,901)
 							anchor 10
 							max_width 373
 							label "<<C++ External Library>>")
@@ -2428,13 +3115,13 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @163
+					(object ModVisView "" @193
 						quid "51876F7C003B"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "51876F7C03A2"
-						client @157
-						supplier @162
+						client @187
+						supplier @192
 						vertices (list Points
 							(1414,508)
 							(987,867))
@@ -2462,78 +3149,6 @@
 	properties (object Properties
 		attributes (list Attribute_Set
 			(object Attribute
-				tool "CORBA"
-				name "default__Project"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "CreateMissingDirectories"
-						value TRUE)
-					(object Attribute
-						tool "CORBA"
-						name "Editor"
-						value ("EditorType" 100))
-					(object Attribute
-						tool "CORBA"
-						name "IncludePath"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "StopOnError"
-						value TRUE)
-					(object Attribute
-						tool "CORBA"
-						name "EditorType"
-						value (list Attribute_Set
-							(object Attribute
-								tool "CORBA"
-								name "BuiltIn"
-								value 100)
-							(object Attribute
-								tool "CORBA"
-								name "WindowsShell"
-								value 101)))
-					(object Attribute
-						tool "CORBA"
-						name "PathSeparator"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "GenerateRoseID"
-						value TRUE)
-					(object Attribute
-						tool "CORBA"
-						name "NotShowRoseIDDlg"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "GenerateComments"
-						value TRUE)
-					(object Attribute
-						tool "CORBA"
-						name "UseTabs"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "UseSpaces"
-						value TRUE)
-					(object Attribute
-						tool "CORBA"
-						name "SpacingItems"
-						value 4)
-					(object Attribute
-						tool "CORBA"
-						name "BraceOnNewLine"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "FundamentalTypes"
-						value "short; long; long long; unsigned short; unsigned long; unsigned long long; float; double; long double; char; boolean; wchar; octet; any;string; wstring; sequence; fixed; Object")))
-			(object Attribute
-				tool "OT::C"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
 				tool "C Version"
 				name "default__Version"
 				value (list Attribute_Set
@@ -2542,575 +3157,6 @@
 						name "Version"
 						value 6404)))
 			(object Attribute
-				tool "OT::C"
-				name "default__Attribute"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::C"
-						name "AttributeKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "normal"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "constant"
-								value 2)))
-					(object Attribute
-						tool "OT::C"
-						name "AttributeKind"
-						value ("AttributeKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "InitializerKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "assignment"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "call construct function"
-								value 1)))
-					(object Attribute
-						tool "OT::C"
-						name "InitializerKind"
-						value ("InitializerKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Field Size"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "Generate Get Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Generate Set Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Name"
-						value "get_$attribute")
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Name"
-						value "set_$attribute")
-					(object Attribute
-						tool "OT::C"
-						name "GetSetKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "common"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "static"
-								value 3)))
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Returns Value"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "HeaderPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "HeaderEnding"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationEnding"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::C"
-				name "default__Capsule"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::C"
-						name "GenerateConstructFunction"
-						value TRUE)
-					(object Attribute
-						tool "OT::C"
-						name "GlobalPrefix"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "HeaderPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "HeaderEnding"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationEnding"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::C"
-				name "default__Class"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::C"
-						name "GenerateClass"
-						value TRUE)
-					(object Attribute
-						tool "OT::C"
-						name "GenerateStateMachine"
-						value TRUE)
-					(object Attribute
-						tool "OT::C"
-						name "ClassKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "none (deprecated)"
-								value 4)
-							(object Attribute
-								tool "OT::C"
-								name "struct"
-								value 1)
-							(object Attribute
-								tool "OT::C"
-								name "typedef"
-								value 3)
-							(object Attribute
-								tool "OT::C"
-								name "union"
-								value 2)))
-					(object Attribute
-						tool "OT::C"
-						name "ClassKind"
-						value ("ClassKindSet" 1))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationType"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "ConstructFunctionName"
-						value "${name}_construct")
-					(object Attribute
-						tool "OT::C"
-						name "GlobalPrefix"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "HeaderPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "HeaderEnding"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationPreface"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "ImplementationEnding"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::C"
-				name "default__Role"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::C"
-						name "AssociationEndKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "member"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "global"
-								value 1)))
-					(object Attribute
-						tool "OT::C"
-						name "AssociationEndKind"
-						value ("AssociationEndKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "InitializerKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "assignment"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "call construct function"
-								value 1)))
-					(object Attribute
-						tool "OT::C"
-						name "InitializerKind"
-						value ("InitializerKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Value Pointed to by Pointer Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Volatile"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Value Pointed to by Pointer Volatile"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Field Size"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "Generate Get Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Generate Set Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Name"
-						value "get_$end")
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Name"
-						value "set_$end")
-					(object Attribute
-						tool "OT::C"
-						name "GetSetKindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "common"
-								value 0)
-							(object Attribute
-								tool "OT::C"
-								name "static"
-								value 3)))
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Get Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Set Method Returns Value"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "InitialValue"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::C"
-						name "AssocClassMemberInitializerKind"
-						value ("InitializerKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Value Pointed to by Assoc Class Member Pointer Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Volatile"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Value Pointed to by Assoc Class Member Pointer Volatile"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Field Size"
-						value "")
-					(object Attribute
-						tool "OT::C"
-						name "Generate Assoc Class Member Get Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Generate Assoc Class Member Set Method"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Get Name"
-						value "get_ac_$end")
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Name"
-						value "set_ac_$end")
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Get Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Kind"
-						value ("GetSetKindSet" 0))
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Get Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Method Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Get Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Method Return Type Constant"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Get Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Method by Reference"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "Assoc Class Member Set Method Returns Value"
-						value FALSE)
-					(object Attribute
-						tool "OT::C"
-						name "AssocClassMemberInitialValue"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::C"
-				name "default__Uses"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::C"
-						name "KindSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::C"
-								name "none"
-								value 2)
-							(object Attribute
-								tool "OT::C"
-								name "forward reference"
-								value 1)
-							(object Attribute
-								tool "OT::C"
-								name "inclusion"
-								value 0)))
-					(object Attribute
-						tool "OT::C"
-						name "KindInHeader"
-						value ("KindSet" 1))
-					(object Attribute
-						tool "OT::C"
-						name "KindInImplementation"
-						value ("KindSet" 0))))
-			(object Attribute
-				tool "OT::C"
-				name "HiddenTool"
-				value FALSE)
-			(object Attribute
-				tool "OT::CExec"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
-				tool "OT::CExec"
-				name "default__Capsule"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CExec"
-						name "Capsule To Logical Thread Mapping"
-						value (value Event ""))))
-			(object Attribute
-				tool "OT::CExec"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CExec"
-						name "TopCapsule"
-						value (value Event 
-|[event_ui
-|	description='<none selected>'
-|	caption='Select...']
-						))
-					(object Attribute
-						tool "OT::CExec"
-						name "PhysicalThreads"
-						value (value Event 
-|[MainThread
-|	Priority='DEFAULT_MAIN_PRIORITY'
-|	StackSize='20000'
-|	FreeMessageQueueSize='DEFAULT_FREE_MSGQ_SIZE']
-						))
-					(object Attribute
-						tool "OT::CExec"
-						name "ExecutableName"
-						value "$name$(EXEC_EXT)")
-					(object Attribute
-						tool "OT::CExec"
-						name "DefaultArguments"
-						value "")
-					(object Attribute
-						tool "OT::CExec"
-						name "LinkCommand"
-						value "$(LD)")
-					(object Attribute
-						tool "OT::CExec"
-						name "LinkArguments"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CExec"
-						name "UserObjectFiles"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CExec"
-						name "UserLibraries"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::CExec"
-				name "HiddenTool"
-				value FALSE)
-			(object Attribute
-				tool "OT::CExtLib"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
-				tool "OT::CExtLib"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CExtLib"
-						name "IncludeFilename"
-						value "")
-					(object Attribute
-						tool "OT::CExtLib"
-						name "GenerateClassInclusions"
-						value TRUE)
-					(object Attribute
-						tool "OT::CExtLib"
-						name "CodeGenDirName"
-						value "")
-					(object Attribute
-						tool "OT::CExtLib"
-						name "InclusionPaths"
-						value (value Event ""))
-					(object Attribute
-						tool "OT::CExtLib"
-						name "Libraries"
-						value (value Event ""))))
-			(object Attribute
-				tool "OT::CExtLib"
-				name "HiddenTool"
-				value FALSE)
-			(object Attribute
-				tool "OT::CLib"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
-				tool "OT::CLib"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CLib"
-						name "LibraryName"
-						value "$(LIB_PFX)$name$(LIB_EXT)")
-					(object Attribute
-						tool "OT::CLib"
-						name "BuildLibraryCommand"
-						value "$(AR_CMD)")
-					(object Attribute
-						tool "OT::CLib"
-						name "BuildLibraryArguments"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::CLib"
-				name "HiddenTool"
-				value FALSE)
-			(object Attribute
-				tool "OT::CTargetRSL"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
 				tool "C Generation"
 				name "propertyId"
 				value "809135966")
@@ -3118,98 +3164,6 @@
 				tool "C Compilation"
 				name "propertyId"
 				value "809135966")
-			(object Attribute
-				tool "OT::CTargetRSL"
-				name "default__Class"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateDescriptorSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "OT::CTargetRSL"
-								name "True"
-								value 0)
-							(object Attribute
-								tool "OT::CTargetRSL"
-								name "DebugOnly"
-								value 1)
-							(object Attribute
-								tool "OT::CTargetRSL"
-								name "False"
-								value 2)
-							(object Attribute
-								tool "OT::CTargetRSL"
-								name "Manual"
-								value 3)))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateDescriptor"
-						value ("GenerateDescriptorSet" 0))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "Version"
-						value 0)
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "InitFunctionBody"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "CopyFunctionBody"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "DestroyFunctionBody"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "DecodeFunctionBody"
-						value (value Text ""))
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "EncodeFunctionBody"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::CTargetRSL"
-				name "default__Attribute"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateDescriptor"
-						value TRUE)
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "TypeDescriptor"
-						value "")
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateTypeModifier"
-						value TRUE)
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "NumElementsFunctionBody"
-						value (value Text ""))))
-			(object Attribute
-				tool "OT::CTargetRSL"
-				name "default__Role"
-				value (list Attribute_Set
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateDescriptor"
-						value TRUE)
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "TypeDescriptor"
-						value "")
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "GenerateTypeModifier"
-						value TRUE)
-					(object Attribute
-						tool "OT::CTargetRSL"
-						name "NumElementsFunctionBody"
-						value (value Text ""))))
 			(object Attribute
 				tool "C Generation"
 				name "default__Component"
@@ -3438,10 +3392,6 @@
 						tool "C Compilation"
 						name "MisraCActive"
 						value FALSE)))
-			(object Attribute
-				tool "OT::CTargetRSL"
-				name "HiddenTool"
-				value FALSE)
 			(object Attribute
 				tool "OT::Cpp"
 				name "propertyId"
@@ -4707,158 +4657,6 @@
 				name "HiddenTool"
 				value FALSE)
 			(object Attribute
-				tool "CORBA"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
-				tool "CORBA"
-				name "default__Class"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "ArrayDimensions"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "ConstValue"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "ImplementationType"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "IsLocal"
-						value FALSE)))
-			(object Attribute
-				tool "CORBA"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "AdditionalIncludes"
-						value (value Text ""))
-					(object Attribute
-						tool "CORBA"
-						name "CmIdentification"
-						value (value Text "  %X% %Q% %Z% %W%"))
-					(object Attribute
-						tool "CORBA"
-						name "CopyrightNotice"
-						value (value Text ""))
-					(object Attribute
-						tool "CORBA"
-						name "InclusionProtectionSymbol"
-						value "AUTO GENERATE")))
-			(object Attribute
-				tool "CORBA"
-				name "default__Operation"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "Context"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "OperationIsOneWay"
-						value FALSE)))
-			(object Attribute
-				tool "CORBA"
-				name "default__Attribute"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "ArrayDimensions"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "CaseSpecifier"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "IsReadOnly"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "Order"
-						value "")))
-			(object Attribute
-				tool "CORBA"
-				name "default__Role"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "ArrayDimensions"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "CaseSpecifier"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "GenerateForwardReference"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "IsReadOnly"
-						value FALSE)
-					(object Attribute
-						tool "CORBA"
-						name "Order"
-						value "")
-					(object Attribute
-						tool "CORBA"
-						name "BoundedRoleType"
-						value ("AssocTypeSet" 47))
-					(object Attribute
-						tool "CORBA"
-						name "AssocTypeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "CORBA"
-								name "Array"
-								value 24)
-							(object Attribute
-								tool "CORBA"
-								name "Sequence"
-								value 47)))))
-			(object Attribute
-				tool "CORBA"
-				name "default__Uses"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "GenerateForwardReference"
-						value FALSE)))
-			(object Attribute
-				tool "CORBA"
-				name "default__Param"
-				value (list Attribute_Set
-					(object Attribute
-						tool "CORBA"
-						name "Direction"
-						value ("ParamDirectionTypeSet" 102))
-					(object Attribute
-						tool "CORBA"
-						name "ParamDirectionTypeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "CORBA"
-								name "in"
-								value 102)
-							(object Attribute
-								tool "CORBA"
-								name "inout"
-								value 103)
-							(object Attribute
-								tool "CORBA"
-								name "out"
-								value 104)))))
-			(object Attribute
-				tool "CORBA"
-				name "HiddenTool"
-				value FALSE)
-			(object Attribute
 				tool "OT::QualityArchitectRT"
 				name "propertyId"
 				value "809135966")
@@ -4943,351 +4741,39 @@
 				name "HiddenTool"
 				value FALSE)
 			(object Attribute
-				tool "RTJava"
-				name "propertyId"
-				value "809135966")
-			(object Attribute
-				tool "RTJava"
-				name "default__Class"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "JavaStatic"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaFinal"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaStrictfp"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "GenerateDefaultConstructor"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "VisibilitySet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava"
-								name "public"
-								value 0)
-							(object Attribute
-								tool "RTJava"
-								name "protected"
-								value 1)
-							(object Attribute
-								tool "RTJava"
-								name "private"
-								value 2)
-							(object Attribute
-								tool "RTJava"
-								name "package"
-								value 3)))
-					(object Attribute
-						tool "RTJava"
-						name "DefaultConstructorVisibility"
-						value ("VisibilitySet" 0))
-					(object Attribute
-						tool "RTJava"
-						name "ClassFileHeader"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava"
-						name "StaticInitializerHeader"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava"
-						name "StaticInitializerFooter"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava"
-						name "InstanceInitializerHeader"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava"
-						name "InstanceInitializerFooter"
-						value (value Text ""))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Attribute"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "JavaVolatile"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaTransient"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "InitializationCode"
-						value (value Text ""))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Role"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "JavaFinal"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaVolatile"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaTransient"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "InitialValue"
-						value "")
-					(object Attribute
-						tool "RTJava"
-						name "InitializationCode"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava"
-						name "NameScopeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava"
-								name "fully qualify"
-								value 0)
-							(object Attribute
-								tool "RTJava"
-								name "import"
-								value 1)))
-					(object Attribute
-						tool "RTJava"
-						name "NameQualification"
-						value ("NameScopeSet" 0))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Operation"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "JavaFinal"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaNative"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaStrictfp"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "JavaThrows"
-						value (value Text ""))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Inherit"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "NameScopeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava"
-								name "fully qualify"
-								value 0)
-							(object Attribute
-								tool "RTJava"
-								name "import"
-								value 1)))
-					(object Attribute
-						tool "RTJava"
-						name "NameQualification"
-						value ("NameScopeSet" 0))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Uses"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "NameScopeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava"
-								name "fully qualify"
-								value 0)
-							(object Attribute
-								tool "RTJava"
-								name "import"
-								value 1)))
-					(object Attribute
-						tool "RTJava"
-						name "NameQualification"
-						value ("NameScopeSet" 1))))
-			(object Attribute
-				tool "RTJava"
-				name "default__Category"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "Java Package"
-						value FALSE)))
-			(object Attribute
-				tool "RTJava"
-				name "default__StateTransition"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "GenerateDataParameter"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "GeneratePortParameter"
-						value FALSE)))
-			(object Attribute
-				tool "RTJava"
-				name "default__BinaryBranch"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava"
-						name "GenerateDataParameter"
-						value FALSE)
-					(object Attribute
-						tool "RTJava"
-						name "GeneratePortParameter"
-						value FALSE)))
+				tool "OT::C"
+				name "HiddenTool"
+				value FALSE)
 			(object Attribute
 				tool "RTJava"
 				name "HiddenTool"
 				value FALSE)
 			(object Attribute
-				tool "RTJava External Project"
-				name "propertyId"
-				value "809135966")
+				tool "RTJava Project"
+				name "HiddenTool"
+				value FALSE)
 			(object Attribute
-				tool "RTJava External Project"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava External Project"
-						name "ClassPath"
-						value "")))
+				tool "OT::CLib"
+				name "HiddenTool"
+				value FALSE)
+			(object Attribute
+				tool "OT::CExec"
+				name "HiddenTool"
+				value FALSE)
 			(object Attribute
 				tool "RTJava External Project"
 				name "HiddenTool"
 				value FALSE)
 			(object Attribute
-				tool "RTJava Project"
-				name "propertyId"
-				value "809135966")
+				tool "OT::CTargetRSL"
+				name "HiddenTool"
+				value FALSE)
 			(object Attribute
-				tool "RTJava Project"
-				name "default__Component"
-				value (list Attribute_Set
-					(object Attribute
-						tool "RTJava Project"
-						name "JavaVersionSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava Project"
-								name "1.1"
-								value 11)
-							(object Attribute
-								tool "RTJava Project"
-								name "1.2"
-								value 12)
-							(object Attribute
-								tool "RTJava Project"
-								name "1.3"
-								value 13)
-							(object Attribute
-								tool "RTJava Project"
-								name "1.4"
-								value 14)))
-					(object Attribute
-						tool "RTJava Project"
-						name "Java Version"
-						value ("JavaVersionSet" 14))
-					(object Attribute
-						tool "RTJava Project"
-						name "BuildJar"
-						value FALSE)
-					(object Attribute
-						tool "RTJava Project"
-						name "OutputJarFilepath"
-						value "$modelDir/$compName.jar")
-					(object Attribute
-						tool "RTJava Project"
-						name "JarCommand"
-						value "jar cvf ${dq}$(JAR_TARGET)${dq} -C ${dq}$(OUTPUT_CLASS_DIR)${dq} .")
-					(object Attribute
-						tool "RTJava Project"
-						name "OutputClassDir"
-						value "$modelDir/$compName")
-					(object Attribute
-						tool "RTJava Project"
-						name "JavaCompiler"
-						value "javac -d ${dq}$(OUTPUT_CLASS_DIR)${dq}")
-					(object Attribute
-						tool "RTJava Project"
-						name "OutputDirectory"
-						value "$modelDir/$compName")
-					(object Attribute
-						tool "RTJava Project"
-						name "BootstrapCommand"
-						value "rtjavagen -makegen -model ${dq}$modelFile${dq} -component ${dq}$qualifiedName${dq}")
-					(object Attribute
-						tool "RTJava Project"
-						name "GenerateCommand"
-						value "$defaultMake RTgenerate")
-					(object Attribute
-						tool "RTJava Project"
-						name "CompileCommand"
-						value "$defaultMake RTcompile")
-					(object Attribute
-						tool "RTJava Project"
-						name "CleanAllCommand"
-						value "$defaultMake RTcleanall")
-					(object Attribute
-						tool "RTJava Project"
-						name "MakeTypeSet"
-						value (list Attribute_Set
-							(object Attribute
-								tool "RTJava Project"
-								name "DefaultMakeType"
-								value 0)
-							(object Attribute
-								tool "RTJava Project"
-								name "Gnu_make"
-								value 3)
-							(object Attribute
-								tool "RTJava Project"
-								name "MS_nmake"
-								value 4)
-							(object Attribute
-								tool "RTJava Project"
-								name "Unix_make"
-								value 5)))
-					(object Attribute
-						tool "RTJava Project"
-						name "MakeType"
-						value ("MakeTypeSet" 0))
-					(object Attribute
-						tool "RTJava Project"
-						name "ComponentMakeInsert"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava Project"
-						name "CodeGenMakeInsert"
-						value (value Text ""))
-					(object Attribute
-						tool "RTJava Project"
-						name "CompileMakeInsert"
-						value (value Text ""))))
+				tool "CORBA"
+				name "HiddenTool"
+				value FALSE)
 			(object Attribute
-				tool "RTJava Project"
+				tool "OT::CExtLib"
 				name "HiddenTool"
 				value FALSE))
 		quid "5176778400A7"))

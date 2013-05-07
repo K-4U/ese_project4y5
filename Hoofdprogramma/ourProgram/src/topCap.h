@@ -42,11 +42,11 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME capsuleRole 'mainCapsuleR1'
-	RTActorRef mainCapsuleR1;
-	// }}}RME
 	// {{{RME capsuleRole 'tcpTopCapsuleR1'
 	RTActorRef tcpTopCapsuleR1;
+	// }}}RME
+	// {{{RME capsuleRole 'mainCapsuleR1'
+	RTActorRef mainCapsuleR1;
 	// }}}RME
 
 public:

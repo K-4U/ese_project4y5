@@ -138,6 +138,8 @@ INLINE_METHODS void tcpCapsule_Actor::transition14_True( const void * rtdata, Ti
 	// stuur SOCKET ook naar de applicatie zodat deze ook kan zenden
 	// terwijl deze capsule als server wacht op ontvangen data
 	mainConnection.sock(ClientSocket).send();
+
+	cout << "S: Connection received!" << endl;
 	// }}}USR
 }
 // }}}RME
@@ -323,7 +325,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint4_bindingSuccesfull( const void 
 					(int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) 
 	{
-	    printf("bind failed: %d\n", WSAGetLastError());
+	    printf("S: bind failed: %d\n", WSAGetLastError());
 	    freeaddrinfo(result);
 	    closesocket(ListenSocket);
 	    WSACleanup();
@@ -366,14 +368,14 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint5_listening( const void * rtdata
 	//of pending connections in the queue. 
 	//Check the return value for general errors. 
 	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-	    printf( "Error at bind(): %ld\n", WSAGetLastError() );
+	    printf( "S: Error at bind(): %ld\n", WSAGetLastError() );
 	    closesocket(ListenSocket);
 	    WSACleanup();
 	    return false;
 	}
 	else
 	{
-		cout << "listening to port: " << DEFAULT_PORT << endl;
+		cout << "S: listening to port: " << DEFAULT_PORT << endl;
 		return true;
 	}
 
@@ -421,7 +423,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint6_acceptConnection( const void *
 	// Accept a client socket
 	ClientSocket = accept(ListenSocket, NULL, NULL);
 	if (ClientSocket == INVALID_SOCKET) {
-	    printf("accept failed: %d\n", WSAGetLastError());
+	    printf("S: accept failed: %d\n", WSAGetLastError());
 	    closesocket(ListenSocket);
 	    WSACleanup();
 	    return false;
@@ -464,36 +466,40 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint7_getBytes( const void * rtdata,
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) 
 		{
-			printf("Bytes received by socket capsule: %d\n", iResult);
+			printf("S: Bytes received by socket capsule: %d\n", iResult);
 			for (int i = 0; i < iResult; i++)
 			{
-				cout << recvbuf[i];
+				cout << "S: " << recvbuf[i] << endl;
 			}
-			cout << endl;
 
 			// send data to the application capsule via the port appPort
 			mainConnection.dataReceived(RTString(recvbuf)).send();
 
+	        //Clear buffer:
+	        int i;
+	        for(i=0;i<DEFAULT_BUFLEN;i++){
+	            recvbuf[i] = 0;
+	        }
 	        // Echo the buffer back to the sender
-	        iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
+	        /*iSendResult = send( ClientSocket, recvbuf, iResult, 0 );
 	        if (iSendResult == SOCKET_ERROR) {
 	            printf("send failed: %d\n", WSAGetLastError());
 	            closesocket(ClientSocket);
 	            WSACleanup();
 	            return 1;
 	        }
-	        printf("Bytes sent: %d\n", iSendResult);
+	        printf("Bytes sent: %d\n", iSendResult);*/
 		}
 		else
 		{
-			cout << "iResult <= 0 " << "is: " << iResult << endl;
+			cout << "S: iResult <= 0 " << "is: " << iResult << endl;
 		}
 	}
 	while (iResult > 0);
 
 	if (iResult<=0)
 	{
-		printf("Connection closing...\n");
+		printf("S: Connection closing...\n");
 		return false;
 	}
 	else
@@ -538,7 +544,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint8_shutdownConnection( const void
 	// shutdown the send half of the connection since no more data can be sent
 	iResult = shutdown(ClientSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR) {
-	   	printf("shutdown failed: %d\n", WSAGetLastError());
+	   	printf("S: shutdown failed: %d\n", WSAGetLastError());
 	    freeaddrinfo(result);
 	    closesocket(ListenSocket);
 	   	closesocket(ClientSocket);

@@ -53,27 +53,27 @@ static const RTBindingDescriptor rtg_bindings_tcpInstance[] =
 	}
 };
 
-static const RTInterfaceDescriptor rtg_interfaces_jsonTranslateInstance[] =
+static const RTInterfaceDescriptor rtg_interfaces_jsonTranslateCapsuleR1[] =
 {
 	{
-		"jsonPort"
+		"tcpPort"
 	  , 1
 	}
   , {
-		"tcpPort"
+		"jsonPort"
 	  , 1
 	}
 };
 
-static const RTBindingDescriptor rtg_bindings_jsonTranslateInstance[] =
+static const RTBindingDescriptor rtg_bindings_jsonTranslateCapsuleR1[] =
 {
 	{
 		0
-	  , &jsonProtocol::Conjugate::rt_class
+	  , &tcpProtocol::Base::rt_class
 	}
   , {
 		1
-	  , &tcpProtocol::Base::rt_class
+	  , &jsonProtocol::Conjugate::rt_class
 	}
 };
 
@@ -100,18 +100,26 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 			// mainConnection
 			if( rtg_repIndex < 1 )
 			{
-				// jsonTranslateInstance/tcpPort
-				return jsonTranslateInstance._followIn( rtg_end, 1, rtg_repIndex );
+				// jsonTranslateCapsuleR1/tcpPort
+				return jsonTranslateCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
 		default:
 			break;
 		}
 	case 2:
-		// jsonTranslateInstance
+		// jsonTranslateCapsuleR1
 		switch( rtg_portId )
 		{
 		case 0:
+			// tcpPort
+			if( rtg_repIndex < 1 )
+			{
+				// tcpInstance/mainConnection
+				return tcpInstance._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
+		case 1:
 			// jsonPort
 			if( rtg_repIndex < 1 )
 			{
@@ -119,14 +127,6 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 				rtg_end.port = &internalJsonPort;
 				rtg_end.index = rtg_repIndex;
 				return 1;
-			}
-			break;
-		case 1:
-			// tcpPort
-			if( rtg_repIndex < 1 )
-			{
-				// tcpInstance/mainConnection
-				return tcpInstance._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
 		default:
@@ -138,15 +138,33 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 	return RTActor::_followOutV( rtg_end, rtg_compId, rtg_portId, rtg_repIndex );
 }
 
+// {{{RME enter ':TOP:S1'
+INLINE_METHODS void tcpTopCapsule_Actor::enter2_S1( void )
+{
+	// {{{USR
+	cout << "tcpTopCapsule initialized" << endl;
+	// }}}USR
+}
+// }}}RME
+
+void tcpTopCapsule_Actor::enterStateV( void )
+{
+	switch( getCurrentState() )
+	{
+	case 2:
+		enter2_S1();
+		break;
+	default:
+		RTActor::enterStateV();
+		break;
+	}
+}
+
 // {{{RME transition ':TOP:Initial:Initial'
 INLINE_METHODS void tcpTopCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
-	//maak object voor de tcp verbinding
-	//frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);
-
-	//maak object voor de tcp verbinding
-	frame.incarnate(jsonTranslateInstance,jsonTranslateCapsule,EmptyObject,ThreadJsonTranslate);
+	frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);
 	// }}}USR
 }
 // }}}RME
@@ -245,7 +263,7 @@ const RTComponentDescriptor tcpTopCapsule_Actor::rtg_capsule_roles[] =
 	  , &tcpCapsule
 	  , RTOffsetOf( tcpTopCapsule_Actor, tcpInstance )
 	  , 1
-	  , RTComponentDescriptor::Fixed
+	  , RTComponentDescriptor::Optional
 	  , 1
 	  , 1 // cardinality
 	  , 1
@@ -254,17 +272,17 @@ const RTComponentDescriptor tcpTopCapsule_Actor::rtg_capsule_roles[] =
 	  , rtg_bindings_tcpInstance
 	}
   , {
-		"jsonTranslateInstance"
+		"jsonTranslateCapsuleR1"
 	  , &jsonTranslateCapsule
-	  , RTOffsetOf( tcpTopCapsule_Actor, jsonTranslateInstance )
+	  , RTOffsetOf( tcpTopCapsule_Actor, jsonTranslateCapsuleR1 )
 	  , 2
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
 	  , 2
-	  , rtg_interfaces_jsonTranslateInstance
+	  , rtg_interfaces_jsonTranslateCapsuleR1
 	  , 2
-	  , rtg_bindings_jsonTranslateInstance
+	  , rtg_bindings_jsonTranslateCapsuleR1
 	}
 };
 

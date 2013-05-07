@@ -13,6 +13,12 @@
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
+//zet windowsversie op XP
+#define WINVER 0x0501
+
+#include <winsock2.h> 
+#include <ws2tcpip.h> 
+#include <stdio.h>
 
 // }}}USR
 // }}}RME
@@ -42,25 +48,28 @@ private:
 
 	// }}}USR
 	// }}}RME
-	// {{{RME classAttribute 'jsonReader'
-	Json::Reader jsonReader;
+	// {{{RME classAttribute 'depth'
+	int depth;
 	// }}}RME
 	// {{{RME classAttribute 'jsonBuffer'
 	std::string jsonBuffer;
 	// }}}RME
-	// {{{RME classAttribute 'depth'
-	int depth;
+	// {{{RME classAttribute 'jsonReader'
+	Json::Reader jsonReader;
+	// }}}RME
+	// {{{RME classAttribute 'socket'
+	SOCKET socket;
+	// }}}RME
+	// {{{RME classAttribute 'inString'
+	bool inString;
 	// }}}RME
 
 protected:
-	// {{{RME port 'jsonPort'
-	jsonProtocol::Base jsonPort;
-	// }}}RME
 	// {{{RME port 'tcpPort'
 	tcpProtocol::Conjugate tcpPort;
 	// }}}RME
-	// {{{RME port 'frame'
-	Frame::Base frame;
+	// {{{RME port 'jsonPort'
+	jsonProtocol::Base jsonPort;
 	// }}}RME
 
 public:
@@ -75,9 +84,17 @@ protected:
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition2_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:J5188EA8C00E2:socketConnected'
+	INLINE_METHODS void transition3_socketConnected( const unsigned * rtdata, tcpProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:J5188EB280304:socketDisconnected'
+	INLINE_METHODS void transition4_socketDisconnected( const void * rtdata, tcpProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain2_Initial( void );
+	INLINE_CHAINS void chain3_socketConnected( void );
+	INLINE_CHAINS void chain4_socketDisconnected( void );
 	INLINE_CHAINS void chain1_dataReceived( void );
 
 public:

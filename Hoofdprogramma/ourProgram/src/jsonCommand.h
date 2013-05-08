@@ -12,6 +12,9 @@
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
 #include "../../include/json.h"
+#include <stdio.h>
+
+using namespace std;
 
 // }}}USR
 // }}}RME
@@ -48,6 +51,13 @@ public:
 	// {{{RME classAttribute 'data'
 	Json::Value data;
 	// }}}RME
+
+private:
+	// {{{RME classAttribute 'jsonReader'
+	Json::Reader jsonReader;
+	// }}}RME
+
+public:
 	// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
 	jsonCommand( void );
 	// }}}RME
@@ -60,6 +70,10 @@ public:
 	// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
 	jsonCommand & operator=( const jsonCommand & rtg_arg );
 	// }}}RME
+	// {{{RME operation 'jsonCommand(std::string)'
+	jsonCommand( std::string jsonCommand );
+	// }}}RME
+	static const RTFieldDescriptor rtg_jsonCommand_fields[];
 };
 
 struct RTTypedValue_jsonCommand

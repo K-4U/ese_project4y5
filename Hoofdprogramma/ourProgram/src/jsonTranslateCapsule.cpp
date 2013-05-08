@@ -111,8 +111,10 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 	    }
 		this->jsonBuffer.append(&b);
 	    if(this->jsonBuffer.size() >= 2 && this->depth == 0){
-	        //We should've received a complete JSON message.
-	        
+	        //Fetch command
+	        jsonCommand newCommand(this->jsonBuffer);
+
+	        jsonPort.commandReceived(newCommand).send();
 	        //And clear buffer
 	        this->jsonBuffer.clear();
 	    }

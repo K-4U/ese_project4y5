@@ -305,6 +305,9 @@
 								name "HeaderPreface"
 								value (value Text 
 |#include "../../include/json.h"
+|#include <stdio.h>
+|
+|using namespace std;
 								)))
 						quid "518764D2025A"
 						class_attributes (list class_attribute_list
@@ -315,7 +318,31 @@
 							(object ClassAttribute "data"
 								quid "518764EF028C"
 								type "Json::Value"
-								visibility "Public"))
+								visibility "Public")
+							(object ClassAttribute "jsonReader"
+								quid "518A1629005A"
+								type "Json::Reader"))
+						operations (list Operations
+							(object Operation "jsonCommand"
+								quid "5188F4640064"
+								body 
+|//We should've received a complete JSON message.
+|Json::Value msg;
+|bool parsingSuccessful = this->jsonReader.parse( jsonCommand, msg );
+|if (!parsingSuccessful){
+|    // report to the user the failure and their locations in the document.
+|    std::cout  << "Failed to parse configuration\n"
+|               << this->jsonReader.getFormatedErrorMessages();
+|    return;
+|}else{
+|    cout << "New JSON command: " << msg["command"] << endl;
+|}
+|
+								
+								parameters (list Parameters
+									(object Parameter "jsonCommand"
+										quid "5188F5B2023B"
+										type "std::string"))))
 						language "C++")
 					(object Capsule "tcpCapsule"
 						attributes (list Attribute_Set
@@ -2073,19 +2100,10 @@
 |    }
 |	this->jsonBuffer.append(&b);
 |    if(this->jsonBuffer.size() >= 2 && this->depth == 0){
-|        //We should've received a complete JSON message.
-|        Json::Value msg;
-|        bool parsingSuccessful = this>jsonReader.parse( this->jsonBuffer, msg );
-|        if (!parsingSuccessful){
-|            // report to the user the failure and their locations in the document.
-|            std::cout  << "Failed to parse configuration\n"
-|                       << this->jsonReader.getFormattedErrorMessages();
-|            return;
-|        }
 |        //Fetch command
-|        jsonCommand newCommand;
+|        jsonCommand newCommand(this->jsonBuffer);
 |
-|
+|        jsonPort.commandReceived(newCommand).send();
 |        //And clear buffer
 |        this->jsonBuffer.clear();
 |    }
@@ -2502,38 +2520,13 @@
 										quidu "518764D2025A"))))
 						statediagram (object State_Diagram "State Diagram"
 							filterFlags 1)
-						language "C++")
-					(object Protocol "NewProtocol1"
-						quid "5188EEF2019D"
-						statemachine (object State_Machine
-							quid "5188EEF2019E"
-							State (object State "TOP"
-								quid "5188EEF2019F"
-								states (list States
-									(object InitialPt "Initial"
-										quid "5188EEF201A0"))))
-						collaborations (list collaborationsList
-							(object Collaboration "Collaboration1"
-								quid "5188EEF201A1"))
-						statediagram (object State_Diagram "State Diagram"
-							quid "5188EEF201A2"
-							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @167
-									quid "5188EEF201A4"
-									pos (840,615)
-									quidu "5188EEF2019F")
-								(object StateView "StartState" "Initial" @168
-									quid "5188EEF201A5"
-									pos (180,180)
-									quidu "5188EEF201A0"))
-							filterFlags 1)
 						language "C++"))
 				logical_presentations (list unit_reference_list)))
 		logical_presentations (list unit_reference_list
 			(object ClassDiagram "Main"
 				quid "3619364703D4"
 				items (list diagram_item_list
-					(object CapsuleVw "mainCapsule" @169
+					(object CapsuleVw "mainCapsule" @167
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2565,7 +2558,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "topCap" @170
+					(object CapsuleVw "topCap" @168
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2590,7 +2583,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "tcpTopCapsule" @171
+					(object CapsuleVw "tcpTopCapsule" @169
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2612,7 +2605,7 @@
 						quidu "51875E79036D"
 						compartment (object Compartment
 							quid "5188D81D00F1"
-							pos (619,768)
+							pos (619,764)
 							anchor 2
 							nlines 5
 							max_width 676
@@ -2622,7 +2615,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "tcpCapsule" @172
+					(object CapsuleVw "tcpCapsule" @170
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2644,7 +2637,7 @@
 						quidu "517678490259"
 						compartment (object Compartment
 							quid "5188D8250244"
-							pos (9,1293)
+							pos (9,1294)
 							anchor 2
 							nlines 13
 							max_width 659
@@ -2654,24 +2647,24 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleRoleRelVw ":Structure:tcpInstance" @173
+					(object CapsuleRoleRelVw ":Structure:tcpInstance" @171
 						quid "5188D8250272"
 						uses_fill_color FALSE
 						quidu "51875EA901A5"
-						label (object SegLabel @174
+						label (object SegLabel @172
 							quid "5188D8250273"
 							pos (159,1005)
 							max_width 225
 							label "tcpInstance"
 							pctDist -1.358516
 							height 431)
-						client @172
-						supplier @171
+						client @170
+						supplier @169
 						vertices (list Points
 							(659,1087)
 							(788,939))
 						line_style 6144
-						label (object SegLabel @175
+						label (object SegLabel @173
 							quid "5188D8250275"
 							pos (54,1019)
 							hidden TRUE
@@ -2680,7 +2673,7 @@
 							label ""
 							pctDist -1.763679
 							height 500))
-					(object ProtocolVw "jsonProtocol" @176
+					(object ProtocolVw "jsonProtocol" @174
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2702,7 +2695,7 @@
 						quidu "51875F9A015E"
 						compartment (object Compartment
 							quid "5188D82C02F0"
-							pos (1263,1519)
+							pos (1263,1525)
 							anchor 2
 							nlines 2
 							max_width 513
@@ -2713,11 +2706,11 @@
 						autoResize TRUE
 						showInSignals TRUE
 						showOutSignals TRUE)
-					(object PortRelVw ":Structure:internalJsonPort" @177
+					(object PortRelVw ":Structure:internalJsonPort" @175
 						quid "5188D82C0321"
 						uses_fill_color FALSE
 						quidu "51875FA2029B"
-						label (object SegLabel @178
+						label (object SegLabel @176
 							quid "5188D82C0322"
 							pos (1464,1174)
 							positionBySuperclass FALSE
@@ -2727,13 +2720,13 @@
 							height 139
 							orientation 1)
 						positionBySuperclass FALSE
-						client @176
-						supplier @171
+						client @174
+						supplier @169
 						vertices (list Points
 							(1428,1354)
 							(1107,939))
 						line_style 6144
-						label (object SegLabel @179
+						label (object SegLabel @177
 							quid "5188D82C0325"
 							pos (1830,76)
 							hidden TRUE
@@ -2744,7 +2737,7 @@
 							pctDist 1.457964
 							height 1100
 							orientation 1)
-						label (object SegLabel @180
+						label (object SegLabel @178
 							quid "5188D82C0323"
 							pos (1884,124)
 							positionBySuperclass FALSE
@@ -2754,7 +2747,7 @@
 							pctDist 1.322626
 							height 1114
 							orientation 1))
-					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @181
+					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @179
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2763,23 +2756,23 @@
 						pos (2067,1599)
 						label (object ItemLabel
 							quid "5188D84A0180"
-							pos (1897,1480)
-							max_width 340
+							pos (1841,1434)
+							max_width 452
 							label "jsonCommand")
 						icon_style "Decoration"
 						quidu "518764D2025A"
 						compartment (object Compartment
 							quid "5188D84A0181"
-							pos (1897,1569)
+							pos (1841,1527)
 							anchor 2
-							nlines 4
-							max_width 209
+							nlines 6
+							max_width 450
 							justify 1)
-						width 358
-						height 254
+						width 470
+						height 349
 						annotation 8
 						autoResize TRUE)
-					(object ProtocolVw "tcpProtocol" @182
+					(object ProtocolVw "tcpProtocol" @180
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -2801,7 +2794,7 @@
 						quidu "5176788B0049"
 						compartment (object Compartment
 							quid "5188D8520113"
-							pos (73,2233)
+							pos (73,2234)
 							anchor 2
 							nlines 4
 							max_width 419
@@ -2812,11 +2805,11 @@
 						autoResize TRUE
 						showInSignals TRUE
 						showOutSignals TRUE)
-					(object PortRelVw ":Structure:mainConnection" @183
+					(object PortRelVw ":Structure:mainConnection" @181
 						quid "5188D8520145"
 						uses_fill_color FALSE
 						quidu "5176786302E2"
-						label (object SegLabel @184
+						label (object SegLabel @182
 							quid "5188D8520146"
 							pos (145,2509)
 							positionBySuperclass FALSE
@@ -2825,13 +2818,13 @@
 							pctDist -1.646853
 							height 117)
 						positionBySuperclass FALSE
-						client @182
-						supplier @172
+						client @180
+						supplier @170
 						vertices (list Points
 							(302,2063)
 							(326,1786))
 						line_style 6144
-						label (object SegLabel @185
+						label (object SegLabel @183
 							quid "5188D8520149"
 							pos (270,1862)
 							hidden TRUE
@@ -2841,7 +2834,7 @@
 							label ""
 							pctDist -0.201965
 							height 38)
-						label (object SegLabel @186
+						label (object SegLabel @184
 							quid "5188D8520147"
 							pos (207,1919)
 							positionBySuperclass FALSE
@@ -3001,7 +2994,7 @@
 			(object Module_Diagram "Main"
 				quid "36641F810172"
 				items (list diagram_item_list
-					(object ComponentVw "Component View::ourProgram" @187
+					(object ComponentVw "Component View::ourProgram" @185
 						quid "5176859B0172"
 						pos (1514,433)
 						font (object Font
@@ -3024,7 +3017,7 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ComponentVw "Component View::RTComponents::RTComponent" @188
+					(object ComponentVw "Component View::RTComponents::RTComponent" @186
 						quid "5176859C02A3"
 						pos (2192,925)
 						font (object Font
@@ -3047,18 +3040,18 @@
 						height 186
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @189
+					(object ModVisView "" @187
 						quid "517685AC0182"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517685AD00B8"
-						client @187
-						supplier @188
+						client @185
+						supplier @186
 						vertices (list Points
 							(1610,508)
 							(2067,837))
 						line_style 6144)
-					(object ComponentVw "Component View::tcpIpLib" @190
+					(object ComponentVw "Component View::tcpIpLib" @188
 						quid "517686A800C3"
 						pos (592,401)
 						font (object Font
@@ -3081,18 +3074,18 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @191
+					(object ModVisView "" @189
 						quid "517686AD00DB"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517686AE00BD"
-						client @187
-						supplier @190
+						client @185
+						supplier @188
 						vertices (list Points
 							(1244,422)
 							(909,410))
 						line_style 6144)
-					(object ComponentVw "Component View::jsonLib" @192
+					(object ComponentVw "Component View::jsonLib" @190
 						quid "51876F7902A7"
 						pos (903,944)
 						font (object Font
@@ -3115,13 +3108,13 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @193
+					(object ModVisView "" @191
 						quid "51876F7C003B"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "51876F7C03A2"
-						client @187
-						supplier @192
+						client @185
+						supplier @190
 						vertices (list Points
 							(1414,508)
 							(987,867))

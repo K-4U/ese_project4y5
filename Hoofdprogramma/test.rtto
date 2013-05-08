@@ -6,62 +6,12 @@
 
 (list toUnit
 	capsulePaths (list capsulePathsList
-		(object CapsulePath "/tcpTopCapsuleR1:0/jsonTranslateInstance:0"
+		(object CapsulePath "/"
 			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B56038C"
+			quid "51877B5100C0"
 			classifier  "Logical View::topCap"
 			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51877B56038D"
-					classifier  "Logical View::TCPIP::tcpTopCapsule"
-					quidu "51875E79036D"
-					capsuleRole  ":Structure:tcpTopCapsuleR1"
-					quidu "518769020006"
-					capsuleRoleCardinality 0)
-				(object CapsulePathElement ""
-					quid "51877B56038E"
-					classifier  "Logical View::TCPIP::jsonTranslateCapsule"
-					quidu "51875E6E03D0"
-					capsuleRole  ":Structure:jsonTranslateInstance"
-					quidu "51875EAB00F7"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/jsonTranslateInstance:jsonTranslateCapsule")
-		(object CapsulePath "/tcpTopCapsuleR1:0/tcpInstance:0"
-			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B560389"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51877B56038A"
-					classifier  "Logical View::TCPIP::tcpTopCapsule"
-					quidu "51875E79036D"
-					capsuleRole  ":Structure:tcpTopCapsuleR1"
-					quidu "518769020006"
-					capsuleRoleCardinality 0)
-				(object CapsulePathElement ""
-					quid "51877B56038B"
-					classifier  "Logical View::TCPIP::tcpCapsule"
-					quidu "517678490259"
-					capsuleRole  ":Structure:tcpInstance"
-					quidu "51875EA901A5"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/tcpInstance:tcpCapsule")
-		(object CapsulePath "/tcpTopCapsuleR1:0"
-			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B5300D2"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51877B5300D3"
-					classifier  "Logical View::TCPIP::tcpTopCapsule"
-					quidu "51875E79036D"
-					capsuleRole  ":Structure:tcpTopCapsuleR1"
-					quidu "518769020006"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/tcpTopCapsuleR1:tcpTopCapsule")
+			capsulePathString ":topCap")
 		(object CapsulePath "/mainCapsuleR1:0"
 			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
 			quid "51877B5300D0"
@@ -73,16 +23,70 @@
 					classifier  "Logical View::mainCapsule"
 					quidu "517679F9026D"
 					capsuleRole  ":Structure:mainCapsuleR1"
-					quidu "51767A0803AD"
+					quidu "5188E41C02D9"
 					capsuleRoleCardinality 0))
 			capsulePathString "0/mainCapsuleR1:mainCapsule")
-		(object CapsulePath "/"
+		(object CapsulePath "/tcpTopCapsuleR1:0"
 			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B5100C0"
+			quid "51877B5300D2"
 			classifier  "Logical View::topCap"
 			quidu "5176795702F3"
-			capsulePathString ":topCap"))
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "51877B5300D3"
+					classifier  "Logical View::TCPIP::tcpTopCapsule"
+					quidu "51875E79036D"
+					capsuleRole  ":Structure:tcpTopCapsuleR1"
+					quidu "5188DAE703A0"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/tcpTopCapsuleR1:tcpTopCapsule")
+		(object CapsulePath "/tcpTopCapsuleR1:0/tcpInstance:0"
+			capsulePathProcess "Deployment View::ourProgramRun::ourProgramInstance"
+			quid "51877B560389"
+			classifier  "Logical View::topCap"
+			quidu "5176795702F3"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "51877B56038A"
+					classifier  "Logical View::TCPIP::tcpTopCapsule"
+					quidu "51875E79036D"
+					capsuleRole  ":Structure:tcpTopCapsuleR1"
+					quidu "5188DAE703A0"
+					capsuleRoleCardinality 0)
+				(object CapsulePathElement ""
+					quid "51877B56038B"
+					classifier  "Logical View::TCPIP::tcpCapsule"
+					quidu "517678490259"
+					capsuleRole  ":Structure:tcpInstance"
+					quidu "51875EA901A5"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/tcpInstance:tcpCapsule"))
 	daemons (list daemonsList
+		(object BehaviorDaemon "0/tcpInstance:tcpCapsule-TOP"
+			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
+			quid "51877B750135"
+			capsuleInstance  "/tcpTopCapsuleR1:0/tcpInstance:0"
+			quidu "51877B560389"
+			State  ":TOP")
+		(object StructureDaemon "0/mainCapsuleR1:mainCapsule"
+			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
+			quid "51877B8B0393"
+			capsuleInstance  "/mainCapsuleR1:0"
+			quidu "51877B5300D0")
+		(object StructureDaemon "0/tcpTopCapsuleR1:tcpTopCapsule"
+			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
+			quid "51877B8D02E1"
+			capsuleInstance  "/tcpTopCapsuleR1:0"
+			quidu "51877B5300D2")
+		(object MSCDaemon "Trace1"
+			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
+			quid "51877B93037B"
+			capsuleInstance  "/"
+			quidu "51877B5100C0"
+			daemonTracingFlag TRUE
+			capsulePaths (list capsulePathsList
+				capsulePaths  "/tcpTopCapsuleR1:0/tcpInstance:0"
+				quidu "51877B560389"))
 		(object PseudoStateDaemon "/getBytes_Probe"
 			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
 			quid "51877C2A018D"
@@ -93,35 +97,4 @@
 			quidu "517678490259"
 			daemonHaltFlag TRUE
 			pseudoState  ":TOP:getBytes"
-			State  ":TOP")
-		(object MSCDaemon "Trace1"
-			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B93037B"
-			capsuleInstance  "/"
-			quidu "51877B5100C0"
-			daemonTracingFlag TRUE
-			capsulePaths (list capsulePathsList
-				capsulePaths  "/tcpTopCapsuleR1:0/tcpInstance:0"
-				quidu "51877B560389"))
-		(object StructureDaemon "0/tcpTopCapsuleR1:tcpTopCapsule"
-			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B8D02E1"
-			capsuleInstance  "/tcpTopCapsuleR1:0"
-			quidu "51877B5300D2")
-		(object StructureDaemon "0/mainCapsuleR1:mainCapsule"
-			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B8B0393"
-			capsuleInstance  "/mainCapsuleR1:0"
-			quidu "51877B5300D0")
-		(object BehaviorDaemon "0/tcpInstance:tcpCapsule-TOP"
-			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B750135"
-			capsuleInstance  "/tcpTopCapsuleR1:0/tcpInstance:0"
-			quidu "51877B560389"
-			State  ":TOP")
-		(object BehaviorDaemon "0/jsonTranslateInstance:jsonTranslateCapsule-TOP"
-			daemonProcess "Deployment View::ourProgramRun::ourProgramInstance"
-			quid "51877B6F02A5"
-			capsuleInstance  "/tcpTopCapsuleR1:0/jsonTranslateInstance:0"
-			quidu "51877B56038C"
 			State  ":TOP")))

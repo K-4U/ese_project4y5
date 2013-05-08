@@ -6,6 +6,7 @@
 
 #include <RTSystem/ourProgram.h>
 #include <topCap.h>
+#include <jsonProtocol.h>
 extern const RTActorClass mainCapsule;
 extern const RTActorClass tcpTopCapsule;
 
@@ -35,6 +36,38 @@ static const char * const rtg_state_names[] =
 	"TOP"
 };
 
+static const RTInterfaceDescriptor rtg_interfaces_tcpTopCapsuleR1[] =
+{
+	{
+		"externalJsonPort"
+	  , 1
+	}
+};
+
+static const RTBindingDescriptor rtg_bindings_tcpTopCapsuleR1[] =
+{
+	{
+		0
+	  , &jsonProtocol::Conjugate::rt_class
+	}
+};
+
+static const RTInterfaceDescriptor rtg_interfaces_mainCapsuleR1[] =
+{
+	{
+		"GUI"
+	  , 1
+	}
+};
+
+static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
+{
+	{
+		0
+	  , &jsonProtocol::Base::rt_class
+	}
+};
+
 #define SUPER RTActor
 
 topCap_Actor::topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
@@ -44,6 +77,46 @@ topCap_Actor::topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 
 topCap_Actor::~topCap_Actor( void )
 {
+}
+
+int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex )
+{
+	switch( rtg_compId )
+	{
+	case 1:
+		// tcpTopCapsuleR1
+		switch( rtg_portId )
+		{
+		case 0:
+			// externalJsonPort
+			if( rtg_repIndex < 1 )
+			{
+				// mainCapsuleR1/GUI
+				return mainCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
+		default:
+			break;
+		}
+	case 2:
+		// mainCapsuleR1
+		switch( rtg_portId )
+		{
+		case 0:
+			// GUI
+			if( rtg_repIndex < 1 )
+			{
+				// tcpTopCapsuleR1/externalJsonPort
+				return tcpTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
+		default:
+			break;
+		}
+	default:
+		break;
+	}
+	return RTActor::_followOutV( rtg_end, rtg_compId, rtg_portId, rtg_repIndex );
 }
 
 void topCap_Actor::rtsBehavior( int signalIndex, int portIndex )
@@ -113,10 +186,10 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 0
-	  , (const RTInterfaceDescriptor *)0
-	  , 0
-	  , (const RTBindingDescriptor *)0
+	  , 1
+	  , rtg_interfaces_tcpTopCapsuleR1
+	  , 1
+	  , rtg_bindings_tcpTopCapsuleR1
 	}
   , {
 		"mainCapsuleR1"
@@ -126,10 +199,10 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 0
-	  , (const RTInterfaceDescriptor *)0
-	  , 0
-	  , (const RTBindingDescriptor *)0
+	  , 1
+	  , rtg_interfaces_mainCapsuleR1
+	  , 1
+	  , rtg_bindings_mainCapsuleR1
 	}
 };
 

@@ -99,10 +99,27 @@ jsonCommand::jsonCommand( std::string jsonCommand )
 	    std::cout  << "Failed to parse configuration\n"
 	               << this->jsonReader.getFormatedErrorMessages();
 	    return;
-	}else{
-	    cout << "New JSON command: " << msg["command"] << endl;
 	}
+	cout << "New JSON command: " << msg["command"] << endl;
 
+	this->command = msg["command"].asString();
+	this->data = msg["arguments"];
+
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'createJsonString()'
+std::string jsonCommand::createJsonString( void )
+{
+	// {{{USR
+	Json::StyledWriter jsonWriter;
+	Json::Value value;
+
+	value["command"] = (Json::Value) this->command;
+	value["arguments"] = (Json::Value) this->data;
+
+	return jsonWriter.write(value);
 	// }}}USR
 }
 // }}}RME

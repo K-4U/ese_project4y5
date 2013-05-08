@@ -52,6 +52,7 @@ protected:
 public:
 	topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~topCap_Actor( void );
+	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 

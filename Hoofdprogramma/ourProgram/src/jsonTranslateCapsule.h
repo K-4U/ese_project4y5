@@ -90,12 +90,16 @@ protected:
 	// {{{RME transition ':TOP:J5188EB280304:socketDisconnected'
 	INLINE_METHODS void transition4_socketDisconnected( const void * rtdata, tcpProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:KlaarVoorData:J518A1AC6031A:sendCommand'
+	INLINE_METHODS void transition5_sendCommand( const jsonCommand * rtdata, jsonProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain2_Initial( void );
 	INLINE_CHAINS void chain3_socketConnected( void );
 	INLINE_CHAINS void chain4_socketDisconnected( void );
 	INLINE_CHAINS void chain1_dataReceived( void );
+	INLINE_CHAINS void chain5_sendCommand( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

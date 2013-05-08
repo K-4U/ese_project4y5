@@ -55,23 +55,31 @@ protected:
 	// {{{RME port 'frame'
 	Frame::Base frame;
 	// }}}RME
+	// {{{RME port 'externalJsonPort'
+	jsonProtocol::Base externalJsonPort;
+	// }}}RME
 
 public:
 	tcpTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~tcpTopCapsule_Actor( void );
+	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 
 protected:
-	// {{{RME enter ':TOP:S1'
-	INLINE_METHODS void enter2_S1( void );
-	// }}}RME
-	virtual void enterStateV( void );
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:readyToReceive:J518A1A0D0015:receiveCommand'
+	INLINE_METHODS void transition2_receiveCommand( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:readyToReceive:J518A1A3200A8:sendCommand'
+	INLINE_METHODS void transition3_sendCommand( const jsonCommand * rtdata, jsonProtocol::Base * rtport );
 	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
+	INLINE_CHAINS void chain2_receiveCommand( void );
+	INLINE_CHAINS void chain3_sendCommand( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

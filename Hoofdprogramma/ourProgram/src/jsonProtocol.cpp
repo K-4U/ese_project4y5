@@ -13,7 +13,7 @@ const RTProtocolDescriptor jsonProtocol::Base::rt_class =
   , &jsonProtocol::Conjugate::rt_class
   , "jsonProtocol"
   , 0
-  , 2
+  , 3
   , jsonProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -31,6 +31,11 @@ const RTSignalDescriptor jsonProtocol::Base::rt_signals[] =
 		"rtUnbound"
 	  , (const RTObject_class *)0
 	  , jsonProtocol::Base::rti_rtUnbound
+	}
+  , {
+		"sendCommand"
+	  , &RTType_jsonCommand
+	  , jsonProtocol::Base::rti_sendCommand
 	}
 };
 

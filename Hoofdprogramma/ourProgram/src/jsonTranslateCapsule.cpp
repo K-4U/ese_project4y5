@@ -159,6 +159,24 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition4_socketDisconnected( 
 }
 // }}}RME
 
+// {{{RME transition ':TOP:KlaarVoorData:J518A1AC6031A:sendCommand'
+INLINE_METHODS void jsonTranslateCapsule_Actor::transition5_sendCommand( const jsonCommand * rtdata, jsonProtocol::Base * rtport )
+{
+	// {{{USR
+	jsonCommand commandToSend = *rtdata;
+
+	std::string toSend = commandToSend.createJsonString();
+
+	int iSendResult = send( this->socket, toSend.c_str(), toSend.size(), 0 );
+	if (iSendResult == SOCKET_ERROR) {
+	    printf("send failed: %d\n", WSAGetLastError());
+	    closesocket(this->socket);
+	}
+	printf("Bytes sent: %d\n", iSendResult);
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void jsonTranslateCapsule_Actor::chain2_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -198,6 +216,17 @@ INLINE_CHAINS void jsonTranslateCapsule_Actor::chain1_dataReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition1_dataReceived( (const RTString *)msg->data, (tcpProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void jsonTranslateCapsule_Actor::chain5_sendCommand( void )
+{
+	// transition ':TOP:KlaarVoorData:J518A1AC6031A:sendCommand'
+	rtgChainBegin( 2, "sendCommand" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition5_sendCommand( (const jsonCommand *)msg->data, (jsonProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -261,6 +290,18 @@ void jsonTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case tcpProtocol::Conjugate::rti_dataReceived:
 					chain1_dataReceived();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			case 2:
+				// {{{RME port 'jsonPort'
+				switch( signalIndex )
+				{
+				case jsonProtocol::Base::rti_sendCommand:
+					chain5_sendCommand();
 					return;
 				default:
 					break;

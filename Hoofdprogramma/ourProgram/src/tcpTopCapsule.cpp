@@ -16,6 +16,15 @@ extern const RTActorClass tcpCapsule;
 // }}}USR
 // }}}RME
 
+static const RTRelayDescriptor rtg_relays[] =
+{
+	{
+		"externalJsonPort"
+	  , &jsonProtocol::Base::rt_class
+	  , 1 // cardinality
+	}
+};
+
 static RTActor * new_tcpTopCapsule_Actor( RTController * _rts, RTActorRef * _ref )
 {
 	return new tcpTopCapsule_Actor( _rts, _ref );
@@ -26,15 +35,15 @@ const RTActorClass tcpTopCapsule =
 	(const RTActorClass *)0
   , "tcpTopCapsule"
   , (RTVersionId)0
-  , 0
-  , (const RTRelayDescriptor *)0
+  , 1
+  , rtg_relays
   , new_tcpTopCapsule_Actor
 };
 
 static const char * const rtg_state_names[] =
 {
 	"TOP"
-  , "S1"
+  , "readyToReceive"
 };
 
 static const RTInterfaceDescriptor rtg_interfaces_tcpInstance[] =
@@ -88,6 +97,25 @@ tcpTopCapsule_Actor::~tcpTopCapsule_Actor( void )
 {
 }
 
+int tcpTopCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex )
+{
+	switch( rtg_portId )
+	{
+	case 0:
+		// externalJsonPort
+		if( rtg_repIndex < 1 )
+		{
+			rtg_end.port = &externalJsonPort;
+			rtg_end.index = rtg_repIndex;
+			return 1;
+		}
+		break;
+	default:
+		break;
+	}
+	return RTActor::_followInV( rtg_end, rtg_portId, rtg_repIndex );
+}
+
 int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex )
 {
 	switch( rtg_compId )
@@ -138,33 +166,33 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 	return RTActor::_followOutV( rtg_end, rtg_compId, rtg_portId, rtg_repIndex );
 }
 
-// {{{RME enter ':TOP:S1'
-INLINE_METHODS void tcpTopCapsule_Actor::enter2_S1( void )
-{
-	// {{{USR
-	cout << "tcpTopCapsule initialized" << endl;
-	// }}}USR
-}
-// }}}RME
-
-void tcpTopCapsule_Actor::enterStateV( void )
-{
-	switch( getCurrentState() )
-	{
-	case 2:
-		enter2_S1();
-		break;
-	default:
-		RTActor::enterStateV();
-		break;
-	}
-}
-
 // {{{RME transition ':TOP:Initial:Initial'
 INLINE_METHODS void tcpTopCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
 	frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);
+
+	cout << "tcpTopCapsule initialized" << endl;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:readyToReceive:J518A1A0D0015:receiveCommand'
+INLINE_METHODS void tcpTopCapsule_Actor::transition2_receiveCommand( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	//Just pass it on
+	externalJsonPort.commandReceived(*rtdata).send();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:readyToReceive:J518A1A3200A8:sendCommand'
+INLINE_METHODS void tcpTopCapsule_Actor::transition3_sendCommand( const jsonCommand * rtdata, jsonProtocol::Base * rtport )
+{
+	// {{{USR
+	//Just pass it on
+	internalJsonPort.sendCommand(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -175,6 +203,28 @@ INLINE_CHAINS void tcpTopCapsule_Actor::chain1_Initial( void )
 	rtgChainBegin( 1, "Initial" );
 	rtgTransitionBegin();
 	transition1_Initial( msg->data, msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void tcpTopCapsule_Actor::chain2_receiveCommand( void )
+{
+	// transition ':TOP:readyToReceive:J518A1A0D0015:receiveCommand'
+	rtgChainBegin( 2, "receiveCommand" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition2_receiveCommand( (const jsonCommand *)msg->data, (jsonProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void tcpTopCapsule_Actor::chain3_sendCommand( void )
+{
+	// transition ':TOP:readyToReceive:J518A1A3200A8:sendCommand'
+	rtgChainBegin( 2, "sendCommand" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition3_sendCommand( (const jsonCommand *)msg->data, (jsonProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -205,7 +255,7 @@ void tcpTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 			return;
 			// }}}RME
 		case 2:
-			// {{{RME state ':TOP:S1'
+			// {{{RME state ':TOP:readyToReceive'
 			switch( portIndex )
 			{
 			case 0:
@@ -217,6 +267,30 @@ void tcpTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 					break;
 				}
 				break;
+			case 1:
+				// {{{RME port 'internalJsonPort'
+				switch( signalIndex )
+				{
+				case jsonProtocol::Conjugate::rti_commandReceived:
+					chain2_receiveCommand();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			case 3:
+				// {{{RME port 'externalJsonPort'
+				switch( signalIndex )
+				{
+				case jsonProtocol::Base::rti_sendCommand:
+					chain3_sendCommand();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
 			default:
 				break;
 			}
@@ -242,7 +316,7 @@ const RTActor_class tcpTopCapsule_Actor::rtg_class =
   , &tcpTopCapsule
   , 2
   , tcpTopCapsule_Actor::rtg_capsule_roles
-  , 2
+  , 3
   , tcpTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -305,6 +379,15 @@ const RTPortDescriptor tcpTopCapsule_Actor::rtg_ports[] =
 	  , 1 // cardinality
 	  , 2
 	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
+	}
+  , {
+		"externalJsonPort"
+	  , (const char *)0
+	  , &jsonProtocol::Base::rt_class
+	  , RTOffsetOf( tcpTopCapsule_Actor, tcpTopCapsule_Actor::externalJsonPort )
+	  , 1 // cardinality
+	  , 3
+	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
 	}
 };
 

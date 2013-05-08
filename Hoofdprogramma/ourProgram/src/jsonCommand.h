@@ -46,7 +46,7 @@ private:
 
 public:
 	// {{{RME classAttribute 'command'
-	RTString command;
+	std::string command;
 	// }}}RME
 	// {{{RME classAttribute 'data'
 	Json::Value data;
@@ -72,6 +72,9 @@ public:
 	// }}}RME
 	// {{{RME operation 'jsonCommand(std::string)'
 	jsonCommand( std::string jsonCommand );
+	// }}}RME
+	// {{{RME operation 'createJsonString()'
+	std::string createJsonString( void );
 	// }}}RME
 	static const RTFieldDescriptor rtg_jsonCommand_fields[];
 };

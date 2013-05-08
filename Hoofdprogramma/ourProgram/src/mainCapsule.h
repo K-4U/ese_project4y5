@@ -8,6 +8,7 @@
 #endif
 
 #include <RTSystem/ourProgram.h>
+#include <jsonProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -45,10 +46,32 @@ protected:
 	// {{{RME port 'frame'
 	Frame::Base frame;
 	// }}}RME
+	// {{{RME port 'GUI'
+	jsonProtocol::Conjugate GUI;
+	// }}}RME
 
 public:
 	mainCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~mainCapsule_Actor( void );
+	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
+
+protected:
+	// {{{RME enter ':TOP:ready'
+	INLINE_METHODS void enter2_ready( void );
+	// }}}RME
+	virtual void enterStateV( void );
+	// {{{RME transition ':TOP:Initial:Initial'
+	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:ready:J518A1EA5031A:GUIDataReceived'
+	INLINE_METHODS void transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport );
+	// }}}RME
+
+private:
+	INLINE_CHAINS void chain1_Initial( void );
+	INLINE_CHAINS void chain2_GUIDataReceived( void );
+
+public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 

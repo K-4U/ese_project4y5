@@ -1,0 +1,16 @@
+<map id="GUI/Gui&#45;RoombaV1.0/settingsroomba.cpp" name="GUI/Gui&#45;RoombaV1.0/settingsroomba.cpp">
+<area shape="rect" id="node2" href="$dc/d4d/settingsroomba_8h.xhtml" title="settingsroomba.h" alt="" coords="1029,96,1151,123"/>
+<area shape="rect" id="node4" href="$dd/da1/roomba_8h.xhtml" title="roomba.h" alt="" coords="1176,96,1251,123"/>
+<area shape="rect" id="node6" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="1149,171,1278,197"/>
+<area shape="rect" id="node11" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="988,485,1127,512"/>
+<area shape="rect" id="node18" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="965,336,1151,363"/>
+<area shape="rect" id="node20" href="$d4/d05/json_8h.xhtml" title="json.h" alt="" coords="963,411,1019,437"/>
+<area shape="rect" id="node23" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="600,411,753,437"/>
+<area shape="rect" id="node24" href="$db/dd2/events_8h.xhtml" title="../resources/events\l/events.h" alt="" coords="436,246,567,287"/>
+<area shape="rect" id="node25" href="$db/d70/eventchat_8h.xhtml" title="eventchat.h" alt="" coords="31,336,119,363"/>
+<area shape="rect" id="node26" href="$d5/d02/eventuserjoin_8h.xhtml" title="eventuserjoin.h" alt="" coords="144,336,251,363"/>
+<area shape="rect" id="node27" href="$d7/d56/eventuserleave_8h.xhtml" title="eventuserleave.h" alt="" coords="277,336,394,363"/>
+<area shape="rect" id="node28" href="$db/db0/eventuserchangestatus_8h.xhtml" title="eventuserchangestatus.h" alt="" coords="419,336,585,363"/>
+<area shape="rect" id="node29" href="$d8/d44/eventuserchangenick_8h.xhtml" title="eventuserchangenick.h" alt="" coords="610,336,765,363"/>
+<area shape="rect" id="node30" href="$da/d66/eventservermessage_8h.xhtml" title="eventservermessage.h" alt="" coords="789,336,939,363"/>
+</map>

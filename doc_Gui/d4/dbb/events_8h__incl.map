@@ -1,0 +1,10 @@
+<map id="GUI/resources/events/events.h" name="GUI/resources/events/events.h">
+<area shape="rect" id="node2" href="$db/d70/eventchat_8h.xhtml" title="eventchat.h" alt="" coords="5,96,93,123"/>
+<area shape="rect" id="node13" href="$d5/d02/eventuserjoin_8h.xhtml" title="eventuserjoin.h" alt="" coords="118,96,225,123"/>
+<area shape="rect" id="node14" href="$d7/d56/eventuserleave_8h.xhtml" title="eventuserleave.h" alt="" coords="251,96,368,123"/>
+<area shape="rect" id="node15" href="$db/db0/eventuserchangestatus_8h.xhtml" title="eventuserchangestatus.h" alt="" coords="393,96,559,123"/>
+<area shape="rect" id="node16" href="$d8/d44/eventuserchangenick_8h.xhtml" title="eventuserchangenick.h" alt="" coords="584,96,739,123"/>
+<area shape="rect" id="node17" href="$da/d66/eventservermessage_8h.xhtml" title="eventservermessage.h" alt="" coords="763,96,913,123"/>
+<area shape="rect" id="node3" href="$db/d97/clsevent_8h.xhtml" title="../clsevent.h" alt="" coords="346,171,437,197"/>
+<area shape="rect" id="node8" href="$d7/d62/clslog_8h.xhtml" title="clslog.h" alt="" coords="541,245,608,272"/>
+</map>

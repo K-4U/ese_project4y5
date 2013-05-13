@@ -1,0 +1,13 @@
+<map id="GUI/resources/events/eventuserjoin.h" name="GUI/resources/events/eventuserjoin.h">
+<area shape="rect" id="node2" href="$db/dd2/events_8h.xhtml" title="GUI/resources/events\l/events.h" alt="" coords="524,97,671,138"/>
+<area shape="rect" id="node12" href="$d0/ddb/eventuserjoin_8cpp.xhtml" title="GUI/resources/events\l/eventuserjoin.cpp" alt="" coords="695,97,841,138"/>
+<area shape="rect" id="node3" href="$d4/dca/_roomba_connect_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.h" alt="" coords="524,187,671,229"/>
+<area shape="rect" id="node4" href="$dd/da1/roomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.h" alt="" coords="439,278,585,319"/>
+<area shape="rect" id="node11" href="$d7/da4/_roomba_connect_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.cpp" alt="" coords="609,278,756,319"/>
+<area shape="rect" id="node5" href="$d5/dd2/controllingroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.cpp" alt="" coords="5,369,157,410"/>
+<area shape="rect" id="node6" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="183,369,329,410"/>
+<area shape="rect" id="node7" href="$da/d0b/information_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/information.cpp" alt="" coords="353,369,500,410"/>
+<area shape="rect" id="node8" href="$df/d0a/main_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/main.cpp" alt="" coords="524,369,671,410"/>
+<area shape="rect" id="node9" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="695,369,841,410"/>
+<area shape="rect" id="node10" href="$da/d3b/settingsroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/settingsroomba.cpp" alt="" coords="865,369,1012,410"/>
+</map>

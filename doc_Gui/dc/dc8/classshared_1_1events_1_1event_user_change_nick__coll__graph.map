@@ -1,0 +1,4 @@
+<map id="shared::events::eventUserChangeNick" name="shared::events::eventUserChangeNick">
+<area shape="rect" id="node2" href="$db/d8b/classshared_1_1events_1_1cls_event.xhtml" title="The main event class." alt="" coords="9,96,172,123"/>
+<area shape="rect" id="node3" href="$da/d64/class_k4_u_1_1cls_log.xhtml" title="Custom logging class." alt="" coords="44,5,137,32"/>
+</map>

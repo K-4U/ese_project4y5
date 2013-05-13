@@ -1,0 +1,30 @@
+<map id="GUI/resources/clslog.h" name="GUI/resources/clslog.h">
+<area shape="rect" id="node2" href="$da/d4b/controllingroomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.h" alt="" coords="35,427,181,469"/>
+<area shape="rect" id="node5" href="$d4/dca/_roomba_connect_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.h" alt="" coords="467,337,613,378"/>
+<area shape="rect" id="node12" href="$dc/d96/jsoncommand_8h.xhtml" title="GUI/resources/jsoncommand.h" alt="" coords="153,253,353,280"/>
+<area shape="rect" id="node14" href="$db/d97/clsevent_8h.xhtml" title="GUI/resources/clsevent.h" alt="" coords="851,80,1017,107"/>
+<area shape="rect" id="node29" href="$d5/d28/clslog_8cpp.xhtml" title="GUI/resources/clslog.cpp" alt="" coords="1043,80,1211,107"/>
+<area shape="rect" id="node3" href="$d5/dd2/controllingroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.cpp" alt="" coords="5,518,157,559"/>
+<area shape="rect" id="node4" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="183,518,329,559"/>
+<area shape="rect" id="node6" href="$dd/da1/roomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.h" alt="" coords="496,427,643,469"/>
+<area shape="rect" id="node11" href="$d7/da4/_roomba_connect_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.cpp" alt="" coords="325,427,472,469"/>
+<area shape="rect" id="node7" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="695,518,841,559"/>
+<area shape="rect" id="node8" href="$da/d0b/information_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/information.cpp" alt="" coords="865,518,1012,559"/>
+<area shape="rect" id="node9" href="$df/d0a/main_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/main.cpp" alt="" coords="353,518,500,559"/>
+<area shape="rect" id="node10" href="$da/d3b/settingsroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/settingsroomba.cpp" alt="" coords="524,518,671,559"/>
+<area shape="rect" id="node13" href="$d9/d73/jsoncommand_8cpp.xhtml" title="GUI/resources/jsoncommand.cpp" alt="" coords="146,344,360,371"/>
+<area shape="rect" id="node15" href="$db/d70/eventchat_8h.xhtml" title="GUI/resources/events\l/eventchat.h" alt="" coords="429,155,576,197"/>
+<area shape="rect" id="node18" href="$d5/d02/eventuserjoin_8h.xhtml" title="GUI/resources/events\l/eventuserjoin.h" alt="" coords="600,155,747,197"/>
+<area shape="rect" id="node20" href="$d7/d56/eventuserleave_8h.xhtml" title="GUI/resources/events\l/eventuserleave.h" alt="" coords="771,155,917,197"/>
+<area shape="rect" id="node22" href="$db/db0/eventuserchangestatus_8h.xhtml" title="GUI/resources/events\l/eventuserchangestatus.h" alt="" coords="941,155,1112,197"/>
+<area shape="rect" id="node24" href="$d8/d44/eventuserchangenick_8h.xhtml" title="GUI/resources/events\l/eventuserchangenick.h" alt="" coords="1137,155,1295,197"/>
+<area shape="rect" id="node26" href="$da/d66/eventservermessage_8h.xhtml" title="GUI/resources/events\l/eventservermessage.h" alt="" coords="1320,155,1475,197"/>
+<area shape="rect" id="node28" href="$da/de6/clsevent_8cpp.xhtml" title="GUI/resources/clsevent.cpp" alt="" coords="1499,163,1680,189"/>
+<area shape="rect" id="node16" href="$db/dd2/events_8h.xhtml" title="GUI/resources/events\l/events.h" alt="" coords="941,246,1088,287"/>
+<area shape="rect" id="node17" href="$db/df5/eventchat_8cpp.xhtml" title="GUI/resources/events\l/eventchat.cpp" alt="" coords="429,246,576,287"/>
+<area shape="rect" id="node19" href="$d0/ddb/eventuserjoin_8cpp.xhtml" title="GUI/resources/events\l/eventuserjoin.cpp" alt="" coords="600,246,747,287"/>
+<area shape="rect" id="node21" href="$df/d4c/eventuserleave_8cpp.xhtml" title="GUI/resources/events\l/eventuserleave.cpp" alt="" coords="771,246,917,287"/>
+<area shape="rect" id="node23" href="$da/d88/eventuserchangestatus_8cpp.xhtml" title="GUI/resources/events\l/eventuserchangestatus.cpp" alt="" coords="1112,246,1296,287"/>
+<area shape="rect" id="node25" href="$dd/d4b/eventuserchangenick_8cpp.xhtml" title="GUI/resources/events\l/eventuserchangenick.cpp" alt="" coords="1321,246,1492,287"/>
+<area shape="rect" id="node27" href="$d3/d54/eventservermessage_8cpp.xhtml" title="GUI/resources/events\l/eventservermessage.cpp" alt="" coords="1517,246,1685,287"/>
+</map>

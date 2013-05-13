@@ -5,7 +5,8 @@
 Controllingroomba::Controllingroomba(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Controllingroomba),
-    log(LOGTAGS_ROOMBA)
+    log(LOGTAGS_ROOMBA),
+    parent(parent)
 {
     ui->setupUi(this);
 }
@@ -17,8 +18,7 @@ Controllingroomba::~Controllingroomba()
 
 void Controllingroomba::on_pbClose_clicked()
 {
-    Roomba *roomba = new Roomba();
-    roomba->show();
+    this->parent->show();
     this->close();
 }
 
@@ -46,8 +46,13 @@ void Controllingroomba::on_pbDock_clicked()
 
 void Controllingroomba::on_pbDrive_clicked()
 {
+    emit ModeChanged(MODEDRIVE);
 }
 
 void Controllingroomba::on_pbResetRoomba_clicked()
+{
+}
+
+void Controllingroomba::on_pbStop_clicked()
 {
 }

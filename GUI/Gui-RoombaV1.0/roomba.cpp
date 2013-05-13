@@ -15,8 +15,6 @@ Roomba::Roomba(QWidget *parent) :
 
     ui->setupUi(this);
 
-    connect(this->server, SIGNAL(ManualcommandReceived(QString)),
-            this, SLOT(ManualcommandReceived(QString)));
 }
 
 Roomba::~Roomba()
@@ -28,21 +26,23 @@ void Roomba::on_pbControlRoomba_clicked()
 {
     Controllingroomba *controlling_roomba = new Controllingroomba();
     controlling_roomba->show();
-    this->close();
+    connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
+            this, SLOT(RoombaModeChanged(Modes)));
+    this->hide();
 }
 
 void Roomba::on_pbSettingRoomba_clicked()
 {
     SettingsRoomba *settings_roomba = new SettingsRoomba();
     settings_roomba->show();
-    this->close();
+    this->hide();
 }
 
 void Roomba::on_pbInformation_clicked()
 {
     Information *information_roomba = new Information();
     information_roomba->show();
-    this->close();
+    this->hide();
 }
 
 
@@ -50,13 +50,17 @@ void Roomba::on_pbDiplayLogs_clicked()
 {
     DisplayLogs *display_logs = new DisplayLogs();
     display_logs->show();
-    this->close();
+    this->hide();
 }
 
 void Roomba::ManualcommandReceived(QString Manualcommand)
 {
 }
 
+void Roomba::RoombaModeChanged(Modes)
+{
+    this->server->doConnect();
+}
 
 void Roomba::on_pbConnect_clicked()
 {
@@ -66,8 +70,3 @@ void Roomba::on_pbConnect_clicked()
 void Roomba::on_pbCloseRoomba_clicked()
 {
 }
-
-/*void Roomba::ManualcommandReceived(QString Manualcommand)
-{
-    this->server->sendCommand();
-}*/

@@ -8,6 +8,11 @@
 #include <QTcpSocket>
 using namespace K4U;
 
+enum Modes{
+    MODESTOPPED = 0x00,
+    MODEDRIVE
+};
+
 namespace Ui {
 class Controllingroomba;
 }
@@ -20,6 +25,11 @@ public:
     explicit Controllingroomba(QWidget *parent = 0);
     ~Controllingroomba();
 
+public slots:
+    void on_pbDrive_clicked();
+
+    void on_pbStop_clicked();
+
 private slots:
     void on_pbClean_clicked();
 
@@ -29,8 +39,6 @@ private slots:
 
     void on_pbDock_clicked();
 
-    void on_pbDrive_clicked();
-
     void on_pbResetRoomba_clicked();
 
     void on_pbUpload_clicked();
@@ -39,9 +47,12 @@ private:
     Ui::Controllingroomba *ui;
     clsLog log;
     QTcpSocket *sock;
+    QWidget *parent;
+
 
 signals:
     void ManualcommandReceived(QString Manualcommand);
+    void ModeChanged(Modes newMode);
 };
 
 #endif // CONTROLLINGROOMBA_H

@@ -14,7 +14,7 @@
    <string>Roomba</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pbCloseRoomba">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -27,7 +27,7 @@
      <string>Close</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pbControlRoomba">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -40,7 +40,7 @@
      <string>Controlling Roomba</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pbSettingRoomba">
     <property name="geometry">
      <rect>
       <x>244</x>
@@ -53,7 +53,7 @@
      <string>Settings Roomba</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="pbInformation">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -66,7 +66,7 @@
      <string>Information</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="pbDisplayLogs">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -76,7 +76,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Dysplay Logs</string>
+     <string>Display Logs</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pbConnect">
@@ -92,7 +92,7 @@
      <string>connect</string>
     </property>
    </widget>
-   <widget class="QLabel" name="lblConnect">
+   <widget class="QLabel" name="lbConnect">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -147,7 +147,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>pbCloseRoomba</sender>
    <signal>clicked()</signal>
    <receiver>Roomba</receiver>
    <slot>close()</slot>

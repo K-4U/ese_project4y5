@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "RoombaConnect.h"
+#include "../resources/jsoncommand.h"
+#include "../resources/json.h"
+
 using namespace client;
 
 namespace Ui {
@@ -18,15 +21,19 @@ public:
     ~Roomba();
     
 private slots:
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_3_clicked();
-
-    void on_pushButton_4_clicked();
-
-    void on_pushButton_5_clicked();
-
     void on_pbConnect_clicked();
+
+    void on_pbCloseRoomba_clicked();
+
+    void on_pbControlRoomba_clicked();
+
+    void on_pbSettingRoomba_clicked();
+
+    void on_pbInformation_clicked();
+
+    void on_pbDiplayLogs_clicked();
+
+    void ManualcommandReceived(QString Manualcommand);
 
 private:
     Ui::Roomba *ui;

@@ -40,6 +40,9 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_GETEVENTS:
             ret = "GETEVENTS";
             break;
+        case JSONCOMMAND_MANUAL:
+            ret = "MANUAL";
+            break;
     }
     return ret;
 }
@@ -52,6 +55,8 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_EVENT;
     }else if(command == "GETEVENTS"){
         set = JSONCOMMAND_GETEVENTS;
+    }else if(command == "MANUAL"){
+        set = JSONCOMMAND_MANUAL;
     }
     this->command = set;
 }

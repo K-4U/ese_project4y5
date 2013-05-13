@@ -26,7 +26,7 @@
     <string>Upload commands</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_2">
+  <widget class="QCheckBox" name="cbSideBrush">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -39,7 +39,7 @@
     <string>Side brush</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_4">
+  <widget class="QPushButton" name="pbClean">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -52,7 +52,7 @@
     <string>Clean</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_4">
+  <widget class="QCheckBox" name="cbConnected">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -65,7 +65,7 @@
     <string>Connected</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbResetRoomba">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -78,7 +78,7 @@
     <string>Reset Roomba</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="pbDock">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -91,7 +91,7 @@
     <string>Dock</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="pbCleanSpot">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -104,7 +104,7 @@
     <string>Clean on spot</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="cbMainBrush">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -117,7 +117,7 @@
     <string>Main brush</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_3">
+  <widget class="QCheckBox" name="cbVacuum">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -130,7 +130,7 @@
     <string>Vacuum</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="lbManualCommand">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -143,7 +143,7 @@
     <string>Manual commands</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_6">
+  <widget class="QPushButton" name="pbClose">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -164,6 +164,32 @@
      <width>261</width>
      <height>171</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbDrive">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>270</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Drive</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbStop">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>310</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Stop</string>
    </property>
   </widget>
  </widget>

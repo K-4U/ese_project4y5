@@ -53,11 +53,25 @@ namespace Simulator {
         }
 
         #region Draw
+
+        static void setSensor(int sensorNr, byte[] values) {
+
+            String val = BitConverter.ToString(values);
+
+          //  log(String.Format("{0} set to {1}", sensorNr, val), logTags.serial);
+            if (val != "00") {
+                roomba.driveDirect(0, 0, 0, 0);
+            }
+
+        }
+
 		private void initDrawers() {
 			mDrawer = new drawer(ref this.pbRoom);
-			mDrawer.addToDrawer("roomba", new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, 0));
+            drawRoomba roombaDrawer = new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, 0);
+            roombaDrawer.setSensorFunction(setSensor);
+            mDrawer.addToDrawer("roomba", roombaDrawer);
 			mDrawer.addToDrawer("table", new drawTable(200, 200));
-		}
+        }
         #endregion
 
         #region Form events
@@ -66,7 +80,6 @@ namespace Simulator {
 
             this.WindowState = FormWindowState.Maximized;
 
-			this.initDrawers();
 
             //Load serial server:
             serSock = new serialServer();
@@ -76,12 +89,14 @@ namespace Simulator {
 
             roomba = new clsRoomba(log, send);
 
+            this.initDrawers();
+/*
             roomba.start();
             roomba.safe();
 
             byte[] drBytesLeft = BitConverter.GetBytes(1000);
             byte[] drBytesRight = BitConverter.GetBytes(1100);
-            roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
+            roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);*/
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Simulator.drawObjects {
+
 	class drawer {
 		private PictureBox pbParent;
 		private Dictionary<String, drawObject> drawObjects = new Dictionary<string, drawObject>();
@@ -28,17 +29,18 @@ namespace Simulator.drawObjects {
 			}
 		}
 
-		private void checkCollisions() {
-			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+        private void checkCollisions() {
+            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
 				foreach (KeyValuePair<String, drawObject> itemTwo in drawObjects) {
 					if (!item.Equals(itemTwo)) {
-						item.Value.checkCollision(itemTwo.Value.loc);
-					}
+                        item.Value.checkCollision(itemTwo.Value.loc, this.pbParent.CreateGraphics());
+                    }
 				}
 			}
 		}
 
 		private void doDraw(Graphics g) {
+            // dis/en-able background repaint
 			g.FillRectangle(new SolidBrush(this.pbParent.BackColor), 0, 0, this.pbParent.Width, this.pbParent.Height);
 			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
 				item.Value.draw(g);

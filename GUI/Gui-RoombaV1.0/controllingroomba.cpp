@@ -15,7 +15,7 @@ Controllingroomba::~Controllingroomba()
     delete ui;
 }
 
-void Controllingroomba::on_pushButton_6_clicked()
+void Controllingroomba::on_pbClose_clicked()
 {
     Roomba *roomba = new Roomba();
     roomba->show();
@@ -24,12 +24,30 @@ void Controllingroomba::on_pushButton_6_clicked()
 
 void Controllingroomba::on_pbUpload_clicked()
 {
-
     QString Manualcommand = ui->txtManualcommands->toPlainText();
 
     this->log << Manualcommand << endl;
-
-
+    emit ManualcommandReceived(Manualcommand);
 
     ui->txtManualcommands->clear();
+}
+
+void Controllingroomba::on_pbClean_clicked()
+{
+}
+
+void Controllingroomba::on_pbCleanSpot_clicked()
+{
+}
+
+void Controllingroomba::on_pbDock_clicked()
+{
+}
+
+void Controllingroomba::on_pbDrive_clicked()
+{
+}
+
+void Controllingroomba::on_pbResetRoomba_clicked()
+{
 }

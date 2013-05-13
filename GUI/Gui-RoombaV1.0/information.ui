@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QCheckBox" name="cbRoombaConnected">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -26,7 +26,7 @@
     <string>Roomba connected</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_2">
+  <widget class="QCheckBox" name="cbBatteryCharging">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -42,7 +42,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="lbBatteryStatus">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -55,7 +55,7 @@
     <string>Battery status</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_3">
+  <widget class="QLineEdit" name="leTemperature">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -68,7 +68,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="lbAngleDegree">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -81,7 +81,7 @@
     <string>angle ¤ in graden</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="leDistanceTraveled">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -97,7 +97,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBox_3">
+  <widget class="QCheckBox" name="cbWebConnected">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -110,7 +110,7 @@
     <string>Webserver connected</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="lbAngle">
    <property name="geometry">
     <rect>
      <x>390</x>
@@ -123,7 +123,7 @@
     <string>angle:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="lbDistanceTraveled">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -136,7 +136,7 @@
     <string>Distance driven</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="leTotalTraveled">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -149,7 +149,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="lbTemperature">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -162,7 +162,7 @@
     <string>Temperature:</string>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar">
+  <widget class="QProgressBar" name="prBatteryStatus">
    <property name="geometry">
     <rect>
      <x>117</x>
@@ -175,7 +175,7 @@
     <number>24</number>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="lbTotalTraveled">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -188,7 +188,7 @@
     <string>Total distance driven</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pbCloseInformation">
    <property name="geometry">
     <rect>
      <x>400</x>

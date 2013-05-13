@@ -1,8 +1,11 @@
 #ifndef CONTROLLINGROOMBA_H
 #define CONTROLLINGROOMBA_H
 
+#include "../resources/json.h"
+#include "../resources/jsoncommand.h"
 #include "../resources/clslog.h"
 #include <QWidget>
+#include <QTcpSocket>
 using namespace K4U;
 
 namespace Ui {
@@ -16,15 +19,29 @@ class Controllingroomba : public QWidget
 public:
     explicit Controllingroomba(QWidget *parent = 0);
     ~Controllingroomba();
-    
+
 private slots:
-    void on_pushButton_6_clicked();
+    void on_pbClean_clicked();
+
+    void on_pbCleanSpot_clicked();
+
+    void on_pbClose_clicked();
+
+    void on_pbDock_clicked();
+
+    void on_pbDrive_clicked();
+
+    void on_pbResetRoomba_clicked();
 
     void on_pbUpload_clicked();
 
 private:
     Ui::Controllingroomba *ui;
     clsLog log;
+    QTcpSocket *sock;
+
+signals:
+    void ManualcommandReceived(QString Manualcommand);
 };
 
 #endif // CONTROLLINGROOMBA_H

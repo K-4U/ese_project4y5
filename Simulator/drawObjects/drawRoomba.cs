@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace Simulator.drawObjects {
+
 	public class drawRoomba : drawObject {
+
 		private const int roombaWidthInPx = 26;
 		private const int roombaHeightInPx = 26;
 		private const double WHEELBASE = 25.8;
@@ -22,8 +24,7 @@ namespace Simulator.drawObjects {
 			public Pen p;
 		}
 
-
-        #region crap
+        #region delegates
         private static void sensorDummy(int sensorNr, byte[] values) { }
         public delegate void sensorDelegate(int sensorNr, byte[] values);
         private sensorDelegate sensor = new sensorDelegate(sensorDummy);
@@ -32,22 +33,20 @@ namespace Simulator.drawObjects {
         }
         #endregion
 
-
-
+        #region variables
         private PointF centerPoint;
 		private List<PointF> paths;
-
 		private new Pen p = Pens.Blue;
 		private double angle;
 		private RectangleF innerLoc;
-		
-		
 		private bool isDriving = false;
+        private bool isColliding = false;
 		private wheel leftWheel;
 		private wheel rightWheel;
 		private PointF wheelPos;
+        #endregion
 
-		public drawRoomba(int x, int y, int angle)
+        public drawRoomba(int x, int y, int angle)
 			: base(x, y, roombaWidthInPx, roombaHeightInPx) {
 			this.innerLoc = new RectangleF(base.loc.X + 2, base.loc.Y + 2, roombaWidthInPx - 4, roombaHeightInPx - 4);
 			this.angle = angle;
@@ -69,23 +68,17 @@ namespace Simulator.drawObjects {
 		}
 
 		public override void draw(Graphics g) {
-			//Do not touch this!
-			g.DrawArc(this.p, base.loc, 0, 360);
+
+            #region drawRoombaWorksDontTouch
+            g.DrawArc(this.p, base.loc, 0, 360);
 			g.DrawArc(this.p, this.innerLoc, (int)(this.angle - 90) - 22, 45);
 			if (drawPath) {
 				if (this.paths.Count > 1) {
 					g.DrawLines(Pens.Red, this.paths.ToArray());
 				}
-			}
+            }
+            #endregion
 
-			//Comment this for no wheels
-			/*g.DrawLine(this.leftWheelPen, this.leftWheel.pos.X - (this.wheelPos.X / 2), this.leftWheel.pos.Y - (this.wheelPos.Y / 2),
-				this.leftWheel.pos.X + (this.wheelPos.X / 2), this.leftWheel.pos.Y + (this.wheelPos.Y / 2));
-			g.DrawLine(this.rightWheelPen, this.rightWheel.pos.X - (this.wheelPos.X / 2), this.rightWheel.pos.Y - (this.wheelPos.Y / 2),
-				this.rightWheel.pos.X + (this.wheelPos.X / 2), this.rightWheel.pos.Y + (this.wheelPos.Y / 2));
-
-			//Comment this for no axis
-			g.DrawLine(this.p, this.leftWheel.pos, this.rightWheel.pos);*/
 		}
 
         public override void checkCollision(RectangleF toCheck, Graphics g) {
@@ -93,19 +86,36 @@ namespace Simulator.drawObjects {
             Boolean leftTrigger = false, rightTrigger = false;
             Pen debugPen = Pens.Purple;
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
-            
-                      
-			if (!collisionArea.IsEmpty) {
-				//TODO: Check WHERE it collides, trigger appropiate sensor
-				//For now, just print it
+
+            if (!collisionArea.IsEmpty) {
+
+                // shows collisions on screen;
                 g.DrawRectangle(debugPen, Rectangle.Round(base.loc));
 
-               // figure out which
-                leftTrigger = true;
-                rightTrigger = true;
+                this.isColliding = true;
+
+                double a =  Math.Abs( (this.angle) % 360);
+
+           //     if (collisionArea.Width > collisionArea.Height) {
+             //       a += 180;
+           //     } else {
+            //        a += 270;
+            //    }
+
+                Debug.WriteLine(String.Format("{0} {1}", (int)this.angle, (int)a));
+
+                if ((a >= -45 && a <= 90) || (a >= 135 && a <= 270)) {
+                    leftTrigger = true;
+                }
+                if ((a >= 270 || a <= 45) || (a >= 90 && a <= 225)) {
+                    rightTrigger = true;
+                }
+
+            } else {
+                this.isColliding = false;
             }
 
-            /* Holy duck, i need fixing */
+            /* Holy duck, i need a cleanup */
             int returning = 0;
             if (leftTrigger) {
                 returning += 2;
@@ -113,6 +123,7 @@ namespace Simulator.drawObjects {
             if (rightTrigger) {
                 returning += 1;
             }
+
             byte[] bytes = { (byte)returning };
             sensor(7, bytes);
 
@@ -145,17 +156,6 @@ namespace Simulator.drawObjects {
 			//Triangle with equivalent legs
 			//When we aply some magic formulas to that(see below)
 			//We get the angle the roomba has rotated
-			//double d = (this.leftWheel.speed - this.rightWheel.speed) / 2;
-			//double f = (d / WHEELBASE);
-			//double angleAdj = (Math.Tanh(f) * (180 / Math.PI));
-			//angleAdj = angleAdj * 2;
-
-			//We then add that to the global angle
-			//if (this.leftWheel.speed < 0 || this.rightWheel.speed > 0) {
-				//this.angle -= angleAdj;
-			//} else if (this.leftWheel.speed > 0 || this.rightWheel.speed < 0) {
-				//this.angle += angleAdj;
-			//}
 
 			//Now, we calculate the position that one of the wheels move
 			double leftWheelSpeed = Math.Abs(leftWheel.speed);
@@ -182,20 +182,13 @@ namespace Simulator.drawObjects {
 			//When we aply some magic formulas to that(see below)
 			//We get the angle the roomba has rotated
 			double d = dDistance / 2;
-			//double f = (d / rotationPointOnAxis);
 			double f = (d / WHEELBASE);
 			double sinCalc = Math.Asin(f);
 			double angleAdj = ((sinCalc / Math.PI) * 180);
 			angleAdj = angleAdj * 2;
 
 			//We then add that to the global angle
-			//if (this.leftWheel.speed < 0 || this.rightWheel.speed > 0) {
-				//this.angle -= angleAdj;
-			//} else if (this.leftWheel.speed > 0 || this.rightWheel.speed < 0) {
-				this.angle += angleAdj;
-			//}
-
-
+			this.angle += angleAdj;
 
 			//Basespeed + diff and angle
 			//Centerpoint stays on the same spot on the axis
@@ -237,8 +230,8 @@ namespace Simulator.drawObjects {
 			if (ms == 500) {
 
 			} else if (ms == 10) {
-				doRedraw = isDriving;
-				if (this.isDriving) {
+                doRedraw = ( this.isDriving && !this.isColliding ) || ( leftWheel.speed < 0 || rightWheel.speed < 0);
+                if (doRedraw) {
 					calculateTravelDistance();
 				}
 			}

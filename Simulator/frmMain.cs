@@ -21,6 +21,7 @@ namespace Simulator {
     }
 
     public partial class frmMain : Form {
+
         #region Variables
         private static serialServer serSock;
         private static clsRoomba roomba;
@@ -30,10 +31,9 @@ namespace Simulator {
         List<byte> dataBytes = new List<byte>();
 
 		private drawer mDrawer;
-
-        
         #endregion 
 
+        #region logging
         static void log(string x, logTags tag) {
             string lTag = "";
             if (tag == logTags.program) {
@@ -51,17 +51,25 @@ namespace Simulator {
             Console.WriteLine(String.Format("[{0}]\t{1}", lTag, x));
             Console.ForegroundColor = oldColor;
         }
+        #endregion
 
         #region Draw
 
         static void setSensor(int sensorNr, byte[] values) {
 
-            String val = BitConverter.ToString(values);
+           
 
-          //  log(String.Format("{0} set to {1}", sensorNr, val), logTags.serial);
-            if (val != "00") {
-                roomba.driveDirect(0, 0, 0, 0);
+            switch (sensorNr) {
+                case 7:
+                    roomba.setSensorValue(7,(int)values[0]);
+                    break;
+                default:
+                    
+                    break;
+
             }
+
+            
 
         }
 
@@ -80,23 +88,17 @@ namespace Simulator {
 
             this.WindowState = FormWindowState.Maximized;
 
-
             //Load serial server:
             serSock = new serialServer();
             serSock.setLogFunction(log);
-
             serSock.setMessageHandler(messageHandlerSocket);
 
             roomba = new clsRoomba(log, send);
 
             this.initDrawers();
-/*
-            roomba.start();
-            roomba.safe();
 
-            byte[] drBytesLeft = BitConverter.GetBytes(1000);
-            byte[] drBytesRight = BitConverter.GetBytes(1100);
-            roomba.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);*/
+        //    roomba.uncontrolledTest();
+            
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -128,11 +130,16 @@ namespace Simulator {
                 serialPortToolStripMenuItem.Items.Add(comPort.Description);
             }
 
-            //HACK!
+            // HACK!
             if (serialPortToolStripMenuItem.Items.Count == 1) {
                 serialPortToolStripMenuItem.SelectedIndex = 0;
                 connectToolStripMenuItem_Click(sender, e);
+            // Nog een!
+            } else if (serialPortToolStripMenuItem.Items.Count == 2) {
+                serialPortToolStripMenuItem.SelectedIndex = 1;
+                connectToolStripMenuItem_Click(sender, e);
             }
+
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
@@ -279,16 +286,6 @@ namespace Simulator {
         }
 
         #endregion
-
-		
-
-		
-
-       
-
-        
-
-        
 
     }
 }

@@ -41,7 +41,11 @@ namespace Simulator.drawObjects {
 
 		private void doDraw(Graphics g) {
             // dis/en-able background repaint
-			g.FillRectangle(new SolidBrush(this.pbParent.BackColor), 0, 0, this.pbParent.Width, this.pbParent.Height);
+
+
+			//g.FillRectangle(new SolidBrush(this.pbParent.BackColor), 0, 0, this.pbParent.Width, this.pbParent.Height);
+            g.Clear(this.pbParent.BackColor);
+
 			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
 				item.Value.draw(g);
 			}

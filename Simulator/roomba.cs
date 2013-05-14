@@ -230,7 +230,7 @@ namespace Simulator {
         }
         #endregion 
         #region Structs
-        struct stDrivingState {
+        public struct stDrivingState {
             public bool isDriving;
             /*public int velocity;
             public int radius;*/
@@ -404,6 +404,17 @@ namespace Simulator {
             log("Done adding sensor groups", TAG);
 
             log("Initialized", TAG);
+        }
+
+        public void uncontrolledTest() {
+
+            byte[] drBytesLeft = BitConverter.GetBytes(1000);
+            byte[] drBytesRight = BitConverter.GetBytes(1150);
+
+            this.start();
+            this.safe();
+            this.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
+            this.startStream(1, (byte)7);
         }
 
         public void start() {
@@ -629,6 +640,10 @@ namespace Simulator {
             } else {
                 throw new notInCorrectMode();
             }
+        }
+
+        public void setSensorValue(int packetId, int value) {
+            sensors.setSensorValue(packetId, value);
         }
 
         public void getSensor(byte packetId) {

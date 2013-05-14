@@ -137,7 +137,11 @@ namespace Simulator {
                 t = String.Format("{0} {1}", t, (int)b);
             }
             log(t, logTags.serial);
-            port.Write(buff, 0, buff.Length);
+            try {
+                port.Write(buff, 0, buff.Length);
+            } catch {
+                // no port open, no problem.
+            }
         }
 
 

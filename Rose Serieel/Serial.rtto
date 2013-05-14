@@ -6,20 +6,6 @@
 
 (list toUnit
 	capsulePaths (list capsulePathsList
-		(object CapsulePath "/mainCapsuleR1:0"
-			capsulePathProcess "Deployment View::Program::ProgramInstance"
-			quid "51922029023B"
-			classifier  "Logical View::topCap"
-			quidu "51921B6800EA"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51922029023C"
-					classifier  "Logical View::mainCapsule"
-					quidu "518A150E005E"
-					capsuleRole  ":Structure:mainCapsuleR1"
-					quidu "51921B8E02E8"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/mainCapsuleR1:mainCapsule")
 		(object CapsulePath "/serialCommunicationCapsuleR1:0"
 			capsulePathProcess "Deployment View::Program::ProgramInstance"
 			quid "51922029023D"
@@ -33,17 +19,31 @@
 					capsuleRole  ":Structure:serialCommunicationCapsuleR1"
 					quidu "51921B9001D0"
 					capsuleRoleCardinality 0))
-			capsulePathString "0/serialCommunicationCapsuleR1:SerialCommunicationCapsule"))
+			capsulePathString "0/serialCommunicationCapsuleR1:SerialCommunicationCapsule")
+		(object CapsulePath "/mainCapsuleR1:0"
+			capsulePathProcess "Deployment View::Program::ProgramInstance"
+			quid "51922029023B"
+			classifier  "Logical View::topCap"
+			quidu "51921B6800EA"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "51922029023C"
+					classifier  "Logical View::mainCapsule"
+					quidu "518A150E005E"
+					capsuleRole  ":Structure:mainCapsuleR1"
+					quidu "51921B8E02E8"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/mainCapsuleR1:mainCapsule"))
 	daemons (list daemonsList
-		(object BehaviorDaemon "0/serialCommunicationCapsuleR1:SerialCommunicationCapsule-TOP"
-			daemonProcess "Deployment View::Program::ProgramInstance"
-			quid "519220470147"
-			capsuleInstance  "/serialCommunicationCapsuleR1:0"
-			quidu "51922029023D"
-			State  ":TOP")
 		(object BehaviorDaemon "0/mainCapsuleR1:mainCapsule-TOP"
 			daemonProcess "Deployment View::Program::ProgramInstance"
 			quid "519220530331"
 			capsuleInstance  "/mainCapsuleR1:0"
 			quidu "51922029023B"
+			State  ":TOP")
+		(object BehaviorDaemon "0/serialCommunicationCapsuleR1:SerialCommunicationCapsule-TOP"
+			daemonProcess "Deployment View::Program::ProgramInstance"
+			quid "519220470147"
+			capsuleInstance  "/serialCommunicationCapsuleR1:0"
+			quidu "51922029023D"
 			State  ":TOP")))

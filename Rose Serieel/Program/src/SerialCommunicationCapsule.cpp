@@ -167,10 +167,7 @@ INLINE_METHODS int SerialCommunicationCapsule_Actor::choicePoint2_GetCaracters( 
 	      buf[i] = '.';
 	    }
 	  }
-
-	  cout << "received" << n << "bytes" << (char *)buf << endl;
-
-	    /*printf("received %i bytes: %s\n", n, (char *)buf);*/
+	  cout << "received " << n << "bytes " << (char *)buf << endl;
 	}
 
 #ifdef _WIN32

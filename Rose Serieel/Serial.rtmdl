@@ -113,7 +113,7 @@
 |#include <stdlib.h>
 |#include <SerialProperties.h>
 |
-|#include "C:/Users/Maarten/Desktop/RoseSerial/include/rs232.h"
+|#include "../../include/rs232.h"
 |
 |#ifdef _WIN32
 |#include <Windows.h>
@@ -210,10 +210,7 @@
 |      buf[i] = '.';
 |    }
 |  }
-|
-|  cout << "received" << n << "bytes" << (char *)buf << endl;
-|
-|    /*printf("received %i bytes: %s\n", n, (char *)buf);*/
+|  cout << "received " << n << "bytes " << (char *)buf << endl;
 |}
 |
 |#ifdef _WIN32
@@ -939,7 +936,7 @@
 						tool "OT::CppExtLib"
 						name "Libraries"
 						value (value Event 
-|"C:/Users/Maarten/Desktop/RoseSerial/References/rs232.o" ComputeDeps
+|"../../References/rs232.o" ComputeDeps
 |
 						))
 					(object Attribute

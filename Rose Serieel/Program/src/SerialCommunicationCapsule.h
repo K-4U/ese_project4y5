@@ -17,7 +17,7 @@ class SerialProperties;
 #include <stdlib.h>
 #include <SerialProperties.h>
 
-#include "C:/Users/Maarten/Desktop/RoseSerial/include/rs232.h"
+#include "../../include/rs232.h"
 
 #ifdef _WIN32
 #include <Windows.h>

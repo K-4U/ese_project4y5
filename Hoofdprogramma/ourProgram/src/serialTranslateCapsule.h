@@ -1,15 +1,15 @@
-// {{{RME classifier 'Logical View::mainCapsule'
+// {{{RME classifier 'Logical View::Serial::serialTranslateCapsule'
 
-#ifndef mainCapsule_H
-#define mainCapsule_H
+#ifndef serialTranslateCapsule_H
+#define serialTranslateCapsule_H
 
 #ifdef PRAGMA
-#pragma interface "mainCapsule.h"
+#pragma interface "serialTranslateCapsule.h"
 #endif
 
 #include <RTSystem/ourProgram.h>
-#include <jsonProtocol.h>
 #include <serialProtocol.h>
+#include <serialRawProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -17,10 +17,10 @@
 // }}}USR
 // }}}RME
 
-extern const RTActorClass mainCapsule;
+extern const RTActorClass serialTranslateCapsule;
 
 #define SUPER RTActor
-class mainCapsule_Actor : public RTActor
+class serialTranslateCapsule_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -44,36 +44,26 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME port 'frame'
-	Frame::Base frame;
+	// {{{RME port 'serialRaw'
+	serialRawProtocol::Conjugate serialRaw;
 	// }}}RME
-	// {{{RME port 'GUI'
-	jsonProtocol::Conjugate GUI;
-	// }}}RME
-	// {{{RME port 'Serial'
-	serialProtocol::Conjugate Serial;
+	// {{{RME port 'serialOut'
+	serialProtocol::Base serialOut;
 	// }}}RME
 
 public:
-	mainCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~mainCapsule_Actor( void );
+	serialTranslateCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~serialTranslateCapsule_Actor( void );
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
-	// {{{RME enter ':TOP:ready'
-	INLINE_METHODS void enter2_ready( void );
-	// }}}RME
-	virtual void enterStateV( void );
-	// {{{RME transition ':TOP:Initial:Initial'
-	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
-	// }}}RME
-	// {{{RME transition ':TOP:ready:J518A1EA5031A:GUIDataReceived'
-	INLINE_METHODS void transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport );
+	// {{{RME transition ':TOP:S1:J519234560116:dataReceived'
+	INLINE_METHODS void transition2_dataReceived( const byteArray * rtdata, serialRawProtocol::Conjugate * rtport );
 	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
-	INLINE_CHAINS void chain2_GUIDataReceived( void );
+	INLINE_CHAINS void chain2_dataReceived( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
@@ -96,6 +86,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* mainCapsule_H */
+#endif /* serialTranslateCapsule_H */
 
 // }}}RME

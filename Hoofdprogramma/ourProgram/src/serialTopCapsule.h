@@ -8,6 +8,7 @@
 #endif
 
 #include <RTSystem/ourProgram.h>
+#include <serialProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -45,21 +46,36 @@ protected:
 	// {{{RME capsuleRole 'serialCommunicationInstance'
 	RTActorRef serialCommunicationInstance;
 	// }}}RME
+	// {{{RME capsuleRole 'serialTranslateCapsuleR1'
+	RTActorRef serialTranslateCapsuleR1;
+	// }}}RME
 	// {{{RME port 'frame'
 	Frame::Base frame;
+	// }}}RME
+	// {{{RME port 'internalSerial'
+	serialProtocol::Conjugate internalSerial;
+	// }}}RME
+	// {{{RME port 'externalSerial'
+	serialProtocol::Base externalSerial;
 	// }}}RME
 
 public:
 	serialTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~serialTopCapsule_Actor( void );
+	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
+	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 
 protected:
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J51922F8C025B:commandReceived'
+	INLINE_METHODS void transition2_commandReceived( const RTString * rtdata, serialProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
+	INLINE_CHAINS void chain2_commandReceived( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

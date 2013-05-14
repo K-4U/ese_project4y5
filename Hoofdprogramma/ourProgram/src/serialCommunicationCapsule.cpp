@@ -18,7 +18,7 @@ static const RTRelayDescriptor rtg_relays[] =
 {
 	{
 		"serialPort"
-	  , &serialProtocol::Conjugate::rt_class
+	  , &serialRawProtocol::Base::rt_class
 	  , 1 // cardinality
 	}
 };
@@ -177,6 +177,8 @@ INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint2_getChars( cons
 	    }
 	  }
 	  cout << "SER: Received " << n << " bytes: " << (char *)buf << endl;
+	  byteArray data((char *) buf);
+	  serialPort.dataReceived(data).send();
 	}
 
 #ifdef _WIN32
@@ -311,7 +313,7 @@ const RTPortDescriptor serialCommunicationCapsule_Actor::rtg_ports[] =
 	{
 		"serialPort"
 	  , (const char *)0
-	  , &serialProtocol::Conjugate::rt_class
+	  , &serialRawProtocol::Base::rt_class
 	  , RTOffsetOf( serialCommunicationCapsule_Actor, serialCommunicationCapsule_Actor::serialPort )
 	  , 1 // cardinality
 	  , 1

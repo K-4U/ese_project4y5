@@ -13,7 +13,7 @@ const RTProtocolDescriptor serialProtocol::Base::rt_class =
   , &serialProtocol::Conjugate::rt_class
   , "serialProtocol"
   , 0
-  , 2
+  , 3
   , serialProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -31,6 +31,11 @@ const RTSignalDescriptor serialProtocol::Base::rt_signals[] =
 		"rtUnbound"
 	  , (const RTObject_class *)0
 	  , serialProtocol::Base::rti_rtUnbound
+	}
+  , {
+		"sendCommand"
+	  , &RTType_byteArray
+	  , serialProtocol::Base::rti_sendCommand
 	}
 };
 
@@ -50,9 +55,9 @@ const RTProtocolDescriptor serialProtocol::Conjugate::rt_class =
 const RTSignalDescriptor serialProtocol::Conjugate::rt_signals[] =
 {
 	{
-		"dataReceived"
+		"commandReceived"
 	  , &RTType_RTString
-	  , serialProtocol::Conjugate::rti_dataReceived
+	  , serialProtocol::Conjugate::rti_commandReceived
 	}
   , {
 		"rtBound"

@@ -8,6 +8,7 @@
 #endif
 
 #include <RTSystem/ourProgram.h>
+#include <byteArray.h>
 
 struct serialProtocol
 {
@@ -16,18 +17,27 @@ struct serialProtocol
 	public:
 		inline Base( void );
 		inline ~Base( void );
+		enum { rti_sendCommand = rtiLast_RTRootProtocol + 1 };
 
 	protected:
-		enum { rtiLast_serialProtocol = rtiLast_RTRootProtocol };
+		enum { rtiLast_serialProtocol = rti_sendCommand };
 
 	public:
-		// {{{RME inSignal 'dataReceived'
+		// {{{RME inSignal 'sendCommand'
 		// {{{RME general 'documentation'
 		/* {{{USR
 
 		   }}}USR */
 		// }}}RME
-		inline RTOutSignal dataReceived( const RTTypedValue_RTString & data );
+		inline RTInSignal sendCommand( void );
+		// }}}RME
+		// {{{RME inSignal 'commandReceived'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal commandReceived( const RTTypedValue_RTString & data );
 		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
@@ -39,19 +49,27 @@ struct serialProtocol
 	public:
 		inline Conjugate( void );
 		inline ~Conjugate( void );
-		enum { rti_dataReceived = rtiLast_RTRootProtocol + 1 };
+		enum { rti_commandReceived = rtiLast_RTRootProtocol + 1 };
 
 	protected:
-		enum { rtiLast_serialProtocol = rti_dataReceived };
+		enum { rtiLast_serialProtocol = rti_commandReceived };
 
 	public:
-		// {{{RME outSignal 'dataReceived'
+		// {{{RME outSignal 'commandReceived'
 		// {{{RME general 'documentation'
 		/* {{{USR
 
 		   }}}USR */
 		// }}}RME
-		inline RTInSignal dataReceived( void );
+		inline RTInSignal commandReceived( void );
+		// }}}RME
+		// {{{RME outSignal 'sendCommand'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal sendCommand( const RTTypedValue_byteArray & data );
 		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
@@ -69,15 +87,27 @@ inline serialProtocol::Base::~Base( void )
 {
 }
 
-// {{{RME inSignal 'dataReceived'
+// {{{RME inSignal 'sendCommand'
 // {{{RME general 'documentation'
 /* {{{USR
 
    }}}USR */
 // }}}RME
-inline RTOutSignal serialProtocol::Base::dataReceived( const RTTypedValue_RTString & data )
+inline RTInSignal serialProtocol::Base::sendCommand( void )
 {
-	return RTOutSignal( this, Conjugate::rti_dataReceived, data.data, data.type );
+	return RTInSignal( this, rti_sendCommand );
+}
+// }}}RME
+
+// {{{RME inSignal 'commandReceived'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal serialProtocol::Base::commandReceived( const RTTypedValue_RTString & data )
+{
+	return RTOutSignal( this, Conjugate::rti_commandReceived, data.data, data.type );
 }
 // }}}RME
 
@@ -90,15 +120,27 @@ inline serialProtocol::Conjugate::~Conjugate( void )
 {
 }
 
-// {{{RME outSignal 'dataReceived'
+// {{{RME outSignal 'commandReceived'
 // {{{RME general 'documentation'
 /* {{{USR
 
    }}}USR */
 // }}}RME
-inline RTInSignal serialProtocol::Conjugate::dataReceived( void )
+inline RTInSignal serialProtocol::Conjugate::commandReceived( void )
 {
-	return RTInSignal( this, rti_dataReceived );
+	return RTInSignal( this, rti_commandReceived );
+}
+// }}}RME
+
+// {{{RME outSignal 'sendCommand'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal serialProtocol::Conjugate::sendCommand( const RTTypedValue_byteArray & data )
+{
+	return RTOutSignal( this, Base::rti_sendCommand, data.data, data.type );
 }
 // }}}RME
 

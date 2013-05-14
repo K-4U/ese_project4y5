@@ -20,6 +20,11 @@ static const RTRelayDescriptor rtg_relays[] =
 	  , &jsonProtocol::Conjugate::rt_class
 	  , 1 // cardinality
 	}
+  , {
+		"Serial"
+	  , &serialProtocol::Conjugate::rt_class
+	  , 1 // cardinality
+	}
 };
 
 static RTActor * new_mainCapsule_Actor( RTController * _rts, RTActorRef * _ref )
@@ -32,7 +37,7 @@ const RTActorClass mainCapsule =
 	(const RTActorClass *)0
   , "mainCapsule"
   , (RTVersionId)0
-  , 1
+  , 2
   , rtg_relays
   , new_mainCapsule_Actor
 };
@@ -63,6 +68,15 @@ int mainCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int r
 		if( rtg_repIndex < 1 )
 		{
 			rtg_end.port = &GUI;
+			rtg_end.index = rtg_repIndex;
+			return 1;
+		}
+		break;
+	case 1:
+		// Serial
+		if( rtg_repIndex < 1 )
+		{
+			rtg_end.port = &Serial;
 			rtg_end.index = rtg_repIndex;
 			return 1;
 		}
@@ -210,7 +224,7 @@ const RTActor_class mainCapsule_Actor::rtg_class =
   , &mainCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 2
+  , 3
   , mainCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -242,6 +256,15 @@ const RTPortDescriptor mainCapsule_Actor::rtg_ports[] =
 	  , RTOffsetOf( mainCapsule_Actor, mainCapsule_Actor::GUI )
 	  , 1 // cardinality
 	  , 2
+	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"Serial"
+	  , (const char *)0
+	  , &serialProtocol::Conjugate::rt_class
+	  , RTOffsetOf( mainCapsule_Actor, mainCapsule_Actor::Serial )
+	  , 1 // cardinality
+	  , 3
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
 	}
 };

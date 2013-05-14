@@ -7,6 +7,7 @@
 #include <RTSystem/ourProgram.h>
 #include <topCap.h>
 #include <jsonProtocol.h>
+#include <serialProtocol.h>
 extern const RTActorClass mainCapsule;
 extern const RTActorClass serialTopCapsule;
 extern const RTActorClass tcpTopCapsule;
@@ -59,6 +60,10 @@ static const RTInterfaceDescriptor rtg_interfaces_mainCapsuleR1[] =
 		"GUI"
 	  , 1
 	}
+  , {
+		"Serial"
+	  , 1
+	}
 };
 
 static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
@@ -66,6 +71,26 @@ static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
 	{
 		0
 	  , &jsonProtocol::Base::rt_class
+	}
+  , {
+		1
+	  , &serialProtocol::Base::rt_class
+	}
+};
+
+static const RTInterfaceDescriptor rtg_interfaces_serialTopCapsuleR1[] =
+{
+	{
+		"externalSerial"
+	  , 1
+	}
+};
+
+static const RTBindingDescriptor rtg_bindings_serialTopCapsuleR1[] =
+{
+	{
+		0
+	  , &serialProtocol::Conjugate::rt_class
 	}
 };
 
@@ -109,6 +134,29 @@ int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_p
 			{
 				// tcpTopCapsuleR1/externalJsonPort
 				return tcpTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
+		case 1:
+			// Serial
+			if( rtg_repIndex < 1 )
+			{
+				// serialTopCapsuleR1/externalSerial
+				return serialTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
+		default:
+			break;
+		}
+	case 3:
+		// serialTopCapsuleR1
+		switch( rtg_portId )
+		{
+		case 0:
+			// externalSerial
+			if( rtg_repIndex < 1 )
+			{
+				// mainCapsuleR1/Serial
+				return mainCapsuleR1._followIn( rtg_end, 1, rtg_repIndex );
 			}
 			break;
 		default:
@@ -200,9 +248,9 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 1
+	  , 2
 	  , rtg_interfaces_mainCapsuleR1
-	  , 1
+	  , 2
 	  , rtg_bindings_mainCapsuleR1
 	}
   , {
@@ -213,10 +261,10 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 0
-	  , (const RTInterfaceDescriptor *)0
-	  , 0
-	  , (const RTBindingDescriptor *)0
+	  , 1
+	  , rtg_interfaces_serialTopCapsuleR1
+	  , 1
+	  , rtg_bindings_serialTopCapsuleR1
 	}
 };
 

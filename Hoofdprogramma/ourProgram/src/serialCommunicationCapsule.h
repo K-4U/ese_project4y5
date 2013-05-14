@@ -8,7 +8,7 @@
 #endif
 
 #include <RTSystem/ourProgram.h>
-#include <serialProtocol.h>
+#include <serialRawProtocol.h>
 class serialProperties;
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
@@ -56,7 +56,7 @@ private:
 
 protected:
 	// {{{RME port 'serialPort'
-	serialProtocol::Conjugate serialPort;
+	serialRawProtocol::Base serialPort;
 	// }}}RME
 
 public:

@@ -40,7 +40,7 @@ const RTProtocolDescriptor SerialProtocol::Conjugate::rt_class =
   , &SerialProtocol::Base::rt_class
   , "SerialProtocol"
   , 0
-  , 2
+  , 3
   , SerialProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -50,6 +50,11 @@ const RTProtocolDescriptor SerialProtocol::Conjugate::rt_class =
 const RTSignalDescriptor SerialProtocol::Conjugate::rt_signals[] =
 {
 	{
+		"DataReceived"
+	  , &RTType_RTString
+	  , SerialProtocol::Conjugate::rti_DataReceived
+	}
+  , {
 		"rtBound"
 	  , (const RTObject_class *)0
 	  , SerialProtocol::Conjugate::rti_rtBound

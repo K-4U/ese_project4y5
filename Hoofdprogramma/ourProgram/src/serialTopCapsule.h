@@ -1,25 +1,24 @@
-// {{{RME classifier 'Logical View::topCapsule'
+// {{{RME classifier 'Logical View::Serial::serialTopCapsule'
 
-#ifndef topCapsule_H
-#define topCapsule_H
+#ifndef serialTopCapsule_H
+#define serialTopCapsule_H
 
 #ifdef PRAGMA
-#pragma interface "topCapsule.h"
+#pragma interface "serialTopCapsule.h"
 #endif
 
-#include <RTSystem/Program.h>
+#include <RTSystem/ourProgram.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
-#include <stdio.h>
 
 // }}}USR
 // }}}RME
 
-extern const RTActorClass topCapsule;
+extern const RTActorClass serialTopCapsule;
 
 #define SUPER RTActor
-class topCapsule_Actor : public RTActor
+class serialTopCapsule_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -43,19 +42,21 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME capsuleRole 'serialCommunicationCapsuleR1'
-	RTActorRef serialCommunicationCapsuleR1;
+	// {{{RME capsuleRole 'serialCommunicationInstance'
+	RTActorRef serialCommunicationInstance;
+	// }}}RME
+	// {{{RME port 'frame'
+	Frame::Base frame;
 	// }}}RME
 
 public:
-	topCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~topCapsule_Actor( void );
+	serialTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~serialTopCapsule_Actor( void );
 
 protected:
-	// {{{RME enter ':TOP:S1'
-	INLINE_METHODS void enter2_S1( void );
+	// {{{RME transition ':TOP:Initial:Initial'
+	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
-	virtual void enterStateV( void );
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
@@ -72,6 +73,7 @@ public:
 
 private:
 	static const RTComponentDescriptor rtg_capsule_roles[];
+	static const RTPortDescriptor rtg_ports[];
 };
 #undef SUPER
 
@@ -81,6 +83,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* topCapsule_H */
+#endif /* serialTopCapsule_H */
 
 // }}}RME

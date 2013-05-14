@@ -4,12 +4,11 @@
 #pragma implementation "topCap.h"
 #endif
 
-#include <RTSystem/ourProgram.h>
+#include <RTSystem/Program.h>
 #include <topCap.h>
-#include <jsonProtocol.h>
+#include <SerialProtocol.h>
+extern const RTActorClass SerialCommunicationCapsule;
 extern const RTActorClass mainCapsule;
-extern const RTActorClass serialTopCapsule;
-extern const RTActorClass tcpTopCapsule;
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
 // {{{USR
@@ -37,26 +36,10 @@ static const char * const rtg_state_names[] =
 	"TOP"
 };
 
-static const RTInterfaceDescriptor rtg_interfaces_tcpTopCapsuleR1[] =
-{
-	{
-		"externalJsonPort"
-	  , 1
-	}
-};
-
-static const RTBindingDescriptor rtg_bindings_tcpTopCapsuleR1[] =
-{
-	{
-		0
-	  , &jsonProtocol::Conjugate::rt_class
-	}
-};
-
 static const RTInterfaceDescriptor rtg_interfaces_mainCapsuleR1[] =
 {
 	{
-		"GUI"
+		"Serial"
 	  , 1
 	}
 };
@@ -65,7 +48,23 @@ static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
 {
 	{
 		0
-	  , &jsonProtocol::Base::rt_class
+	  , &SerialProtocol::Base::rt_class
+	}
+};
+
+static const RTInterfaceDescriptor rtg_interfaces_serialCommunicationCapsuleR1[] =
+{
+	{
+		"SerialCommunication"
+	  , 1
+	}
+};
+
+static const RTBindingDescriptor rtg_bindings_serialCommunicationCapsuleR1[] =
+{
+	{
+		0
+	  , &SerialProtocol::Conjugate::rt_class
 	}
 };
 
@@ -85,30 +84,30 @@ int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_p
 	switch( rtg_compId )
 	{
 	case 1:
-		// tcpTopCapsuleR1
+		// mainCapsuleR1
 		switch( rtg_portId )
 		{
 		case 0:
-			// externalJsonPort
+			// Serial
 			if( rtg_repIndex < 1 )
 			{
-				// mainCapsuleR1/GUI
-				return mainCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+				// serialCommunicationCapsuleR1/SerialCommunication
+				return serialCommunicationCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
 		default:
 			break;
 		}
 	case 2:
-		// mainCapsuleR1
+		// serialCommunicationCapsuleR1
 		switch( rtg_portId )
 		{
 		case 0:
-			// GUI
+			// SerialCommunication
 			if( rtg_repIndex < 1 )
 			{
-				// tcpTopCapsuleR1/externalJsonPort
-				return tcpTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+				// mainCapsuleR1/Serial
+				return mainCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
 		default:
@@ -162,7 +161,7 @@ const RTActor_class topCap_Actor::rtg_class =
   , 1
   , topCap_Actor::rtg_parent_state
   , &topCap
-  , 3
+  , 2
   , topCap_Actor::rtg_capsule_roles
   , 0
   , (const RTPortDescriptor *)0
@@ -180,23 +179,10 @@ const RTStateId topCap_Actor::rtg_parent_state[] =
 const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 {
 	{
-		"tcpTopCapsuleR1"
-	  , &tcpTopCapsule
-	  , RTOffsetOf( topCap_Actor, tcpTopCapsuleR1 )
-	  , 1
-	  , RTComponentDescriptor::Fixed
-	  , 1
-	  , 1 // cardinality
-	  , 1
-	  , rtg_interfaces_tcpTopCapsuleR1
-	  , 1
-	  , rtg_bindings_tcpTopCapsuleR1
-	}
-  , {
 		"mainCapsuleR1"
 	  , &mainCapsule
 	  , RTOffsetOf( topCap_Actor, mainCapsuleR1 )
-	  , 2
+	  , 1
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
@@ -206,17 +192,17 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , rtg_bindings_mainCapsuleR1
 	}
   , {
-		"serialTopCapsuleR1"
-	  , &serialTopCapsule
-	  , RTOffsetOf( topCap_Actor, serialTopCapsuleR1 )
-	  , 3
+		"serialCommunicationCapsuleR1"
+	  , &SerialCommunicationCapsule
+	  , RTOffsetOf( topCap_Actor, serialCommunicationCapsuleR1 )
+	  , 2
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 0
-	  , (const RTInterfaceDescriptor *)0
-	  , 0
-	  , (const RTBindingDescriptor *)0
+	  , 1
+	  , rtg_interfaces_serialCommunicationCapsuleR1
+	  , 1
+	  , rtg_bindings_serialCommunicationCapsuleR1
 	}
 };
 

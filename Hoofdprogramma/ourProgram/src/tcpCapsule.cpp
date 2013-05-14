@@ -112,7 +112,7 @@ INLINE_METHODS void tcpCapsule_Actor::enter2_Reset( void )
 	// {{{USR
 	// hier een zinvolle actie opnemen om te reageren op fouten
 	// voorlopig na een timeout opnieuw beginnen
-	cout << "in reset terecht gekomen" << endl;
+	cout << "SOC: in reset terecht gekomen" << endl;
 	timer.informIn(RTTimespec(4,0));
 	// }}}USR
 }
@@ -139,7 +139,7 @@ INLINE_METHODS void tcpCapsule_Actor::transition14_True( const void * rtdata, Ti
 	// terwijl deze capsule als server wacht op ontvangen data
 	mainConnection.sock(ClientSocket).send();
 
-	cout << "S: Connection received!" << endl;
+	cout << "SOC: Connection received!" << endl;
 	// }}}USR
 }
 // }}}RME
@@ -173,7 +173,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint1_InitializeWinsock( const void 
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-	    printf("WSAStartup failed: %d\n", iResult);
+	    printf("SOC: WSAStartup failed: %d\n", iResult);
 	}
 	return (iResult==0);
 
@@ -219,7 +219,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint2_addressCorrect( const void * r
 	// Resolve the local address and port to be used by the server
 	iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
 	if ( iResult != 0 ) {
-	    printf("getaddrinfo failed: %d\n", iResult);
+	    printf("SOC: getaddrinfo failed: %d\n", iResult);
 	    WSACleanup();
 		return false;
 	}
@@ -275,7 +275,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint3_validSocket( const void * rtda
 						  result->ai_protocol);
 
 	if (ListenSocket == INVALID_SOCKET) {
-	    printf("Error at socket(): %ld\n", WSAGetLastError());
+	    printf("SOC: Error at socket(): %ld\n", WSAGetLastError());
 	    freeaddrinfo(result);
 	    WSACleanup();
 	    return false;
@@ -325,7 +325,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint4_bindingSuccesfull( const void 
 					(int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) 
 	{
-	    printf("S: bind failed: %d\n", WSAGetLastError());
+	    printf("SOC: bind failed: %d\n", WSAGetLastError());
 	    freeaddrinfo(result);
 	    closesocket(ListenSocket);
 	    WSACleanup();
@@ -368,14 +368,14 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint5_listening( const void * rtdata
 	//of pending connections in the queue. 
 	//Check the return value for general errors. 
 	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
-	    printf( "S: Error at bind(): %ld\n", WSAGetLastError() );
+	    printf( "SOC: Error at bind(): %ld\n", WSAGetLastError() );
 	    closesocket(ListenSocket);
 	    WSACleanup();
 	    return false;
 	}
 	else
 	{
-		cout << "S: listening to port: " << DEFAULT_PORT << endl;
+		cout << "SOC: listening to port: " << DEFAULT_PORT << endl;
 		return true;
 	}
 
@@ -423,7 +423,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint6_acceptConnection( const void *
 	// Accept a client socket
 	ClientSocket = accept(ListenSocket, NULL, NULL);
 	if (ClientSocket == INVALID_SOCKET) {
-	    printf("S: accept failed: %d\n", WSAGetLastError());
+	    printf("SOC: accept failed: %d\n", WSAGetLastError());
 	    closesocket(ListenSocket);
 	    WSACleanup();
 	    return false;
@@ -466,12 +466,13 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint7_getBytes( const void * rtdata,
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) 
 		{
-			printf("S: Bytes received by socket capsule: %d\n", iResult);
+			printf("SOC: Bytes received by socket capsule: %d\n", iResult);
 			for (int i = 0; i < iResult; i++)
 			{
-				cout << "S: " << recvbuf[i] << endl;
+				cout << recvbuf[i];
 			}
 
+	        cout << endl;
 			// send data to the application capsule via the port appPort
 			mainConnection.dataReceived(RTString(recvbuf)).send();
 
@@ -492,7 +493,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint7_getBytes( const void * rtdata,
 		}
 		else
 		{
-			cout << "S: iResult <= 0 " << "is: " << iResult << endl;
+			cout << "SOC: iResult <= 0 " << "is: " << iResult << endl;
 		}
 	}
 	while (iResult > 0);
@@ -544,7 +545,7 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint8_shutdownConnection( const void
 	// shutdown the send half of the connection since no more data can be sent
 	iResult = shutdown(ClientSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR) {
-	   	printf("S: shutdown failed: %d\n", WSAGetLastError());
+	   	printf("SOC: shutdown failed: %d\n", WSAGetLastError());
 	    freeaddrinfo(result);
 	    closesocket(ListenSocket);
 	   	closesocket(ClientSocket);

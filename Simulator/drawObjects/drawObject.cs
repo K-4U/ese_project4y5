@@ -24,7 +24,7 @@ namespace Simulator.drawObjects {
         //Returns if it should be redrawn
         virtual public bool timer(int ms) { return false; }
 
-		virtual public void checkCollision(RectangleF toCheck) { }
+        virtual public void checkCollision(RectangleF toCheck, Graphics p) { }
 
 		// Reset to center of drawing.
 		public void reset() {

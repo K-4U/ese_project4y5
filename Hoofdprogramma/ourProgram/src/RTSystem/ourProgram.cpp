@@ -9,6 +9,8 @@ extern const RTActorClass topCap;
 
 RTController * ThreadJsonTranslate = (RTController *)0;
 
+RTController * ThreadSerial = (RTController *)0;
+
 RTController * ThreadUserInterface = (RTController *)0;
 
 #if USE_THREADS
@@ -16,6 +18,8 @@ static RTPeerController * EigenThreadRTS = (RTPeerController *)0;
 static RTThread * OTPhysThr_EigenThread = (RTThread *)0;
 static RTPeerController * OtherThreadRTS = (RTPeerController *)0;
 static RTThread * OTPhysThr_OtherThread = (RTThread *)0;
+static RTPeerController * PSerialRTS = (RTPeerController *)0;
+static RTThread * OTPhysThr_PSerial = (RTThread *)0;
 
 void _rtg_createThreads( RTDebugger * debugger )
 {
@@ -23,11 +27,14 @@ void _rtg_createThreads( RTDebugger * debugger )
 	OTPhysThr_EigenThread = new RTThread( EigenThreadRTS, 20000, DEFAULT_MAIN_PRIORITY );
 	OtherThreadRTS = new RTPeerController( debugger, "OtherThread" );
 	OTPhysThr_OtherThread = new RTThread( OtherThreadRTS, 20000, DEFAULT_MAIN_PRIORITY );
+	PSerialRTS = new RTPeerController( debugger, "PSerial" );
+	OTPhysThr_PSerial = new RTThread( PSerialRTS, 20000, DEFAULT_MAIN_PRIORITY );
 }
 
 void _rtg_mapLogicalThreads( RTController * controller )
 {
 	ThreadJsonTranslate = OtherThreadRTS;
+	ThreadSerial = PSerialRTS;
 	ThreadUserInterface = EigenThreadRTS;
 }
 
@@ -37,12 +44,15 @@ void _rtg_deleteThreads( void )
 	delete EigenThreadRTS;
 	delete OTPhysThr_OtherThread;
 	delete OtherThreadRTS;
+	delete OTPhysThr_PSerial;
+	delete PSerialRTS;
 }
 #else
 
 void _rtg_mapLogicalThreads( RTController * controller )
 {
 	ThreadJsonTranslate = controller;
+	ThreadSerial = controller;
 	ThreadUserInterface = controller;
 }
 #endif

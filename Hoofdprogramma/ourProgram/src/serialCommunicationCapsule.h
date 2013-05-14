@@ -1,15 +1,15 @@
-// {{{RME classifier 'Logical View::SerialCommunicationCapsule'
+// {{{RME classifier 'Logical View::Serial::serialCommunicationCapsule'
 
-#ifndef SerialCommunicationCapsule_H
-#define SerialCommunicationCapsule_H
+#ifndef serialCommunicationCapsule_H
+#define serialCommunicationCapsule_H
 
 #ifdef PRAGMA
-#pragma interface "SerialCommunicationCapsule.h"
+#pragma interface "serialCommunicationCapsule.h"
 #endif
 
-#include <RTSystem/Program.h>
-#include <SerialProtocol.h>
-class SerialProperties;
+#include <RTSystem/ourProgram.h>
+#include <serialProtocol.h>
+class serialProperties;
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -28,10 +28,10 @@ class SerialProperties;
 // }}}USR
 // }}}RME
 
-extern const RTActorClass SerialCommunicationCapsule;
+extern const RTActorClass serialCommunicationCapsule;
 
 #define SUPER RTActor
-class SerialCommunicationCapsule_Actor : public RTActor
+class serialCommunicationCapsule_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -55,16 +55,13 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME port 'SerialCommunication'
-	SerialProtocol::Base SerialCommunication;
-	// }}}RME
-	// {{{RME port 'timer'
-	Timing::Base timer;
+	// {{{RME port 'serialPort'
+	serialProtocol::Conjugate serialPort;
 	// }}}RME
 
 public:
-	SerialCommunicationCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~SerialCommunicationCapsule_Actor( void );
+	serialCommunicationCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~serialCommunicationCapsule_Actor( void );
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
@@ -72,38 +69,40 @@ protected:
 	INLINE_METHODS void enter2_Reset( void );
 	// }}}RME
 	virtual void enterStateV( void );
+	// {{{RME transition ':TOP:Initial:Initial'
+	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 
 protected:
-	// {{{RME choicePoint ':TOP:OpenPort'
-	INLINE_METHODS int choicePoint1_OpenPort( const void * rtdata, RTProtocol * rtport );
+	// {{{RME choicePoint ':TOP:openPort'
+	INLINE_METHODS int choicePoint1_openPort( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 
 private:
 	INLINE_CHAINS void chain3_True( void );
 
 protected:
-	// {{{RME choicePoint ':TOP:GetCaracters'
-	INLINE_METHODS int choicePoint2_GetCaracters( const void * rtdata, RTProtocol * rtport );
+	// {{{RME choicePoint ':TOP:getChars'
+	INLINE_METHODS int choicePoint2_getChars( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 
 private:
 	INLINE_CHAINS void chain4_True( void );
 	INLINE_CHAINS void chain5_False( void );
+	INLINE_CHAINS void chain2_False( void );
+
+public:
+	virtual void rtsBehavior( int signalIndex, int portIndex );
 
 protected:
 	// {{{RME choicePoint ':TOP:ClosePort'
 	INLINE_METHODS int choicePoint3_ClosePort( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 
-private:
-	INLINE_CHAINS void chain6_False( void );
-	INLINE_CHAINS void chain2_False( void );
-
 public:
-	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 
 protected:
@@ -123,6 +122,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* SerialCommunicationCapsule_H */
+#endif /* serialCommunicationCapsule_H */
 
 // }}}RME

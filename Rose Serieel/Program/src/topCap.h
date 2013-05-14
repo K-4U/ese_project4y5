@@ -1,25 +1,24 @@
-// {{{RME classifier 'Logical View::topCapsule'
+// {{{RME classifier 'Logical View::topCap'
 
-#ifndef topCapsule_H
-#define topCapsule_H
+#ifndef topCap_H
+#define topCap_H
 
 #ifdef PRAGMA
-#pragma interface "topCapsule.h"
+#pragma interface "topCap.h"
 #endif
 
 #include <RTSystem/Program.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
-#include <stdio.h>
 
 // }}}USR
 // }}}RME
 
-extern const RTActorClass topCapsule;
+extern const RTActorClass topCap;
 
 #define SUPER RTActor
-class topCapsule_Actor : public RTActor
+class topCap_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -43,24 +42,17 @@ private:
 	// }}}RME
 
 protected:
+	// {{{RME capsuleRole 'mainCapsuleR1'
+	RTActorRef mainCapsuleR1;
+	// }}}RME
 	// {{{RME capsuleRole 'serialCommunicationCapsuleR1'
 	RTActorRef serialCommunicationCapsuleR1;
 	// }}}RME
 
 public:
-	topCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~topCapsule_Actor( void );
-
-protected:
-	// {{{RME enter ':TOP:S1'
-	INLINE_METHODS void enter2_S1( void );
-	// }}}RME
-	virtual void enterStateV( void );
-
-private:
-	INLINE_CHAINS void chain1_Initial( void );
-
-public:
+	topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~topCap_Actor( void );
+	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 
@@ -81,6 +73,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* topCapsule_H */
+#endif /* topCap_H */
 
 // }}}RME

@@ -95,7 +95,7 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 	int i;
 	for(i=0;i<strlen(rtdata->Contents);i++){
 		char b = rtdata->Contents[i];
-	    cout << "J: b = " << b << endl;
+	    //cout << "J: b = " << b << endl;
 	    //Very basic JSON completeness checking..
 	    if(b == '"'){
 	        this->inString = !this->inString;
@@ -119,7 +119,7 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 	        this->jsonBuffer.clear();
 	    }
 	}
-	cout << "J: Buffer: " << this->jsonBuffer << endl;
+	//cout << "J: Buffer: " << this->jsonBuffer << endl;
 
 	// }}}USR
 }

@@ -21,8 +21,20 @@ namespace Simulator.drawObjects {
 			public PointF pos;
 			public Pen p;
 		}
-		
-		private PointF centerPoint;
+
+
+        #region crap
+        private static void sensorDummy(int sensorNr, byte[] values) { }
+        public delegate void sensorDelegate(int sensorNr, byte[] values);
+        private sensorDelegate sensor = new sensorDelegate(sensorDummy);
+        public void setSensorFunction(sensorDelegate sensorFunction) {
+            sensor += new sensorDelegate(sensorFunction);
+        }
+        #endregion
+
+
+
+        private PointF centerPoint;
 		private List<PointF> paths;
 
 		private new Pen p = Pens.Blue;
@@ -76,13 +88,34 @@ namespace Simulator.drawObjects {
 			g.DrawLine(this.p, this.leftWheel.pos, this.rightWheel.pos);*/
 		}
 
-		public override void checkCollision(RectangleF toCheck) {
+        public override void checkCollision(RectangleF toCheck, Graphics g) {
+            
+            Boolean leftTrigger = false, rightTrigger = false;
+            Pen debugPen = Pens.Purple;
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
+            
+                      
 			if (!collisionArea.IsEmpty) {
 				//TODO: Check WHERE it collides, trigger appropiate sensor
 				//For now, just print it
-				Debug.WriteLine("Roomba collided!");
-			}
+                g.DrawRectangle(debugPen, Rectangle.Round(base.loc));
+
+               // figure out which
+                leftTrigger = true;
+                rightTrigger = true;
+            }
+
+            /* Holy duck, i need fixing */
+            int returning = 0;
+            if (leftTrigger) {
+                returning += 2;
+            }
+            if (rightTrigger) {
+                returning += 1;
+            }
+            byte[] bytes = { (byte)returning };
+            sensor(7, bytes);
+
 		}
 
 		public override void _reset() {

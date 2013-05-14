@@ -3,8 +3,10 @@
 
 #include <QMainWindow>
 #include "RoombaConnect.h"
+#include "controllingroomba.h"
 #include "../resources/jsoncommand.h"
 #include "../resources/json.h"
+#include "../resources/clslog.h"
 
 using namespace client;
 
@@ -34,6 +36,8 @@ private slots:
     void on_pbDiplayLogs_clicked();
 
     void ManualcommandReceived(QString Manualcommand);
+
+    void RoombaModeChanged(Modes);
 
 private:
     Ui::Roomba *ui;

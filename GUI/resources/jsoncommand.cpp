@@ -43,6 +43,21 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_MANUAL:
             ret = "MANUAL";
             break;
+        case JSONCOMMAND_MODECHANGED:
+            ret = "MODECHANGED";
+            break;
+        case JSONCOMMAND_SETBRUSHES:
+            ret = "SETBRUSHES";
+            break;
+        case JSONCOMMAND_READBRUSHES:
+            ret = "READBRUSHES";
+            break;
+        case JSONCOMMAND_SETVACUUM:
+            ret = "SETVACUUM";
+            break;
+        case JSONCOMMAND_READVACUUM:
+            ret = "READVACUUM";
+            break;
     }
     return ret;
 }
@@ -57,6 +72,16 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_GETEVENTS;
     }else if(command == "MANUAL"){
         set = JSONCOMMAND_MANUAL;
+    }else if(command == "MODECHANGED"){
+        set = JSONCOMMAND_MODECHANGED;
+    }else if(command == "SETBRUSHES"){
+        set = JSONCOMMAND_SETBRUSHES;
+    }else if(command == "READBRUSHES"){
+        set = JSONCOMMAND_READBRUSHES;
+    }else if(command == "SETVACUUM"){
+        set = JSONCOMMAND_SETVACUUM;
+    }else if(command == "READVACUUM"){
+        set = JSONCOMMAND_READVACUUM;
     }
     this->command = set;
 }

@@ -39,6 +39,8 @@ private slots:
 
     void RoombaModeChanged(Modes);
 
+    void on_pbDisonnect_clicked();
+
 private:
     Ui::Roomba *ui;
     clsServerConn *server;

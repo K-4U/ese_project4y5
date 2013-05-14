@@ -10,8 +10,8 @@ Roomba::Roomba(QWidget *parent) :
     ui(new Ui::Roomba),
     server()
 {
-//    this->server = new clsServerConn("145.74.199.121", 1337);
-    this->server = new clsServerConn("localhost", 1337);
+    this->server = new clsServerConn("145.74.197.35", 1337);
+//    this->server = new clsServerConn("localhost", 1337);
 
     ui->setupUi(this);
 
@@ -57,9 +57,11 @@ void Roomba::ManualcommandReceived(QString Manualcommand)
 {
 }
 
-void Roomba::RoombaModeChanged(Modes)
+void Roomba::RoombaModeChanged(Modes newMode)
 {
-    this->server->doConnect();
+    jsonCommand toSend(JSONCOMMAND_MODECHANGED);
+    toSend.addToData("newmode", newMode);
+    this->server->sendCommand(toSend);
 }
 
 void Roomba::on_pbConnect_clicked()
@@ -69,4 +71,9 @@ void Roomba::on_pbConnect_clicked()
 
 void Roomba::on_pbCloseRoomba_clicked()
 {
+}
+
+void Roomba::on_pbDisonnect_clicked()
+{
+    this->server->doDisconnect();
 }

@@ -120,13 +120,13 @@ QByteArray serialize(const QVariant &data, bool &success)
                         values << serializedValue;
                 }
 
-                str = "[ " + join( values, ", " ) + " ]";
+                str = "[" + join( values, "," ) + "]";
         }
 		else if(data.type() == QVariant::Hash) // variant is a hash?
 		{
 			const QVariantHash vhash = data.toHash();
 			QHashIterator<QString, QVariant> it( vhash );
-			str = "{ ";
+            str = "{";
 			QList<QByteArray> pairs;
 
 			while(it.hasNext())
@@ -140,17 +140,17 @@ QByteArray serialize(const QVariant &data, bool &success)
 					break;
 				}
 
-				pairs << sanitizeString(it.key()).toUtf8() + " : " + serializedValue;
+                pairs << sanitizeString(it.key()).toUtf8() + ":" + serializedValue;
 			}
 
-			str += join(pairs, ", ");
-			str += " }";
+            str += join(pairs, ",");
+            str += "}";
 		}
         else if(data.type() == QVariant::Map) // variant is a map?
         {
                 const QVariantMap vmap = data.toMap();
                 QMapIterator<QString, QVariant> it( vmap );
-                str = "{ ";
+                str = "{";
                 QList<QByteArray> pairs;
                 while(it.hasNext())
                 {
@@ -161,10 +161,10 @@ QByteArray serialize(const QVariant &data, bool &success)
                                 success = false;
                                 break;
                         }
-                        pairs << sanitizeString(it.key()).toUtf8() + " : " + serializedValue;
+                        pairs << sanitizeString(it.key()).toUtf8() + ":" + serializedValue;
                 }
-                str += join(pairs, ", ");
-                str += " }";
+                str += join(pairs, ",");
+                str += "}";
         }
         else if((data.type() == QVariant::String) || (data.type() == QVariant::ByteArray)) // a string or a byte array?
         {

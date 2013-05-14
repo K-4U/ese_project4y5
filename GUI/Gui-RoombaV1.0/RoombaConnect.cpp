@@ -36,11 +36,19 @@ namespace client{
         this->log << "Connecting" << endl;
     }
 
+    void clsServerConn::doDisconnect(){
+        this->isConnected = false;
+        this->isConnecting = false;
+        this->sock->disconnectFromHost();
+
+        this->log << "Disconnected" << endl;
+    }
+
     void clsServerConn::sendCommand(jsonCommand &toSend){
         //this->log << "Sending json object: " << docToSend->toJson() << endl;
         this->log << "Sending JSON: " << toSend << endl;
         QByteArray bAToSend;
-        bAToSend.append(toSend.toJsonString() + "\r\n");
+        bAToSend.append(toSend.toJsonString());
         this->sock->write(bAToSend);
     }
 

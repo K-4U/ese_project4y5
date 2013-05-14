@@ -47,6 +47,8 @@ namespace client{
              */
             void sendCommand(jsonCommand &toSend);
 
+            void doDisconnect();
+
 
         private:
             /*!
@@ -114,7 +116,7 @@ namespace client{
             bool isConnected;
             bool isConnecting;
             bool inString;
-
+            bool isDisconnected;
     };
 }
 

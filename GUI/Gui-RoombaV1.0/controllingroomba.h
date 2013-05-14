@@ -10,7 +10,19 @@ using namespace K4U;
 
 enum Modes{
     MODESTOPPED = 0x00,
-    MODEDRIVE
+    MODEDRIVE,
+    MODECLEAN,
+    MODECLEANONSPOT,
+    MODEDOCK
+};
+
+enum Brushes{
+    MAIN = 0x00,
+    SIDE
+};
+
+enum Vacuum{
+    VACUUM = 0x00
 };
 
 namespace Ui {
@@ -43,6 +55,8 @@ private slots:
 
     void on_pbUpload_clicked();
 
+    void on_cbMainBrush_stateChanged(int arg1);
+
 private:
     Ui::Controllingroomba *ui;
     clsLog log;
@@ -53,6 +67,10 @@ private:
 signals:
     void ManualcommandReceived(QString Manualcommand);
     void ModeChanged(Modes newMode);
+    void setBrushes(Brushes setBrush);
+    void readBrushes(Brushes readBrush);
+    void setVacuum(Vacuum setVacuum);
+    void readVacuum(Vacuum setVacuum);
 };
 
 #endif // CONTROLLINGROOMBA_H

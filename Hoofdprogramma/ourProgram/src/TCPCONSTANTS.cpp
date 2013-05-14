@@ -22,7 +22,7 @@ char MASTER_HOST[] = "127.0.0.1";
 // }}}RME
 
 // {{{RME classAttribute 'DEFAULT_PORT'
-char DEFAULT_PORT[] = "11223";
+char DEFAULT_PORT[] = "1337";
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationEnding'

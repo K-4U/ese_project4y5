@@ -1,10 +1,10 @@
-// {{{RME classifier 'Logical View::topCap'
+// {{{RME classifier 'Logical View::Serial::serialTopCapsule'
 
-#ifndef topCap_H
-#define topCap_H
+#ifndef serialTopCapsule_H
+#define serialTopCapsule_H
 
 #ifdef PRAGMA
-#pragma interface "topCap.h"
+#pragma interface "serialTopCapsule.h"
 #endif
 
 #include <RTSystem/ourProgram.h>
@@ -15,10 +15,10 @@
 // }}}USR
 // }}}RME
 
-extern const RTActorClass topCap;
+extern const RTActorClass serialTopCapsule;
 
 #define SUPER RTActor
-class topCap_Actor : public RTActor
+class serialTopCapsule_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -42,20 +42,26 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME capsuleRole 'tcpTopCapsuleR1'
-	RTActorRef tcpTopCapsuleR1;
+	// {{{RME capsuleRole 'serialCommunicationInstance'
+	RTActorRef serialCommunicationInstance;
 	// }}}RME
-	// {{{RME capsuleRole 'mainCapsuleR1'
-	RTActorRef mainCapsuleR1;
-	// }}}RME
-	// {{{RME capsuleRole 'serialTopCapsuleR1'
-	RTActorRef serialTopCapsuleR1;
+	// {{{RME port 'frame'
+	Frame::Base frame;
 	// }}}RME
 
 public:
-	topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~topCap_Actor( void );
-	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
+	serialTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~serialTopCapsule_Actor( void );
+
+protected:
+	// {{{RME transition ':TOP:Initial:Initial'
+	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+
+private:
+	INLINE_CHAINS void chain1_Initial( void );
+
+public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 	virtual const RTActor_class * getActorData( void ) const;
 
@@ -67,6 +73,7 @@ public:
 
 private:
 	static const RTComponentDescriptor rtg_capsule_roles[];
+	static const RTPortDescriptor rtg_ports[];
 };
 #undef SUPER
 
@@ -76,6 +83,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* topCap_H */
+#endif /* serialTopCapsule_H */
 
 // }}}RME

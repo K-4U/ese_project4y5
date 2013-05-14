@@ -8,6 +8,14 @@ ourProgram_SYSTARGET_CS = RTSystem/ourProgram.dep
 ourProgram_SYSDEPS_CS = \
 	RTSystem/ourProgram.cpp \
 	RTSystem/ourProgram.h \
+	serialCommunicationCapsule.cpp \
+	serialCommunicationCapsule.h \
+	serialProperties.cpp \
+	serialProperties.h \
+	serialProtocol.cpp \
+	serialProtocol.h \
+	serialTopCapsule.cpp \
+	serialTopCapsule.h \
 	TCPCONSTANTS.cpp \
 	TCPCONSTANTS.h \
 	jsonCommand.cpp \

@@ -8,6 +8,7 @@
 #include <topCap.h>
 #include <jsonProtocol.h>
 extern const RTActorClass mainCapsule;
+extern const RTActorClass serialTopCapsule;
 extern const RTActorClass tcpTopCapsule;
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
@@ -161,7 +162,7 @@ const RTActor_class topCap_Actor::rtg_class =
   , 1
   , topCap_Actor::rtg_parent_state
   , &topCap
-  , 2
+  , 3
   , topCap_Actor::rtg_capsule_roles
   , 0
   , (const RTPortDescriptor *)0
@@ -203,6 +204,19 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , rtg_interfaces_mainCapsuleR1
 	  , 1
 	  , rtg_bindings_mainCapsuleR1
+	}
+  , {
+		"serialTopCapsuleR1"
+	  , &serialTopCapsule
+	  , RTOffsetOf( topCap_Actor, serialTopCapsuleR1 )
+	  , 3
+	  , RTComponentDescriptor::Fixed
+	  , 1
+	  , 1 // cardinality
+	  , 0
+	  , (const RTInterfaceDescriptor *)0
+	  , 0
+	  , (const RTBindingDescriptor *)0
 	}
 };
 

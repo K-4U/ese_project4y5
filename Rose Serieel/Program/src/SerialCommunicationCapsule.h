@@ -9,10 +9,21 @@
 
 #include <RTSystem/Program.h>
 #include <SerialProtocol.h>
+class SerialProperties;
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
 #include <stdio.h>
+#include <stdlib.h>
+#include <SerialProperties.h>
+
+#include "C:/Users/Maarten/Desktop/RoseSerial/include/rs232.h"
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // }}}USR
 // }}}RME
@@ -61,9 +72,6 @@ protected:
 	INLINE_METHODS void enter2_Reset( void );
 	// }}}RME
 	virtual void enterStateV( void );
-	// {{{RME transition ':TOP:OpenPort:False'
-	INLINE_METHODS void transition2_False( const void * rtdata, RTProtocol * rtport );
-	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
@@ -75,7 +83,23 @@ protected:
 
 private:
 	INLINE_CHAINS void chain3_True( void );
-	INLINE_CHAINS void chain5_True( void );
+
+protected:
+	// {{{RME choicePoint ':TOP:GetCaracters'
+	INLINE_METHODS int choicePoint2_GetCaracters( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+
+private:
+	INLINE_CHAINS void chain4_True( void );
+	INLINE_CHAINS void chain5_False( void );
+
+protected:
+	// {{{RME choicePoint ':TOP:ClosePort'
+	INLINE_METHODS int choicePoint3_ClosePort( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+
+private:
+	INLINE_CHAINS void chain6_False( void );
 	INLINE_CHAINS void chain2_False( void );
 
 public:

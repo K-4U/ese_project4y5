@@ -6,6 +6,7 @@
 
 #include <RTSystem/Program.h>
 #include <SerialCommunicationCapsule.h>
+#include <SerialProperties.h>
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
 // {{{USR
@@ -42,9 +43,8 @@ static const char * const rtg_state_names[] =
 	"TOP"
   , "Reset"
   , "OpenPort"
-  , "SetupPort"
-  , "ShutdownConnection"
-  , "SerialReceived"
+  , "GetCaracters"
+  , "ClosePort"
 };
 
 #define SUPER RTActor
@@ -100,15 +100,6 @@ void SerialCommunicationCapsule_Actor::enterStateV( void )
 	}
 }
 
-// {{{RME transition ':TOP:OpenPort:False'
-INLINE_METHODS void SerialCommunicationCapsule_Actor::transition2_False( const void * rtdata, RTProtocol * rtport )
-{
-	// {{{USR
-	cout << "Onjuiste COM-poort" << endl;
-	// }}}USR
-}
-// }}}RME
-
 INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -125,7 +116,20 @@ INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain1_Initial( void )
 INLINE_METHODS int SerialCommunicationCapsule_Actor::choicePoint1_OpenPort( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
-	cout << "Test" << endl;
+	/* 9600 baud */
+	/* /dev/ttyS0 (COM1 on windows) */
+	if(RS232_OpenComport(COM_PORT, BAUD))
+	{
+	  cout << "Can not open COM-Port" << endl;
+	  return false;
+	}
+
+	else
+	{
+	  cout << "COM-Port open" << endl;
+	  return true;
+	}
+
 	// }}}USR
 }
 // }}}RME
@@ -136,15 +140,88 @@ INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain3_True( void )
 	rtgChainBegin( 3, "True" );
 	rtgTransitionBegin();
 	rtgTransitionEnd();
-	chain5_True();
+	if( choicePoint2_GetCaracters( msg->data, msg->sap() ) )
+		chain4_True();
+	else
+		chain5_False();
 }
 
-INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain5_True( void )
+// {{{RME choicePoint ':TOP:GetCaracters'
+INLINE_METHODS int SerialCommunicationCapsule_Actor::choicePoint2_GetCaracters( const void * rtdata, RTProtocol * rtport )
 {
-	// transition ':TOP:SetupPort:True'
+	// {{{USR
+	int i, n;
+
+	unsigned char buf[4096];
+
+	n = RS232_PollComport(COM_PORT, buf, 4095);
+
+	if(n > 0)
+	{
+	  buf[n] = 0;   /* always put a "null" at the end of a string! */
+
+	  for(i=0; i < n; i++)
+	  {
+	    if(buf[i] < 32)  /* replace unreadable control-codes by dots */
+	    {
+	      buf[i] = '.';
+	    }
+	  }
+
+	  cout << "received" << n << "bytes" << (char *)buf << endl;
+
+	    /*printf("received %i bytes: %s\n", n, (char *)buf);*/
+	}
+
+#ifdef _WIN32
+	    Sleep(100);
+#else
+	    usleep(100000);  /* sleep for 100 milliSeconds */
+#endif
+
+	return true;
+	// }}}USR
+}
+// }}}RME
+
+INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain4_True( void )
+{
+	// transition ':TOP:GetCaracters:True'
 	rtgChainBegin( 4, "True" );
 	rtgTransitionBegin();
 	rtgTransitionEnd();
+	if( choicePoint2_GetCaracters( msg->data, msg->sap() ) )
+		chain4_True();
+	else
+		chain5_False();
+}
+
+INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain5_False( void )
+{
+	// transition ':TOP:GetCaracters:False'
+	rtgChainBegin( 4, "False" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	if( ! choicePoint3_ClosePort( msg->data, msg->sap() ) )
+		chain6_False();
+}
+
+// {{{RME choicePoint ':TOP:ClosePort'
+INLINE_METHODS int SerialCommunicationCapsule_Actor::choicePoint3_ClosePort( const void * rtdata, RTProtocol * rtport )
+{
+	// {{{USR
+	RS232_CloseComport(COM_PORT);
+	// }}}USR
+}
+// }}}RME
+
+INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain6_False( void )
+{
+	// transition ':TOP:ClosePort:False'
+	rtgChainBegin( 5, "False" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 2 );
 }
 
 INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain2_False( void )
@@ -152,7 +229,6 @@ INLINE_CHAINS void SerialCommunicationCapsule_Actor::chain2_False( void )
 	// transition ':TOP:OpenPort:False'
 	rtgChainBegin( 3, "False" );
 	rtgTransitionBegin();
-	transition2_False( msg->data, msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }

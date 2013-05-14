@@ -1,13 +1,14 @@
-// {{{RME classifier 'Logical View::topCapsule'
+// {{{RME classifier 'Logical View::mainCapsule'
 
-#ifndef topCapsule_H
-#define topCapsule_H
+#ifndef mainCapsule_H
+#define mainCapsule_H
 
 #ifdef PRAGMA
-#pragma interface "topCapsule.h"
+#pragma interface "mainCapsule.h"
 #endif
 
 #include <RTSystem/Program.h>
+#include <SerialProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
@@ -16,10 +17,10 @@
 // }}}USR
 // }}}RME
 
-extern const RTActorClass topCapsule;
+extern const RTActorClass mainCapsule;
 
 #define SUPER RTActor
-class topCapsule_Actor : public RTActor
+class mainCapsule_Actor : public RTActor
 {
 public:
 	// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
@@ -43,22 +44,30 @@ private:
 	// }}}RME
 
 protected:
-	// {{{RME capsuleRole 'serialCommunicationCapsuleR1'
-	RTActorRef serialCommunicationCapsuleR1;
+	// {{{RME port 'frame'
+	Frame::Base frame;
+	// }}}RME
+	// {{{RME port 'Serial'
+	SerialProtocol::Conjugate Serial;
 	// }}}RME
 
 public:
-	topCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
-	virtual ~topCapsule_Actor( void );
+	mainCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
+	virtual ~mainCapsule_Actor( void );
+	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
-	// {{{RME enter ':TOP:S1'
-	INLINE_METHODS void enter2_S1( void );
+	// {{{RME enter ':TOP:ready'
+	INLINE_METHODS void enter2_ready( void );
 	// }}}RME
 	virtual void enterStateV( void );
+	// {{{RME transition ':TOP:ready:J51921871008A:DataReceived'
+	INLINE_METHODS void transition2_DataReceived( const RTString * rtdata, SerialProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
+	INLINE_CHAINS void chain2_DataReceived( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
@@ -71,7 +80,7 @@ public:
 	static const RTStateId rtg_parent_state[];
 
 private:
-	static const RTComponentDescriptor rtg_capsule_roles[];
+	static const RTPortDescriptor rtg_ports[];
 };
 #undef SUPER
 
@@ -81,6 +90,6 @@ private:
 // }}}USR
 // }}}RME
 
-#endif /* topCapsule_H */
+#endif /* mainCapsule_H */
 
 // }}}RME

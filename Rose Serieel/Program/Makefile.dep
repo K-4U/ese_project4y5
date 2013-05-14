@@ -4,7 +4,7 @@ Makefile_TARGETS = \
 	build/Makefile
 
 Makefile_DEPS = \
-	C:/Users/Maarten/Documents/Rose\ RealTime/Serial.rtmdl \
+	C:/Users/Maarten/Documents/Rose\ Serieel/Serial.rtmdl \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
 

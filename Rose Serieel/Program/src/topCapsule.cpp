@@ -32,6 +32,7 @@ const RTActorClass topCapsule =
 static const char * const rtg_state_names[] =
 {
 	"TOP"
+  , "S1"
 };
 
 static const RTInterfaceDescriptor rtg_interfaces_serialCommunicationCapsuleR1[] =
@@ -53,13 +54,64 @@ topCapsule_Actor::~topCapsule_Actor( void )
 {
 }
 
+// {{{RME enter ':TOP:S1'
+INLINE_METHODS void topCapsule_Actor::enter2_S1( void )
+{
+	// {{{USR
+	cout << "topCapsule initialized" << endl;
+	// }}}USR
+}
+// }}}RME
+
+void topCapsule_Actor::enterStateV( void )
+{
+	switch( getCurrentState() )
+	{
+	case 2:
+		enter2_S1();
+		break;
+	default:
+		RTActor::enterStateV();
+		break;
+	}
+}
+
+INLINE_CHAINS void topCapsule_Actor::chain1_Initial( void )
+{
+	// transition ':TOP:Initial:Initial'
+	rtgChainBegin( 1, "Initial" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
 void topCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 {
-	for( int stateIndex = getCurrentState(); ; )
+	for( int stateIndex = getCurrentState(); ; stateIndex = rtg_parent_state[ stateIndex - 1 ] )
 		switch( stateIndex )
 		{
 		case 1:
 			// {{{RME state ':TOP'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					chain1_Initial();
+					return;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			unexpectedMessage();
+			return;
+			// }}}RME
+		case 2:
+			// {{{RME state ':TOP:S1'
 			switch( portIndex )
 			{
 			case 0:
@@ -74,8 +126,7 @@ void topCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 			default:
 				break;
 			}
-			unexpectedMessage();
-			return;
+			break;
 			// }}}RME
 		default:
 			unexpectedState();
@@ -92,7 +143,7 @@ const RTActor_class topCapsule_Actor::rtg_class =
 {
 	(const RTActor_class *)0
   , rtg_state_names
-  , 1
+  , 2
   , topCapsule_Actor::rtg_parent_state
   , &topCapsule
   , 1
@@ -108,6 +159,7 @@ const RTActor_class topCapsule_Actor::rtg_class =
 const RTStateId topCapsule_Actor::rtg_parent_state[] =
 {
 	0
+  , 1
 };
 
 const RTComponentDescriptor topCapsule_Actor::rtg_capsule_roles[] =

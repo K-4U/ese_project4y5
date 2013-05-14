@@ -5,7 +5,7 @@
 #endif
 
 #include <RTSystem/Program.h>
-extern const RTActorClass topCapsule;
+extern const RTActorClass topCap;
 
 #if USE_THREADS
 
@@ -27,11 +27,11 @@ void _rtg_mapLogicalThreads( RTController * controller )
 }
 #endif
 
-const char * const default_argv[] = { "topCapsule" };
+const char * const default_argv[] = { "topCap" };
 
 static const RTSystemDescriptor _rtg_system =
 {
-	&topCapsule
+	&topCap
 #if USE_THREADS
   , DEFAULT_MAIN_PRIORITY
   , 20000

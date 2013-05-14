@@ -4,7 +4,7 @@ RTempty =
 RTspace = $(RTempty) $(RTempty)
 RTS_MKHOME = $(subst $(RTspace),\$(RTspace),$(RTS_HOME))
 include $(RTS_MKHOME)/codegen/rtgen.mk
-MODEL = "C:/Users/Maarten/Documents/Rose RealTime/Serial.rtmdl"
+MODEL = "C:/Users/Maarten/Documents/Rose Serieel/Serial.rtmdl"
 COMPONENT = "Component View::Program"
 RTGEN_FLAGS = -codesync -model $(MODEL) -component $(COMPONENT) -spacedeps bs
 include RTSystem/Program.dep

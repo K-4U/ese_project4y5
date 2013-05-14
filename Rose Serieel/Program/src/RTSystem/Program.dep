@@ -1,6 +1,6 @@
 Program_SYSTARGET = RTSystem/Program.dep
 Program_SYSDEPS = \
-	C:/Users/Maarten/Documents/Rose\ RealTime/Serial.rtmdl \
+	C:/Users/Maarten/Documents/Rose\ Serieel/Serial.rtmdl \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
 
@@ -10,8 +10,12 @@ Program_SYSDEPS_CS = \
 	RTSystem/Program.h \
 	SerialCommunicationCapsule.cpp \
 	SerialCommunicationCapsule.h \
+	SerialProperties.cpp \
+	SerialProperties.h \
 	SerialProtocol.cpp \
 	SerialProtocol.h \
-	topCapsule.cpp \
-	topCapsule.h
+	mainCapsule.cpp \
+	mainCapsule.h \
+	topCap.cpp \
+	topCap.h
 

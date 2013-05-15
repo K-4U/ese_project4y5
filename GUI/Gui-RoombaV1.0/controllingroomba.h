@@ -17,8 +17,8 @@ enum Modes{
 };
 
 enum Brushes{
-    MAIN = 0x00,
-    SIDE
+    MAINBRUSH = 0x00,
+    SIDEBRUSH
 };
 
 enum Vacuum{
@@ -42,6 +42,12 @@ public slots:
 
     void on_pbStop_clicked();
 
+    void cbMainBrushHandler();
+
+    void cbSideBrushHandler();
+
+    void cbVacuumHandler();
+
 private slots:
     void on_pbClean_clicked();
 
@@ -54,8 +60,6 @@ private slots:
     void on_pbResetRoomba_clicked();
 
     void on_pbUpload_clicked();
-
-    void on_cbMainBrush_stateChanged(int arg1);
 
 private:
     Ui::Controllingroomba *ui;

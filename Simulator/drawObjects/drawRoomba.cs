@@ -87,33 +87,39 @@ namespace Simulator.drawObjects {
             Pen debugPen = Pens.Purple;
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
 
+            double a = Math.Abs(this.angle) % 360;
+
             if (!collisionArea.IsEmpty) {
 
                 // shows collisions on screen;
-                g.DrawRectangle(debugPen, Rectangle.Round(base.loc));
+                g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
 
                 this.isColliding = true;
 
-                double a =  Math.Abs( (this.angle) % 360);
+                double toRadian = (Math.PI / 180.0);
+                double toDegree = (180.0 / Math.PI);
 
-           //     if (collisionArea.Width > collisionArea.Height) {
-             //       a += 180;
-           //     } else {
-            //        a += 270;
-            //    }
+                if (collisionArea.Width > collisionArea.Height) {
+                    
+                    double invAngle = ((double)180.0 - a);
+                    double sin = Math.Sin(invAngle * toRadian);
+                    double sz = (WHEELBASE / 2.0) / sin;
+                    a = Math.Acos((WHEELBASE/2)/sz)*toDegree;
 
-                Debug.WriteLine(String.Format("{0} {1}", (int)this.angle, (int)a));
-
-                if ((a >= -45 && a <= 90) || (a >= 135 && a <= 270)) {
+                }
+                
+                if (a >= 0 && a <= 112.5) {
                     leftTrigger = true;
                 }
-                if ((a >= 270 || a <= 45) || (a >= 90 && a <= 225)) {
+                if (a >= 67.5 && a <= 180) {
                     rightTrigger = true;
                 }
 
             } else {
                 this.isColliding = false;
             }
+
+            Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
 
             /* Holy duck, i need a cleanup */
             int returning = 0;

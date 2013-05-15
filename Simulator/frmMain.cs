@@ -75,10 +75,10 @@ namespace Simulator {
 
 		private void initDrawers() {
 			mDrawer = new drawer(ref this.pbRoom);
-            drawRoomba roombaDrawer = new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, 0);
+            drawRoomba roombaDrawer = new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, -90);
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
-			mDrawer.addToDrawer("table", new drawTable(200, 200));
+            mDrawer.addToDrawer("table", new drawTable(200, 200));
         }
         #endregion
 
@@ -97,7 +97,7 @@ namespace Simulator {
 
             this.initDrawers();
 
-        //    roomba.uncontrolledTest();
+            roomba.uncontrolledTest(1050, 1000);
             
         }
 

@@ -406,10 +406,10 @@ namespace Simulator {
             log("Initialized", TAG);
         }
 
-        public void uncontrolledTest() {
+        public void uncontrolledTest(int lStart, int rStart) {
 
-            byte[] drBytesLeft = BitConverter.GetBytes(1000);
-            byte[] drBytesRight = BitConverter.GetBytes(1150);
+            byte[] drBytesLeft = BitConverter.GetBytes(lStart);
+            byte[] drBytesRight = BitConverter.GetBytes(rStart);
 
             this.start();
             this.safe();

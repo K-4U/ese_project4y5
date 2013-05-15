@@ -52,19 +52,6 @@
     <string>Clean</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cbConnected">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>30</y>
-     <width>70</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Connected</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbResetRoomba">
    <property name="geometry">
     <rect>
@@ -130,19 +117,6 @@
     <string>Vacuum</string>
    </property>
   </widget>
-  <widget class="QLabel" name="lbManualCommand">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>110</y>
-     <width>161</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Manual commands</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbClose">
    <property name="geometry">
     <rect>
@@ -194,5 +168,59 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cbMainBrush</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbMainBrushHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>33</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>178</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbSideBrush</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbSideBrushHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>203</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbVacuum</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbVacuumHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>100</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>187</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cbMainBrushHandler()</slot>
+  <slot>cbSideBrushHandler()</slot>
+  <slot>cbVacuumHandler()</slot>
+ </slots>
 </ui>

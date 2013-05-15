@@ -63,7 +63,38 @@ void Controllingroomba::on_pbStop_clicked()
     emit ModeChanged(MODESTOPPED);
 }
 
-void Controllingroomba::on_cbMainBrush_stateChanged(int arg1)
+void Controllingroomba::cbMainBrushHandler()
 {
-    emit setBrushes(MAIN);
+    if(ui->cbMainBrush->checkState() == Qt::Checked)
+    {
+        emit setBrushes(MAINBRUSH);
+    }
+    else
+    {
+        emit setBrushes(MAINBRUSH);
+    }
+}
+
+void Controllingroomba::cbSideBrushHandler()
+{
+    if(ui->cbSideBrush->checkState() == Qt::Checked)
+    {
+        emit setBrushes(SIDEBRUSH);
+    }
+    else
+    {
+        emit setBrushes(SIDEBRUSH);
+    }
+}
+
+void Controllingroomba::cbVacuumHandler()
+{
+    if(ui->cbVacuum->checkState() == Qt::Checked)
+    {
+        emit setVacuum(VACUUM);
+    }
+    else
+    {
+        emit setVacuum(VACUUM);
+    }
 }

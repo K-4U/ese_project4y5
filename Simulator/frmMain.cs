@@ -97,7 +97,7 @@ namespace Simulator {
 
             this.initDrawers();
 
-            roomba.uncontrolledTest(1050, 1000);
+       //     roomba.uncontrolledTest(1050, 1000);
             
         }
 

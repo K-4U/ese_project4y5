@@ -114,6 +114,37 @@ INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata,
 {
 	// {{{USR
 	cout << "Initializing mainCapsule" << endl;
+	cout << "Starting a stream on the roomba" << endl;
+
+	byteArray b;
+	//Safe mode
+	b.append(128);
+	Serial.sendCommand(b).send();
+	b.clear();
+
+	//Then, a stream
+	b.append(148);
+	//Bumpers only plox
+	b.append(1);
+	b.append(7);
+
+	Serial.sendCommand(b).send();
+	b.clear();
+
+	//Full mode
+	b.append(130);
+	Serial.sendCommand(b).send();
+	b.clear();
+
+	//And driving!
+	b.append(145);
+	b.append(3);
+	b.append(232);
+
+	b.append(4);
+	b.append(26);
+	Serial.sendCommand(b).send();
+	b.clear();
 	// }}}USR
 }
 // }}}RME

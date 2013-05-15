@@ -187,6 +187,17 @@ INLINE_METHODS void serialTopCapsule_Actor::transition2_commandReceived( const b
 }
 // }}}RME
 
+// {{{RME transition ':TOP:ready:J5193582D0135:sendCommand'
+INLINE_METHODS void serialTopCapsule_Actor::transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport )
+{
+	// {{{USR
+	//Transfer
+	cout << "Derp"<< endl;
+	internalSerial.sendCommand(*rtdata).send();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void serialTopCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -204,6 +215,17 @@ INLINE_CHAINS void serialTopCapsule_Actor::chain2_commandReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition2_commandReceived( (const byteArray *)msg->data, (serialProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTopCapsule_Actor::chain3_sendCommand( void )
+{
+	// transition ':TOP:ready:J5193582D0135:sendCommand'
+	rtgChainBegin( 2, "sendCommand" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition3_sendCommand( (const byteArray *)msg->data, (serialProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -252,6 +274,18 @@ void serialTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case serialProtocol::Conjugate::rti_commandReceived:
 					chain2_commandReceived();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			case 3:
+				// {{{RME port 'externalSerial'
+				switch( signalIndex )
+				{
+				case serialProtocol::Base::rti_sendCommand:
+					chain3_sendCommand();
 					return;
 				default:
 					break;

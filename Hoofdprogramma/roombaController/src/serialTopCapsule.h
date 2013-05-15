@@ -72,10 +72,14 @@ protected:
 	// {{{RME transition ':TOP:ready:J51922F8C025B:commandReceived'
 	INLINE_METHODS void transition2_commandReceived( const byteArray * rtdata, serialProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J5193582D0135:sendCommand'
+	INLINE_METHODS void transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_commandReceived( void );
+	INLINE_CHAINS void chain3_sendCommand( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

@@ -120,7 +120,7 @@ RTString byteArray::getAll( void )
 	    data[i] = this->data[i];
 	}
 
-	return (RTString)data;
+	return (RTString) data;
 	// }}}USR
 }
 // }}}RME

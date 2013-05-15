@@ -6,6 +6,7 @@
 
 #include <RTSystem/roombaController.h>
 #include <serialTranslateCapsule.h>
+#include <serialProperties.h>
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
 // {{{USR
@@ -127,6 +128,26 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 }
 // }}}RME
 
+// {{{RME transition ':TOP:S1:J5193551C029A:sendCommand'
+INLINE_METHODS void serialTranslateCapsule_Actor::transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport )
+{
+	// {{{USR
+	byteArray b = *rtdata;
+
+	unsigned char data[b.size()];
+	int i = 0;
+	for(i = 0; i <= b.size(); i++){
+	    data[i] = b.getAll().Contents[i];
+	}
+
+	RS232_SendBuf(COM_PORT, data, b.size());
+
+	cout << "STR: Sending data: ";
+	b.print();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void serialTranslateCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -143,6 +164,17 @@ INLINE_CHAINS void serialTranslateCapsule_Actor::chain2_dataReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition2_dataReceived( (const byteArray *)msg->data, (serialRawProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTranslateCapsule_Actor::chain3_sendCommand( void )
+{
+	// transition ':TOP:S1:J5193551C029A:sendCommand'
+	rtgChainBegin( 2, "sendCommand" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition3_sendCommand( (const byteArray *)msg->data, (serialProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -191,6 +223,18 @@ void serialTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case serialRawProtocol::Conjugate::rti_dataReceived:
 					chain2_dataReceived();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			case 2:
+				// {{{RME port 'serialOut'
+				switch( signalIndex )
+				{
+				case serialProtocol::Base::rti_sendCommand:
+					chain3_sendCommand();
 					return;
 				default:
 					break;

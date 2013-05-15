@@ -15,7 +15,7 @@ class serialProperties;
 // {{{USR
 #include <stdio.h>
 #include <stdlib.h>
-#include <SerialProperties.h>
+//#include <SerialProperties.h>
 
 #include "../../include/rs232.h"
 

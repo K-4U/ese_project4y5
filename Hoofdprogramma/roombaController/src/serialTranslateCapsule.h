@@ -10,9 +10,20 @@
 #include <RTSystem/roombaController.h>
 #include <serialProtocol.h>
 #include <serialRawProtocol.h>
+class serialProperties;
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../../include/rs232.h"
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // }}}USR
 // }}}RME
@@ -75,10 +86,14 @@ protected:
 	// {{{RME transition ':TOP:S1:J519234560116:dataReceived'
 	INLINE_METHODS void transition2_dataReceived( const byteArray * rtdata, serialRawProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:S1:J5193551C029A:sendCommand'
+	INLINE_METHODS void transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_dataReceived( void );
+	INLINE_CHAINS void chain3_sendCommand( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

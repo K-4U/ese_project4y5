@@ -4,7 +4,7 @@
 #pragma implementation "serialTranslateCapsule.h"
 #endif
 
-#include <RTSystem/ourProgram.h>
+#include <RTSystem/roombaController.h>
 #include <serialTranslateCapsule.h>
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationPreface'
@@ -92,7 +92,37 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 {
 	// {{{USR
 	byteArray b = *rtdata;
-	cout << "STR: Data received: " << (char *)b.getAll() << endl;
+	int i;
+	for(i = 0; i <= b.size(); i++){
+	    if(!this->inCommand){
+	        if(b.get(i) == 19){ //Sensor stream
+	            //This is the sensor stream. The next byte is the length
+	            this->inCommand = true;
+	            this->lengthNotYetReceived = true;
+	            this->buffer.append(b.get(i));
+	        }
+	    }else if(this->inCommand && this->lengthNotYetReceived == true){
+	        this->commandLength = b.get(i)+2;
+	        this->lengthNotYetReceived = false;
+	        this->buffer.append(b.get(i));
+	    }else{
+	        this->buffer.append(b.get(i));
+	        //cout << "STR: Buff size: " << this->buffer.size() << "/" << this->commandLength << endl;
+	        if(this->buffer.size() >= this->commandLength){
+	            //Complete packet received. Handle it plox.
+	            //Trigger event
+	            serialOut.commandReceived(this->buffer).send();
+	            //Clear buffer
+	            this->buffer.clear();
+	            this->inCommand = false;
+	            this->commandLength = 0;
+	        }
+	    }
+	}
+
+
+	//cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
+	//b.print();
 	// }}}USR
 }
 // }}}RME
@@ -196,7 +226,7 @@ const RTActor_class serialTranslateCapsule_Actor::rtg_class =
   , serialTranslateCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 3
+  , 5
   , serialTranslateCapsule_Actor::rtg_serialTranslateCapsule_fields
 };
 
@@ -260,6 +290,30 @@ const RTFieldDescriptor serialTranslateCapsule_Actor::rtg_serialTranslateCapsule
 	  , RTOffsetOf( serialTranslateCapsule_Actor, commandLength )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'buffer'
+  , {
+		"buffer"
+	  , RTOffsetOf( serialTranslateCapsule_Actor, buffer )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , (const RTObject_class *)0
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'lengthNotYetReceived'
+  , {
+		"lengthNotYetReceived"
+	  , RTOffsetOf( serialTranslateCapsule_Actor, lengthNotYetReceived )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0

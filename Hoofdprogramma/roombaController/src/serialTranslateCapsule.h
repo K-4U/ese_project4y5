@@ -7,7 +7,7 @@
 #pragma interface "serialTranslateCapsule.h"
 #endif
 
-#include <RTSystem/ourProgram.h>
+#include <RTSystem/roombaController.h>
 #include <serialProtocol.h>
 #include <serialRawProtocol.h>
 
@@ -50,6 +50,12 @@ private:
 	// }}}RME
 	// {{{RME classAttribute 'commandLength'
 	int commandLength;
+	// }}}RME
+	// {{{RME classAttribute 'buffer'
+	byteArray buffer;
+	// }}}RME
+	// {{{RME classAttribute 'lengthNotYetReceived'
+	bool lengthNotYetReceived;
 	// }}}RME
 
 protected:

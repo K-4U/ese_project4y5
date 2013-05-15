@@ -1,0 +1,43 @@
+roombaController_SYSTARGET = RTSystem/roombaController.dep
+roombaController_SYSDEPS = \
+	E:/repositories/git/ese_project4y5/Hoofdprogramma/test.rtmdl \
+	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
+	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
+
+roombaController_SYSTARGET_CS = RTSystem/roombaController.dep
+roombaController_SYSDEPS_CS = \
+	RTSystem/roombaController.cpp \
+	RTSystem/roombaController.h \
+	byteArray.cpp \
+	byteArray.h \
+	serialCommunicationCapsule.cpp \
+	serialCommunicationCapsule.h \
+	serialProperties.cpp \
+	serialProperties.h \
+	serialProtocol.cpp \
+	serialProtocol.h \
+	serialRawProtocol.cpp \
+	serialRawProtocol.h \
+	serialTopCapsule.cpp \
+	serialTopCapsule.h \
+	serialTranslateCapsule.cpp \
+	serialTranslateCapsule.h \
+	TCPCONSTANTS.cpp \
+	TCPCONSTANTS.h \
+	jsonCommand.cpp \
+	jsonCommand.h \
+	jsonProtocol.cpp \
+	jsonProtocol.h \
+	jsonTranslateCapsule.cpp \
+	jsonTranslateCapsule.h \
+	tcpCapsule.cpp \
+	tcpCapsule.h \
+	tcpProtocol.cpp \
+	tcpProtocol.h \
+	tcpTopCapsule.cpp \
+	tcpTopCapsule.h \
+	mainCapsule.cpp \
+	mainCapsule.h \
+	topCap.cpp \
+	topCap.h
+

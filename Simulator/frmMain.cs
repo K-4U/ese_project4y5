@@ -63,6 +63,9 @@ namespace Simulator {
                 case 7:
                     roomba.setSensorValue(7,(int)values[0]);
                     break;
+                case 1337:
+                    roomba.uncontrolledTest(-1050, -1000);
+                    break;
                 default:
                     
                     break;
@@ -97,8 +100,12 @@ namespace Simulator {
 
             this.initDrawers();
 
-       //     roomba.uncontrolledTest(1050, 1000);
-            
+            roomba.uncontrolledTest(1050, 1000);
+
+            byte[] song = {50,32,0,32,50,32};
+
+            roomba.start();
+            roomba.song(1,3,song);
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {

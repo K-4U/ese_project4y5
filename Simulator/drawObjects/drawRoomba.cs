@@ -94,8 +94,6 @@ namespace Simulator.drawObjects {
                 // shows collisions on screen;
                 g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
 
-                this.isColliding = true;
-
                 double toRadian = (Math.PI / 180.0);
                 double toDegree = (180.0 / Math.PI);
 
@@ -115,13 +113,19 @@ namespace Simulator.drawObjects {
                     rightTrigger = true;
                 }
 
+                if(!this.isColliding){
+                    Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
+                    byte[] nothing = { (byte)1 };
+                    sensor(1337, nothing);
+
+                }
+
+                this.isColliding = true;
+
             } else {
                 this.isColliding = false;
             }
 
-            Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
-
-            /* Holy duck, i need a cleanup */
             int returning = 0;
             if (leftTrigger) {
                 returning += 2;

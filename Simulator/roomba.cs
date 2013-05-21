@@ -424,6 +424,7 @@ namespace Simulator {
             this.currentMode = eRoombaModes.Passive;
             log("Switching mode to passive", TAG);
         }
+
         public void safe() {
             if (this.currentMode != eRoombaModes.Off) {
                 this.currentMode = eRoombaModes.Safe;
@@ -432,6 +433,7 @@ namespace Simulator {
                 throw new notInCorrectMode();
             }
         }
+
         public void full() {
             if (this.currentMode != eRoombaModes.Off) {
                 this.currentMode = eRoombaModes.Full;
@@ -480,26 +482,29 @@ namespace Simulator {
             } else {
                 throw new notInCorrectMode();
             }
-        }
 
+            float oneSixtyfourth = 1000 / 64;
+            int i = 0;
+            while(i<noteCount){
+
+                int frequency = arguments[i];
+                frequency = frequency == 50 ? 1500 : 37;
+                /* todo */
+                /* get frequency from midi notes */
+                /* sleep */
+                /* don't play here */
+
+                int duration = (int)(arguments[i + 1] * oneSixtyfourth);
+
+                Console.Beep(frequency, duration);
+                i += 2;
+            }
+
+        }
 
         public void drive(byte velocHigh, byte velocLow, byte radiusHigh, byte radiusLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
                 log("Drive is not supported!", logTags.error);
-                /*
-                this.drivingState.velocity = (velocHigh << 8) | velocLow;
-                this.drivingState.radius = (radiusHigh << 8) | radiusLow;
-                this.drivingState.leftPWM = 0;
-                this.drivingState.rightPWM = 0;
-                this.drivingState.leftSpeed = 0;
-                this.drivingState.rightSpeed = 0;
-                if (this.drivingState.velocity == 0) {
-                    this.drivingState.isDriving = false;
-                    log("Stopped driving", TAG);
-                } else {
-                    this.drivingState.isDriving = true;
-                    log(String.Format("Driving @ {0}mm/s in a radius of {1} degrees", this.drivingState.velocity,this.drivingState.radius),TAG);
-                }*/
             } else {
                 throw new notInCorrectMode();
             }
@@ -507,11 +512,6 @@ namespace Simulator {
 
         public void driveDirect(byte velocRightHigh, byte velocRightLow, byte velocLeftHigh, byte velocLeftLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
-                /*this.drivingState.velocity = 0;
-                this.drivingState.radius = 0;
-                this.drivingState.leftPWM = 0;
-                this.drivingState.rightPWM = 0;*/
-
                 this.drivingState.leftSpeed = BitConverter.ToInt16(new byte[] { velocLeftLow, velocLeftHigh }, 0);
                 this.drivingState.rightSpeed = BitConverter.ToInt16(new byte[] { velocRightLow, velocRightHigh }, 0);
                 if (this.drivingState.leftSpeed == 0 && this.drivingState.rightSpeed == 0) {
@@ -711,6 +711,7 @@ namespace Simulator {
                     this.stream.packets.Add(packet);
                     log(String.Format("- {0}", packet), TAG);
                 }
+                this.stream.packets.Add((byte)0);
                 this.streamThread = new Thread(streamFunc);
                 this.streamThread.Start();
                 
@@ -726,8 +727,6 @@ namespace Simulator {
                 throw new notInCorrectMode();
             }
         }
-
-        
 
     }
 }

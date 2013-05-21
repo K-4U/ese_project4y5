@@ -7,8 +7,10 @@
 #include <RTSystem/roombaController.h>
 #include <topCap.h>
 #include <jsonProtocol.h>
+#include <roombaProtocol.h>
 #include <serialProtocol.h>
 extern const RTActorClass mainCapsule;
+extern const RTActorClass roombaTopCapsule;
 extern const RTActorClass serialTopCapsule;
 extern const RTActorClass tcpTopCapsule;
 
@@ -64,6 +66,10 @@ static const RTInterfaceDescriptor rtg_interfaces_mainCapsuleR1[] =
 		"Serial"
 	  , 1
 	}
+  , {
+		"Roomba"
+	  , 1
+	}
 };
 
 static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
@@ -75,6 +81,10 @@ static const RTBindingDescriptor rtg_bindings_mainCapsuleR1[] =
   , {
 		1
 	  , &serialProtocol::Base::rt_class
+	}
+  , {
+		2
+	  , &roombaProtocol::Base::rt_class
 	}
 };
 
@@ -91,6 +101,22 @@ static const RTBindingDescriptor rtg_bindings_serialTopCapsuleR1[] =
 	{
 		0
 	  , &serialProtocol::Conjugate::rt_class
+	}
+};
+
+static const RTInterfaceDescriptor rtg_interfaces_roombaTopCapsuleR1[] =
+{
+	{
+		"toMain"
+	  , 1
+	}
+};
+
+static const RTBindingDescriptor rtg_bindings_roombaTopCapsuleR1[] =
+{
+	{
+		0
+	  , &roombaProtocol::Conjugate::rt_class
 	}
 };
 
@@ -144,6 +170,14 @@ int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_p
 				return serialTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
+		case 2:
+			// Roomba
+			if( rtg_repIndex < 1 )
+			{
+				// roombaTopCapsuleR1/toMain
+				return roombaTopCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+			}
+			break;
 		default:
 			break;
 		}
@@ -157,6 +191,21 @@ int topCap_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_p
 			{
 				// mainCapsuleR1/Serial
 				return mainCapsuleR1._followIn( rtg_end, 1, rtg_repIndex );
+			}
+			break;
+		default:
+			break;
+		}
+	case 4:
+		// roombaTopCapsuleR1
+		switch( rtg_portId )
+		{
+		case 0:
+			// toMain
+			if( rtg_repIndex < 1 )
+			{
+				// mainCapsuleR1/Roomba
+				return mainCapsuleR1._followIn( rtg_end, 2, rtg_repIndex );
 			}
 			break;
 		default:
@@ -210,7 +259,7 @@ const RTActor_class topCap_Actor::rtg_class =
   , 1
   , topCap_Actor::rtg_parent_state
   , &topCap
-  , 3
+  , 4
   , topCap_Actor::rtg_capsule_roles
   , 0
   , (const RTPortDescriptor *)0
@@ -248,9 +297,9 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , RTComponentDescriptor::Fixed
 	  , 1
 	  , 1 // cardinality
-	  , 2
+	  , 3
 	  , rtg_interfaces_mainCapsuleR1
-	  , 2
+	  , 3
 	  , rtg_bindings_mainCapsuleR1
 	}
   , {
@@ -265,6 +314,19 @@ const RTComponentDescriptor topCap_Actor::rtg_capsule_roles[] =
 	  , rtg_interfaces_serialTopCapsuleR1
 	  , 1
 	  , rtg_bindings_serialTopCapsuleR1
+	}
+  , {
+		"roombaTopCapsuleR1"
+	  , &roombaTopCapsule
+	  , RTOffsetOf( topCap_Actor, roombaTopCapsuleR1 )
+	  , 4
+	  , RTComponentDescriptor::Fixed
+	  , 1
+	  , 1 // cardinality
+	  , 1
+	  , rtg_interfaces_roombaTopCapsuleR1
+	  , 1
+	  , rtg_bindings_roombaTopCapsuleR1
 	}
 };
 

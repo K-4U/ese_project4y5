@@ -8,6 +8,12 @@ roombaController_SYSTARGET_CS = RTSystem/roombaController.dep
 roombaController_SYSDEPS_CS = \
 	RTSystem/roombaController.cpp \
 	RTSystem/roombaController.h \
+	clsRoomba.cpp \
+	clsRoomba.h \
+	roombaProtocol.cpp \
+	roombaProtocol.h \
+	roombaTopCapsule.cpp \
+	roombaTopCapsule.h \
 	byteArray.cpp \
 	byteArray.h \
 	serialCommunicationCapsule.cpp \

@@ -172,9 +172,10 @@ INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint2_getChars( cons
 	// {{{USR
 	int i, n;
 
-	unsigned char buf[4096];
+	//unsigned char buf[4096];
+	unsigned char buf[12288];
 
-	n = RS232_PollComport(COM_PORT, buf, 4095);
+	n = RS232_PollComport(COM_PORT, buf, 12287);
 
 	if(n > 0)
 	{
@@ -188,15 +189,15 @@ INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint2_getChars( cons
 	    }
 	  }*/
 	  
-	  cout << "SER: Received " << n << " bytes: " << (char *)buf << endl;
+	  //cout << "SER: Received " << n << " bytes: " << (char *)buf << endl;
 	  byteArray data((char *) buf);
 	  serialPort.dataReceived(data).send();
 	}
 
 #ifdef _WIN32
-	    Sleep(100);
+	    Sleep(1);
 #else
-	    usleep(100000);  /* sleep for 100 milliSeconds */
+	    usleep(1000);  //sleep for 100 milliSeconds 
 #endif
 
 	return true;

@@ -51,6 +51,9 @@ protected:
 	// {{{RME capsuleRole 'serialTopCapsuleR1'
 	RTActorRef serialTopCapsuleR1;
 	// }}}RME
+	// {{{RME capsuleRole 'roombaTopCapsuleR1'
+	RTActorRef roombaTopCapsuleR1;
+	// }}}RME
 
 public:
 	topCap_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );

@@ -98,13 +98,13 @@ namespace Simulator {
             roomba = new clsRoomba(log, send);
 
             this.initDrawers();
-
+			/*
             roomba.uncontrolledTest(1000, 1050);
 
             byte[] song = {50,32,0,32,50,32};
 
             roomba.start();
-            roomba.song(1,3,song);
+            roomba.song(1,3,song);*/
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {

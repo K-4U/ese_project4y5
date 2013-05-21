@@ -25,6 +25,11 @@ static const RTRelayDescriptor rtg_relays[] =
 	  , &serialProtocol::Conjugate::rt_class
 	  , 1 // cardinality
 	}
+  , {
+		"Roomba"
+	  , &roombaProtocol::Conjugate::rt_class
+	  , 1 // cardinality
+	}
 };
 
 static RTActor * new_mainCapsule_Actor( RTController * _rts, RTActorRef * _ref )
@@ -37,7 +42,7 @@ const RTActorClass mainCapsule =
 	(const RTActorClass *)0
   , "mainCapsule"
   , (RTVersionId)0
-  , 2
+  , 3
   , rtg_relays
   , new_mainCapsule_Actor
 };
@@ -83,6 +88,15 @@ int mainCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int r
 			return 1;
 		}
 		break;
+	case 2:
+		// Roomba
+		if( rtg_repIndex < 1 )
+		{
+			rtg_end.port = &Roomba;
+			rtg_end.index = rtg_repIndex;
+			return 1;
+		}
+		break;
 	default:
 		break;
 	}
@@ -119,8 +133,6 @@ INLINE_METHODS void mainCapsule_Actor::enter4_Exit( void )
 {
 	// {{{USR
 	cout << "MAI: Com port not opened. Quiting..." << endl;
-
-	exit(1);
 	// }}}USR
 }
 // }}}RME
@@ -130,37 +142,7 @@ INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata,
 {
 	// {{{USR
 	cout << "Initializing mainCapsule" << endl;
-	cout << "Starting a stream on the roomba" << endl;
 
-	byteArray b;
-	//Safe mode
-	b.append(128);
-	Serial.sendCommand(b).send();
-	b.clear();
-
-	//Then, a stream
-	b.append(148);
-	//Bumpers only plox
-	b.append(1);
-	b.append(7);
-
-	Serial.sendCommand(b).send();
-	b.clear();
-
-	//Full mode
-	b.append(130);
-	Serial.sendCommand(b).send();
-	b.clear();
-
-	//And driving!
-	b.append(145);
-	b.append(3);
-	b.append(232);
-
-	b.append(4);
-	b.append(26);
-	Serial.sendCommand(b).send();
-	b.clear();
 	// }}}USR
 }
 // }}}RME
@@ -172,6 +154,7 @@ INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCo
 	cout << "MAI: GUI Data received." << endl;
 	//Just, send it back! :D
 	//GUI.sendCommand(*rtdata).send();
+	Roomba.commandReceived(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -183,6 +166,8 @@ INLINE_METHODS void mainCapsule_Actor::transition3_serialDataReceived( const byt
 	byteArray b = *rtdata;
 	cout << "MAI: Received packet from serial: ";
 	b.print();
+
+	Roomba.dataReceived(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -191,7 +176,18 @@ INLINE_METHODS void mainCapsule_Actor::transition3_serialDataReceived( const byt
 INLINE_METHODS void mainCapsule_Actor::transition4_comOpened( const void * rtdata, serialProtocol::Conjugate * rtport )
 {
 	// {{{USR
+	Roomba.ready().send();
 	cout << "MainCapsule is ready and happy to handle your stuff :D " << endl;
+
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:ready:J519B64890324:roombaDataReceived'
+INLINE_METHODS void mainCapsule_Actor::transition6_roombaDataReceived( const byteArray * rtdata, roombaProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	Serial.sendCommand(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -224,6 +220,17 @@ INLINE_CHAINS void mainCapsule_Actor::chain3_serialDataReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition3_serialDataReceived( (const byteArray *)msg->data, (serialProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void mainCapsule_Actor::chain6_roombaDataReceived( void )
+{
+	// transition ':TOP:ready:J519B64890324:roombaDataReceived'
+	rtgChainBegin( 2, "roombaDataReceived" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition6_roombaDataReceived( (const byteArray *)msg->data, (roombaProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -311,6 +318,18 @@ void mainCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				}
 				break;
 				// }}}RME
+			case 4:
+				// {{{RME port 'Roomba'
+				switch( signalIndex )
+				{
+				case roombaProtocol::Conjugate::rti_sendData:
+					chain6_roombaDataReceived();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
 			default:
 				break;
 			}
@@ -387,7 +406,7 @@ const RTActor_class mainCapsule_Actor::rtg_class =
   , &mainCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 3
+  , 4
   , mainCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -430,6 +449,15 @@ const RTPortDescriptor mainCapsule_Actor::rtg_ports[] =
 	  , RTOffsetOf( mainCapsule_Actor, mainCapsule_Actor::Serial )
 	  , 1 // cardinality
 	  , 3
+	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"Roomba"
+	  , (const char *)0
+	  , &roombaProtocol::Conjugate::rt_class
+	  , RTOffsetOf( mainCapsule_Actor, mainCapsule_Actor::Roomba )
+	  , 1 // cardinality
+	  , 4
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
 	}
 };

@@ -9,6 +9,7 @@
 
 #include <RTSystem/roombaController.h>
 #include <jsonProtocol.h>
+#include <roombaProtocol.h>
 #include <serialProtocol.h>
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
@@ -53,6 +54,9 @@ protected:
 	// {{{RME port 'Serial'
 	serialProtocol::Conjugate Serial;
 	// }}}RME
+	// {{{RME port 'Roomba'
+	roombaProtocol::Conjugate Roomba;
+	// }}}RME
 
 public:
 	mainCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
@@ -79,11 +83,15 @@ protected:
 	// {{{RME transition ':TOP:waitingForCom:J519B520503E6:comOpened'
 	INLINE_METHODS void transition4_comOpened( const void * rtdata, serialProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J519B64890324:roombaDataReceived'
+	INLINE_METHODS void transition6_roombaDataReceived( const byteArray * rtdata, roombaProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_GUIDataReceived( void );
 	INLINE_CHAINS void chain3_serialDataReceived( void );
+	INLINE_CHAINS void chain6_roombaDataReceived( void );
 	INLINE_CHAINS void chain4_comOpened( void );
 	INLINE_CHAINS void chain5_comError( void );
 

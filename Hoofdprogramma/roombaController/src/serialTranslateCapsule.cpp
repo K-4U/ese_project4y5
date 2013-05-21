@@ -122,8 +122,8 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 	}
 
 
-	//cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
-	//b.print();
+	cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
+	b.print();
 	// }}}USR
 }
 // }}}RME
@@ -142,8 +142,8 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition3_sendCommand( const
 
 	RS232_SendBuf(COM_PORT, data, b.size());
 
-	cout << "STR: Sending data: ";
-	b.print();
+	//cout << "STR: Sending data: ";
+	//b.print();
 	// }}}USR
 }
 // }}}RME

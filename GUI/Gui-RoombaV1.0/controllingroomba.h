@@ -6,6 +6,8 @@
 #include "../resources/clslog.h"
 #include <QWidget>
 #include <QTcpSocket>
+#include <QSlider>
+
 using namespace K4U;
 
 enum Modes{
@@ -23,6 +25,10 @@ enum Brushes{
 
 enum Vacuum{
     VACUUM = 0x00
+};
+
+enum Motor{
+    MOTOR = 0x00
 };
 
 namespace Ui {
@@ -47,6 +53,10 @@ public slots:
     void cbSideBrushHandler();
 
     void cbVacuumHandler();
+
+    void hsVacuumValueChanged();
+
+    void hsMotorValueChanged();
 
 private slots:
     void on_pbClean_clicked();
@@ -74,7 +84,8 @@ signals:
     void setBrushes(Brushes setBrush);
     void readBrushes(Brushes readBrush);
     void setVacuum(Vacuum setVacuum);
-    void readVacuum(Vacuum setVacuum);
+    void readVacuum(Vacuum readVacuum);
+    void readMotorSpeed(Motor readMotor);
 };
 
 #endif // CONTROLLINGROOMBA_H

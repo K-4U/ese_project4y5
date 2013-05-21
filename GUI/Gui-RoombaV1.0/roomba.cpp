@@ -1,7 +1,6 @@
 #include "roomba.h"
 #include "ui_roomba.h"
 #include "controllingroomba.h"
-#include "settingsroomba.h"
 #include "information.h"
 #include "displaylogs.h"
 
@@ -10,11 +9,10 @@ Roomba::Roomba(QWidget *parent) :
     ui(new Ui::Roomba),
     server()
 {
-    this->server = new clsServerConn("145.74.197.35", 1337);
+    this->server = new clsServerConn("145.74.196.221", 1337);
 //    this->server = new clsServerConn("localhost", 1337);
 
     ui->setupUi(this);
-
 }
 
 Roomba::~Roomba()
@@ -34,13 +32,6 @@ void Roomba::on_pbControlRoomba_clicked()
             this, SLOT(VacuumModeChanged(Vacuum)));
     this->hide();
 
-}
-
-void Roomba::on_pbSettingRoomba_clicked()
-{
-    SettingsRoomba *settings_roomba = new SettingsRoomba();
-    settings_roomba->show();
-    this->hide();
 }
 
 void Roomba::on_pbInformation_clicked()

@@ -29,8 +29,6 @@ private slots:
 
     void on_pbControlRoomba_clicked();
 
-    void on_pbSettingRoomba_clicked();
-
     void on_pbInformation_clicked();
 
     void on_pbDiplayLogs_clicked();

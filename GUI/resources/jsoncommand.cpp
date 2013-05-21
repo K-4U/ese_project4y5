@@ -58,6 +58,9 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_READVACUUM:
             ret = "READVACUUM";
             break;
+        case JSONCOMMAND_READMOTOR:
+            ret = "READMOTOR";
+            break;
     }
     return ret;
 }
@@ -82,6 +85,8 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_SETVACUUM;
     }else if(command == "READVACUUM"){
         set = JSONCOMMAND_READVACUUM;
+    }else if(command == "READMOTOR"){
+        set = JSONCOMMAND_READMOTOR;
     }
     this->command = set;
 }

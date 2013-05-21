@@ -68,19 +68,6 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="lbAngleDegree">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>100</y>
-     <width>161</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>angle ¤ in graden</string>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="leDistanceTraveled">
    <property name="geometry">
     <rect>
@@ -95,32 +82,6 @@
    </property>
    <property name="readOnly">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="cbWebConnected">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>80</y>
-     <width>171</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Webserver connected</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbAngle">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>100</y>
-     <width>46</width>
-     <height>13</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>angle:</string>
    </property>
   </widget>
   <widget class="QLabel" name="lbDistanceTraveled">

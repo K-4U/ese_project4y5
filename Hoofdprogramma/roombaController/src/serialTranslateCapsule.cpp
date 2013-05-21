@@ -148,6 +148,24 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition3_sendCommand( const
 }
 // }}}RME
 
+// {{{RME transition ':TOP:S1:J519B507801FB:comOpened'
+INLINE_METHODS void serialTranslateCapsule_Actor::transition4_comOpened( const void * rtdata, serialRawProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	serialOut.comOpened().send();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:S1:J519B50B801E5:comError'
+INLINE_METHODS void serialTranslateCapsule_Actor::transition5_comError( const void * rtdata, serialRawProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	serialOut.comError().send();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void serialTranslateCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -164,6 +182,28 @@ INLINE_CHAINS void serialTranslateCapsule_Actor::chain2_dataReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition2_dataReceived( (const byteArray *)msg->data, (serialRawProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTranslateCapsule_Actor::chain4_comOpened( void )
+{
+	// transition ':TOP:S1:J519B507801FB:comOpened'
+	rtgChainBegin( 2, "comOpened" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition4_comOpened( msg->data, (serialRawProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTranslateCapsule_Actor::chain5_comError( void )
+{
+	// transition ':TOP:S1:J519B50B801E5:comError'
+	rtgChainBegin( 2, "comError" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition5_comError( msg->data, (serialRawProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -223,6 +263,12 @@ void serialTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case serialRawProtocol::Conjugate::rti_dataReceived:
 					chain2_dataReceived();
+					return;
+				case serialRawProtocol::Conjugate::rti_comOpened:
+					chain4_comOpened();
+					return;
+				case serialRawProtocol::Conjugate::rti_comError:
+					chain5_comError();
 					return;
 				default:
 					break;

@@ -45,7 +45,7 @@ const RTProtocolDescriptor serialProtocol::Conjugate::rt_class =
   , &serialProtocol::Base::rt_class
   , "serialProtocol"
   , 0
-  , 3
+  , 5
   , serialProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -55,6 +55,16 @@ const RTProtocolDescriptor serialProtocol::Conjugate::rt_class =
 const RTSignalDescriptor serialProtocol::Conjugate::rt_signals[] =
 {
 	{
+		"comError"
+	  , &RTType_void
+	  , serialProtocol::Conjugate::rti_comError
+	}
+  , {
+		"comOpened"
+	  , &RTType_void
+	  , serialProtocol::Conjugate::rti_comOpened
+	}
+  , {
 		"commandReceived"
 	  , &RTType_byteArray
 	  , serialProtocol::Conjugate::rti_commandReceived

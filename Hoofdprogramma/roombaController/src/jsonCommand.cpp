@@ -93,6 +93,7 @@ jsonCommand::jsonCommand( std::string jsonCommand )
 	// {{{USR
 	//We should've received a complete JSON message.
 	Json::Value msg;
+	std::cout << "Command to parse: " << jsonCommand << endl;
 	bool parsingSuccessful = this->jsonReader.parse( jsonCommand, msg );
 	if (!parsingSuccessful){
 	    // report to the user the failure and their locations in the document.

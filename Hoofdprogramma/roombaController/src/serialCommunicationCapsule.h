@@ -72,6 +72,9 @@ protected:
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:openPort:True'
+	INLINE_METHODS void transition3_True( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );

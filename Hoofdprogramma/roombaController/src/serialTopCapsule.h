@@ -75,10 +75,18 @@ protected:
 	// {{{RME transition ':TOP:ready:J5193582D0135:sendCommand'
 	INLINE_METHODS void transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J519B511B0342:comOpened'
+	INLINE_METHODS void transition4_comOpened( const void * rtdata, serialProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:ready:J519B513C00E7:comError'
+	INLINE_METHODS void transition5_comError( const void * rtdata, serialProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_commandReceived( void );
+	INLINE_CHAINS void chain4_comOpened( void );
+	INLINE_CHAINS void chain5_comError( void );
 	INLINE_CHAINS void chain3_sendCommand( void );
 
 public:

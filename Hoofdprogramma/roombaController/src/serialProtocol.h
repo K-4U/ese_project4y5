@@ -39,6 +39,22 @@ struct serialProtocol
 		// }}}RME
 		inline RTOutSignal commandReceived( const RTTypedValue_byteArray & data );
 		// }}}RME
+		// {{{RME inSignal 'comOpened'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal comOpened( void );
+		// }}}RME
+		// {{{RME inSignal 'comError'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal comError( void );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -49,10 +65,15 @@ struct serialProtocol
 	public:
 		inline Conjugate( void );
 		inline ~Conjugate( void );
-		enum { rti_commandReceived = rtiLast_RTRootProtocol + 1 };
+		enum
+		{
+			rti_commandReceived = rtiLast_RTRootProtocol + 1
+		  , rti_comOpened
+		  , rti_comError
+		};
 
 	protected:
-		enum { rtiLast_serialProtocol = rti_commandReceived };
+		enum { rtiLast_serialProtocol = rti_comError };
 
 	public:
 		// {{{RME outSignal 'commandReceived'
@@ -62,6 +83,22 @@ struct serialProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal commandReceived( void );
+		// }}}RME
+		// {{{RME outSignal 'comOpened'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal comOpened( void );
+		// }}}RME
+		// {{{RME outSignal 'comError'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal comError( void );
 		// }}}RME
 		// {{{RME outSignal 'sendCommand'
 		// {{{RME general 'documentation'
@@ -111,6 +148,30 @@ inline RTOutSignal serialProtocol::Base::commandReceived( const RTTypedValue_byt
 }
 // }}}RME
 
+// {{{RME inSignal 'comOpened'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal serialProtocol::Base::comOpened( void )
+{
+	return RTOutSignal( this, Conjugate::rti_comOpened, (const void *)0, &RTType_void );
+}
+// }}}RME
+
+// {{{RME inSignal 'comError'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal serialProtocol::Base::comError( void )
+{
+	return RTOutSignal( this, Conjugate::rti_comError, (const void *)0, &RTType_void );
+}
+// }}}RME
+
 inline serialProtocol::Conjugate::Conjugate( void )
 	: RTRootProtocol()
 {
@@ -129,6 +190,30 @@ inline serialProtocol::Conjugate::~Conjugate( void )
 inline RTInSignal serialProtocol::Conjugate::commandReceived( void )
 {
 	return RTInSignal( this, rti_commandReceived );
+}
+// }}}RME
+
+// {{{RME outSignal 'comOpened'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal serialProtocol::Conjugate::comOpened( void )
+{
+	return RTInSignal( this, rti_comOpened );
+}
+// }}}RME
+
+// {{{RME outSignal 'comError'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal serialProtocol::Conjugate::comError( void )
+{
+	return RTInSignal( this, rti_comError );
 }
 // }}}RME
 

@@ -89,10 +89,18 @@ protected:
 	// {{{RME transition ':TOP:S1:J5193551C029A:sendCommand'
 	INLINE_METHODS void transition3_sendCommand( const byteArray * rtdata, serialProtocol::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:S1:J519B507801FB:comOpened'
+	INLINE_METHODS void transition4_comOpened( const void * rtdata, serialRawProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:S1:J519B50B801E5:comError'
+	INLINE_METHODS void transition5_comError( const void * rtdata, serialRawProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_dataReceived( void );
+	INLINE_CHAINS void chain4_comOpened( void );
+	INLINE_CHAINS void chain5_comError( void );
 	INLINE_CHAINS void chain3_sendCommand( void );
 
 public:

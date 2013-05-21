@@ -60,10 +60,13 @@ public:
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
-	// {{{RME enter ':TOP:ready'
-	INLINE_METHODS void enter2_ready( void );
+	// {{{RME enter ':TOP:waitingForCom'
+	INLINE_METHODS void enter3_waitingForCom( void );
 	// }}}RME
 	virtual void enterStateV( void );
+	// {{{RME enter ':TOP:Exit'
+	INLINE_METHODS void enter4_Exit( void );
+	// }}}RME
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
@@ -73,11 +76,16 @@ protected:
 	// {{{RME transition ':TOP:ready:J519345E300C5:serialDataReceived'
 	INLINE_METHODS void transition3_serialDataReceived( const byteArray * rtdata, serialProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:waitingForCom:J519B520503E6:comOpened'
+	INLINE_METHODS void transition4_comOpened( const void * rtdata, serialProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_GUIDataReceived( void );
 	INLINE_CHAINS void chain3_serialDataReceived( void );
+	INLINE_CHAINS void chain4_comOpened( void );
+	INLINE_CHAINS void chain5_comError( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

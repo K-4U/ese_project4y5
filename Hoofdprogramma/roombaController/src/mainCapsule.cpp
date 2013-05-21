@@ -46,6 +46,8 @@ static const char * const rtg_state_names[] =
 {
 	"TOP"
   , "ready"
+  , "waitingForCom"
+  , "Exit"
 };
 
 #define SUPER RTActor
@@ -87,11 +89,11 @@ int mainCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int r
 	return RTActor::_followInV( rtg_end, rtg_portId, rtg_repIndex );
 }
 
-// {{{RME enter ':TOP:ready'
-INLINE_METHODS void mainCapsule_Actor::enter2_ready( void )
+// {{{RME enter ':TOP:waitingForCom'
+INLINE_METHODS void mainCapsule_Actor::enter3_waitingForCom( void )
 {
 	// {{{USR
-	//cout << "MainCapsule is ready and happy to handle your stuff :D " << endl;
+	cout << "MAI: Waiting for com port to open" << endl;
 	// }}}USR
 }
 // }}}RME
@@ -100,14 +102,28 @@ void mainCapsule_Actor::enterStateV( void )
 {
 	switch( getCurrentState() )
 	{
-	case 2:
-		enter2_ready();
+	case 3:
+		enter3_waitingForCom();
+		break;
+	case 4:
+		enter4_Exit();
 		break;
 	default:
 		RTActor::enterStateV();
 		break;
 	}
 }
+
+// {{{RME enter ':TOP:Exit'
+INLINE_METHODS void mainCapsule_Actor::enter4_Exit( void )
+{
+	// {{{USR
+	cout << "MAI: Com port not opened. Quiting..." << endl;
+
+	exit(1);
+	// }}}USR
+}
+// }}}RME
 
 // {{{RME transition ':TOP:Initial:Initial'
 INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
@@ -153,9 +169,9 @@ INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata,
 INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	cout << "MAI: GUI Data received: " << (char *)rtdata << endl;
+	cout << "MAI: GUI Data received." << endl;
 	//Just, send it back! :D
-	GUI.sendCommand(*rtdata).send();
+	//GUI.sendCommand(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -171,6 +187,15 @@ INLINE_METHODS void mainCapsule_Actor::transition3_serialDataReceived( const byt
 }
 // }}}RME
 
+// {{{RME transition ':TOP:waitingForCom:J519B520503E6:comOpened'
+INLINE_METHODS void mainCapsule_Actor::transition4_comOpened( const void * rtdata, serialProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	cout << "MainCapsule is ready and happy to handle your stuff :D " << endl;
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void mainCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -178,7 +203,7 @@ INLINE_CHAINS void mainCapsule_Actor::chain1_Initial( void )
 	rtgTransitionBegin();
 	transition1_Initial( msg->data, msg->sap() );
 	rtgTransitionEnd();
-	enterState( 2 );
+	enterState( 3 );
 }
 
 INLINE_CHAINS void mainCapsule_Actor::chain2_GUIDataReceived( void )
@@ -201,6 +226,27 @@ INLINE_CHAINS void mainCapsule_Actor::chain3_serialDataReceived( void )
 	transition3_serialDataReceived( (const byteArray *)msg->data, (serialProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+}
+
+INLINE_CHAINS void mainCapsule_Actor::chain4_comOpened( void )
+{
+	// transition ':TOP:waitingForCom:J519B520503E6:comOpened'
+	rtgChainBegin( 3, "comOpened" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition4_comOpened( msg->data, (serialProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void mainCapsule_Actor::chain5_comError( void )
+{
+	// transition ':TOP:waitingForCom:J519B525003DD:comError'
+	rtgChainBegin( 3, "comError" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 4 );
 }
 
 void mainCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
@@ -270,6 +316,57 @@ void mainCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 			}
 			break;
 			// }}}RME
+		case 3:
+			// {{{RME state ':TOP:waitingForCom'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			case 3:
+				// {{{RME port 'Serial'
+				switch( signalIndex )
+				{
+				case serialProtocol::Conjugate::rti_comOpened:
+					chain4_comOpened();
+					return;
+				case serialProtocol::Conjugate::rti_comError:
+					chain5_comError();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			default:
+				break;
+			}
+			break;
+			// }}}RME
+		case 4:
+			// {{{RME state ':TOP:Exit'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+			// }}}RME
 		default:
 			unexpectedState();
 			return;
@@ -285,7 +382,7 @@ const RTActor_class mainCapsule_Actor::rtg_class =
 {
 	(const RTActor_class *)0
   , rtg_state_names
-  , 2
+  , 4
   , mainCapsule_Actor::rtg_parent_state
   , &mainCapsule
   , 0
@@ -301,6 +398,8 @@ const RTActor_class mainCapsule_Actor::rtg_class =
 const RTStateId mainCapsule_Actor::rtg_parent_state[] =
 {
 	0
+  , 1
+  , 1
   , 1
 };
 

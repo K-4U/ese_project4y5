@@ -40,7 +40,7 @@ const RTProtocolDescriptor serialRawProtocol::Conjugate::rt_class =
   , &serialRawProtocol::Base::rt_class
   , "serialRawProtocol"
   , 0
-  , 3
+  , 5
   , serialRawProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -50,6 +50,16 @@ const RTProtocolDescriptor serialRawProtocol::Conjugate::rt_class =
 const RTSignalDescriptor serialRawProtocol::Conjugate::rt_signals[] =
 {
 	{
+		"comError"
+	  , &RTType_void
+	  , serialRawProtocol::Conjugate::rti_comError
+	}
+  , {
+		"comOpened"
+	  , &RTType_void
+	  , serialRawProtocol::Conjugate::rti_comOpened
+	}
+  , {
 		"dataReceived"
 	  , &RTType_byteArray
 	  , serialRawProtocol::Conjugate::rti_dataReceived

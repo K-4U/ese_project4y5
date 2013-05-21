@@ -82,6 +82,7 @@ INLINE_METHODS void serialCommunicationCapsule_Actor::enter2_Reset( void )
 {
 	// {{{USR
 	cout << "in reset terecht gekomen" << endl;
+	serialPort.comError().send();
 	// }}}USR
 }
 // }}}RME
@@ -104,6 +105,15 @@ INLINE_METHODS void serialCommunicationCapsule_Actor::transition1_Initial( const
 {
 	// {{{USR
 	cout << "Serial capsule initialized" << endl;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:openPort:True'
+INLINE_METHODS void serialCommunicationCapsule_Actor::transition3_True( const void * rtdata, RTProtocol * rtport )
+{
+	// {{{USR
+	serialPort.comOpened().send();
 	// }}}USR
 }
 // }}}RME
@@ -148,6 +158,7 @@ INLINE_CHAINS void serialCommunicationCapsule_Actor::chain3_True( void )
 	// transition ':TOP:openPort:True'
 	rtgChainBegin( 3, "True" );
 	rtgTransitionBegin();
+	transition3_True( msg->data, msg->sap() );
 	rtgTransitionEnd();
 	if( choicePoint2_getChars( msg->data, msg->sap() ) )
 		chain4_True();

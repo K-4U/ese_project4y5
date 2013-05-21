@@ -41,6 +41,7 @@ namespace Simulator.drawObjects {
 		private RectangleF innerLoc;
 		private bool isDriving = false;
         private bool isColliding = false;
+        private bool isFalling = false;
 		private wheel leftWheel;
 		private wheel rightWheel;
 		private PointF wheelPos;
@@ -81,9 +82,8 @@ namespace Simulator.drawObjects {
 
 		}
 
-        public override void checkCollision(RectangleF toCheck, Graphics g) {
+        public override void checkCollision(RectangleF toCheck, Graphics g, string name) {
             
-            Boolean leftTrigger = false, rightTrigger = false;
             Pen debugPen = Pens.Purple;
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
 
@@ -105,37 +105,55 @@ namespace Simulator.drawObjects {
                     a = Math.Acos((WHEELBASE/2)/sz)*toDegree;
 
                 }
-                
-                if (a >= 0 && a <= 112.5) {
-                    leftTrigger = true;
-                }
-                if (a >= 67.5 && a <= 180) {
-                    rightTrigger = true;
-                }
 
-                if(!this.isColliding){
-                    Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
-                    byte[] nothing = { (byte)1 };
-                    sensor(1337, nothing);
+                int returning = 0;
+
+                if (name == "pool") {
+
+                    byte[] bytes = { (byte)1 };
+
+                    if (a >= 0 && a <= 45) {
+                        sensor(9, bytes);
+                    }
+                    if (a >= 45 && a <= 90) {
+                        sensor(10, bytes);
+                    }
+                    if (a >= 90 && a <= 135) {
+                        sensor(11, bytes);
+                    }
+                    if (a >= 135 && a <= 180) {
+                        sensor(12, bytes);
+                    }
+
+                    this.isFalling = true;
+
+                } else if (name == "table") {
+
+                    if (a >= 0 && a <= 112.5) {
+                        returning += 2;
+                    }
+                    if (a >= 67.5 && a <= 180) {
+                        returning += 1;
+                    }
+
+                    byte[] bytes = { (byte)returning };
+                    sensor(7, bytes);
+
+                    if (!this.isColliding) {
+                        Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
+                    }
+
+                    this.isColliding = true;
 
                 }
-
-                this.isColliding = true;
 
             } else {
-                this.isColliding = false;
+                if (name == "pool") {
+                    this.isFalling = false;
+                } else if (name == "table") {
+                    this.isColliding = false;
+                }
             }
-
-            int returning = 0;
-            if (leftTrigger) {
-                returning += 2;
-            }
-            if (rightTrigger) {
-                returning += 1;
-            }
-
-            byte[] bytes = { (byte)returning };
-            sensor(7, bytes);
 
 		}
 

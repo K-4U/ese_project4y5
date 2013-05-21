@@ -33,7 +33,7 @@ namespace Simulator.drawObjects {
             foreach (KeyValuePair<String, drawObject> item in drawObjects) {
 				foreach (KeyValuePair<String, drawObject> itemTwo in drawObjects) {
 					if (!item.Equals(itemTwo)) {
-                        item.Value.checkCollision(itemTwo.Value.loc, this.pbParent.CreateGraphics());
+                        item.Value.checkCollision(itemTwo.Value.loc, this.pbParent.CreateGraphics(), itemTwo.Key);
                     }
 				}
 			}

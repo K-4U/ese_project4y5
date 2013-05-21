@@ -57,22 +57,20 @@ namespace Simulator {
 
         static void setSensor(int sensorNr, byte[] values) {
 
-           
-
             switch (sensorNr) {
                 case 7:
-                    roomba.setSensorValue(7,(int)values[0]);
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                    roomba.setSensorValue(sensorNr,(int)values[0]);
                     break;
                 case 1337:
                     roomba.uncontrolledTest(-1050, -1000);
                     break;
                 default:
-                    
                     break;
-
             }
-
-            
 
         }
 
@@ -82,6 +80,7 @@ namespace Simulator {
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
             mDrawer.addToDrawer("table", new drawTable(200, 200));
+            mDrawer.addToDrawer("pool", new drawPool(600, 400));
         }
         #endregion
 
@@ -100,7 +99,7 @@ namespace Simulator {
 
             this.initDrawers();
 
-            roomba.uncontrolledTest(1050, 1000);
+            roomba.uncontrolledTest(1000, 1050);
 
             byte[] song = {50,32,0,32,50,32};
 

@@ -26,10 +26,14 @@ void Roomba::on_pbControlRoomba_clicked()
     controlling_roomba->show();
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
-    connect(controlling_roomba, SIGNAL(setBrushes(Brushes)),
-            this, SLOT(BrushModeChanged(Brushes)));
+    connect(controlling_roomba, SIGNAL(setMainBrush(MainBrush)),
+            this, SLOT(MainBrushModeChanged(MainBrush)));
+    connect(controlling_roomba, SIGNAL(setSideBrush(SideBrush)),
+            this, SLOT(SideBrushModeChanged(SideBrush)));
     connect(controlling_roomba, SIGNAL(setVacuum(Vacuum)),
             this, SLOT(VacuumModeChanged(Vacuum)));
+    connect(controlling_roomba, SIGNAL(setMotorSpeed(Motor)),
+            this, SLOT(MotorModeChanged(Motor)));
     this->hide();
 
 }
@@ -60,10 +64,17 @@ void Roomba::RoombaModeChanged(Modes newMode)
     this->server->sendCommand(toSend);
 }
 
-void Roomba::BrushModeChanged(Brushes setBrush)
+void Roomba::MainBrushModeChanged(MainBrush setMainBrush)
 {
-    jsonCommand toSend(JSONCOMMAND_SETBRUSHES);
-    toSend.addToData("BrushState", setBrush);
+    jsonCommand toSend(JSONCOMMAND_SETMAINBRUSH);
+    toSend.addToData("MainBrushState", setMainBrush);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::SideBrushModeChanged(SideBrush setSideBrush)
+{
+    jsonCommand toSend(JSONCOMMAND_SETMAINBRUSH);
+    toSend.addToData("SideBrushState", setSideBrush);
     this->server->sendCommand(toSend);
 }
 
@@ -71,6 +82,13 @@ void Roomba::VacuumModeChanged(Vacuum setVacuum)
 {
     jsonCommand toSend(JSONCOMMAND_SETVACUUM);
     toSend.addToData("VacuumState", setVacuum);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::MotorModeChanged(Motor setMotorSpeed)
+{
+    jsonCommand toSend(JSONCOMMAND_SETMOTOR);
+    toSend.addToData("MotorState", setMotorSpeed);
     this->server->sendCommand(toSend);
 }
 

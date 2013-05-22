@@ -12,15 +12,21 @@ using namespace K4U;
 
 enum Modes{
     MODESTOPPED = 0x00,
-    MODEDRIVE,
+    MODEDRIVEFORWARD,
+    MODEDRIVELEFT,
+    MODEDRIVERIGHT,
+    MODEDRIVEBACKWARD,
     MODECLEAN,
     MODECLEANONSPOT,
     MODEDOCK
 };
 
-enum Brushes{
-    MAINBRUSH = 0x00,
-    SIDEBRUSH
+enum MainBrush{
+    MAINBRUSH = 0x00
+};
+
+enum SideBrush{
+    SIDEBRUSH = 0x00
 };
 
 enum Vacuum{
@@ -44,7 +50,7 @@ public:
     ~Controllingroomba();
 
 public slots:
-    void on_pbDrive_clicked();
+    void on_pbDriveForward_clicked();
 
     void on_pbStop_clicked();
 
@@ -71,6 +77,12 @@ private slots:
 
     void on_pbUpload_clicked();
 
+    void on_pbDriveLeft_clicked();
+
+    void on_pbDriveBackward_clicked();
+
+    void on_pbDriveRight_clicked();
+
 private:
     Ui::Controllingroomba *ui;
     clsLog log;
@@ -81,10 +93,13 @@ private:
 signals:
     void ManualcommandReceived(QString Manualcommand);
     void ModeChanged(Modes newMode);
-    void setBrushes(Brushes setBrush);
-    void readBrushes(Brushes readBrush);
+    void setMainBrush(MainBrush setMainBrush);
+    void setSideBrush(SideBrush setSideBrush);
+    void readMainBrush(MainBrush readMainBrush);
+    void readSideBrush(SideBrush readSideBrush);
     void setVacuum(Vacuum setVacuum);
     void readVacuum(Vacuum readVacuum);
+    void setMotorSpeed(Motor setMotor);
     void readMotorSpeed(Motor readMotor);
 };
 

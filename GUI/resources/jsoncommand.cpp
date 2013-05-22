@@ -46,8 +46,11 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_MODECHANGED:
             ret = "MODECHANGED";
             break;
-        case JSONCOMMAND_SETBRUSHES:
-            ret = "SETBRUSHES";
+        case JSONCOMMAND_SETMAINBRUSH:
+            ret = "SETMAINBRUSH";
+            break;
+        case JSONCOMMAND_SETSIDEBRUSH:
+            ret = "SETSIDEBRUSH";
             break;
         case JSONCOMMAND_READBRUSHES:
             ret = "READBRUSHES";
@@ -60,6 +63,9 @@ QString jsonCommand::getCommandString() const{
             break;
         case JSONCOMMAND_READMOTOR:
             ret = "READMOTOR";
+            break;
+        case JSONCOMMAND_SETMOTOR:
+            ret = "SETMOTOR";
             break;
     }
     return ret;
@@ -77,8 +83,10 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_MANUAL;
     }else if(command == "MODECHANGED"){
         set = JSONCOMMAND_MODECHANGED;
-    }else if(command == "SETBRUSHES"){
-        set = JSONCOMMAND_SETBRUSHES;
+    }else if(command == "SETMAINBRUSH"){
+        set = JSONCOMMAND_SETMAINBRUSH;
+    }else if(command == "SETSIDEBRUSH"){
+        set = JSONCOMMAND_SETSIDEBRUSH;
     }else if(command == "READBRUSHES"){
         set = JSONCOMMAND_READBRUSHES;
     }else if(command == "SETVACUUM"){
@@ -87,6 +95,8 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_READVACUUM;
     }else if(command == "READMOTOR"){
         set = JSONCOMMAND_READMOTOR;
+    }else if(command == "SETMOTOR"){
+        set = JSONCOMMAND_SETMOTOR;
     }
     this->command = set;
 }

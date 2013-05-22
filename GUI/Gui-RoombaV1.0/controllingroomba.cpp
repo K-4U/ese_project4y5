@@ -49,14 +49,28 @@ void Controllingroomba::on_pbDock_clicked()
     emit ModeChanged(MODEDOCK);
 }
 
-void Controllingroomba::on_pbDrive_clicked()
+void Controllingroomba::on_pbDriveForward_clicked()
 {
-    emit ModeChanged(MODEDRIVE);
+    emit ModeChanged(MODEDRIVEFORWARD);
+}
+
+void Controllingroomba::on_pbDriveLeft_clicked()
+{
+    emit ModeChanged(MODEDRIVELEFT);
+}
+
+void Controllingroomba::on_pbDriveBackward_clicked()
+{
+    emit ModeChanged(MODEDRIVEBACKWARD);
+}
+
+void Controllingroomba::on_pbDriveRight_clicked()
+{
+    emit ModeChanged(MODEDRIVERIGHT);
 }
 
 void Controllingroomba::on_pbResetRoomba_clicked()
 {
-
 }
 
 void Controllingroomba::on_pbStop_clicked()
@@ -66,14 +80,12 @@ void Controllingroomba::on_pbStop_clicked()
 
 void Controllingroomba::cbMainBrushHandler()
 {
-    ui->cbMainBrush->checkState() == Qt::Checked;
-    emit setBrushes(MAINBRUSH);
+    emit setMainBrush((MainBrush)((ui->cbMainBrush->checkState() == Qt::Checked)? 1 : 0));
 }
 
 void Controllingroomba::cbSideBrushHandler()
 {
-    ui->cbSideBrush->checkState() == Qt::Checked;
-    emit setBrushes(SIDEBRUSH);
+    emit setSideBrush((SideBrush)((ui->cbSideBrush->checkState() == Qt::Checked)? 1 : 0));
 }
 
 void Controllingroomba::cbVacuumHandler()
@@ -84,11 +96,11 @@ void Controllingroomba::cbVacuumHandler()
 void Controllingroomba::hsVacuumValueChanged()
 {
     ui->hsVacuumStrength->value();
-    emit readVacuum(VACUUM);
+    emit setVacuum(VACUUM);
 }
 
 void Controllingroomba::hsMotorValueChanged()
 {
     ui->hsMotorSpeed->value();
-    emit readMotorSpeed(MOTOR);
+    emit setMotorSpeed(MOTOR);
 }

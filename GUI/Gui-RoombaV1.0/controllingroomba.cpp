@@ -78,10 +78,7 @@ void Controllingroomba::cbSideBrushHandler()
 
 void Controllingroomba::cbVacuumHandler()
 {
-    int i = 1;
-    ui->cbVacuum->checkState() == Qt::Checked;
-    i = i;
-    emit setVacuum(VACUUM);
+    emit setVacuum((Vacuum)((ui->cbVacuum->checkState() == Qt::Checked)? 1 : 0));
 }
 
 void Controllingroomba::hsVacuumValueChanged()

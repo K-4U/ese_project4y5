@@ -65,6 +65,9 @@ protected:
 	// {{{RME transition ':TOP:waitForCom:J519B68FC0073:comReady'
 	INLINE_METHODS void transition1_comReady( const void * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:Ready:J519B5D19038A:dataReceived'
+	INLINE_METHODS void transition2_dataReceived( const byteArray * rtdata, roombaProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain4_Initial( void );
@@ -91,7 +94,7 @@ public:
 #undef SUPER
 
 // {{{RME classAttribute 'sensorsToQuery'
-extern int sensorsToQuery[ NUMSENSORS ];
+extern int sensorsToQuery[ NUMSENSORS ][ 2 ];
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'HeaderEnding'

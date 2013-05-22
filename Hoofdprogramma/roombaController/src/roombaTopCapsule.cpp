@@ -90,11 +90,11 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 	//Then, a stream
 	b.append(148);
 	//First the length:
-	int sizeOfArray = sizeof(sensorsToQuery) / sizeof(int);
+	int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
 	b.append(sizeOfArray);
 	int i = 0;
 	for(i=0;i < sizeOfArray; i++){
-	    b.append(sensorsToQuery[i]);
+	    b.append(sensorsToQuery[i][0]);
 	}
 
 	toMain.sendData(b).send();
@@ -123,6 +123,46 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 }
 // }}}RME
 
+// {{{RME transition ':TOP:Ready:J519B5D19038A:dataReceived'
+INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byteArray * rtdata, roombaProtocol::Base * rtport )
+{
+	// {{{USR
+	//It probably is a sensor list
+	//Translate everything to a variable.
+
+	byteArray b = *rtdata;
+	int s = b.size();
+	int i = 0;
+
+	bool inSensorList;
+	while(i < s){
+	    if(!inSensorList){
+	        if(b.get(i) == 19){
+	            inSensorList = true;
+	        }
+	    }else{
+	        int x = 0;
+	        int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+	        for(x=0;x< sizeOfArray; x++){
+	            if(sensorsToQuery[x][0] == b.get(i)){
+	                int value = 0;
+	                i++;
+	                if(sensorsToQuery[x][1] == 2){
+	                    value = b.get(i) << 8;
+	                    i++;
+	                }
+	                value += b.get(i);
+	                this->roomba.setSensor(sensorsToQuery[x][0], value);
+	            }
+	        }
+	    }
+	    i++;
+	}
+	this->roomba.printSensors();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void roombaTopCapsule_Actor::chain4_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -138,6 +178,7 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain2_dataReceived( void )
 	rtgChainBegin( 2, "dataReceived" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
+	transition2_dataReceived( (const byteArray *)msg->data, (roombaProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -317,7 +358,8 @@ const RTFieldDescriptor roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields[] =
 #undef SUPER
 
 // {{{RME classAttribute 'sensorsToQuery'
-int sensorsToQuery[ NUMSENSORS ] = {7, 9, 10, 11, 12, 19, 20, 21, 24, 25, 26, 35};
+int sensorsToQuery[ NUMSENSORS ][ 2 ] = {{7, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 1}, {19, 2}, 
+ {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}};
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationEnding'

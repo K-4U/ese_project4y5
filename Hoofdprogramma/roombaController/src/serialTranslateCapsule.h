@@ -76,6 +76,9 @@ protected:
 	// {{{RME port 'serialOut'
 	serialProtocol::Base serialOut;
 	// }}}RME
+	// {{{RME port 'timer'
+	Timing::Base timer;
+	// }}}RME
 
 public:
 	serialTranslateCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );

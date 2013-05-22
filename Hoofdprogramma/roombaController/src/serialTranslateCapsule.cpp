@@ -122,8 +122,8 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 	}
 
 
-	cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
-	b.print();
+	//cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
+	//b.print();
 	// }}}USR
 }
 // }}}RME
@@ -312,7 +312,7 @@ const RTActor_class serialTranslateCapsule_Actor::rtg_class =
   , &serialTranslateCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 2
+  , 3
   , serialTranslateCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -345,6 +345,15 @@ const RTPortDescriptor serialTranslateCapsule_Actor::rtg_ports[] =
 	  , 1 // cardinality
 	  , 2
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"timer"
+	  , (const char *)0
+	  , &Timing::Base::rt_class
+	  , RTOffsetOf( serialTranslateCapsule_Actor, serialTranslateCapsule_Actor::timer )
+	  , 1 // cardinality
+	  , 3
+	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
 	}
 };
 

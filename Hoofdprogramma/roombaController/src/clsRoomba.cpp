@@ -12,7 +12,7 @@
 
 // }}}USR
 // }}}RME
-// {{{RME classifier 'clsBumpers' tool 'OT::Cpp' property 'ImplementationPreface'
+// {{{RME classifier 'clsBumpersAndCliff' tool 'OT::Cpp' property 'ImplementationPreface'
 // {{{USR
 
 // }}}USR
@@ -49,26 +49,26 @@ const RTObject_class RTType_clsRoomba =
   , RTstruct_encode
 #endif
   , (RTDestroyFunction)rtg_clsRoomba_destroy
-  , 1
+  , 11
   , clsRoomba::rtg_clsRoomba_fields
 };
 
-// {{{RME classifier 'clsBumpers'
+// {{{RME classifier 'clsBumpersAndCliff'
 
 // {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
-clsRoomba::clsBumpers::clsBumpers( void )
+clsRoomba::clsBumpersAndCliff::clsBumpersAndCliff( void )
 {
 }
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'GenerateDestructor'
-clsRoomba::clsBumpers::~clsBumpers( void )
+clsRoomba::clsBumpersAndCliff::~clsBumpersAndCliff( void )
 {
 }
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
-clsRoomba::clsBumpers::clsBumpers( const clsBumpers & rtg_arg )
+clsRoomba::clsBumpersAndCliff::clsBumpersAndCliff( const clsBumpersAndCliff & rtg_arg )
 	: left( rtg_arg.left )
 	, right( rtg_arg.right )
 	, frontLeft( rtg_arg.frontLeft )
@@ -78,7 +78,7 @@ clsRoomba::clsBumpers::clsBumpers( const clsBumpers & rtg_arg )
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
-clsRoomba::clsBumpers & clsRoomba::clsBumpers::operator=( const clsBumpers & rtg_arg )
+clsRoomba::clsBumpersAndCliff & clsRoomba::clsBumpersAndCliff::operator=( const clsBumpersAndCliff & rtg_arg )
 {
 	if( this != &rtg_arg )
 	{
@@ -92,47 +92,47 @@ clsRoomba::clsBumpers & clsRoomba::clsBumpers::operator=( const clsBumpers & rtg
 // }}}RME
 // }}}RME
 
-const RTObject_class clsRoomba::RTType_clsBumpers =
+const RTObject_class clsRoomba::RTType_clsBumpersAndCliff =
 {
 	(const RTObject_class *)0
   , (RTSuperAccessFunction)0
-  , "clsBumpers"
+  , "clsBumpersAndCliff"
   , (RTVersionId)0
-  , (RTFieldOffset)sizeof( clsBumpers )
-  , (RTInitFunction)&clsRoomba::rtg_clsBumpers_init
-  , (RTCopyFunction)&clsRoomba::rtg_clsBumpers_copy
+  , (RTFieldOffset)sizeof( clsBumpersAndCliff )
+  , (RTInitFunction)&clsRoomba::rtg_clsBumpersAndCliff_init
+  , (RTCopyFunction)&clsRoomba::rtg_clsBumpersAndCliff_copy
 #if OBJECT_DECODE
   , RTstruct_decode
 #endif
 #if OBJECT_ENCODE
   , RTstruct_encode
 #endif
-  , (RTDestroyFunction)&clsRoomba::rtg_clsBumpers_destroy
+  , (RTDestroyFunction)&clsRoomba::rtg_clsBumpersAndCliff_destroy
   , 4
-  , clsRoomba::rtg_clsBumpers_fields
+  , clsRoomba::rtg_clsBumpersAndCliff_fields
 };
 
-void clsRoomba::rtg_clsBumpers_init( const RTObject_class * type, clsBumpers * target )
+void clsRoomba::rtg_clsBumpersAndCliff_init( const RTObject_class * type, clsBumpersAndCliff * target )
 {
-	(void)new( target ) clsBumpers;
+	(void)new( target ) clsBumpersAndCliff;
 }
 
-void clsRoomba::rtg_clsBumpers_copy( const RTObject_class * type, clsBumpers * target, const clsBumpers * source )
+void clsRoomba::rtg_clsBumpersAndCliff_copy( const RTObject_class * type, clsBumpersAndCliff * target, const clsBumpersAndCliff * source )
 {
-	(void)new( target ) clsBumpers( *source );
+	(void)new( target ) clsBumpersAndCliff( *source );
 }
 
-void clsRoomba::rtg_clsBumpers_destroy( const RTObject_class * type, clsBumpers * target )
+void clsRoomba::rtg_clsBumpersAndCliff_destroy( const RTObject_class * type, clsBumpersAndCliff * target )
 {
-	target->~clsBumpers();
+	target->~clsBumpersAndCliff();
 }
 
-const RTFieldDescriptor clsRoomba::rtg_clsBumpers_fields[] =
+const RTFieldDescriptor clsRoomba::rtg_clsBumpersAndCliff_fields[] =
 {
-	// {{{RME classifier 'clsBumpers' classAttribute 'left'
+	// {{{RME classifier 'clsBumpersAndCliff' classAttribute 'left'
 	{
 		"left"
-	  , RTOffsetOf( clsBumpers, left )
+	  , RTOffsetOf( clsBumpersAndCliff, left )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME
@@ -141,10 +141,10 @@ const RTFieldDescriptor clsRoomba::rtg_clsBumpers_fields[] =
 		// }}}RME
 	}
 	// }}}RME
-	// {{{RME classifier 'clsBumpers' classAttribute 'right'
+	// {{{RME classifier 'clsBumpersAndCliff' classAttribute 'right'
   , {
 		"right"
-	  , RTOffsetOf( clsBumpers, right )
+	  , RTOffsetOf( clsBumpersAndCliff, right )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME
@@ -153,10 +153,10 @@ const RTFieldDescriptor clsRoomba::rtg_clsBumpers_fields[] =
 		// }}}RME
 	}
 	// }}}RME
-	// {{{RME classifier 'clsBumpers' classAttribute 'frontLeft'
+	// {{{RME classifier 'clsBumpersAndCliff' classAttribute 'frontLeft'
   , {
 		"frontLeft"
-	  , RTOffsetOf( clsBumpers, frontLeft )
+	  , RTOffsetOf( clsBumpersAndCliff, frontLeft )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME
@@ -165,10 +165,10 @@ const RTFieldDescriptor clsRoomba::rtg_clsBumpers_fields[] =
 		// }}}RME
 	}
 	// }}}RME
-	// {{{RME classifier 'clsBumpers' classAttribute 'frontRight'
+	// {{{RME classifier 'clsBumpersAndCliff' classAttribute 'frontRight'
   , {
 		"frontRight"
-	  , RTOffsetOf( clsBumpers, frontRight )
+	  , RTOffsetOf( clsBumpersAndCliff, frontRight )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME
@@ -194,6 +194,16 @@ clsRoomba::~clsRoomba( void )
 // {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
 clsRoomba::clsRoomba( const clsRoomba & rtg_arg )
 	: bumpers( rtg_arg.bumpers )
+	, cliff( rtg_arg.cliff )
+	, distance( rtg_arg.distance )
+	, totalDistance( rtg_arg.totalDistance )
+	, angle( rtg_arg.angle )
+	, totalAngle( rtg_arg.totalAngle )
+	, chargingState( rtg_arg.chargingState )
+	, temperature( rtg_arg.temperature )
+	, battCharge( rtg_arg.battCharge )
+	, battCapac( rtg_arg.battCapac )
+	, oiMode( rtg_arg.oiMode )
 {
 }
 // }}}RME
@@ -202,8 +212,90 @@ clsRoomba::clsRoomba( const clsRoomba & rtg_arg )
 clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 {
 	if( this != &rtg_arg )
+	{
 		bumpers = rtg_arg.bumpers;
+		cliff = rtg_arg.cliff;
+		distance = rtg_arg.distance;
+		totalDistance = rtg_arg.totalDistance;
+		angle = rtg_arg.angle;
+		totalAngle = rtg_arg.totalAngle;
+		chargingState = rtg_arg.chargingState;
+		temperature = rtg_arg.temperature;
+		battCharge = rtg_arg.battCharge;
+		battCapac = rtg_arg.battCapac;
+		oiMode = rtg_arg.oiMode;
+	}
 	return *this;
+}
+// }}}RME
+
+// {{{RME operation 'setSensor(int,int)'
+void clsRoomba::setSensor( int index, int value )
+{
+	// {{{USR
+	switch(index){
+	    case 7:
+	        //Needs some translating
+	        this->bumpers.left = (bool)(value & (0x02));
+	        this->bumpers.right = (bool)(value & (0x01));
+	        break;
+	    case 9:
+	        this->cliff.left = (bool)value;
+	        break;
+	    case 10:
+	        this->cliff.frontLeft = (bool)value;
+	        break;
+	    case 11:
+	        this->cliff.frontRight = (bool)value;
+	        break;
+	    case 12:
+	        this->cliff.right = (bool)value;
+	        break;
+	    case 19:
+	        //Distance resets every time you ask for it
+	        this->distance = value;
+	        this->totalDistance += value;
+	        break;
+	    case 20:
+	        //Angle resets every time you ask for it
+	        this->angle = value;
+	        this->totalAngle += value;
+	        break;
+	    case 21:
+	        //Sorry, i just don't know how to work with enums in Rational Rose Realtime..
+	        this->chargingState = value;
+	        break;
+	    case 24:
+	        this->temperature = value;
+	        break;
+	    case 25:
+	        this->battCharge = value;
+	        break;
+	    case 26:
+	        this->battCapac = value;
+	        break;
+	    case 35:
+	        this->oiMode = value;
+	        break;
+	}
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'printSensors()'
+void clsRoomba::printSensors( void )
+{
+	// {{{USR
+	cout << "RMB: Sensors:" << endl;
+	cout << "\tAngle:\t\t" << this->angle << endl;
+	cout << "\tbattCapac:\t" << this->battCapac << endl;
+	cout << "\tbattCharge:\t" << this->battCharge << endl;
+	cout << "\tchargingState:" << this->chargingState << endl;
+	cout << "\tdistance:\t" << this->distance << endl;
+	cout << "\toiMode:\t" << this->oiMode << endl;
+	cout << "\ttemperature:\t" << this->temperature << endl;
+
+	// }}}USR
 }
 // }}}RME
 
@@ -214,7 +306,127 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 		"bumpers"
 	  , RTOffsetOf( clsRoomba, bumpers )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
-	  , &clsRoomba::RTType_clsBumpers
+	  , &clsRoomba::RTType_clsBumpersAndCliff
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'cliff'
+  , {
+		"cliff"
+	  , RTOffsetOf( clsRoomba, cliff )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &clsRoomba::RTType_clsBumpersAndCliff
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'distance'
+  , {
+		"distance"
+	  , RTOffsetOf( clsRoomba, distance )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'totalDistance'
+  , {
+		"totalDistance"
+	  , RTOffsetOf( clsRoomba, totalDistance )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'angle'
+  , {
+		"angle"
+	  , RTOffsetOf( clsRoomba, angle )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'totalAngle'
+  , {
+		"totalAngle"
+	  , RTOffsetOf( clsRoomba, totalAngle )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'chargingState'
+  , {
+		"chargingState"
+	  , RTOffsetOf( clsRoomba, chargingState )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'temperature'
+  , {
+		"temperature"
+	  , RTOffsetOf( clsRoomba, temperature )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'battCharge'
+  , {
+		"battCharge"
+	  , RTOffsetOf( clsRoomba, battCharge )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'battCapac'
+  , {
+		"battCapac"
+	  , RTOffsetOf( clsRoomba, battCapac )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'oiMode'
+  , {
+		"oiMode"
+	  , RTOffsetOf( clsRoomba, oiMode )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0
@@ -224,7 +436,7 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 };
 
 #if OBJECT_DECODE
-RTTypeInstaller rtg_clsRoomba_clsBumpers_installer( clsRoomba::RTType_clsBumpers );
+RTTypeInstaller rtg_clsRoomba_clsBumpersAndCliff_installer( clsRoomba::RTType_clsBumpersAndCliff );
 #endif
 
 #if OBJECT_DECODE
@@ -236,7 +448,7 @@ RTTypeInstaller rtg_clsRoomba_installer( RTType_clsRoomba );
 
 // }}}USR
 // }}}RME
-// {{{RME classifier 'clsBumpers' tool 'OT::Cpp' property 'ImplementationEnding'
+// {{{RME classifier 'clsBumpersAndCliff' tool 'OT::Cpp' property 'ImplementationEnding'
 // {{{USR
 
 // }}}USR

@@ -163,10 +163,6 @@ INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCo
 INLINE_METHODS void mainCapsule_Actor::transition3_serialDataReceived( const byteArray * rtdata, serialProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	byteArray b = *rtdata;
-	cout << "MAI: Received packet from serial: ";
-	b.print();
-
 	Roomba.dataReceived(*rtdata).send();
 	// }}}USR
 }

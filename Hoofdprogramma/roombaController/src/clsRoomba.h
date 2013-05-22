@@ -14,7 +14,7 @@
 
 // }}}USR
 // }}}RME
-// {{{RME classifier 'clsBumpers' tool 'OT::Cpp' property 'HeaderPreface'
+// {{{RME classifier 'clsBumpersAndCliff' tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
 
 // }}}USR
@@ -46,8 +46,8 @@ private:
 	// }}}RME
 
 public:
-	// {{{RME classifier 'clsBumpers'
-	struct clsBumpers
+	// {{{RME classifier 'clsBumpersAndCliff'
+	struct clsBumpersAndCliff
 	{
 		// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
 		// {{{USR
@@ -83,48 +83,78 @@ public:
 		bool frontRight;
 		// }}}RME
 		// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
-		clsBumpers( void );
+		clsBumpersAndCliff( void );
 		// }}}RME
 		// {{{RME tool 'OT::Cpp' property 'GenerateDestructor'
-		virtual ~clsBumpers( void );
+		virtual ~clsBumpersAndCliff( void );
 		// }}}RME
 		// {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
-		clsBumpers( const clsBumpers & rtg_arg );
+		clsBumpersAndCliff( const clsBumpersAndCliff & rtg_arg );
 		// }}}RME
 		// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
-		clsBumpers & operator=( const clsBumpers & rtg_arg );
+		clsBumpersAndCliff & operator=( const clsBumpersAndCliff & rtg_arg );
 		// }}}RME
 	};
 	// }}}RME
-	static const RTObject_class RTType_clsBumpers;
+	static const RTObject_class RTType_clsBumpersAndCliff;
 
 private:
-	static void rtg_clsBumpers_init( const RTObject_class * type, clsBumpers * target );
-	static void rtg_clsBumpers_copy( const RTObject_class * type, clsBumpers * target, const clsBumpers * source );
-	static void rtg_clsBumpers_destroy( const RTObject_class * type, clsBumpers * target );
-	static const RTFieldDescriptor rtg_clsBumpers_fields[];
+	static void rtg_clsBumpersAndCliff_init( const RTObject_class * type, clsBumpersAndCliff * target );
+	static void rtg_clsBumpersAndCliff_copy( const RTObject_class * type, clsBumpersAndCliff * target, const clsBumpersAndCliff * source );
+	static void rtg_clsBumpersAndCliff_destroy( const RTObject_class * type, clsBumpersAndCliff * target );
+	static const RTFieldDescriptor rtg_clsBumpersAndCliff_fields[];
 
 public:
-	struct RTTypedValue_clsBumpers
+	struct RTTypedValue_clsBumpersAndCliff
 	{
 		const void * data;
 		const RTObject_class * type;
-		inline RTTypedValue_clsBumpers( const clsBumpers & rtg_value )
-			: data( &rtg_value ), type( &RTType_clsBumpers )
+		inline RTTypedValue_clsBumpersAndCliff( const clsBumpersAndCliff & rtg_value )
+			: data( &rtg_value ), type( &RTType_clsBumpersAndCliff )
 		{
 		}
-		inline RTTypedValue_clsBumpers( const clsBumpers & rtg_value, const RTObject_class * rtg_type )
+		inline RTTypedValue_clsBumpersAndCliff( const clsBumpersAndCliff & rtg_value, const RTObject_class * rtg_type )
 			: data( &rtg_value ), type( rtg_type )
 		{
 		}
-		inline ~RTTypedValue_clsBumpers( void )
+		inline ~RTTypedValue_clsBumpersAndCliff( void )
 		{
 		}
 	};
 
 private:
 	// {{{RME classAttribute 'bumpers'
-	clsBumpers bumpers;
+	clsBumpersAndCliff bumpers;
+	// }}}RME
+	// {{{RME classAttribute 'cliff'
+	clsBumpersAndCliff cliff;
+	// }}}RME
+	// {{{RME classAttribute 'distance'
+	int distance;
+	// }}}RME
+	// {{{RME classAttribute 'totalDistance'
+	int totalDistance;
+	// }}}RME
+	// {{{RME classAttribute 'angle'
+	int angle;
+	// }}}RME
+	// {{{RME classAttribute 'totalAngle'
+	int totalAngle;
+	// }}}RME
+	// {{{RME classAttribute 'chargingState'
+	int chargingState;
+	// }}}RME
+	// {{{RME classAttribute 'temperature'
+	int temperature;
+	// }}}RME
+	// {{{RME classAttribute 'battCharge'
+	int battCharge;
+	// }}}RME
+	// {{{RME classAttribute 'battCapac'
+	int battCapac;
+	// }}}RME
+	// {{{RME classAttribute 'oiMode'
+	int oiMode;
 	// }}}RME
 
 public:
@@ -139,6 +169,12 @@ public:
 	// }}}RME
 	// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
 	clsRoomba & operator=( const clsRoomba & rtg_arg );
+	// }}}RME
+	// {{{RME operation 'setSensor(int,int)'
+	void setSensor( int index, int value );
+	// }}}RME
+	// {{{RME operation 'printSensors()'
+	void printSensors( void );
 	// }}}RME
 	static const RTFieldDescriptor rtg_clsRoomba_fields[];
 };
@@ -165,7 +201,7 @@ struct RTTypedValue_clsRoomba
 
 // }}}USR
 // }}}RME
-// {{{RME classifier 'clsBumpers' tool 'OT::Cpp' property 'HeaderEnding'
+// {{{RME classifier 'clsBumpersAndCliff' tool 'OT::Cpp' property 'HeaderEnding'
 // {{{USR
 
 // }}}USR

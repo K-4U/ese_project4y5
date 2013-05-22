@@ -58,6 +58,9 @@ protected:
 	// {{{RME port 'serialPort'
 	serialRawProtocol::Base serialPort;
 	// }}}RME
+	// {{{RME port 'timer'
+	Timing::Base timer;
+	// }}}RME
 
 public:
 	serialCommunicationCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
@@ -65,12 +68,18 @@ public:
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
-	// {{{RME enter ':TOP:Reset'
-	INLINE_METHODS void enter2_Reset( void );
+	// {{{RME enter ':TOP:Ready'
+	INLINE_METHODS void enter2_Ready( void );
 	// }}}RME
 	virtual void enterStateV( void );
+	// {{{RME enter ':TOP:pollData'
+	INLINE_METHODS void enter4_pollData( void );
+	// }}}RME
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:openPort:False'
+	INLINE_METHODS void transition2_False( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:openPort:True'
 	INLINE_METHODS void transition3_True( const void * rtdata, RTProtocol * rtport );
@@ -86,23 +95,15 @@ protected:
 
 private:
 	INLINE_CHAINS void chain3_True( void );
-
-protected:
-	// {{{RME choicePoint ':TOP:getChars'
-	INLINE_METHODS int choicePoint2_getChars( const void * rtdata, RTProtocol * rtport );
-	// }}}RME
-
-private:
-	INLINE_CHAINS void chain4_True( void );
-	INLINE_CHAINS void chain5_False( void );
 	INLINE_CHAINS void chain2_False( void );
+	INLINE_CHAINS void chain5_timer( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );
 
 protected:
 	// {{{RME choicePoint ':TOP:ClosePort'
-	INLINE_METHODS int choicePoint3_ClosePort( const void * rtdata, RTProtocol * rtport );
+	INLINE_METHODS int choicePoint2_ClosePort( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 
 public:

@@ -79,6 +79,7 @@ int roombaTopCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, 
 INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * rtdata, roombaProtocol::Base * rtport )
 {
 	// {{{USR
+	cout << "RMB: Ready received!" << endl;
 	//Start query
 	byteArray b;
 	//Safe mode

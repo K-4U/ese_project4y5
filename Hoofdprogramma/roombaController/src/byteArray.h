@@ -56,8 +56,8 @@ public:
 	// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
 	byteArray & operator=( const byteArray & rtg_arg );
 	// }}}RME
-	// {{{RME operation 'byteArray(char*)'
-	byteArray( char * chars );
+	// {{{RME operation 'byteArray(unsigned char[],int)'
+	byteArray( unsigned char chars[], int length );
 	// }}}RME
 	// {{{RME operation 'get(int)'
 	char get( int index );
@@ -68,8 +68,8 @@ public:
 	// {{{RME operation 'getAll()'
 	RTString getAll( void );
 	// }}}RME
-	// {{{RME operation 'append(char)'
-	void append( char charToAdd );
+	// {{{RME operation 'append(unsigned char)'
+	void append( unsigned char charToAdd );
 	// }}}RME
 	// {{{RME operation 'remove(int)'
 	void remove( int index );

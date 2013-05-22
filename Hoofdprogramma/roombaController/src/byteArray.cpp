@@ -70,8 +70,8 @@ byteArray & byteArray::operator=( const byteArray & rtg_arg )
 }
 // }}}RME
 
-// {{{RME operation 'byteArray(char*)'
-byteArray::byteArray( char * chars )
+// {{{RME operation 'byteArray(unsigned char[],int)'
+byteArray::byteArray( unsigned char chars[], int length )
 	// {{{RME tool 'OT::Cpp' property 'ConstructorInitializer'
 	// {{{USR
 
@@ -80,7 +80,7 @@ byteArray::byteArray( char * chars )
 {
 	// {{{USR
 	int i;
-	for(i=0; i<= strlen(chars); i++){
+	for(i=0; i<= length; i++){
 	    this->data.push_back(chars[i]);
 	}
 	// }}}USR
@@ -125,8 +125,8 @@ RTString byteArray::getAll( void )
 }
 // }}}RME
 
-// {{{RME operation 'append(char)'
-void byteArray::append( char charToAdd )
+// {{{RME operation 'append(unsigned char)'
+void byteArray::append( unsigned char charToAdd )
 {
 	// {{{USR
 	this->data.push_back(charToAdd);

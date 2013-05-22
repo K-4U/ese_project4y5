@@ -41,9 +41,10 @@ const RTActorClass serialCommunicationCapsule =
 static const char * const rtg_state_names[] =
 {
 	"TOP"
-  , "Reset"
+  , "Ready"
+  , "Error"
+  , "pollData"
   , "openPort"
-  , "getChars"
   , "ClosePort"
 };
 
@@ -77,12 +78,12 @@ int serialCommunicationCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rt
 	return RTActor::_followInV( rtg_end, rtg_portId, rtg_repIndex );
 }
 
-// {{{RME enter ':TOP:Reset'
-INLINE_METHODS void serialCommunicationCapsule_Actor::enter2_Reset( void )
+// {{{RME enter ':TOP:Ready'
+INLINE_METHODS void serialCommunicationCapsule_Actor::enter2_Ready( void )
 {
 	// {{{USR
-	cout << "in reset terecht gekomen" << endl;
-	serialPort.comError().send();
+	//timer.informIn(RTTimespec(1,0));
+	timer.informIn(10);
 	// }}}USR
 }
 // }}}RME
@@ -92,7 +93,10 @@ void serialCommunicationCapsule_Actor::enterStateV( void )
 	switch( getCurrentState() )
 	{
 	case 2:
-		enter2_Reset();
+		enter2_Ready();
+		break;
+	case 4:
+		enter4_pollData();
 		break;
 	default:
 		RTActor::enterStateV();
@@ -100,11 +104,52 @@ void serialCommunicationCapsule_Actor::enterStateV( void )
 	}
 }
 
+// {{{RME enter ':TOP:pollData'
+INLINE_METHODS void serialCommunicationCapsule_Actor::enter4_pollData( void )
+{
+	// {{{USR
+	int i, n;
+
+	unsigned char buf[4096];
+
+	n = RS232_PollComport(COM_PORT, buf, 4095);
+
+	if(n > 0)
+	{
+	  //buf[n] = 0;   /* always put a "null" at the end of a string! */
+	/* THIS DAMN CODE HAD ME DEBUGGING FOR OVER AN FRIGGIN HOUR!
+	  for(i=0; i < n; i++)
+	  {
+	    if(buf[i] < 32)  // replace unreadable control-codes by dots 
+	    {
+	      buf[i] = '.';
+	    }
+	  }*/
+	  byteArray data(buf, n);
+	  //cout << "SER: Received " << n << " bytes: ";
+	  //data.print();
+	  serialPort.dataReceived(data).send();
+	}
+	// }}}USR
+}
+// }}}RME
+
 // {{{RME transition ':TOP:Initial:Initial'
 INLINE_METHODS void serialCommunicationCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
 	cout << "Serial capsule initialized" << endl;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:openPort:False'
+INLINE_METHODS void serialCommunicationCapsule_Actor::transition2_False( const void * rtdata, RTProtocol * rtport )
+{
+	// {{{USR
+	cout << "COM: Could not open port." << endl;
+	serialPort.comError().send();
+
 	// }}}USR
 }
 // }}}RME
@@ -135,8 +180,6 @@ INLINE_CHAINS void serialCommunicationCapsule_Actor::chain1_Initial( void )
 INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint1_openPort( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
-	/* 9600 baud */
-	/* /dev/ttyS0 (COM1 on windows) */
 	if(RS232_OpenComport(COM_PORT, BAUD))
 	{
 	  cout << "SER: Can not open COM-Port" << endl;
@@ -156,72 +199,9 @@ INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint1_openPort( cons
 INLINE_CHAINS void serialCommunicationCapsule_Actor::chain3_True( void )
 {
 	// transition ':TOP:openPort:True'
-	rtgChainBegin( 3, "True" );
+	rtgChainBegin( 5, "True" );
 	rtgTransitionBegin();
 	transition3_True( msg->data, msg->sap() );
-	rtgTransitionEnd();
-	if( choicePoint2_getChars( msg->data, msg->sap() ) )
-		chain4_True();
-	else
-		chain5_False();
-}
-
-// {{{RME choicePoint ':TOP:getChars'
-INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint2_getChars( const void * rtdata, RTProtocol * rtport )
-{
-	// {{{USR
-	int i, n;
-
-	//unsigned char buf[4096];
-	unsigned char buf[12288];
-
-	n = RS232_PollComport(COM_PORT, buf, 12287);
-
-	if(n > 0)
-	{
-	  //buf[n] = 0;   /* always put a "null" at the end of a string! */
-	/* THIS DAMN CODE HAD ME DEBUGGING FOR OVER AN FRIGGIN HOUR!
-	  for(i=0; i < n; i++)
-	  {
-	    if(buf[i] < 32)  // replace unreadable control-codes by dots 
-	    {
-	      buf[i] = '.';
-	    }
-	  }*/
-	  
-	  //cout << "SER: Received " << n << " bytes: " << (char *)buf << endl;
-	  byteArray data((char *) buf);
-	  serialPort.dataReceived(data).send();
-	}
-
-#ifdef _WIN32
-	    Sleep(1);
-#else
-	    usleep(1000);  //sleep for 100 milliSeconds 
-#endif
-
-	return true;
-	// }}}USR
-}
-// }}}RME
-
-INLINE_CHAINS void serialCommunicationCapsule_Actor::chain4_True( void )
-{
-	// transition ':TOP:getChars:True'
-	rtgChainBegin( 4, "True" );
-	rtgTransitionBegin();
-	rtgTransitionEnd();
-	if( choicePoint2_getChars( msg->data, msg->sap() ) )
-		chain4_True();
-	else
-		chain5_False();
-}
-
-INLINE_CHAINS void serialCommunicationCapsule_Actor::chain5_False( void )
-{
-	// transition ':TOP:getChars:False'
-	rtgChainBegin( 4, "False" );
-	rtgTransitionBegin();
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -229,7 +209,28 @@ INLINE_CHAINS void serialCommunicationCapsule_Actor::chain5_False( void )
 INLINE_CHAINS void serialCommunicationCapsule_Actor::chain2_False( void )
 {
 	// transition ':TOP:openPort:False'
-	rtgChainBegin( 3, "False" );
+	rtgChainBegin( 5, "False" );
+	rtgTransitionBegin();
+	transition2_False( msg->data, msg->sap() );
+	rtgTransitionEnd();
+	enterState( 3 );
+}
+
+INLINE_CHAINS void serialCommunicationCapsule_Actor::chain5_timer( void )
+{
+	// transition ':TOP:Ready:J519C85FA02CA:timer'
+	rtgChainBegin( 2, "timer" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 4 );
+	// transition ':TOP:pollData:J519C895A03AA:timer'
+	rtgChainBegin( 4, "timer" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	// transition ':TOP:pollData:J519C89550142:True'
+	rtgChainBegin( 4, "True" );
+	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	rtgTransitionEnd();
 	enterState( 2 );
@@ -261,7 +262,55 @@ void serialCommunicationCapsule_Actor::rtsBehavior( int signalIndex, int portInd
 			return;
 			// }}}RME
 		case 2:
-			// {{{RME state ':TOP:Reset'
+			// {{{RME state ':TOP:Ready'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			case 2:
+				// {{{RME port 'timer'
+				switch( signalIndex )
+				{
+				case Timing::Base::rti_timeout:
+					chain5_timer();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			default:
+				break;
+			}
+			break;
+			// }}}RME
+		case 3:
+			// {{{RME state ':TOP:Error'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+			// }}}RME
+		case 4:
+			// {{{RME state ':TOP:pollData'
 			switch( portIndex )
 			{
 			case 0:
@@ -285,7 +334,7 @@ void serialCommunicationCapsule_Actor::rtsBehavior( int signalIndex, int portInd
 }
 
 // {{{RME choicePoint ':TOP:ClosePort'
-INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint3_ClosePort( const void * rtdata, RTProtocol * rtport )
+INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint2_ClosePort( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
 	RS232_CloseComport(COM_PORT);
@@ -302,12 +351,12 @@ const RTActor_class serialCommunicationCapsule_Actor::rtg_class =
 {
 	(const RTActor_class *)0
   , rtg_state_names
-  , 2
+  , 4
   , serialCommunicationCapsule_Actor::rtg_parent_state
   , &serialCommunicationCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 1
+  , 2
   , serialCommunicationCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -318,6 +367,8 @@ const RTActor_class serialCommunicationCapsule_Actor::rtg_class =
 const RTStateId serialCommunicationCapsule_Actor::rtg_parent_state[] =
 {
 	0
+  , 1
+  , 1
   , 1
 };
 
@@ -331,6 +382,15 @@ const RTPortDescriptor serialCommunicationCapsule_Actor::rtg_ports[] =
 	  , 1 // cardinality
 	  , 1
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"timer"
+	  , (const char *)0
+	  , &Timing::Base::rt_class
+	  , RTOffsetOf( serialCommunicationCapsule_Actor, serialCommunicationCapsule_Actor::timer )
+	  , 1 // cardinality
+	  , 2
+	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
 	}
 };
 

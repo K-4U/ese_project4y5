@@ -47,6 +47,14 @@ private slots:
 
     void on_pbDisonnect_clicked();
 
+    void manualDriveForward(DriveForward);
+
+    void manualDriveBackward(DriveBackward);
+
+    void manualDriveLeft(DriveLeft);
+
+    void manualDriveRight(DriveRight);
+
 private:
     Ui::Roomba *ui;
     clsServerConn *server;

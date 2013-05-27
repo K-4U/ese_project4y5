@@ -12,13 +12,30 @@ using namespace K4U;
 
 enum Modes{
     MODESTOPPED = 0x00,
-    MODEDRIVEFORWARD,
-    MODEDRIVELEFT,
-    MODEDRIVERIGHT,
-    MODEDRIVEBACKWARD,
     MODECLEAN,
     MODECLEANONSPOT,
     MODEDOCK
+};
+
+enum DriveForward{
+    STOPDRIVEFORWARD = 0x00,
+    DRIVEFORWARD = 0x01
+
+};
+
+enum DriveBackward{
+    STOPDRIVEBACKWARD = 0x00,
+    DRIVEBACKWARD = 0x01
+};
+
+enum DriveLeft{
+    STOPDRIVELEFT = 0x00,
+    DRIVELEFT = 0x01
+    };
+
+enum DriveRight{
+    STOPDRIVERIGHT = 0x00,
+    DRIVERIGHT = 0x01
 };
 
 enum MainBrush{
@@ -50,8 +67,6 @@ public:
     ~Controllingroomba();
 
 public slots:
-    void on_pbDriveForward_clicked();
-
     void on_pbStop_clicked();
 
     void cbMainBrushHandler();
@@ -77,11 +92,21 @@ private slots:
 
     void on_pbUpload_clicked();
 
-    void on_pbDriveLeft_clicked();
+    void on_pbDriveLeft_pressed();
 
-    void on_pbDriveBackward_clicked();
+    void on_pbDriveBackward_pressed();
 
-    void on_pbDriveRight_clicked();
+    void on_pbDriveRight_pressed();
+
+    void on_pbDriveForward_pressed();
+
+    void on_pbDriveForward_released();
+
+    void on_pbDriveBackward_released();
+
+    void on_pbDriveLeft_released();
+
+    void on_pbDriveRight_released();
 
 private:
     Ui::Controllingroomba *ui;
@@ -101,6 +126,10 @@ signals:
     void readVacuum(Vacuum readVacuum);
     void setMotorSpeed(Motor setMotor);
     void readMotorSpeed(Motor readMotor);
+    void manualDriveForward(DriveForward setDriveForward);
+    void manualDriveBackward(DriveBackward setDriveBackward);
+    void manualDriveLeft(DriveLeft setDriveLeft);
+    void manualDriveRight(DriveRight setDriveRight);
 };
 
 #endif // CONTROLLINGROOMBA_H

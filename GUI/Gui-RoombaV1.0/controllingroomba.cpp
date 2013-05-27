@@ -49,24 +49,44 @@ void Controllingroomba::on_pbDock_clicked()
     emit ModeChanged(MODEDOCK);
 }
 
-void Controllingroomba::on_pbDriveForward_clicked()
+void Controllingroomba::on_pbDriveForward_pressed()
 {
-    emit ModeChanged(MODEDRIVEFORWARD);
+    emit manualDriveForward(DRIVEFORWARD);
 }
 
-void Controllingroomba::on_pbDriveLeft_clicked()
+void Controllingroomba::on_pbDriveForward_released()
 {
-    emit ModeChanged(MODEDRIVELEFT);
+    emit manualDriveForward(STOPDRIVEFORWARD);
 }
 
-void Controllingroomba::on_pbDriveBackward_clicked()
+void Controllingroomba::on_pbDriveLeft_pressed()
 {
-    emit ModeChanged(MODEDRIVEBACKWARD);
+    emit manualDriveLeft(DRIVELEFT);
 }
 
-void Controllingroomba::on_pbDriveRight_clicked()
+void Controllingroomba::on_pbDriveLeft_released()
 {
-    emit ModeChanged(MODEDRIVERIGHT);
+    emit manualDriveLeft(STOPDRIVELEFT);
+}
+
+void Controllingroomba::on_pbDriveBackward_pressed()
+{
+    emit manualDriveBackward(DRIVEBACKWARD);
+}
+
+void Controllingroomba::on_pbDriveBackward_released()
+{
+    emit manualDriveBackward(STOPDRIVEBACKWARD);
+}
+
+void Controllingroomba::on_pbDriveRight_pressed()
+{
+    emit manualDriveRight(DRIVERIGHT);
+}
+
+void Controllingroomba::on_pbDriveRight_released()
+{
+    emit manualDriveRight(STOPDRIVERIGHT);
 }
 
 void Controllingroomba::on_pbResetRoomba_clicked()

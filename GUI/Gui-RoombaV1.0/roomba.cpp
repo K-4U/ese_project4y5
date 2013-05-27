@@ -26,14 +26,31 @@ void Roomba::on_pbControlRoomba_clicked()
     controlling_roomba->show();
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
+
     connect(controlling_roomba, SIGNAL(setMainBrush(MainBrush)),
             this, SLOT(MainBrushModeChanged(MainBrush)));
+
     connect(controlling_roomba, SIGNAL(setSideBrush(SideBrush)),
             this, SLOT(SideBrushModeChanged(SideBrush)));
+
     connect(controlling_roomba, SIGNAL(setVacuum(Vacuum)),
             this, SLOT(VacuumModeChanged(Vacuum)));
+
     connect(controlling_roomba, SIGNAL(setMotorSpeed(Motor)),
             this, SLOT(MotorModeChanged(Motor)));
+
+    connect(controlling_roomba, SIGNAL(manualDriveForward(DriveForward)),
+            this, SLOT(manualDriveForward(DriveForward)));
+
+    connect(controlling_roomba, SIGNAL(manualDriveBackward(DriveBackward)),
+            this, SLOT(manualDriveBackward(DriveBackward)));
+
+    connect(controlling_roomba, SIGNAL(manualDriveLeft(DriveLeft)),
+            this, SLOT(manualDriveLeft(DriveLeft)));
+
+    connect(controlling_roomba, SIGNAL(manualDriveRight(DriveRight)),
+            this, SLOT(manualDriveRight(DriveRight)));
+
     this->hide();
 
 }
@@ -89,6 +106,34 @@ void Roomba::MotorModeChanged(Motor setMotorSpeed)
 {
     jsonCommand toSend(JSONCOMMAND_SETMOTOR);
     toSend.addToData("MotorState", setMotorSpeed);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::manualDriveForward(DriveForward setDriveForward)
+{
+    jsonCommand toSend(JSONCOMMAND_DRIVEFORWARD);
+    toSend.addToData("DriveForward", setDriveForward);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::manualDriveBackward(DriveBackward setDriveBackward)
+{
+    jsonCommand toSend(JSONCOMMAND_DRIVEBACKWARD);
+    toSend.addToData("DriveBackward", setDriveBackward);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::manualDriveLeft(DriveLeft setDriveLeft)
+{
+    jsonCommand toSend(JSONCOMMAND_DRIVELEFT);
+    toSend.addToData("DriveLeft", setDriveLeft);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::manualDriveRight(DriveRight setDriveRight)
+{
+    jsonCommand toSend(JSONCOMMAND_DRIVERIGHT);
+    toSend.addToData("DriveRight", setDriveRight);
     this->server->sendCommand(toSend);
 }
 

@@ -67,7 +67,28 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_SETMOTOR:
             ret = "SETMOTOR";
             break;
-    }
+        case JSONCOMMAND_DRIVEFORWARD:
+            ret = "DRIVEFORWARD";
+            break;
+        case JSONCOMMAND_DRIVEBACKWARD:
+            ret = "DRIVEBACKWARD";
+            break;
+        case JSONCOMMAND_DRIVELEFT:
+            ret = "DRIVELEFT";
+            break;
+        case JSONCOMMAND_DRIVERIGHT:
+            ret = "DRIVERIGHT";
+            break;
+        case JSONCOMMAND_STOPDRIVEFORWARD:
+            ret = "STOPDRIVEFORWARD";
+            break;
+        case JSONCOMMAND_STOPDRIVEBACKWARD:
+            ret = "STOPDRIVEBACKWARD";
+        case JSONCOMMAND_STOPDRIVELEFT:
+            ret = "STOPDRIVELEFT";
+        case JSONCOMMAND_STOPDRIVERIGHT:
+            ret = "STOPDRIVERIGHT";
+        }
     return ret;
 }
 
@@ -97,6 +118,22 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_READMOTOR;
     }else if(command == "SETMOTOR"){
         set = JSONCOMMAND_SETMOTOR;
+    }else if(command == "DRIVEFORWARD"){
+        set = JSONCOMMAND_DRIVEFORWARD;
+    }else if(command == "DRIVEBACKWARD"){
+        set = JSONCOMMAND_DRIVEBACKWARD;
+    }else if(command == "DRIVELEFT"){
+        set = JSONCOMMAND_DRIVELEFT;
+    }else if(command == "DRIVERIGHT"){
+        set = JSONCOMMAND_DRIVERIGHT;
+    }else if(command == "STOPDRIVEFORWARD"){
+        set = JSONCOMMAND_STOPDRIVEFORWARD;
+    }else if(command == "STOPDRIVEBACKWARD"){
+        set = JSONCOMMAND_STOPDRIVEBACKWARD;
+    }else if(command == "STOPDRIVELEFT"){
+        set = JSONCOMMAND_STOPDRIVELEFT;
+    }else if(command == "STOPDRIVERIGHT"){
+        set = JSONCOMMAND_STOPDRIVERIGHT;
     }
     this->command = set;
 }

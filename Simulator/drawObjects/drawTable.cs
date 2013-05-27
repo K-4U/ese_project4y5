@@ -38,9 +38,12 @@ namespace Simulator.drawObjects {
     }
 
     class drawDock : drawObject {
-        private const int widthInPx = 150;
-        private const int heightInPx = 30;
-        private new Pen p = Pens.Red;
+        private const int widthInPx = 80;
+        private const int heightInPx = 80;
+        private Brush b = Brushes.Aquamarine;
+
+        Bitmap image1 = (Bitmap)Image.FromFile(@"C:\Users\Leon\Documents\GitHub\ese_project4y5\Simulator\Resources\dock.png", true);
+
 
         public drawDock(int x, int y)
             : base(x, y, widthInPx, heightInPx) {
@@ -48,7 +51,11 @@ namespace Simulator.drawObjects {
         }
 
         public override void draw(Graphics g) {
-            g.DrawRectangle(this.p, Rectangle.Round(base.loc));
+
+            TextureBrush texture = new TextureBrush(image1);
+            texture.WrapMode = System.Drawing.Drawing2D.WrapMode.Tile;
+
+            g.FillEllipse(texture, Rectangle.Round(base.loc));
         }
     }
 

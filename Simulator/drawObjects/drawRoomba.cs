@@ -89,9 +89,10 @@ namespace Simulator.drawObjects {
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
 
             double a = Math.Abs(this.angle) % 360;
+            Boolean emerge = (collisionArea.Width == base.loc.Width && collisionArea.Height == base.loc.Height);
 
+           
             if (!collisionArea.IsEmpty) {
-
                 // shows collisions on screen;
                 g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
 
@@ -126,6 +127,12 @@ namespace Simulator.drawObjects {
                         sensor(12, bytes);
                     }
 
+                    if (emerge) {
+                        bytes[0] = (byte)(8+4);
+                        sensor(7, bytes);
+                        this.isColliding = true;
+                    }
+
                     this.isFalling = true;
 
                 } else if (name == "table") {
@@ -150,7 +157,7 @@ namespace Simulator.drawObjects {
 
                     int charge;
 
-                    if (collisionArea.Width == base.loc.Width && collisionArea.Height == base.loc.Height) {
+                    if (emerge) {
                         charge = 2;
                         this.isCharging = true;
                     } else {

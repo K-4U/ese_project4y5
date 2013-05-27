@@ -81,8 +81,8 @@ namespace Simulator {
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
             mDrawer.addToDrawer("table", new drawTable(200, 200));
-            mDrawer.addToDrawer("pool", new drawPool(800, 200));
-            mDrawer.addToDrawer("dock", new drawDock(550, 400));
+            mDrawer.addToDrawer("pool", new drawPool(550, 400));
+            mDrawer.addToDrawer("dock", new drawDock(800, 200));
         }
         #endregion
 

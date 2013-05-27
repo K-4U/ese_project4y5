@@ -414,7 +414,8 @@ namespace Simulator {
             this.start();
             this.safe();
             this.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
-            this.startStream(1, (byte)7);
+            byte[] bytes = {(byte)7,(byte)21};
+            this.startStream(1, bytes);
         }
 
         public void start() {

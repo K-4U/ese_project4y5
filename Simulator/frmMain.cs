@@ -63,6 +63,7 @@ namespace Simulator {
                 case 10:
                 case 11:
                 case 12:
+                case 21:
                     roomba.setSensorValue(sensorNr,(int)values[0]);
                     break;
                 case 1337:
@@ -80,7 +81,8 @@ namespace Simulator {
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
             mDrawer.addToDrawer("table", new drawTable(200, 200));
-            mDrawer.addToDrawer("pool", new drawPool(600, 400));
+            mDrawer.addToDrawer("pool", new drawPool(800, 200));
+            mDrawer.addToDrawer("dock", new drawDock(550, 400));
         }
         #endregion
 
@@ -98,13 +100,13 @@ namespace Simulator {
             roomba = new clsRoomba(log, send);
 
             this.initDrawers();
-			/*
+			
             roomba.uncontrolledTest(1000, 1050);
 
-            byte[] song = {50,32,0,32,50,32};
+        //    byte[] song = {50,32,0,32,50,32};
 
-            roomba.start();
-            roomba.song(1,3,song);*/
+       //     roomba.start();
+         //   roomba.song(1,3,song);
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {

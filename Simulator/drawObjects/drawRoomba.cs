@@ -41,6 +41,7 @@ namespace Simulator.drawObjects {
 		private RectangleF innerLoc;
 		private bool isDriving = false;
         private bool isColliding = false;
+        private bool isCharging = false;
         private bool isFalling = false;
 		private wheel leftWheel;
 		private wheel rightWheel;
@@ -145,13 +146,37 @@ namespace Simulator.drawObjects {
 
                     this.isColliding = true;
 
+                } else if (name == "dock") {
+
+                    int charge;
+
+                    if (collisionArea.Width == base.loc.Width && collisionArea.Height == base.loc.Height) {
+                        charge = 2;
+                        this.isCharging = true;
+                    } else {
+                        charge = 3;
+                    }
+
+
+                    byte[] bytes = { (byte)charge };
+                    sensor(21,bytes);
+
                 }
 
             } else {
+                byte[] bytes = { (byte)0 };
                 if (name == "pool") {
+                    sensor(9, bytes);
+                    sensor(10, bytes);
+                    sensor(11, bytes);
+                    sensor(12, bytes);
                     this.isFalling = false;
                 } else if (name == "table") {
+                    sensor(7, bytes);
                     this.isColliding = false;
+                } else if (name == "dock") {
+                    sensor(21, bytes);
+                    this.isCharging = false;
                 }
             }
 
@@ -258,7 +283,7 @@ namespace Simulator.drawObjects {
 			if (ms == 500) {
 
 			} else if (ms == 10) {
-                doRedraw = ( this.isDriving && !this.isColliding ) || ( leftWheel.speed < 0 || rightWheel.speed < 0);
+                doRedraw = ( this.isDriving && !this.isColliding && !this.isCharging ) || ( leftWheel.speed < 0 || rightWheel.speed < 0);
                 if (doRedraw) {
 					calculateTravelDistance();
 				}

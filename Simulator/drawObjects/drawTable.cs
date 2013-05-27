@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Simulator.drawObjects {
+
 	class drawTable : drawObject {
 		private const int widthInPx = 260;
 		private const int heightInPx = 260;
@@ -20,9 +21,7 @@ namespace Simulator.drawObjects {
 			g.DrawRectangle(this.p, Rectangle.Round(base.loc));
 		}
 	}
-}
 
-namespace Simulator.drawObjects {
     class drawPool : drawObject {
         private const int widthInPx = 150;
         private const int heightInPx = 3000;
@@ -37,4 +36,20 @@ namespace Simulator.drawObjects {
             g.FillRectangle(this.b, Rectangle.Round(base.loc));
         }
     }
+
+    class drawDock : drawObject {
+        private const int widthInPx = 150;
+        private const int heightInPx = 30;
+        private new Pen p = Pens.Red;
+
+        public drawDock(int x, int y)
+            : base(x, y, widthInPx, heightInPx) {
+
+        }
+
+        public override void draw(Graphics g) {
+            g.DrawRectangle(this.p, Rectangle.Round(base.loc));
+        }
+    }
+
 }

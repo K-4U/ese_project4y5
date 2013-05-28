@@ -37,13 +37,9 @@ private slots:
 
     void RoombaModeChanged(Modes);
 
-    void MainBrushModeChanged(MainBrush);
+    void MotorBrushVacuumChanged(bool, bool, bool);
 
-    void SideBrushModeChanged(SideBrush);
-
-    void VacuumModeChanged(Vacuum);
-
-    void MotorModeChanged(Motor);
+    void MotorSpeedChanged(int, int);
 
     void on_pbDisonnect_clicked();
 

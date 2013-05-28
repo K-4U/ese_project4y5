@@ -51,42 +51,42 @@ void Controllingroomba::on_pbDock_clicked()
 
 void Controllingroomba::on_pbDriveForward_pressed()
 {
-    emit manualDriveForward(DRIVEFORWARD);
+    emit setMotorSpeed(ui->hsMotorSpeed->value(), ui->hsMotorSpeed->value());
 }
 
 void Controllingroomba::on_pbDriveForward_released()
 {
-    emit manualDriveForward(STOPDRIVEFORWARD);
+    emit setMotorSpeed(0,0);
 }
 
 void Controllingroomba::on_pbDriveLeft_pressed()
 {
-    emit manualDriveLeft(DRIVELEFT);
+    emit setMotorSpeed((ui->hsMotorSpeed->value()* -1), ui->hsMotorSpeed->value());
 }
 
 void Controllingroomba::on_pbDriveLeft_released()
 {
-    emit manualDriveLeft(STOPDRIVELEFT);
+    emit setMotorSpeed(0,0);
 }
 
 void Controllingroomba::on_pbDriveBackward_pressed()
 {
-    emit manualDriveBackward(DRIVEBACKWARD);
+    emit setMotorSpeed((ui->hsMotorSpeed->value() * -1), (ui->hsMotorSpeed->value()* -1));
 }
 
 void Controllingroomba::on_pbDriveBackward_released()
 {
-    emit manualDriveBackward(STOPDRIVEBACKWARD);
+    emit setMotorSpeed(0,0);
 }
 
 void Controllingroomba::on_pbDriveRight_pressed()
 {
-    emit manualDriveRight(DRIVERIGHT);
+    emit setMotorSpeed(ui->hsMotorSpeed->value(), (ui->hsMotorSpeed->value()* -1));
 }
 
 void Controllingroomba::on_pbDriveRight_released()
 {
-    emit manualDriveRight(STOPDRIVERIGHT);
+    emit setMotorSpeed(0,0);
 }
 
 void Controllingroomba::on_pbResetRoomba_clicked()
@@ -98,29 +98,14 @@ void Controllingroomba::on_pbStop_clicked()
     emit ModeChanged(MODESTOPPED);
 }
 
-void Controllingroomba::cbMainBrushHandler()
+void Controllingroomba::cbMotorBrushVacuumHandler()
 {
-    emit setMainBrush((MainBrush)((ui->cbMainBrush->checkState() == Qt::Checked)? 1 : 0));
-}
-
-void Controllingroomba::cbSideBrushHandler()
-{
-    emit setSideBrush((SideBrush)((ui->cbSideBrush->checkState() == Qt::Checked)? 1 : 0));
-}
-
-void Controllingroomba::cbVacuumHandler()
-{
-    emit setVacuum((Vacuum)((ui->cbVacuum->checkState() == Qt::Checked)? 1 : 0));
-}
-
-void Controllingroomba::hsVacuumValueChanged()
-{
-    ui->hsVacuumStrength->value();
-    emit setVacuum(VACUUM);
+    emit setMotorBrushVacuum(ui->cbMainBrush->checkState() == Qt::Checked,
+            ui->cbSideBrush->checkState() == Qt::Checked,
+            ui->cbVacuum->checkState() == Qt::Checked);
 }
 
 void Controllingroomba::hsMotorValueChanged()
 {
-    ui->hsMotorSpeed->value();
-    emit setMotorSpeed(MOTOR);
+    //emit setMotorSpeed(ui->hsMotorSpeed->value(), ui->hsMotorSpeed->value());
 }

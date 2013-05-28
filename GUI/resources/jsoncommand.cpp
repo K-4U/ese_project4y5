@@ -43,23 +43,11 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_MANUAL:
             ret = "MANUAL";
             break;
-        case JSONCOMMAND_MODECHANGED:
-            ret = "MODECHANGED";
+        case JSONCOMMAND_NEWMODE:
+            ret = "NEWMODE";
             break;
-        case JSONCOMMAND_SETMAINBRUSH:
-            ret = "SETMAINBRUSH";
-            break;
-        case JSONCOMMAND_SETSIDEBRUSH:
-            ret = "SETSIDEBRUSH";
-            break;
-        case JSONCOMMAND_READBRUSHES:
-            ret = "READBRUSHES";
-            break;
-        case JSONCOMMAND_SETVACUUM:
-            ret = "SETVACUUM";
-            break;
-        case JSONCOMMAND_READVACUUM:
-            ret = "READVACUUM";
+        case JSONCOMMAND_SETMOTORBRUSHVACUUM:
+            ret = "SETMOTORBRUSHVACUUM";
             break;
         case JSONCOMMAND_READMOTOR:
             ret = "READMOTOR";
@@ -84,10 +72,13 @@ QString jsonCommand::getCommandString() const{
             break;
         case JSONCOMMAND_STOPDRIVEBACKWARD:
             ret = "STOPDRIVEBACKWARD";
+            break;
         case JSONCOMMAND_STOPDRIVELEFT:
             ret = "STOPDRIVELEFT";
+            break;
         case JSONCOMMAND_STOPDRIVERIGHT:
             ret = "STOPDRIVERIGHT";
+            break;
         }
     return ret;
 }
@@ -102,18 +93,10 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_GETEVENTS;
     }else if(command == "MANUAL"){
         set = JSONCOMMAND_MANUAL;
-    }else if(command == "MODECHANGED"){
-        set = JSONCOMMAND_MODECHANGED;
-    }else if(command == "SETMAINBRUSH"){
-        set = JSONCOMMAND_SETMAINBRUSH;
-    }else if(command == "SETSIDEBRUSH"){
-        set = JSONCOMMAND_SETSIDEBRUSH;
-    }else if(command == "READBRUSHES"){
-        set = JSONCOMMAND_READBRUSHES;
-    }else if(command == "SETVACUUM"){
-        set = JSONCOMMAND_SETVACUUM;
-    }else if(command == "READVACUUM"){
-        set = JSONCOMMAND_READVACUUM;
+    }else if(command == "NEWMODE"){
+        set = JSONCOMMAND_NEWMODE;
+    }else if(command == "SETMOTORBRUSHVACUUM"){
+        set = JSONCOMMAND_SETMOTORBRUSHVACUUM;
     }else if(command == "READMOTOR"){
         set = JSONCOMMAND_READMOTOR;
     }else if(command == "SETMOTOR"){

@@ -19,39 +19,23 @@ enum Modes{
 
 enum DriveForward{
     STOPDRIVEFORWARD = 0x00,
-    DRIVEFORWARD = 0x01
+    DRIVEFORWARD
 
 };
 
 enum DriveBackward{
     STOPDRIVEBACKWARD = 0x00,
-    DRIVEBACKWARD = 0x01
+    DRIVEBACKWARD
 };
 
 enum DriveLeft{
     STOPDRIVELEFT = 0x00,
-    DRIVELEFT = 0x01
+    DRIVELEFT
     };
 
 enum DriveRight{
     STOPDRIVERIGHT = 0x00,
-    DRIVERIGHT = 0x01
-};
-
-enum MainBrush{
-    MAINBRUSH = 0x00
-};
-
-enum SideBrush{
-    SIDEBRUSH = 0x00
-};
-
-enum Vacuum{
-    VACUUM = 0x00
-};
-
-enum Motor{
-    MOTOR = 0x00
+    DRIVERIGHT
 };
 
 namespace Ui {
@@ -69,13 +53,7 @@ public:
 public slots:
     void on_pbStop_clicked();
 
-    void cbMainBrushHandler();
-
-    void cbSideBrushHandler();
-
-    void cbVacuumHandler();
-
-    void hsVacuumValueChanged();
+    void cbMotorBrushVacuumHandler();
 
     void hsMotorValueChanged();
 
@@ -118,14 +96,8 @@ private:
 signals:
     void ManualcommandReceived(QString Manualcommand);
     void ModeChanged(Modes newMode);
-    void setMainBrush(MainBrush setMainBrush);
-    void setSideBrush(SideBrush setSideBrush);
-    void readMainBrush(MainBrush readMainBrush);
-    void readSideBrush(SideBrush readSideBrush);
-    void setVacuum(Vacuum setVacuum);
-    void readVacuum(Vacuum readVacuum);
-    void setMotorSpeed(Motor setMotor);
-    void readMotorSpeed(Motor readMotor);
+    void setMotorBrushVacuum(bool MainBrush, bool SideBrush, bool Vacuum);
+    void setMotorSpeed(int setLeftMotorSpeed, int setRightMotorSpeed);
     void manualDriveForward(DriveForward setDriveForward);
     void manualDriveBackward(DriveBackward setDriveBackward);
     void manualDriveLeft(DriveLeft setDriveLeft);

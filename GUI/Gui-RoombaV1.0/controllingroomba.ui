@@ -155,8 +155,8 @@
   <widget class="QPushButton" name="pbDriveForward">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>70</y>
+     <x>270</x>
+     <y>300</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -184,8 +184,8 @@
   <widget class="QProgressBar" name="prBattery">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>320</y>
+     <x>250</x>
+     <y>40</y>
      <width>191</width>
      <height>23</height>
     </rect>
@@ -197,8 +197,8 @@
   <widget class="QLabel" name="lbBattery">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>300</y>
+     <x>250</x>
+     <y>20</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -210,47 +210,30 @@
   <widget class="QSlider" name="hsMotorSpeed">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>370</y>
+     <x>240</x>
+     <y>430</y>
      <width>160</width>
      <height>19</height>
     </rect>
    </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+   <property name="minimum">
+    <number>0</number>
    </property>
-  </widget>
-  <widget class="QSlider" name="hsVacuumStrength">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>440</y>
-     <width>160</width>
-     <height>19</height>
-    </rect>
+   <property name="maximum">
+    <number>100</number>
+   </property>
+   <property name="value">
+    <number>50</number>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbVacuumStrength">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>420</y>
-     <width>131</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Vacuum strength</string>
    </property>
   </widget>
   <widget class="QLabel" name="lbMotorSpeed">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>340</y>
+     <x>240</x>
+     <y>400</y>
      <width>111</width>
      <height>16</height>
     </rect>
@@ -262,8 +245,8 @@
   <widget class="QLabel" name="lbDistance">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>370</y>
+     <x>250</x>
+     <y>90</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -275,8 +258,8 @@
   <widget class="QLabel" name="lbTotalDistance">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>400</y>
+     <x>250</x>
+     <y>120</y>
      <width>141</width>
      <height>16</height>
     </rect>
@@ -288,8 +271,8 @@
   <widget class="QLabel" name="lbTemperature">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>430</y>
+     <x>250</x>
+     <y>150</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -301,8 +284,8 @@
   <widget class="QPushButton" name="pbDriveLeft">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>100</y>
+     <x>230</x>
+     <y>330</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -314,8 +297,8 @@
   <widget class="QPushButton" name="pbDriveRight">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>100</y>
+     <x>320</x>
+     <y>330</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -327,8 +310,8 @@
   <widget class="QPushButton" name="pbDriveBackward">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>130</y>
+     <x>270</x>
+     <y>360</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -341,78 +324,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>cbMainBrush</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>Controllingroomba</receiver>
-   <slot>cbMainBrushHandler()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>86</x>
-     <y>33</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>178</x>
-     <y>28</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbSideBrush</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>Controllingroomba</receiver>
-   <slot>cbSideBrushHandler()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>116</x>
-     <y>68</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>203</x>
-     <y>66</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cbVacuum</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>Controllingroomba</receiver>
-   <slot>cbVacuumHandler()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>100</x>
-     <y>98</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>187</x>
-     <y>102</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hsVacuumStrength</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>Controllingroomba</receiver>
-   <slot>hsVacuumValueChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>138</x>
-     <y>450</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>460</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>hsMotorSpeed</sender>
    <signal>valueChanged(int)</signal>
    <receiver>Controllingroomba</receiver>
    <slot>hsMotorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>170</x>
-     <y>376</y>
+     <x>390</x>
+     <y>436</y>
     </hint>
     <hint type="destinationlabel">
      <x>234</x>
@@ -420,12 +339,58 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cbMainBrush</sender>
+   <signal>clicked()</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbMotorBrushVacuumHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>79</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>28</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbSideBrush</sender>
+   <signal>clicked()</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbMotorBrushVacuumHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>72</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>62</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbVacuum</sender>
+   <signal>clicked()</signal>
+   <receiver>Controllingroomba</receiver>
+   <slot>cbMotorBrushVacuumHandler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>cbMainBrushHandler()</slot>
-  <slot>cbSideBrushHandler()</slot>
-  <slot>cbVacuumHandler()</slot>
   <slot>hsVacuumValueChanged()</slot>
   <slot>hsMotorValueChanged()</slot>
+  <slot>cbMotorBrushVacuumHandler()</slot>
  </slots>
 </ui>

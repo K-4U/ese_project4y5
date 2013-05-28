@@ -17,27 +17,6 @@ enum Modes{
     MODEDOCK
 };
 
-enum DriveForward{
-    STOPDRIVEFORWARD = 0x00,
-    DRIVEFORWARD
-
-};
-
-enum DriveBackward{
-    STOPDRIVEBACKWARD = 0x00,
-    DRIVEBACKWARD
-};
-
-enum DriveLeft{
-    STOPDRIVELEFT = 0x00,
-    DRIVELEFT
-    };
-
-enum DriveRight{
-    STOPDRIVERIGHT = 0x00,
-    DRIVERIGHT
-};
-
 namespace Ui {
 class Controllingroomba;
 }
@@ -45,7 +24,7 @@ class Controllingroomba;
 class Controllingroomba : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit Controllingroomba(QWidget *parent = 0);
     ~Controllingroomba();
@@ -54,8 +33,6 @@ public slots:
     void on_pbStop_clicked();
 
     void cbMotorBrushVacuumHandler();
-
-    void hsMotorValueChanged();
 
 private slots:
     void on_pbClean_clicked();
@@ -98,10 +75,6 @@ signals:
     void ModeChanged(Modes newMode);
     void setMotorBrushVacuum(bool MainBrush, bool SideBrush, bool Vacuum);
     void setMotorSpeed(int setLeftMotorSpeed, int setRightMotorSpeed);
-    void manualDriveForward(DriveForward setDriveForward);
-    void manualDriveBackward(DriveBackward setDriveBackward);
-    void manualDriveLeft(DriveLeft setDriveLeft);
-    void manualDriveRight(DriveRight setDriveRight);
 };
 
 #endif // CONTROLLINGROOMBA_H

@@ -22,8 +22,9 @@ Roomba::~Roomba()
 
 void Roomba::on_pbControlRoomba_clicked()
 {
-    Controllingroomba *controlling_roomba = new Controllingroomba();
+    Controllingroomba *controlling_roomba = new Controllingroomba(this);
     controlling_roomba->show();
+
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
 
@@ -32,19 +33,6 @@ void Roomba::on_pbControlRoomba_clicked()
 
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
-
-    connect(controlling_roomba, SIGNAL(manualDriveForward(DriveForward)),
-            this, SLOT(manualDriveForward(DriveForward)));
-
-    connect(controlling_roomba, SIGNAL(manualDriveBackward(DriveBackward)),
-            this, SLOT(manualDriveBackward(DriveBackward)));
-
-    connect(controlling_roomba, SIGNAL(manualDriveLeft(DriveLeft)),
-            this, SLOT(manualDriveLeft(DriveLeft)));
-
-    connect(controlling_roomba, SIGNAL(manualDriveRight(DriveRight)),
-            this, SLOT(manualDriveRight(DriveRight)));
-
     this->hide();
 
 }
@@ -92,34 +80,6 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
     this->server->sendCommand(toSend);
 }
 
-void Roomba::manualDriveForward(DriveForward setDriveForward)
-{
-    jsonCommand toSend(JSONCOMMAND_DRIVEFORWARD);
-    toSend.addToData("DriveForward", setDriveForward);
-    this->server->sendCommand(toSend);
-}
-
-void Roomba::manualDriveBackward(DriveBackward setDriveBackward)
-{
-    jsonCommand toSend(JSONCOMMAND_DRIVEBACKWARD);
-    toSend.addToData("DriveBackward", setDriveBackward);
-    this->server->sendCommand(toSend);
-}
-
-void Roomba::manualDriveLeft(DriveLeft setDriveLeft)
-{
-    jsonCommand toSend(JSONCOMMAND_DRIVELEFT);
-    toSend.addToData("DriveLeft", setDriveLeft);
-    this->server->sendCommand(toSend);
-}
-
-void Roomba::manualDriveRight(DriveRight setDriveRight)
-{
-    jsonCommand toSend(JSONCOMMAND_DRIVERIGHT);
-    toSend.addToData("DriveRight", setDriveRight);
-    this->server->sendCommand(toSend);
-}
-
 void Roomba::on_pbConnect_clicked()
 {
     this->server->doConnect();
@@ -127,9 +87,15 @@ void Roomba::on_pbConnect_clicked()
 
 void Roomba::on_pbCloseRoomba_clicked()
 {
+    this->close();
 }
 
 void Roomba::on_pbDisonnect_clicked()
 {
     this->server->doDisconnect();
+}
+
+void Roomba::readRoombaStatus(int batteryStatus, int temperature)
+{
+    ;
 }

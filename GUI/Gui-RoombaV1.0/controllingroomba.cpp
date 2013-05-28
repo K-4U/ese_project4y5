@@ -2,10 +2,8 @@
 #include "ui_controllingroomba.h"
 #include "roomba.h"
 
-// close button not working
-
 Controllingroomba::Controllingroomba(QWidget *parent) :
-    QWidget(parent),
+    QWidget(),
     ui(new Ui::Controllingroomba),
     log(LOGTAGS_ROOMBA),
     parent(parent)
@@ -103,9 +101,4 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
     emit setMotorBrushVacuum(ui->cbMainBrush->checkState() == Qt::Checked,
             ui->cbSideBrush->checkState() == Qt::Checked,
             ui->cbVacuum->checkState() == Qt::Checked);
-}
-
-void Controllingroomba::hsMotorValueChanged()
-{
-    //emit setMotorSpeed(ui->hsMotorSpeed->value(), ui->hsMotorSpeed->value());
 }

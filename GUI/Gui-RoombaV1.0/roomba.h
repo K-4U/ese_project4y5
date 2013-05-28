@@ -43,17 +43,14 @@ private slots:
 
     void on_pbDisonnect_clicked();
 
-    void manualDriveForward(DriveForward);
-
-    void manualDriveBackward(DriveBackward);
-
-    void manualDriveLeft(DriveLeft);
-
-    void manualDriveRight(DriveRight);
+    void readRoombaStatus(int, int);
 
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
+
+signals:
+    void readStatus(int batteryStatus, int temperature);
 };
 
 #endif // ROOMBA_H

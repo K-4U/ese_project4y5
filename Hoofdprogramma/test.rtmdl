@@ -3617,7 +3617,10 @@
 								type "int")
 							(object ClassAttribute "motors"
 								quid "51A47A2E00F6"
-								type "clsMotors"))
+								type "clsMotors")
+							(object ClassAttribute "buttons"
+								quid "51A5DAED03BE"
+								type "clsButtons"))
 						operations (list Operations
 							(object Operation "setSensor"
 								quid "519C927001E8"
@@ -3639,6 +3642,11 @@
 |        break;
 |    case 12:
 |        this->cliff.right = (bool)value;
+|        break;
+|    case 18:
+|        this->buttons.clean = (bool)(value & (0x01));
+|        this->buttons.spot = (bool)(value & (0x02));
+|        this->buttons.dock = (bool)(value & (0x04));
 |        break;
 |    case 19:
 |        //Distance resets every time you ask for it
@@ -3765,6 +3773,21 @@
 									(object ClassAttribute "vacuum"
 										quid "51A47919009C"
 										type "bool"
+										visibility "Public")))
+							(object Class "clsButtons"
+								quid "51A5DAF90102"
+								class_attributes (list class_attribute_list
+									(object ClassAttribute "clean"
+										quid "51A5DB02015C"
+										type "bool"
+										visibility "Public")
+									(object ClassAttribute "spot"
+										quid "51A5DB2101A2"
+										type "bool"
+										visibility "Public")
+									(object ClassAttribute "dock"
+										quid "51A5DB33000C"
+										type "bool"
 										visibility "Public"))))
 						language "C++")
 					(object Capsule "roombaTopCapsule"
@@ -3827,7 +3850,9 @@
 								quid "519B688D029C"
 								initv "12"
 								type "int"
-								changeable "Frozen"))
+								changeable "Frozen")
+							(object ClassAttribute "isOperating"
+								quid "51A5D9A80390"))
 						operations (list Operations
 							(object Operation "sendRoombaCommandSetMotors"
 								quid "51A47DB40261"
@@ -3987,19 +4012,25 @@
 |            inSensorList = true;
 |        }
 |    }else{
-|        int x = 0;
-|        int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-|        for(x=0;x< sizeOfArray; x++){
-|            if(sensorsToQuery[x][0] == b.get(i)){
-|                int value = 0;
-|                i++;
-|                if(sensorsToQuery[x][1] == 2){
-|                    value = b.get(i) << 8;
+|        if(this->isOperating){
+|            int x = 0;
+|            int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+|            for(x=0;x< sizeOfArray; x++){
+|                if(sensorsToQuery[x][0] == b.get(i)){
+|                    int value = 0;
 |                    i++;
+|                    if(sensorsToQuery[x][1] == 2){
+|                        value = b.get(i) << 8;
+|                        i++;
+|                    }
+|                    value += b.get(i);
+|                    this->roomba.setSensor(sensorsToQuery[x][0], value);
 |                }
-|                value += b.get(i);
-|                this->roomba.setSensor(sensorsToQuery[x][0], value);
 |            }
+|        }else{
+|            //Only one sensor, the buttons:
+|            this->roomba.setSensor
+|
 |        }
 |    }
 |    i++;
@@ -4061,17 +4092,21 @@
 											quid "51A5CE520115"
 											body 
 |byteArray b;
-|
-|//Then, a stream
-|b.append(149);
-|//First the length:
-|int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-|b.append(sizeOfArray);
-|int i = 0;
-|for(i=0;i < sizeOfArray; i++){
-|    b.append(sensorsToQuery[i][0]);
+|if(this->isOperating){
+|    //Then, a stream
+|    b.append(149);
+|    //First the length:
+|    int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+|    b.append(sizeOfArray);
+|    int i = 0;
+|    for(i=0;i < sizeOfArray; i++){
+|        b.append(sensorsToQuery[i][0]);
+|    }
+|}else{
+|    //Wait for buttons
+|    b.append(142);
+|    b.append(18);
 |}
-|
 |toMain.sendData(b).send();
 |b.clear();
 |
@@ -4383,31 +4418,11 @@
 										(203,195)
 										(323,277))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J519B5D19038A:dataReceived" @310
-									quid "519B5D190388"
-									uses_fill_color FALSE
-									quidu "519B5D190389"
-									label (object SegLabel @311
-										quid "519B5D190394"
-										pos (1433,386)
-										positionBySuperclass FALSE
-										max_width 191
-										pctDist 0.638393
-										height 173)
-									positionBySuperclass FALSE
-									client @267
-									supplier @268
-									vertices (list Points
-										(1193,303)
-										(1260,310)
-										(1260,400)
-										(1193,399))
-									line_style 6144)
-								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @312
+								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @310
 									quid "519B5D200002"
 									uses_fill_color FALSE
 									quidu "519B5D200003"
-									label (object SegLabel @313
+									label (object SegLabel @311
 										quid "519B5D20000F"
 										pos (1012,666)
 										positionBySuperclass FALSE
@@ -4423,11 +4438,11 @@
 										(978,625)
 										(960,552))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51A5BB97030E:handleSensors" @314
+								(object TransView ":TOP:Ready:J51A5BB97030E:handleSensors" @312
 									quid "51A5BB97030C"
 									uses_fill_color FALSE
 									quidu "51A5BB97030D"
-									label (object SegLabel @315
+									label (object SegLabel @313
 										quid "51A5BB970318"
 										pos (1367,588)
 										positionBySuperclass FALSE
@@ -4444,11 +4459,11 @@
 										(1172,600)
 										(1125,550))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @316
+								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @314
 									quid "51A5CE4A021D"
 									uses_fill_color FALSE
 									quidu "51A5CE4A021E"
-									label (object SegLabel @317
+									label (object SegLabel @315
 										quid "51A5CE4A0229"
 										pos (596,553)
 										positionBySuperclass FALSE
@@ -4464,12 +4479,32 @@
 										(663,441)
 										(727,426))
 									line_style 6144)
+								(object TransView ":TOP:Ready:J519B5D19038A:dataReceived" @316
+									quid "519B5D190388"
+									uses_fill_color FALSE
+									quidu "519B5D190389"
+									label (object SegLabel @317
+										quid "519B5D190394"
+										pos (1432,386)
+										positionBySuperclass FALSE
+										max_width 191
+										pctDist 0.641256
+										height 173)
+									positionBySuperclass FALSE
+									client @267
+									supplier @268
+									vertices (list Points
+										(1193,303)
+										(1259,309)
+										(1259,400)
+										(1193,399))
+									line_style 6144)
 								(object NoteView @318
 									quid "51A477E80373"
-									pos (1211,783)
+									pos (827,799)
 									label (object ItemLabel
 										quid "51A477E80374"
-										pos (748,710)
+										pos (364,726)
 										nlines 4
 										max_width 890
 										label "If you're looking for the code that handles EVERYTHING.. Check this arrow.. Rose just doesn't allow me to make this the way i want to.. I hate you Rose.. I hate you..")
@@ -6829,29 +6864,29 @@
 						IncludeOperation TRUE
 						showAggregations TRUE
 						quid "519B5DF80172"
-						pos (2816,283)
+						pos (2816,302)
 						label (object ItemLabel
 							quid "519B5DF80173"
-							pos (1962,112)
-							max_width 1708
+							pos (1961,112)
+							max_width 1710
 							label "roombaTopCapsule")
 						stereotype (object ItemLabel
 							quid "519B5DF80176"
-							pos (1962,78)
+							pos (1961,78)
 							anchor 10
-							max_width 1708
+							max_width 1710
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "518A226F036A"
 						compartment (object Compartment
 							quid "519B5DF8017A"
-							pos (1962,205)
+							pos (1961,205)
 							anchor 2
-							nlines 9
+							nlines 10
 							max_width 1553
 							justify 1)
-						width 1726
-						height 566
+						width 1728
+						height 604
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
@@ -6861,26 +6896,26 @@
 						quidu "519B57A40170"
 						label (object SegLabel @501
 							quid "519B5DF80193"
-							pos (2028,287)
+							pos (2028,290)
 							max_width 338
 							label "roombaTopCapsuleR1"
-							pctDist -0.210429
-							height 24)
+							pctDist -0.214246
+							height 20)
 						client @499
 						supplier @482
 						vertices (list Points
-							(1952,261)
-							(1588,252))
+							(1951,267)
+							(1588,253))
 						line_style 6144
 						label (object SegLabel @502
 							quid "519B5DF80195"
-							pos (2062,292)
+							pos (2062,295)
 							hidden TRUE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist -0.304118
-							height 28))))))
+							pctDist -0.308301
+							height 24))))))
 	root_subsystem (object SubSystem "Component View"
 		quid "5176778400A5"
 		physical_models (list unit_reference_list

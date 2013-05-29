@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>769</width>
-    <height>513</height>
+    <width>1047</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pbUpload">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>240</y>
+     <x>760</x>
+     <y>230</y>
      <width>161</width>
      <height>23</height>
     </rect>
@@ -58,8 +58,8 @@
   <widget class="QPushButton" name="pbResetRoomba">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>20</y>
+     <x>900</x>
+     <y>10</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -132,8 +132,8 @@
   <widget class="QPushButton" name="pbClose">
    <property name="geometry">
     <rect>
-     <x>650</x>
-     <y>240</y>
+     <x>690</x>
+     <y>540</y>
      <width>91</width>
      <height>23</height>
     </rect>
@@ -145,8 +145,8 @@
   <widget class="QTextEdit" name="txtManualcommands">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>60</y>
+     <x>760</x>
+     <y>50</y>
      <width>261</width>
      <height>171</height>
     </rect>
@@ -155,8 +155,8 @@
   <widget class="QPushButton" name="pbDriveForward">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>300</y>
+     <x>140</x>
+     <y>380</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -184,8 +184,8 @@
   <widget class="QProgressBar" name="prBattery">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>40</y>
+     <x>340</x>
+     <y>50</y>
      <width>191</width>
      <height>23</height>
     </rect>
@@ -197,8 +197,8 @@
   <widget class="QLabel" name="lbBattery">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>20</y>
+     <x>340</x>
+     <y>30</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -210,8 +210,8 @@
   <widget class="QSlider" name="hsMotorSpeed">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>430</y>
+     <x>110</x>
+     <y>510</y>
      <width>160</width>
      <height>19</height>
     </rect>
@@ -232,8 +232,8 @@
   <widget class="QLabel" name="lbMotorSpeed">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>400</y>
+     <x>110</x>
+     <y>480</y>
      <width>111</width>
      <height>16</height>
     </rect>
@@ -245,8 +245,8 @@
   <widget class="QLabel" name="lbDistance">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>90</y>
+     <x>340</x>
+     <y>100</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -258,7 +258,7 @@
   <widget class="QLabel" name="lbTotalDistance">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>340</x>
      <y>120</y>
      <width>141</width>
      <height>16</height>
@@ -271,8 +271,8 @@
   <widget class="QLabel" name="lbTemperature">
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>150</y>
+     <x>340</x>
+     <y>80</y>
      <width>91</width>
      <height>16</height>
     </rect>
@@ -284,8 +284,8 @@
   <widget class="QPushButton" name="pbDriveLeft">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>330</y>
+     <x>100</x>
+     <y>410</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -297,8 +297,8 @@
   <widget class="QPushButton" name="pbDriveRight">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>330</y>
+     <x>190</x>
+     <y>410</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -310,14 +310,27 @@
   <widget class="QPushButton" name="pbDriveBackward">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>360</y>
+     <x>140</x>
+     <y>440</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>Backward</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pbRefresh">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>140</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
    </property>
   </widget>
  </widget>
@@ -330,12 +343,12 @@
    <slot>hsMotorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>390</x>
-     <y>436</y>
+     <x>260</x>
+     <y>516</y>
     </hint>
     <hint type="destinationlabel">
-     <x>234</x>
-     <y>381</y>
+     <x>287</x>
+     <y>557</y>
     </hint>
    </hints>
   </connection>

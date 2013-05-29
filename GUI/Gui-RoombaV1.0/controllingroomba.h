@@ -34,6 +34,8 @@ public slots:
 
     void cbMotorBrushVacuumHandler();
 
+    void on_pbRefresh_clicked();
+
 private slots:
     void on_pbClean_clicked();
 
@@ -75,6 +77,7 @@ signals:
     void ModeChanged(Modes newMode);
     void setMotorBrushVacuum(bool MainBrush, bool SideBrush, bool Vacuum);
     void setMotorSpeed(int setLeftMotorSpeed, int setRightMotorSpeed);
+    void readStatus(int Status);
 };
 
 #endif // CONTROLLINGROOMBA_H

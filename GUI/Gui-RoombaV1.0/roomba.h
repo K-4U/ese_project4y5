@@ -7,6 +7,7 @@
 #include "../resources/jsoncommand.h"
 #include "../resources/json.h"
 #include "../resources/clslog.h"
+#include "../resources/clsevent.h"
 
 using namespace client;
 
@@ -43,14 +44,14 @@ private slots:
 
     void on_pbDisonnect_clicked();
 
-    void readRoombaStatus(int, int);
+    void readSensorData(int);
 
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
 
 signals:
-    void readStatus(int batteryStatus, int temperature);
+    void Status(int batteryStatus, int temperature);
 };
 
 #endif // ROOMBA_H

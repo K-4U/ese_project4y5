@@ -56,7 +56,9 @@ namespace shared{
 				ret = EVENTTYPE_USER_NICK;
 			}else if(eventString == "SERVERMSG"){
 				ret = EVENTTYPE_SERVERMSG;
-			}
+            }else if(eventString == "SENSORDATA"){
+                ret = EVENTTYPE_SENSORDATA;
+            }
             this->ourType = ret;
         }
 
@@ -83,6 +85,9 @@ namespace shared{
 					break;
                 case EVENTTYPE_NONE:
                     ret = "NaN";
+                    break;
+                case EVENTTYPE_SENSORDATA:
+                    ret = "SENSORDATA";
                     break;
             }
             return ret;

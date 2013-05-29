@@ -123,6 +123,9 @@ namespace client{
                 case JSONCOMMAND_EVENT:
                     this->handleEventReceived(comm.getData("event").toMap());
                     break;
+                case JSONCOMMAND_SENSORDATARECEIVED:
+                    this->handleEventReceived(comm.getData("SensorData").toMap());
+                    break;
                 default:
                     break;
             }

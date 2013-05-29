@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Data;
 
 namespace Simulator.drawObjects {
 
@@ -42,7 +44,7 @@ namespace Simulator.drawObjects {
         private const int heightInPx = 80;
         private Brush b = Brushes.Aquamarine;
 
-        Bitmap image1 = (Bitmap)Image.FromFile(@"C:\Users\Leon\Documents\GitHub\ese_project4y5\Simulator\Resources\dock.png", true);
+		Bitmap image1 = (Bitmap)Properties.Resources.dock;
 
 
         public drawDock(int x, int y)

@@ -131,12 +131,15 @@ namespace Simulator {
             keepGoing = false;
         }
 
-        public void send(byte[] buff) {
-            string t = String.Format("Send({0}): ", buff.Length);
-            foreach (byte b in buff) {
-                t = String.Format("{0} {1}", t, (int)b);
-            }
-            log(t, logTags.serial);
+		public void send(byte[] buff, bool doLog = true) {
+			if (doLog) {
+				string t = String.Format("Send({0}): ", buff.Length);
+				foreach (byte b in buff) {
+					t = String.Format("{0} {1}", t, (int)b);
+				}
+				log(t, logTags.serial);
+			}
+            
             try {
                 port.Write(buff, 0, buff.Length);
             } catch {

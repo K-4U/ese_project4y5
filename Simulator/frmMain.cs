@@ -101,7 +101,7 @@ namespace Simulator {
 
             this.initDrawers();
 			
-            roomba.uncontrolledTest(1000, 1050);
+            //roomba.uncontrolledTest(1000, 1050);
 
         //    byte[] song = {50,32,0,32,50,32};
 
@@ -181,8 +181,8 @@ namespace Simulator {
         #endregion
 
         #region Serial
-        static void send(byte[] bytes) {
-            serSock.send(bytes);
+		static void send(byte[] bytes, bool doLog = true) {
+            serSock.send(bytes, doLog);
         }
         void clearRegisters() {
             command = 0;

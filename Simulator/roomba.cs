@@ -198,9 +198,9 @@ namespace Simulator {
         #endregion 
 
         #region Callbacks
-        public delegate void sendDelegate(byte[] bytes);
+		public delegate void sendDelegate(byte[] bytes, bool doLog = true);
         private sendDelegate send = new sendDelegate(sendDummy);
-        private static void sendDummy(byte[] bytes) { }
+		private static void sendDummy(byte[] bytes, bool doLog = true) { }
         #endregion
 
         #region Constants
@@ -299,10 +299,10 @@ namespace Simulator {
                     //Fix length
                     btoSend[1] = (byte)byteCount;
 
-                    this.send(btoSend.ToArray());
+                    this.send(btoSend.ToArray(), true);
                     
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(15);
             }
         }
 

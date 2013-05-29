@@ -113,7 +113,7 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 	    }
 	    //cout << "J: b = " << b << endl;
 		this->jsonBuffer.push_back(b);
-	    cout << "J: B.S:" << this->jsonBuffer.size()  << " L:" << this->depth << " IS: " << std::boolalpha << this->inString << endl;
+	    //cout << "J: B.S:" << this->jsonBuffer.size()  << " L:" << this->depth << " IS: " << std::boolalpha << this->inString << endl;
 	    if(this->jsonBuffer.size() >= 2 && this->depth == 0 && this->inString == false){
 	        //Fetch command
 	        jsonCommand newCommand(this->jsonBuffer);

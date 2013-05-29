@@ -116,7 +116,6 @@ RTString byteArray::getAll( void )
 	char data[this->data.size()];
 	int i = 0;
 	for(i = 0; i <= this->data.size(); i++){
-	    cout << this->data[i];
 	    data[i] = this->data[i];
 	}
 

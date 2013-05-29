@@ -52,6 +52,8 @@ static const char * const rtg_state_names[] =
 
 jsonTranslateCapsule_Actor::jsonTranslateCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 	: RTActor( rtg_rts, rtg_ref )
+	, depth( 0 )
+	, inString( false )
 {
 }
 
@@ -111,7 +113,8 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const 
 	    }
 	    //cout << "J: b = " << b << endl;
 		this->jsonBuffer.push_back(b);
-	    if(this->jsonBuffer.size() >= 2 && this->depth == 0){
+	    //cout << "J: B.S:" << this->jsonBuffer.size()  << " L:" << this->depth << " IS: " << std::boolalpha << this->inString << endl;
+	    if(this->jsonBuffer.size() >= 2 && this->depth == 0 && this->inString == false){
 	        //Fetch command
 	        jsonCommand newCommand(this->jsonBuffer);
 

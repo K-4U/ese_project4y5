@@ -116,18 +116,8 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 	toMain.sendData(b).send();
 	b.clear();
 
-	//Then, a stream
-	b.append(148);
-	//First the length:
-	int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-	b.append(sizeOfArray);
-	int i = 0;
-	for(i=0;i < sizeOfArray; i++){
-	    b.append(sensorsToQuery[i][0]);
-	}
-
-	toMain.sendData(b).send();
-	b.clear();
+	//Start timer for polling:
+	timer.informIn(30);
 
 	/*
 	//Full mode
@@ -209,6 +199,30 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 }
 // }}}RME
 
+// {{{RME transition ':TOP:Ready:J51A5CE4A021F:askSensors'
+INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void * rtdata, Timing::Base * rtport )
+{
+	// {{{USR
+	byteArray b;
+
+	//Then, a stream
+	b.append(149);
+	//First the length:
+	int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+	b.append(sizeOfArray);
+	int i = 0;
+	for(i=0;i < sizeOfArray; i++){
+	    b.append(sensorsToQuery[i][0]);
+	}
+
+	toMain.sendData(b).send();
+	b.clear();
+
+	timer.informIn(15);
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void roombaTopCapsule_Actor::chain4_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -227,6 +241,16 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain2_dataReceived( void )
 	transition2_dataReceived( (const byteArray *)msg->data, (roombaProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+	// transition ':TOP:Ready:J519B5D19038F:t1'
+	rtgChainBegin( 2, "t1" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	// transition ':TOP:Ready:J51A5BB97030E:handleSensors'
+	rtgChainBegin( 2, "handleSensors" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 2 );
 }
 
 INLINE_CHAINS void roombaTopCapsule_Actor::chain3_commandReceived( void )
@@ -236,6 +260,17 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain3_commandReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition3_commandReceived( (const jsonCommand *)msg->data, (roombaProtocol::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void roombaTopCapsule_Actor::chain6_askSensors( void )
+{
+	// transition ':TOP:Ready:J51A5CE4A021F:askSensors'
+	rtgChainBegin( 2, "askSensors" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition6_askSensors( msg->data, (Timing::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -304,6 +339,18 @@ void roombaTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				}
 				break;
 				// }}}RME
+			case 2:
+				// {{{RME port 'timer'
+				switch( signalIndex )
+				{
+				case Timing::Base::rti_timeout:
+					chain6_askSensors();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
 			default:
 				break;
 			}
@@ -359,7 +406,7 @@ const RTActor_class roombaTopCapsule_Actor::rtg_class =
   , &roombaTopCapsule
   , 0
   , (const RTComponentDescriptor *)0
-  , 1
+  , 2
   , roombaTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -384,6 +431,15 @@ const RTPortDescriptor roombaTopCapsule_Actor::rtg_ports[] =
 	  , 1 // cardinality
 	  , 1
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"timer"
+	  , (const char *)0
+	  , &Timing::Base::rt_class
+	  , RTOffsetOf( roombaTopCapsule_Actor, roombaTopCapsule_Actor::timer )
+	  , 1 // cardinality
+	  , 2
+	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
 	}
 };
 

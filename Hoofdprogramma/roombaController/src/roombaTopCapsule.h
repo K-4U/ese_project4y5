@@ -55,6 +55,9 @@ protected:
 	// {{{RME port 'toMain'
 	roombaProtocol::Base toMain;
 	// }}}RME
+	// {{{RME port 'timer'
+	Timing::Base timer;
+	// }}}RME
 
 public:
 	roombaTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
@@ -78,11 +81,15 @@ protected:
 	// {{{RME transition ':TOP:Ready:J519B5D200005:commandReceived'
 	INLINE_METHODS void transition3_commandReceived( const jsonCommand * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51A5CE4A021F:askSensors'
+	INLINE_METHODS void transition6_askSensors( const void * rtdata, Timing::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain4_Initial( void );
 	INLINE_CHAINS void chain2_dataReceived( void );
 	INLINE_CHAINS void chain3_commandReceived( void );
+	INLINE_CHAINS void chain6_askSensors( void );
 	INLINE_CHAINS void chain1_comReady( void );
 
 public:

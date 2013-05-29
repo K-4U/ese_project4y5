@@ -147,13 +147,12 @@ INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata,
 }
 // }}}RME
 
-// {{{RME transition ':TOP:ready:J518A1EA5031A:GUIDataReceived'
+// {{{RME transition ':TOP:ready:J51A475DD0298:GUIDataReceived'
 INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport )
 {
 	// {{{USR
 	cout << "MAI: GUI Data received." << endl;
-	//Just, send it back! :D
-	//GUI.sendCommand(*rtdata).send();
+
 	Roomba.commandReceived(*rtdata).send();
 	// }}}USR
 }
@@ -200,7 +199,7 @@ INLINE_CHAINS void mainCapsule_Actor::chain1_Initial( void )
 
 INLINE_CHAINS void mainCapsule_Actor::chain2_GUIDataReceived( void )
 {
-	// transition ':TOP:ready:J518A1EA5031A:GUIDataReceived'
+	// transition ':TOP:ready:J51A475DD0298:GUIDataReceived'
 	rtgChainBegin( 2, "GUIDataReceived" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();

@@ -74,7 +74,7 @@ protected:
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:ready:J518A1EA5031A:GUIDataReceived'
+	// {{{RME transition ':TOP:ready:J51A475DD0298:GUIDataReceived'
 	INLINE_METHODS void transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:ready:J519345E300C5:serialDataReceived'

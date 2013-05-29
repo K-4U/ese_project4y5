@@ -59,6 +59,13 @@ protected:
 public:
 	roombaTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
 	virtual ~roombaTopCapsule_Actor( void );
+
+protected:
+	// {{{RME operation 'sendRoombaCommandSetMotors()'
+	void sendRoombaCommandSetMotors( void );
+	// }}}RME
+
+public:
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
 
 protected:
@@ -67,6 +74,9 @@ protected:
 	// }}}RME
 	// {{{RME transition ':TOP:Ready:J519B5D19038A:dataReceived'
 	INLINE_METHODS void transition2_dataReceived( const byteArray * rtdata, roombaProtocol::Base * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J519B5D200005:commandReceived'
+	INLINE_METHODS void transition3_commandReceived( const jsonCommand * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
 
 private:

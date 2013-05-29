@@ -104,7 +104,7 @@ jsonCommand::jsonCommand( std::string jsonCommand )
 	cout << "New JSON command: " << msg["command"] << endl;
 
 	this->command = msg["command"].asString();
-	this->data = msg["arguments"];
+	this->data = msg["data"];
 
 	// }}}USR
 }

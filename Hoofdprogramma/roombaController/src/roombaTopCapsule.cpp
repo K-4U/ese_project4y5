@@ -56,6 +56,35 @@ roombaTopCapsule_Actor::~roombaTopCapsule_Actor( void )
 {
 }
 
+// {{{RME operation 'sendRoombaCommandSetMotors()'
+void roombaTopCapsule_Actor::sendRoombaCommandSetMotors( void )
+{
+	// {{{USR
+	bool mainBrush = false;
+	bool sideBrush = false;
+	bool vacuum = false;
+
+	this->roomba.getMotors(&mainBrush, &sideBrush, &vacuum);
+
+	std::cout << "RMB: MainBrush: " << mainBrush << endl;
+
+	byteArray b;
+	std::cout << "Starting full mode" << endl;
+	b.append(130);
+	toMain.sendData(b).send();
+	b.clear();
+
+
+	b.append(138);
+	b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
+
+	std::cout << "RMB: Sending";
+	b.print();
+	toMain.sendData(b).send();
+	// }}}USR
+}
+// }}}RME
+
 int roombaTopCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex )
 {
 	switch( rtg_portId )
@@ -158,7 +187,24 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	    }
 	    i++;
 	}
-	this->roomba.printSensors();
+	//this->roomba.printSensors();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:Ready:J519B5D200005:commandReceived'
+INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const jsonCommand * rtdata, roombaProtocol::Base * rtport )
+{
+	// {{{USR
+	//Parse command:
+	jsonCommand c = *rtdata;
+	if(c.command == "SETMOTORBRUSHVACUUM"){
+	    //std::cout << "RMB: Main: " << c.data["MainBrush"].asBool() << endl;
+	    this->roomba.setMotors(c.data["MainBrush"].asBool(), 
+	            c.data["SideBrush"].asBool(),
+	            c.data["Vacuum"].asBool());
+	    this->sendRoombaCommandSetMotors();
+	}
 	// }}}USR
 }
 // }}}RME
@@ -189,6 +235,7 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain3_commandReceived( void )
 	rtgChainBegin( 2, "commandReceived" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
+	transition3_commandReceived( (const jsonCommand *)msg->data, (roombaProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }

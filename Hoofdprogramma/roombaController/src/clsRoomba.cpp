@@ -17,6 +17,11 @@
 
 // }}}USR
 // }}}RME
+// {{{RME classifier 'clsMotors' tool 'OT::Cpp' property 'ImplementationPreface'
+// {{{USR
+
+// }}}USR
+// }}}RME
 
 static void rtg_clsRoomba_init( const RTObject_class * type, clsRoomba * target )
 {
@@ -49,7 +54,7 @@ const RTObject_class RTType_clsRoomba =
   , RTstruct_encode
 #endif
   , (RTDestroyFunction)rtg_clsRoomba_destroy
-  , 11
+  , 12
   , clsRoomba::rtg_clsRoomba_fields
 };
 
@@ -179,6 +184,118 @@ const RTFieldDescriptor clsRoomba::rtg_clsBumpersAndCliff_fields[] =
 	// }}}RME
 };
 
+// {{{RME classifier 'clsMotors'
+
+// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
+clsRoomba::clsMotors::clsMotors( void )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateDestructor'
+clsRoomba::clsMotors::~clsMotors( void )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
+clsRoomba::clsMotors::clsMotors( const clsMotors & rtg_arg )
+	: mainBrush( rtg_arg.mainBrush )
+	, sideBrush( rtg_arg.sideBrush )
+	, vacuum( rtg_arg.vacuum )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
+clsRoomba::clsMotors & clsRoomba::clsMotors::operator=( const clsMotors & rtg_arg )
+{
+	if( this != &rtg_arg )
+	{
+		mainBrush = rtg_arg.mainBrush;
+		sideBrush = rtg_arg.sideBrush;
+		vacuum = rtg_arg.vacuum;
+	}
+	return *this;
+}
+// }}}RME
+// }}}RME
+
+const RTObject_class clsRoomba::RTType_clsMotors =
+{
+	(const RTObject_class *)0
+  , (RTSuperAccessFunction)0
+  , "clsMotors"
+  , (RTVersionId)0
+  , (RTFieldOffset)sizeof( clsMotors )
+  , (RTInitFunction)&clsRoomba::rtg_clsMotors_init
+  , (RTCopyFunction)&clsRoomba::rtg_clsMotors_copy
+#if OBJECT_DECODE
+  , RTstruct_decode
+#endif
+#if OBJECT_ENCODE
+  , RTstruct_encode
+#endif
+  , (RTDestroyFunction)&clsRoomba::rtg_clsMotors_destroy
+  , 3
+  , clsRoomba::rtg_clsMotors_fields
+};
+
+void clsRoomba::rtg_clsMotors_init( const RTObject_class * type, clsMotors * target )
+{
+	(void)new( target ) clsMotors;
+}
+
+void clsRoomba::rtg_clsMotors_copy( const RTObject_class * type, clsMotors * target, const clsMotors * source )
+{
+	(void)new( target ) clsMotors( *source );
+}
+
+void clsRoomba::rtg_clsMotors_destroy( const RTObject_class * type, clsMotors * target )
+{
+	target->~clsMotors();
+}
+
+const RTFieldDescriptor clsRoomba::rtg_clsMotors_fields[] =
+{
+	// {{{RME classifier 'clsMotors' classAttribute 'mainBrush'
+	{
+		"mainBrush"
+	  , RTOffsetOf( clsMotors, mainBrush )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classifier 'clsMotors' classAttribute 'sideBrush'
+  , {
+		"sideBrush"
+	  , RTOffsetOf( clsMotors, sideBrush )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classifier 'clsMotors' classAttribute 'vacuum'
+  , {
+		"vacuum"
+	  , RTOffsetOf( clsMotors, vacuum )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+};
+
 // {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
 clsRoomba::clsRoomba( void )
 {
@@ -204,6 +321,7 @@ clsRoomba::clsRoomba( const clsRoomba & rtg_arg )
 	, battCharge( rtg_arg.battCharge )
 	, battCapac( rtg_arg.battCapac )
 	, oiMode( rtg_arg.oiMode )
+	, motors( rtg_arg.motors )
 {
 }
 // }}}RME
@@ -224,6 +342,7 @@ clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 		battCharge = rtg_arg.battCharge;
 		battCapac = rtg_arg.battCapac;
 		oiMode = rtg_arg.oiMode;
+		motors = rtg_arg.motors;
 	}
 	return *this;
 }
@@ -295,6 +414,32 @@ void clsRoomba::printSensors( void )
 	cout << "\toiMode:\t" << this->oiMode << endl;
 	cout << "\ttemperature:\t" << this->temperature << endl;
 
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'setMotors(bool,bool,bool)'
+void clsRoomba::setMotors( bool mainBrush, bool sideBrush, bool vacuum )
+{
+	// {{{USR
+
+	this->motors.mainBrush = mainBrush;
+	this->motors.sideBrush = sideBrush;
+	this->motors.vacuum = vacuum;
+
+	std::cout << "RMB: Arg: " << mainBrush << " STOR: " << this->motors.mainBrush << endl;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getMotors(bool*,bool*,bool*)'
+void clsRoomba::getMotors( bool * mainBrush, bool * sideBrush, bool * vacuum )
+{
+	// {{{USR
+	std::cout << "RMB: MAIN: " << this->motors.mainBrush << endl;
+	*mainBrush = this->motors.mainBrush;
+	*sideBrush = this->motors.sideBrush;
+	*vacuum = this->motors.vacuum;
 	// }}}USR
 }
 // }}}RME
@@ -433,10 +578,26 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 		// }}}RME
 	}
 	// }}}RME
+	// {{{RME classAttribute 'motors'
+  , {
+		"motors"
+	  , RTOffsetOf( clsRoomba, motors )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &clsRoomba::RTType_clsMotors
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
 };
 
 #if OBJECT_DECODE
 RTTypeInstaller rtg_clsRoomba_clsBumpersAndCliff_installer( clsRoomba::RTType_clsBumpersAndCliff );
+#endif
+
+#if OBJECT_DECODE
+RTTypeInstaller rtg_clsRoomba_clsMotors_installer( clsRoomba::RTType_clsMotors );
 #endif
 
 #if OBJECT_DECODE
@@ -449,6 +610,11 @@ RTTypeInstaller rtg_clsRoomba_installer( RTType_clsRoomba );
 // }}}USR
 // }}}RME
 // {{{RME classifier 'clsBumpersAndCliff' tool 'OT::Cpp' property 'ImplementationEnding'
+// {{{USR
+
+// }}}USR
+// }}}RME
+// {{{RME classifier 'clsMotors' tool 'OT::Cpp' property 'ImplementationEnding'
 // {{{USR
 
 // }}}USR

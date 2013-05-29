@@ -46,8 +46,8 @@ protected:
 	// {{{RME capsuleRole 'tcpInstance'
 	RTActorRef tcpInstance;
 	// }}}RME
-	// {{{RME capsuleRole 'jsonTranslateCapsuleR1'
-	RTActorRef jsonTranslateCapsuleR1;
+	// {{{RME capsuleRole 'jsonTranslateInstance'
+	RTActorRef jsonTranslateInstance;
 	// }}}RME
 	// {{{RME port 'internalJsonPort'
 	jsonProtocol::Conjugate internalJsonPort;

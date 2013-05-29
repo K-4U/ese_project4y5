@@ -227,6 +227,16 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain2_dataReceived( void )
 	transition2_dataReceived( (const byteArray *)msg->data, (roombaProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+	// transition ':TOP:Ready:J519B5D19038F:t1'
+	rtgChainBegin( 2, "t1" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	// transition ':TOP:Ready:J51A5BB97030E:handleSensors'
+	rtgChainBegin( 2, "handleSensors" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 2 );
 }
 
 INLINE_CHAINS void roombaTopCapsule_Actor::chain3_commandReceived( void )

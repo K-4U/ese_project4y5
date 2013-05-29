@@ -62,7 +62,7 @@ static const RTBindingDescriptor rtg_bindings_tcpInstance[] =
 	}
 };
 
-static const RTInterfaceDescriptor rtg_interfaces_jsonTranslateCapsuleR1[] =
+static const RTInterfaceDescriptor rtg_interfaces_jsonTranslateInstance[] =
 {
 	{
 		"tcpPort"
@@ -74,7 +74,7 @@ static const RTInterfaceDescriptor rtg_interfaces_jsonTranslateCapsuleR1[] =
 	}
 };
 
-static const RTBindingDescriptor rtg_bindings_jsonTranslateCapsuleR1[] =
+static const RTBindingDescriptor rtg_bindings_jsonTranslateInstance[] =
 {
 	{
 		0
@@ -128,15 +128,15 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 			// mainConnection
 			if( rtg_repIndex < 1 )
 			{
-				// jsonTranslateCapsuleR1/tcpPort
-				return jsonTranslateCapsuleR1._followIn( rtg_end, 0, rtg_repIndex );
+				// jsonTranslateInstance/tcpPort
+				return jsonTranslateInstance._followIn( rtg_end, 0, rtg_repIndex );
 			}
 			break;
 		default:
 			break;
 		}
 	case 2:
-		// jsonTranslateCapsuleR1
+		// jsonTranslateInstance
 		switch( rtg_portId )
 		{
 		case 0:
@@ -170,7 +170,8 @@ int tcpTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId, in
 INLINE_METHODS void tcpTopCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
-	frame.incarnate(tcpInstance,tcpCapsule,EmptyObject,ThreadUserInterface);
+	frame.incarnate(tcpInstance, tcpCapsule, EmptyObject, ThreadUserInterface);
+	frame.incarnate(jsonTranslateInstance, jsonTranslateCapsule, EmptyObject, ThreadJsonTranslate);
 
 	cout << "tcpTopCapsule initialized" << endl;
 	// }}}USR
@@ -347,17 +348,17 @@ const RTComponentDescriptor tcpTopCapsule_Actor::rtg_capsule_roles[] =
 	  , rtg_bindings_tcpInstance
 	}
   , {
-		"jsonTranslateCapsuleR1"
+		"jsonTranslateInstance"
 	  , &jsonTranslateCapsule
-	  , RTOffsetOf( tcpTopCapsule_Actor, jsonTranslateCapsuleR1 )
+	  , RTOffsetOf( tcpTopCapsule_Actor, jsonTranslateInstance )
 	  , 2
-	  , RTComponentDescriptor::Fixed
+	  , RTComponentDescriptor::Optional
 	  , 1
 	  , 1 // cardinality
 	  , 2
-	  , rtg_interfaces_jsonTranslateCapsuleR1
+	  , rtg_interfaces_jsonTranslateInstance
 	  , 2
-	  , rtg_bindings_jsonTranslateCapsuleR1
+	  , rtg_bindings_jsonTranslateInstance
 	}
 };
 

@@ -549,3 +549,10 @@ ItemDiagramPair27BrowserCount=1
 ItemDiagramPair27Browser0Data=1 0 0 447 990 15
 [History]
 NumSpecHistEntries=0
+[RTSDiagrams]
+roombaControllerInstance:Trace:/=132 132 1559 543 0 0 0 0 -1 1 -1 -1 0
+roombaControllerInstance:Behavior:0/serialTranslateCapsuleR1:serialTranslateCapsule-TOP:/serialTopCapsuleR1:0/serialTranslateCapsuleR1:0=12 12 708 477 100 0 0 0 -1 1 -1 -1 0
+roombaControllerInstance:Behavior:0/mainCapsuleR1:mainCapsule-TOP:/mainCapsuleR1:0=28 28 1342 586 100 0 0 0 -1 1 -1 -1 0
+roombaControllerInstance:Behavior:0/serialTopCapsuleR1:serialTopCapsule-TOP:/serialTopCapsuleR1:0=66 66 762 531 100 0 0 0 -1 1 -1 -1 0
+roombaControllerInstance:Behavior:0/serialCommunicationInstance:serialCommunicationCapsule-TOP:/serialTopCapsuleR1:0/serialCommunicationInstance:0=93 93 789 558 100 0 0 0 -1 1 -1 -1 0
+roombaControllerInstance:Behavior:0/roombaTopCapsuleR1:roombaTopCapsule-TOP:/roombaTopCapsuleR1:0=6 6 1319 581 100 0 0 0 -1 3 -1 -1 0

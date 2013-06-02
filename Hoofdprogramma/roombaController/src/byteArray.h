@@ -43,7 +43,7 @@ private:
 	// }}}USR
 	// }}}RME
 	// {{{RME classAttribute 'data'
-	vector< char > data;
+	vector< unsigned char > data;
 	// }}}RME
 
 public:
@@ -60,7 +60,7 @@ public:
 	byteArray( unsigned char chars[], int length );
 	// }}}RME
 	// {{{RME operation 'get(int)'
-	char get( int index );
+	unsigned char get( int index );
 	// }}}RME
 	// {{{RME operation 'size()'
 	int size( void );

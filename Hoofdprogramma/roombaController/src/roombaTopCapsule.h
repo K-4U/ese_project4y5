@@ -8,6 +8,7 @@
 #endif
 
 #include <RTSystem/roombaController.h>
+#include <programProtocol.h>
 #include <roombaProtocol.h>
 class clsRoomba;
 
@@ -50,13 +51,25 @@ private:
 	// {{{RME classAttribute 'roomba'
 	clsRoomba roomba;
 	// }}}RME
+	// {{{RME classAttribute 'isOperating'
+	bool isOperating;
+	// }}}RME
 
 protected:
+	// {{{RME capsuleRole 'roombaProgramInstance'
+	RTActorRef roombaProgramInstance;
+	// }}}RME
 	// {{{RME port 'toMain'
 	roombaProtocol::Base toMain;
 	// }}}RME
 	// {{{RME port 'timer'
 	Timing::Base timer;
+	// }}}RME
+	// {{{RME port 'program'
+	programProtocol::Conjugate program;
+	// }}}RME
+	// {{{RME port 'frame'
+	Frame::Base frame;
 	// }}}RME
 
 public:
@@ -70,19 +83,38 @@ protected:
 
 public:
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
+	virtual int _followOutV( RTBindingEnd & rtg_end, int rtg_compId, int rtg_portId, int rtg_repIndex );
 
 protected:
 	// {{{RME transition ':TOP:waitForCom:J519B68FC0073:comReady'
 	INLINE_METHODS void transition1_comReady( const void * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:Ready:J519B5D19038A:dataReceived'
+	// {{{RME transition ':TOP:Ready:J51AB647002D6:dataReceived'
 	INLINE_METHODS void transition2_dataReceived( const byteArray * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:Ready:J519B5D200005:commandReceived'
 	INLINE_METHODS void transition3_commandReceived( const jsonCommand * rtdata, roombaProtocol::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:Initial:Initial'
+	INLINE_METHODS void transition4_Initial( const void * rtdata, RTProtocol * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51AB645400D1:handleSensors'
+	INLINE_METHODS void transition5_handleSensors( const byteArray * rtdata, roombaProtocol::Base * rtport );
+	// }}}RME
 	// {{{RME transition ':TOP:Ready:J51A5CE4A021F:askSensors'
 	INLINE_METHODS void transition6_askSensors( const void * rtdata, Timing::Base * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51AB4F6F0301:playSong'
+	INLINE_METHODS void transition7_playSong( const int * rtdata, programProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51AB52300119:stopProgram'
+	INLINE_METHODS void transition8_stopProgram( const int * rtdata, programProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51AB5BCB00F3:drive'
+	INLINE_METHODS void transition9_drive( const clsDriveCommand * rtdata, programProtocol::Conjugate * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51AB77110307:getTotalAngle'
+	INLINE_METHODS void transition10_getTotalAngle( const bool * rtdata, programProtocol::Conjugate * rtport );
 	// }}}RME
 
 private:
@@ -90,6 +122,10 @@ private:
 	INLINE_CHAINS void chain2_dataReceived( void );
 	INLINE_CHAINS void chain3_commandReceived( void );
 	INLINE_CHAINS void chain6_askSensors( void );
+	INLINE_CHAINS void chain7_playSong( void );
+	INLINE_CHAINS void chain8_stopProgram( void );
+	INLINE_CHAINS void chain9_drive( void );
+	INLINE_CHAINS void chain10_getTotalAngle( void );
 	INLINE_CHAINS void chain1_comReady( void );
 
 public:
@@ -103,6 +139,7 @@ public:
 	static const RTStateId rtg_parent_state[];
 
 private:
+	static const RTComponentDescriptor rtg_capsule_roles[];
 	static const RTPortDescriptor rtg_ports[];
 
 public:

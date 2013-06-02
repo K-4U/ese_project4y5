@@ -24,6 +24,11 @@
 
 // }}}USR
 // }}}RME
+// {{{RME classifier 'clsButtons' tool 'OT::Cpp' property 'HeaderPreface'
+// {{{USR
+
+// }}}USR
+// }}}RME
 
 extern const RTObject_class RTType_clsRoomba;
 
@@ -199,6 +204,79 @@ public:
 		{
 		}
 	};
+	// {{{RME classifier 'clsButtons'
+	class clsButtons
+	{
+	public:
+		// {{{RME tool 'OT::Cpp' property 'PublicDeclarations'
+		// {{{USR
+
+		// }}}USR
+		// }}}RME
+
+	protected:
+		// {{{RME tool 'OT::Cpp' property 'ProtectedDeclarations'
+		// {{{USR
+
+		// }}}USR
+		// }}}RME
+
+	private:
+		// {{{RME tool 'OT::Cpp' property 'PrivateDeclarations'
+		// {{{USR
+
+		// }}}USR
+		// }}}RME
+
+	public:
+		// {{{RME classAttribute 'clean'
+		bool clean;
+		// }}}RME
+		// {{{RME classAttribute 'spot'
+		bool spot;
+		// }}}RME
+		// {{{RME classAttribute 'dock'
+		bool dock;
+		// }}}RME
+		// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
+		clsButtons( void );
+		// }}}RME
+		// {{{RME tool 'OT::Cpp' property 'GenerateDestructor'
+		virtual ~clsButtons( void );
+		// }}}RME
+		// {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
+		clsButtons( const clsButtons & rtg_arg );
+		// }}}RME
+		// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
+		clsButtons & operator=( const clsButtons & rtg_arg );
+		// }}}RME
+	};
+	// }}}RME
+	static const RTObject_class RTType_clsButtons;
+
+private:
+	static void rtg_clsButtons_init( const RTObject_class * type, clsButtons * target );
+	static void rtg_clsButtons_copy( const RTObject_class * type, clsButtons * target, const clsButtons * source );
+	static void rtg_clsButtons_destroy( const RTObject_class * type, clsButtons * target );
+	static const RTFieldDescriptor rtg_clsButtons_fields[];
+
+public:
+	struct RTTypedValue_clsButtons
+	{
+		const void * data;
+		const RTObject_class * type;
+		inline RTTypedValue_clsButtons( const clsButtons & rtg_value )
+			: data( &rtg_value ), type( &RTType_clsButtons )
+		{
+		}
+		inline RTTypedValue_clsButtons( const clsButtons & rtg_value, const RTObject_class * rtg_type )
+			: data( &rtg_value ), type( rtg_type )
+		{
+		}
+		inline ~RTTypedValue_clsButtons( void )
+		{
+		}
+	};
 
 private:
 	// {{{RME classAttribute 'bumpers'
@@ -237,6 +315,9 @@ private:
 	// {{{RME classAttribute 'motors'
 	clsMotors motors;
 	// }}}RME
+	// {{{RME classAttribute 'buttons'
+	clsButtons buttons;
+	// }}}RME
 
 public:
 	// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
@@ -262,6 +343,27 @@ public:
 	// }}}RME
 	// {{{RME operation 'getMotors(bool*,bool*,bool*)'
 	void getMotors( bool * mainBrush, bool * sideBrush, bool * vacuum );
+	// }}}RME
+	// {{{RME operation 'getButtons()'
+	clsButtons getButtons( void );
+	// }}}RME
+	// {{{RME operation 'getBumpers()'
+	clsBumpersAndCliff getBumpers( void );
+	// }}}RME
+	// {{{RME operation 'getSensor(int)'
+	int getSensor( int index );
+	// }}}RME
+	// {{{RME operation 'getAndResetTotalDistance()'
+	int getAndResetTotalDistance( void );
+	// }}}RME
+	// {{{RME operation 'getAndResetTotalAngle()'
+	int getAndResetTotalAngle( void );
+	// }}}RME
+	// {{{RME operation 'getTotalDistance()'
+	int getTotalDistance( void );
+	// }}}RME
+	// {{{RME operation 'getTotalAngle()'
+	int getTotalAngle( void );
 	// }}}RME
 	static const RTFieldDescriptor rtg_clsRoomba_fields[];
 };
@@ -294,6 +396,11 @@ struct RTTypedValue_clsRoomba
 // }}}USR
 // }}}RME
 // {{{RME classifier 'clsMotors' tool 'OT::Cpp' property 'HeaderEnding'
+// {{{USR
+
+// }}}USR
+// }}}RME
+// {{{RME classifier 'clsButtons' tool 'OT::Cpp' property 'HeaderEnding'
 // {{{USR
 
 // }}}USR

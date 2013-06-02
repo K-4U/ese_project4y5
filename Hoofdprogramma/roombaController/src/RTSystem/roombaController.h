@@ -18,6 +18,8 @@ using namespace std;
 
 extern RTController * ThreadJsonTranslate;
 
+extern RTController * ThreadProgram;
+
 extern RTController * ThreadRoomba;
 
 extern RTController * ThreadSerial;

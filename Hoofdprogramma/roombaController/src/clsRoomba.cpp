@@ -22,6 +22,11 @@
 
 // }}}USR
 // }}}RME
+// {{{RME classifier 'clsButtons' tool 'OT::Cpp' property 'ImplementationPreface'
+// {{{USR
+
+// }}}USR
+// }}}RME
 
 static void rtg_clsRoomba_init( const RTObject_class * type, clsRoomba * target )
 {
@@ -54,7 +59,7 @@ const RTObject_class RTType_clsRoomba =
   , RTstruct_encode
 #endif
   , (RTDestroyFunction)rtg_clsRoomba_destroy
-  , 12
+  , 13
   , clsRoomba::rtg_clsRoomba_fields
 };
 
@@ -62,6 +67,10 @@ const RTObject_class RTType_clsRoomba =
 
 // {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
 clsRoomba::clsBumpersAndCliff::clsBumpersAndCliff( void )
+	: left( false )
+	, right( false )
+	, frontLeft( false )
+	, frontRight( false )
 {
 }
 // }}}RME
@@ -296,6 +305,121 @@ const RTFieldDescriptor clsRoomba::rtg_clsMotors_fields[] =
 	// }}}RME
 };
 
+// {{{RME classifier 'clsButtons'
+
+// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
+clsRoomba::clsButtons::clsButtons( void )
+	: clean( false )
+	, spot( false )
+	, dock( false )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateDestructor'
+clsRoomba::clsButtons::~clsButtons( void )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateCopyConstructor'
+clsRoomba::clsButtons::clsButtons( const clsButtons & rtg_arg )
+	: clean( rtg_arg.clean )
+	, spot( rtg_arg.spot )
+	, dock( rtg_arg.dock )
+{
+}
+// }}}RME
+
+// {{{RME tool 'OT::Cpp' property 'GenerateAssignmentOperator'
+clsRoomba::clsButtons & clsRoomba::clsButtons::operator=( const clsButtons & rtg_arg )
+{
+	if( this != &rtg_arg )
+	{
+		clean = rtg_arg.clean;
+		spot = rtg_arg.spot;
+		dock = rtg_arg.dock;
+	}
+	return *this;
+}
+// }}}RME
+// }}}RME
+
+const RTObject_class clsRoomba::RTType_clsButtons =
+{
+	(const RTObject_class *)0
+  , (RTSuperAccessFunction)0
+  , "clsButtons"
+  , (RTVersionId)0
+  , (RTFieldOffset)sizeof( clsButtons )
+  , (RTInitFunction)&clsRoomba::rtg_clsButtons_init
+  , (RTCopyFunction)&clsRoomba::rtg_clsButtons_copy
+#if OBJECT_DECODE
+  , RTstruct_decode
+#endif
+#if OBJECT_ENCODE
+  , RTstruct_encode
+#endif
+  , (RTDestroyFunction)&clsRoomba::rtg_clsButtons_destroy
+  , 3
+  , clsRoomba::rtg_clsButtons_fields
+};
+
+void clsRoomba::rtg_clsButtons_init( const RTObject_class * type, clsButtons * target )
+{
+	(void)new( target ) clsButtons;
+}
+
+void clsRoomba::rtg_clsButtons_copy( const RTObject_class * type, clsButtons * target, const clsButtons * source )
+{
+	(void)new( target ) clsButtons( *source );
+}
+
+void clsRoomba::rtg_clsButtons_destroy( const RTObject_class * type, clsButtons * target )
+{
+	target->~clsButtons();
+}
+
+const RTFieldDescriptor clsRoomba::rtg_clsButtons_fields[] =
+{
+	// {{{RME classifier 'clsButtons' classAttribute 'clean'
+	{
+		"clean"
+	  , RTOffsetOf( clsButtons, clean )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classifier 'clsButtons' classAttribute 'spot'
+  , {
+		"spot"
+	  , RTOffsetOf( clsButtons, spot )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classifier 'clsButtons' classAttribute 'dock'
+  , {
+		"dock"
+	  , RTOffsetOf( clsButtons, dock )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+};
+
 // {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
 clsRoomba::clsRoomba( void )
 {
@@ -322,6 +446,7 @@ clsRoomba::clsRoomba( const clsRoomba & rtg_arg )
 	, battCapac( rtg_arg.battCapac )
 	, oiMode( rtg_arg.oiMode )
 	, motors( rtg_arg.motors )
+	, buttons( rtg_arg.buttons )
 {
 }
 // }}}RME
@@ -343,6 +468,7 @@ clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 		battCapac = rtg_arg.battCapac;
 		oiMode = rtg_arg.oiMode;
 		motors = rtg_arg.motors;
+		buttons = rtg_arg.buttons;
 	}
 	return *this;
 }
@@ -369,6 +495,11 @@ void clsRoomba::setSensor( int index, int value )
 	        break;
 	    case 12:
 	        this->cliff.right = (bool)value;
+	        break;
+	    case 18:
+	        this->buttons.clean = (bool)(value & (0x01));
+	        this->buttons.spot = (bool)(value & (0x02));
+	        this->buttons.dock = (bool)(value & (0x04));
 	        break;
 	    case 19:
 	        //Distance resets every time you ask for it
@@ -440,6 +571,108 @@ void clsRoomba::getMotors( bool * mainBrush, bool * sideBrush, bool * vacuum )
 	*mainBrush = this->motors.mainBrush;
 	*sideBrush = this->motors.sideBrush;
 	*vacuum = this->motors.vacuum;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getButtons()'
+clsRoomba::clsButtons clsRoomba::getButtons( void )
+{
+	// {{{USR
+	return this->buttons;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getBumpers()'
+clsRoomba::clsBumpersAndCliff clsRoomba::getBumpers( void )
+{
+	// {{{USR
+	return this->bumpers;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getSensor(int)'
+int clsRoomba::getSensor( int index )
+{
+	// {{{USR
+	switch(index){
+	    case 9:
+	        return (this->cliff.left?1:0);
+	        break;
+	    case 10:
+	        return (this->cliff.frontLeft?1:0);
+	        break;
+	    case 11:
+	        return (this->cliff.frontRight?1:0);
+	        break;
+	    case 12:
+	        return (this->cliff.right?1:0);
+	        break;
+	    case 19:
+	        return this->distance;
+	        break;
+	    case 20:
+	        return this->angle;
+	        break;
+	    case 21:
+	        //Sorry, i just don't know how to work with enums in Rational Rose Realtime..
+	        return this->chargingState;
+	        break;
+	    case 24:
+	        return this->temperature;
+	        break;
+	    case 25:
+	        return this->battCharge;
+	        break;
+	    case 26:
+	        return this->battCapac;
+	        break;
+	    case 35:
+	        return this->oiMode;
+	        break;
+	}
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getAndResetTotalDistance()'
+int clsRoomba::getAndResetTotalDistance( void )
+{
+	// {{{USR
+	int d = this->totalDistance;
+	this->totalDistance = 0;
+	return d;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getAndResetTotalAngle()'
+int clsRoomba::getAndResetTotalAngle( void )
+{
+	// {{{USR
+	int d = this->totalAngle;
+	this->totalAngle = 0;
+	return d;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getTotalDistance()'
+int clsRoomba::getTotalDistance( void )
+{
+	// {{{USR
+	return this->totalDistance;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getTotalAngle()'
+int clsRoomba::getTotalAngle( void )
+{
+	// {{{USR
+	return this->totalAngle;
 	// }}}USR
 }
 // }}}RME
@@ -590,6 +823,18 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 		// }}}RME
 	}
 	// }}}RME
+	// {{{RME classAttribute 'buttons'
+  , {
+		"buttons"
+	  , RTOffsetOf( clsRoomba, buttons )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &clsRoomba::RTType_clsButtons
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
 };
 
 #if OBJECT_DECODE
@@ -598,6 +843,10 @@ RTTypeInstaller rtg_clsRoomba_clsBumpersAndCliff_installer( clsRoomba::RTType_cl
 
 #if OBJECT_DECODE
 RTTypeInstaller rtg_clsRoomba_clsMotors_installer( clsRoomba::RTType_clsMotors );
+#endif
+
+#if OBJECT_DECODE
+RTTypeInstaller rtg_clsRoomba_clsButtons_installer( clsRoomba::RTType_clsButtons );
 #endif
 
 #if OBJECT_DECODE
@@ -615,6 +864,11 @@ RTTypeInstaller rtg_clsRoomba_installer( RTType_clsRoomba );
 // }}}USR
 // }}}RME
 // {{{RME classifier 'clsMotors' tool 'OT::Cpp' property 'ImplementationEnding'
+// {{{USR
+
+// }}}USR
+// }}}RME
+// {{{RME classifier 'clsButtons' tool 'OT::Cpp' property 'ImplementationEnding'
 // {{{USR
 
 // }}}USR

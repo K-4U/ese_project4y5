@@ -96,7 +96,7 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 	int i;
 	for(i = 0; i <= b.size(); i++){
 	    if(!this->inCommand){
-	        if(b.get(i) == 19){ //Sensor stream
+	        if(b.get(i) == 149){ //Sensor stream
 	            //This is the sensor stream. The next byte is the length
 	            this->inCommand = true;
 	            this->lengthNotYetReceived = true;

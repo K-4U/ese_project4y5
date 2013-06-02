@@ -88,7 +88,7 @@ byteArray::byteArray( unsigned char chars[], int length )
 // }}}RME
 
 // {{{RME operation 'get(int)'
-char byteArray::get( int index )
+unsigned char byteArray::get( int index )
 {
 	// {{{USR
 	if(index <= this->data.size()){

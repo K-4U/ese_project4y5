@@ -108,7 +108,8 @@ void serialCommunicationCapsule_Actor::enterStateV( void )
 INLINE_METHODS void serialCommunicationCapsule_Actor::enter4_pollData( void )
 {
 	// {{{USR
-	int i, n;
+	int i = 0;
+	int n = 0;
 
 	unsigned char buf[4096];
 

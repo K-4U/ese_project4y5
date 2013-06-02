@@ -21,7 +21,8 @@ namespace shared{
             EVENTTYPE_USER_STATUS, /*!< For when a user updated his or her status */
 			EVENTTYPE_USER_JOIN, /*!< For when a user joins the channel */
 			EVENTTYPE_USER_NICK, /*!< For when a user updates his or her nick */
-			EVENTTYPE_SERVERMSG /*!< For when the server wants to tell something to the client */
+            EVENTTYPE_SERVERMSG, /*!< For when the server wants to tell something to the client */
+            EVENTTYPE_SENSORDATA
         };
 
 

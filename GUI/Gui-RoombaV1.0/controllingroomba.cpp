@@ -89,6 +89,8 @@ void Controllingroomba::on_pbDriveRight_released()
 
 void Controllingroomba::on_pbResetRoomba_clicked()
 {
+    ui->hsMotorSpeed->setValue(50);
+    emit ModeChanged(MODESTOPPED);
 }
 
 void Controllingroomba::on_pbStop_clicked()
@@ -101,4 +103,9 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
     emit setMotorBrushVacuum(ui->cbMainBrush->checkState() == Qt::Checked,
             ui->cbSideBrush->checkState() == Qt::Checked,
             ui->cbVacuum->checkState() == Qt::Checked);
+}
+
+void Controllingroomba::on_pbRefresh_clicked()
+{
+    emit readStatus(1);
 }

@@ -13,6 +13,7 @@ Roomba::Roomba(QWidget *parent) :
 //    this->server = new clsServerConn("localhost", 1337);
 
     ui->setupUi(this);
+
 }
 
 Roomba::~Roomba()
@@ -33,6 +34,9 @@ void Roomba::on_pbControlRoomba_clicked()
 
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
+
+    connect(controlling_roomba, SIGNAL(readStatus(int)),
+            this, SLOT(readSensorData(int)));
     this->hide();
 
 }
@@ -82,6 +86,13 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 
 void Roomba::on_pbConnect_clicked()
 {
+//    Roomba *roomba = new roomba(this);
+//    roomba->show();
+
+//    connect(roomba, SIGNAL(ModeChanged(Modes)),
+//            this, SLOT(RoombaModeChanged(Modes)));
+
+
     this->server->doConnect();
 }
 
@@ -95,7 +106,9 @@ void Roomba::on_pbDisonnect_clicked()
     this->server->doDisconnect();
 }
 
-void Roomba::readRoombaStatus(int batteryStatus, int temperature)
+void Roomba::readSensorData(int readBatteryStatus)
 {
-    ;
+    jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
+    toSend.addToData("ReadSensorData", readBatteryStatus);
+    this->server->sendCommand(toSend);
 }

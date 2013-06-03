@@ -234,61 +234,38 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	//Translate everything to a variable.
 #define HEX( x ) "0x" << setw(2) << setfill('0') << hex << (int)( x )
 
-
 	byteArray b = *rtdata;
-	int s = b.size() -1;
+
+	int s = b.size() - 1;
 	int i = 0;
-
-	//bool inSensorList;
-	cout << "Recv: ";
+	cout << "RMB: ";
 	b.print();
+
 	while(i < s){
-	/*    if(!inSensorList){
-	        if(b.get(i) == 149 || b.get(i) == 19){
-	            inSensorList = true;
-	            i++; //skip number of packets.
-	        }
-	    }else{*/
-	        if(this->isOperating){
-	            int x = 0;
-	            int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-	            for(x=0;x< sizeOfArray; x++){
-	                //if(sensorsToQuery[x][0] == b.get(i)){
-	                int value = 0;
-	                if(sensorsToQuery[x][1] == 2){
-	                    value = b.get(i) << 8;
-	                    i++;
-	                }
-	                value += b.get(i);
-	                this->roomba.setSensor(sensorsToQuery[x][0], value);
-	                //}
-	            }
-	        }else{
-	            //Only three sensors;
-	            this->roomba.setSensor(18, b.get(i));
-	            clsRoomba::clsButtons btns = this->roomba.getButtons();
-	            cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
-	            i++;
-	            this->roomba.setSensor(25, (b.get(i) << 8) + b.get(i++));
-	            i++;
-	            this->roomba.setSensor(26, (b.get(i) << 8) + b.get(i++));
-	/*
-	          
-	            int v = b.get(i);
-
-	            if(sId != 18){
-	                v = (v << 8);
+	    if(this->isOperating){
+	        
+	        int x = 0;
+	        for(x=0;x< NUMSENSORS; x++){
+	            cout << sensorsToQuery[x][0] << " ";
+	            int value = 0;
+	            if(sensorsToQuery[x][1] == 2){
+	                value = b.get(i) << 8;
 	                i++;
-	                v+= b.get(i);
 	            }
-
-	            //std::cout << "sId: " << sId << " V: " << v << endl;
-	            this->roomba.setSensor(sId, v);*/
+	            value += b.get(i);
+	            this->roomba.setSensor(sensorsToQuery[x][0], value);
+	            i++;
 	        }
-	    //}
-	    i++;
+	    }else{
+	        //Only three sensors;
+	        this->roomba.setSensor(18, b.get(i));
+	        i++;
+	        this->roomba.setSensor(25, (b.get(i) << 8) + b.get(i++));
+	        i++;
+	        this->roomba.setSensor(26, (b.get(i) << 8) + b.get(i++));
+	    }
+	    
 	}
-	//this->roomba.printSensors();
 
 	// }}}USR
 }
@@ -330,9 +307,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    clsRoomba::clsBumpersAndCliff bmprs = this->roomba.getBumpers();
 	    //std::cout << "BMPRS: FL " << bmprs.frontLeft << " FR " << bmprs.frontRight;
 	    //std::cout << " L " << bmprs.left << " R " << bmprs.right << endl;
-	    if((bmprs.frontLeft == true) || 
-	       (bmprs.frontRight == true) || 
-	       (bmprs.left == true) ||
+	    if((bmprs.left == true) ||
 	       (bmprs.right == true)){
 	        program.bumpersTriggered(bmprs).send();
 	    }
@@ -343,11 +318,11 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    if(btns.clean == true){
 	        //Do this!
 	        std::cout << "Starting program!" << endl;
-	        //int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
-	        int battLevel = 90;
+	        int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
+	        //int battLevel = 90;
 	        program.start(battLevel).send();
 	        byteArray b;
-	        b.append(130);
+	        b.append(131);
 
 	        toMain.sendData(b).send();
 	        this->isOperating = true;
@@ -366,12 +341,15 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	    //Then, a stream
 	    b.append(149);
 	    //First the length:
-	    int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-	    b.append(sizeOfArray);
+	    //int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+	    b.append(NUMSENSORS);
 	    int i = 0;
-	    for(i=0;i < sizeOfArray; i++){
+	    int l = 0;
+	    for(i=0;i < NUMSENSORS; i++){
 	        b.append(sensorsToQuery[i][0]);
+	        l+= sensorsToQuery[i][1];
 	    }
+	    toMain.setCommandLength(l).send();
 	}else{
 	    //Wait for buttons, battery charge and battery max:
 	    b.append(149);
@@ -379,7 +357,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	    b.append(18);
 	    b.append(25);
 	    b.append(26);
-	    
+	    toMain.setCommandLength(5).send();
 	}
 	toMain.sendData(b).send();
 	b.clear();
@@ -425,7 +403,6 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition9_drive( const clsDriveCom
 	b.append(dr.left >> 8);
 	b.append(dr.left & 0xFF);
 
-	b.print();
 
 	toMain.sendData(b).send();
 	// }}}USR

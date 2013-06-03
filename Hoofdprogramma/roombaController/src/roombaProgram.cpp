@@ -189,6 +189,11 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 	    this->drive(100, -100);
 	    //Reset total angle
 	    Roomba.getTotalAngle(true).send();
+	}else if(bumpersTriggered.right){
+	    this->angleToRotate = -45;
+	    this->drive(-100, 100);
+	    //Reset total angle
+	    Roomba.getTotalAngle(true).send();
 	}
 	// }}}USR
 }

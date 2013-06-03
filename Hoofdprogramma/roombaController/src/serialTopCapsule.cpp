@@ -215,6 +215,16 @@ INLINE_METHODS void serialTopCapsule_Actor::transition5_comError( const void * r
 }
 // }}}RME
 
+// {{{RME transition ':TOP:ready:J51AC8CD800D7:setCommandLength'
+INLINE_METHODS void serialTopCapsule_Actor::transition6_setCommandLength( const int * rtdata, serialProtocol::Base * rtport )
+{
+	// {{{USR
+	internalSerial.commandLength(*rtdata).send();
+
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void serialTopCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -265,6 +275,17 @@ INLINE_CHAINS void serialTopCapsule_Actor::chain3_sendCommand( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition3_sendCommand( (const byteArray *)msg->data, (serialProtocol::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTopCapsule_Actor::chain6_setCommandLength( void )
+{
+	// transition ':TOP:ready:J51AC8CD800D7:setCommandLength'
+	rtgChainBegin( 2, "setCommandLength" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition6_setCommandLength( (const int *)msg->data, (serialProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -331,6 +352,9 @@ void serialTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case serialProtocol::Base::rti_sendCommand:
 					chain3_sendCommand();
+					return;
+				case serialProtocol::Base::rti_commandLength:
+					chain6_setCommandLength();
 					return;
 				default:
 					break;

@@ -93,8 +93,6 @@ unsigned char byteArray::get( int index )
 	// {{{USR
 	if(index < this->data.size()){
 	    return this->data[index];
-	}else{
-
 	}
 	// }}}USR
 }
@@ -159,6 +157,7 @@ void byteArray::print( void )
 
 	//  cout << dec << b.get(i) << endl;
 	int i;
+	cout << dec << "(" << this->data.size() << ") ";
 	for(i = 0; i < this->data.size(); i++){
 	    cout << HEX(this->data[i]) << " ";
 	}

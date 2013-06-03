@@ -97,43 +97,20 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 	byteArray b = *rtdata;
 	int i;
 
-	serialOut.commandReceived(b).send();
+	//serialOut.commandReceived(b).send();
 
-	/*
-	for(i = 0; i <= b.size(); i++){
 
-	 //cout << HEX(b.get(i)) << endl;
-
-	    if(!this->inCommand){
-
-	        if(b.get(i) == 149 || b.get(i) == 19){ //Sensor stream
-	            //This is the sensor stream. The next byte is the length
-	            this->inCommand = true;
-	            this->lengthNotYetReceived = true;
-	            this->buffer.append(b.get(i));
-	        }
-	    }else if(this->inCommand && this->lengthNotYetReceived == true){
-	        this->commandLength = b.get(i)+2;
-	        this->lengthNotYetReceived = false;
-	        this->buffer.append(b.get(i));
-	    }else{
-	        this->buffer.append(b.get(i));
-	        //cout << "STR: Buff size: " << this->buffer.size() << "/" << this->commandLength << endl;
-	        if(this->buffer.size() >= this->commandLength){
-	            //Complete packet received. Handle it plox.
-	            //Trigger event
-	            serialOut.commandReceived(this->buffer).send();
-	            //Clear buffer
-	            this->buffer.clear();
-	            this->inCommand = false;
-	            this->commandLength = 0;
-	        }
+	for(i = 0; i < b.size(); i++){
+	    this->buffer.append(b.get(i));
+	    //cout << "STR: Buff size: " << this->buffer.size() << "/" << this->commandLength << endl;
+	    if(this->buffer.size() == this->commandLength){
+	        //Complete packet received. Handle it plox.
+	        //Trigger event
+	        serialOut.commandReceived(this->buffer).send();
+	        //Clear buffer
+	        this->buffer.clear();
 	    }
 	}
-	*/
-
-	//cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
-	//b.print();
 	// }}}USR
 }
 // }}}RME
@@ -156,8 +133,8 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition3_sendCommand( const
 
 	RS232_SendBuf(COM_PORT, data, b.size());
 
-	cout << "STR: Sending data: ";
-	b.print();
+	/*cout << "STR: Sending data: ";
+	b.print();*/
 
 	this->isSending = false;
 	// }}}USR
@@ -178,6 +155,15 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition5_comError( const vo
 {
 	// {{{USR
 	serialOut.comError().send();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:S1:J51AC8BCA02BB:lengthReceived'
+INLINE_METHODS void serialTranslateCapsule_Actor::transition6_lengthReceived( const int * rtdata, serialProtocol::Base * rtport )
+{
+	// {{{USR
+	this->commandLength = (*rtdata);
 	// }}}USR
 }
 // }}}RME
@@ -231,6 +217,17 @@ INLINE_CHAINS void serialTranslateCapsule_Actor::chain3_sendCommand( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition3_sendCommand( (const byteArray *)msg->data, (serialProtocol::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void serialTranslateCapsule_Actor::chain6_lengthReceived( void )
+{
+	// transition ':TOP:S1:J51AC8BCA02BB:lengthReceived'
+	rtgChainBegin( 2, "lengthReceived" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition6_lengthReceived( (const int *)msg->data, (serialProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -297,6 +294,9 @@ void serialTranslateCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case serialProtocol::Base::rti_sendCommand:
 					chain3_sendCommand();
+					return;
+				case serialProtocol::Base::rti_commandLength:
+					chain6_lengthReceived();
 					return;
 				default:
 					break;

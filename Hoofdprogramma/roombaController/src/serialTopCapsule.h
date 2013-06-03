@@ -81,6 +81,9 @@ protected:
 	// {{{RME transition ':TOP:ready:J519B513C00E7:comError'
 	INLINE_METHODS void transition5_comError( const void * rtdata, serialProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J51AC8CD800D7:setCommandLength'
+	INLINE_METHODS void transition6_setCommandLength( const int * rtdata, serialProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
@@ -88,6 +91,7 @@ private:
 	INLINE_CHAINS void chain4_comOpened( void );
 	INLINE_CHAINS void chain5_comError( void );
 	INLINE_CHAINS void chain3_sendCommand( void );
+	INLINE_CHAINS void chain6_setCommandLength( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

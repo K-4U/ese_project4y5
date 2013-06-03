@@ -13,7 +13,7 @@ const RTProtocolDescriptor serialProtocol::Base::rt_class =
   , &serialProtocol::Conjugate::rt_class
   , "serialProtocol"
   , 0
-  , 3
+  , 4
   , serialProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -23,6 +23,11 @@ const RTProtocolDescriptor serialProtocol::Base::rt_class =
 const RTSignalDescriptor serialProtocol::Base::rt_signals[] =
 {
 	{
+		"commandLength"
+	  , &RTType_int
+	  , serialProtocol::Base::rti_commandLength
+	}
+  , {
 		"rtBound"
 	  , (const RTObject_class *)0
 	  , serialProtocol::Base::rti_rtBound

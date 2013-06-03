@@ -478,13 +478,14 @@ clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 void clsRoomba::setSensor( int index, int value )
 {
 	// {{{USR
-	std::cout << "Sensor " << index << " = " << value << endl;
+	//std::cout << "Sensor " << index << " = " << value << endl;
 
 	switch(index){
 	    case 7:
 	        //Needs some translating
 	        this->bumpers.left = (bool)(value & (0x02));
 	        this->bumpers.right = (bool)(value & (0x01));
+	        std::cout << "BMPRS = " << dec << value << endl;
 	        break;
 	    case 9:
 	        this->cliff.left = (bool)value;

@@ -82,8 +82,8 @@ int serialCommunicationCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rt
 INLINE_METHODS void serialCommunicationCapsule_Actor::enter2_Ready( void )
 {
 	// {{{USR
-	//timer.informIn(RTTimespec(1,0));
-	timer.informIn(10);
+	timer.informIn(RTTimespec(0,10000000));
+	//timer.informIn(10);
 	// }}}USR
 }
 // }}}RME
@@ -118,15 +118,7 @@ INLINE_METHODS void serialCommunicationCapsule_Actor::enter4_pollData( void )
 	if(n > 0)
 	{
 	  //buf[n] = 0;   /* always put a "null" at the end of a string! */
-	/* THIS DAMN CODE HAD ME DEBUGGING FOR OVER AN FRIGGIN HOUR!
-	  for(i=0; i < n; i++)
-	  {
-	    if(buf[i] < 32)  // replace unreadable control-codes by dots 
-	    {
-	      buf[i] = '.';
-	    }
-	  }*/
-	  byteArray data(buf, n);
+	  byteArray data(buf, n-1);
 	  //cout << "SER: Received " << n << " bytes: ";
 	  //data.print();
 	  serialPort.dataReceived(data).send();

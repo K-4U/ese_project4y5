@@ -86,12 +86,16 @@ protected:
 	// {{{RME transition ':TOP:ready:J519B64890324:roombaDataReceived'
 	INLINE_METHODS void transition6_roombaDataReceived( const byteArray * rtdata, roombaProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J51AC8C82005A:setCommandLength'
+	INLINE_METHODS void transition7_setCommandLength( const int * rtdata, roombaProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
 	INLINE_CHAINS void chain2_GUIDataReceived( void );
 	INLINE_CHAINS void chain3_serialDataReceived( void );
 	INLINE_CHAINS void chain6_roombaDataReceived( void );
+	INLINE_CHAINS void chain7_setCommandLength( void );
 	INLINE_CHAINS void chain4_comOpened( void );
 	INLINE_CHAINS void chain5_comError( void );
 

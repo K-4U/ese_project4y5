@@ -20,82 +20,6 @@
 					quidu "519B57A40170"
 					capsuleRoleCardinality 0))
 			capsulePathString "0/roombaTopCapsuleR1:roombaTopCapsule")
-		(object CapsulePath "/serialTopCapsuleR1:0/serialCommunicationInstance:0"
-			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "519B5B8301FB"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "519B5B8301FC"
-					classifier  "Logical View::Serial::serialTopCapsule"
-					quidu "519224D302D1"
-					capsuleRole  ":Structure:serialTopCapsuleR1"
-					quidu "5192286A034B"
-					capsuleRoleCardinality 0)
-				(object CapsulePathElement ""
-					quid "519B5B8301FD"
-					classifier  "Logical View::Serial::serialCommunicationCapsule"
-					quidu "519224DC0230"
-					capsuleRole  ":Structure:serialCommunicationInstance"
-					quidu "5192273B0109"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/serialCommunicationInstance:serialCommunicationCapsule")
-		(object CapsulePath "/serialTopCapsuleR1:0"
-			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934BB50077"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51934BB50078"
-					classifier  "Logical View::Serial::serialTopCapsule"
-					quidu "519224D302D1"
-					capsuleRole  ":Structure:serialTopCapsuleR1"
-					quidu "5192286A034B"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/serialTopCapsuleR1:serialTopCapsule")
-		(object CapsulePath "/mainCapsuleR1:0"
-			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934C9301E0"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51934C9301E1"
-					classifier  "Logical View::mainCapsule"
-					quidu "517679F9026D"
-					capsuleRole  ":Structure:mainCapsuleR1"
-					quidu "5188E41C02D9"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/mainCapsuleR1:mainCapsule")
-		(object CapsulePath "/serialTopCapsuleR1:0/serialTranslateCapsuleR1:0"
-			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934DF10032"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePaths (list capsulePathsList
-				(object CapsulePathElement ""
-					quid "51934DF10033"
-					classifier  "Logical View::Serial::serialTopCapsule"
-					quidu "519224D302D1"
-					capsuleRole  ":Structure:serialTopCapsuleR1"
-					quidu "5192286A034B"
-					capsuleRoleCardinality 0)
-				(object CapsulePathElement ""
-					quid "51934DF10034"
-					classifier  "Logical View::Serial::serialTranslateCapsule"
-					quidu "51922E6202AF"
-					capsuleRole  ":Structure:serialTranslateCapsuleR1"
-					quidu "51922E83032C"
-					capsuleRoleCardinality 0))
-			capsulePathString "0/serialTranslateCapsuleR1:serialTranslateCapsule")
-		(object CapsulePath "/"
-			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51A49B6E011F"
-			classifier  "Logical View::topCap"
-			quidu "5176795702F3"
-			capsulePathString ":topCap")
 		(object CapsulePath "/roombaTopCapsuleR1:0/roombaProgramInstance:0"
 			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
 			quid "51AB64AE033B"
@@ -116,14 +40,22 @@
 					capsuleRole  ":Structure:roombaProgramInstance"
 					quidu "51AB4BEC0082"
 					capsuleRoleCardinality 0))
-			capsulePathString "0/roombaProgramInstance:roombaProgram"))
+			capsulePathString "0/roombaProgramInstance:roombaProgram")
+		(object CapsulePath "/mainCapsuleR1:0"
+			capsulePathProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
+			quid "51AC8D5101EC"
+			classifier  "Logical View::topCap"
+			quidu "5176795702F3"
+			capsulePaths (list capsulePathsList
+				(object CapsulePathElement ""
+					quid "51AC8D5101ED"
+					classifier  "Logical View::mainCapsule"
+					quidu "517679F9026D"
+					capsuleRole  ":Structure:mainCapsuleR1"
+					quidu "5188E41C02D9"
+					capsuleRoleCardinality 0))
+			capsulePathString "0/mainCapsuleR1:mainCapsule"))
 	daemons (list daemonsList
-		(object BehaviorDaemon "0/roombaProgramInstance:roombaProgram-TOP"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51AB75DD0212"
-			capsuleInstance  "/roombaTopCapsuleR1:0/roombaProgramInstance:0"
-			quidu "51AB64AE033B"
-			State  ":TOP")
 		(object StateDaemon "/roombaStart_Probe"
 			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
 			quid "51AB74C700D6"
@@ -133,12 +65,6 @@
 			classifier  "Logical View::Roomba::roombaProgram"
 			quidu "51AB48870299"
 			State  ":TOP:roombaStart")
-		(object BehaviorDaemon "0/roombaTopCapsuleR1:roombaTopCapsule-Ready"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51AB72E8011E"
-			capsuleInstance  "/roombaTopCapsuleR1:0"
-			quidu "519C981B0163"
-			State  ":TOP:Ready")
 		(object StateDaemon "/Ready_Probe"
 			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
 			quid "51AB72E00382"
@@ -148,42 +74,18 @@
 			classifier  "Logical View::Roomba::roombaTopCapsule"
 			quidu "518A226F036A"
 			State  ":TOP:Ready")
-		(object BehaviorDaemon "0/roombaTopCapsuleR1:roombaTopCapsule-TOP"
+		(object StateDaemon "/bumperTriggered_Probe"
 			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "519C982702D7"
-			capsuleInstance  "/roombaTopCapsuleR1:0"
-			quidu "519C981B0163"
-			State  ":TOP")
-		(object BehaviorDaemon "0/serialCommunicationInstance:serialCommunicationCapsule-TOP"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "519B5B8703A0"
-			capsuleInstance  "/serialTopCapsuleR1:0/serialCommunicationInstance:0"
-			quidu "519B5B8301FB"
-			State  ":TOP")
-		(object BehaviorDaemon "0/serialTopCapsuleR1:serialTopCapsule-TOP"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934BBA01A3"
-			capsuleInstance  "/serialTopCapsuleR1:0"
-			quidu "51934BB50077"
-			State  ":TOP")
+			quid "51AC861B00DE"
+			capsuleInstance  "/roombaTopCapsuleR1:0/roombaProgramInstance:0"
+			quidu "51AB64AE033B"
+			daemonTracingFlag TRUE
+			classifier  "Logical View::Roomba::roombaProgram"
+			quidu "51AB48870299"
+			State  ":TOP:bumperTriggered")
 		(object BehaviorDaemon "0/mainCapsuleR1:mainCapsule-TOP"
 			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934CE4032A"
+			quid "51AC8D570313"
 			capsuleInstance  "/mainCapsuleR1:0"
-			quidu "51934C9301E0"
-			State  ":TOP")
-		(object BehaviorDaemon "0/serialTranslateCapsuleR1:serialTranslateCapsule-TOP"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51934DF40313"
-			capsuleInstance  "/serialTopCapsuleR1:0/serialTranslateCapsuleR1:0"
-			quidu "51934DF10032"
-			State  ":TOP")
-		(object MSCDaemon "Trace1"
-			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
-			quid "51A49C050053"
-			capsuleInstance  "/"
-			quidu "51A49B6E011F"
-			daemonTracingFlag TRUE
-			capsulePaths (list capsulePathsList
-				capsulePaths  "/roombaTopCapsuleR1:0"
-				quidu "519C981B0163"))))
+			quidu "51AC8D5101EC"
+			State  ":TOP")))

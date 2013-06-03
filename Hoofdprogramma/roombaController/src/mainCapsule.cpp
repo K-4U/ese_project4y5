@@ -187,6 +187,15 @@ INLINE_METHODS void mainCapsule_Actor::transition6_roombaDataReceived( const byt
 }
 // }}}RME
 
+// {{{RME transition ':TOP:ready:J51AC8C82005A:setCommandLength'
+INLINE_METHODS void mainCapsule_Actor::transition7_setCommandLength( const int * rtdata, roombaProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	Serial.commandLength(*rtdata).send();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void mainCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -226,6 +235,17 @@ INLINE_CHAINS void mainCapsule_Actor::chain6_roombaDataReceived( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition6_roombaDataReceived( (const byteArray *)msg->data, (roombaProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void mainCapsule_Actor::chain7_setCommandLength( void )
+{
+	// transition ':TOP:ready:J51AC8C82005A:setCommandLength'
+	rtgChainBegin( 2, "setCommandLength" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition7_setCommandLength( (const int *)msg->data, (roombaProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -319,6 +339,9 @@ void mainCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				{
 				case roombaProtocol::Conjugate::rti_sendData:
 					chain6_roombaDataReceived();
+					return;
+				case roombaProtocol::Conjugate::rti_setCommandLength:
+					chain7_setCommandLength();
 					return;
 				default:
 					break;

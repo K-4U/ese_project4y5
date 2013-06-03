@@ -17,10 +17,14 @@ struct serialProtocol
 	public:
 		inline Base( void );
 		inline ~Base( void );
-		enum { rti_sendCommand = rtiLast_RTRootProtocol + 1 };
+		enum
+		{
+			rti_sendCommand = rtiLast_RTRootProtocol + 1
+		  , rti_commandLength
+		};
 
 	protected:
-		enum { rtiLast_serialProtocol = rti_sendCommand };
+		enum { rtiLast_serialProtocol = rti_commandLength };
 
 	public:
 		// {{{RME inSignal 'sendCommand'
@@ -30,6 +34,14 @@ struct serialProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal sendCommand( void );
+		// }}}RME
+		// {{{RME inSignal 'commandLength'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal commandLength( void );
 		// }}}RME
 		// {{{RME inSignal 'commandReceived'
 		// {{{RME general 'documentation'
@@ -108,6 +120,14 @@ struct serialProtocol
 		// }}}RME
 		inline RTOutSignal sendCommand( const RTTypedValue_byteArray & data );
 		// }}}RME
+		// {{{RME outSignal 'commandLength'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal commandLength( const int & data );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -133,6 +153,18 @@ inline serialProtocol::Base::~Base( void )
 inline RTInSignal serialProtocol::Base::sendCommand( void )
 {
 	return RTInSignal( this, rti_sendCommand );
+}
+// }}}RME
+
+// {{{RME inSignal 'commandLength'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal serialProtocol::Base::commandLength( void )
+{
+	return RTInSignal( this, rti_commandLength );
 }
 // }}}RME
 
@@ -226,6 +258,18 @@ inline RTInSignal serialProtocol::Conjugate::comError( void )
 inline RTOutSignal serialProtocol::Conjugate::sendCommand( const RTTypedValue_byteArray & data )
 {
 	return RTOutSignal( this, Base::rti_sendCommand, data.data, data.type );
+}
+// }}}RME
+
+// {{{RME outSignal 'commandLength'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal serialProtocol::Conjugate::commandLength( const int & data )
+{
+	return RTOutSignal( this, Base::rti_commandLength, &data, &RTType_int );
 }
 // }}}RME
 

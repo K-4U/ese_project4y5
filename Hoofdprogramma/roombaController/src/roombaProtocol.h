@@ -61,6 +61,14 @@ struct roombaProtocol
 		// }}}RME
 		inline RTOutSignal sendData( const RTTypedValue_byteArray & data );
 		// }}}RME
+		// {{{RME inSignal 'setCommandLength'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal setCommandLength( const int & data );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -71,10 +79,14 @@ struct roombaProtocol
 	public:
 		inline Conjugate( void );
 		inline ~Conjugate( void );
-		enum { rti_sendData = rtiLast_RTRootProtocol + 1 };
+		enum
+		{
+			rti_sendData = rtiLast_RTRootProtocol + 1
+		  , rti_setCommandLength
+		};
 
 	protected:
-		enum { rtiLast_roombaProtocol = rti_sendData };
+		enum { rtiLast_roombaProtocol = rti_setCommandLength };
 
 	public:
 		// {{{RME outSignal 'sendData'
@@ -84,6 +96,14 @@ struct roombaProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal sendData( void );
+		// }}}RME
+		// {{{RME outSignal 'setCommandLength'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal setCommandLength( void );
 		// }}}RME
 		// {{{RME outSignal 'dataReceived'
 		// {{{RME general 'documentation'
@@ -173,6 +193,18 @@ inline RTOutSignal roombaProtocol::Base::sendData( const RTTypedValue_byteArray 
 }
 // }}}RME
 
+// {{{RME inSignal 'setCommandLength'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal roombaProtocol::Base::setCommandLength( const int & data )
+{
+	return RTOutSignal( this, Conjugate::rti_setCommandLength, &data, &RTType_int );
+}
+// }}}RME
+
 inline roombaProtocol::Conjugate::Conjugate( void )
 	: RTRootProtocol()
 {
@@ -191,6 +223,18 @@ inline roombaProtocol::Conjugate::~Conjugate( void )
 inline RTInSignal roombaProtocol::Conjugate::sendData( void )
 {
 	return RTInSignal( this, rti_sendData );
+}
+// }}}RME
+
+// {{{RME outSignal 'setCommandLength'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal roombaProtocol::Conjugate::setCommandLength( void )
+{
+	return RTInSignal( this, rti_setCommandLength );
 }
 // }}}RME
 

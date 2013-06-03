@@ -6,90 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>784</width>
-    <height>382</height>
+    <width>380</width>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Roomba</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pbCloseRoomba">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>140</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Close</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pbControlRoomba">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>30</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Controlling Roomba</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pbInformation">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>100</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Information</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pbDisplayLogs">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>100</y>
-      <width>151</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Display Logs</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pbConnect">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>190</y>
-      <width>201</width>
-      <height>81</height>
+      <x>20</x>
+      <y>10</y>
+      <width>341</width>
+      <height>131</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>48</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>connect</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pbDisonnect">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>190</y>
-      <width>201</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Disconnect</string>
     </property>
    </widget>
   </widget>
@@ -98,7 +38,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>784</width>
+     <width>380</width>
      <height>21</height>
     </rect>
    </property>
@@ -132,22 +72,5 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections>
-  <connection>
-   <sender>pbCloseRoomba</sender>
-   <signal>clicked()</signal>
-   <receiver>Roomba</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>237</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>225</x>
-     <y>252</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

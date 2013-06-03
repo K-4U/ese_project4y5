@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         roomba.cpp \
     controllingroomba.cpp \
-    information.cpp \
     RoombaConnect.cpp \
     ../resources/jsoncommand.cpp \
     ../resources/json.cpp \
@@ -26,7 +25,6 @@ SOURCES += main.cpp\
 
 HEADERS  += roomba.h \
     controllingroomba.h \
-    information.h \
     RoombaConnect.h \
     ../resources/jsoncommand.h \
     ../resources/json.h \
@@ -37,5 +35,4 @@ HEADERS  += roomba.h \
 
 FORMS    += roomba.ui \
     controllingroomba.ui \
-    information.ui \
     displaylogs.ui

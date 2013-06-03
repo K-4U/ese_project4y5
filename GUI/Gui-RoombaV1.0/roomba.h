@@ -26,25 +26,15 @@ public:
 private slots:
     void on_pbConnect_clicked();
 
-    void on_pbCloseRoomba_clicked();
-
-    void on_pbControlRoomba_clicked();
-
-    void on_pbInformation_clicked();
-
-    void on_pbDiplayLogs_clicked();
-
-    void ManualcommandReceived(QString Manualcommand);
-
     void RoombaModeChanged(Modes);
 
     void MotorBrushVacuumChanged(bool, bool, bool);
 
     void MotorSpeedChanged(int, int);
 
-    void on_pbDisonnect_clicked();
-
     void readSensorData(int);
+
+    void disconnectDoIt(bool);
 
 private:
     Ui::Roomba *ui;

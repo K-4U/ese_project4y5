@@ -3,12 +3,15 @@
 
 #include "../resources/json.h"
 #include "../resources/jsoncommand.h"
+#include "RoombaConnect.h"
 #include "../resources/clslog.h"
+#include "../resources/clsevent.h"
 #include <QWidget>
 #include <QTcpSocket>
 #include <QSlider>
 
 using namespace K4U;
+using namespace client;
 
 enum Modes{
     MODESTOPPED = 0x00,
@@ -45,10 +48,6 @@ private slots:
 
     void on_pbDock_clicked();
 
-    void on_pbResetRoomba_clicked();
-
-    void on_pbUpload_clicked();
-
     void on_pbDriveLeft_pressed();
 
     void on_pbDriveBackward_pressed();
@@ -65,15 +64,18 @@ private slots:
 
     void on_pbDriveRight_released();
 
+    void on_pbDisonnect_clicked();
+
+    void on_pbDiplayLogs_clicked();
+
 private:
     Ui::Controllingroomba *ui;
     clsLog log;
     QTcpSocket *sock;
     QWidget *parent;
 
-
 signals:
-    void ManualcommandReceived(QString Manualcommand);
+    void disconnectDo(bool disconnect);
     void ModeChanged(Modes newMode);
     void setMotorBrushVacuum(bool MainBrush, bool SideBrush, bool Vacuum);
     void setMotorSpeed(int setLeftMotorSpeed, int setRightMotorSpeed);

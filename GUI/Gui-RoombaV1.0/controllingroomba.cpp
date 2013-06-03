@@ -1,6 +1,7 @@
 #include "controllingroomba.h"
 #include "ui_controllingroomba.h"
 #include "roomba.h"
+#include "displaylogs.h"
 
 Controllingroomba::Controllingroomba(QWidget *parent) :
     QWidget(),
@@ -16,20 +17,17 @@ Controllingroomba::~Controllingroomba()
     delete ui;
 }
 
+void Controllingroomba::on_pbDiplayLogs_clicked()
+{
+    DisplayLogs *display_logs = new DisplayLogs();
+    display_logs->show();
+    this->hide();
+}
+
 void Controllingroomba::on_pbClose_clicked()
 {
     this->parent->show();
     this->close();
-}
-
-void Controllingroomba::on_pbUpload_clicked()
-{
-    QString Manualcommand = ui->txtManualcommands->toPlainText();
-
-    this->log << Manualcommand << endl;
-    emit ManualcommandReceived(Manualcommand);
-
-    ui->txtManualcommands->clear();
 }
 
 void Controllingroomba::on_pbClean_clicked()
@@ -87,12 +85,6 @@ void Controllingroomba::on_pbDriveRight_released()
     emit setMotorSpeed(0,0);
 }
 
-void Controllingroomba::on_pbResetRoomba_clicked()
-{
-    ui->hsMotorSpeed->setValue(50);
-    emit ModeChanged(MODESTOPPED);
-}
-
 void Controllingroomba::on_pbStop_clicked()
 {
     emit ModeChanged(MODESTOPPED);
@@ -108,4 +100,9 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
 void Controllingroomba::on_pbRefresh_clicked()
 {
     emit readStatus(1);
+}
+
+void Controllingroomba::on_pbDisonnect_clicked()
+{
+    emit disconnectDo(true);
 }

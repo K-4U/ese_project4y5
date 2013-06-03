@@ -1,6 +1,7 @@
 #ifndef ROOMBA_H
 #define ROOMBA_H
 
+#include <iostream>
 #include <QMainWindow>
 #include "RoombaConnect.h"
 #include "controllingroomba.h"
@@ -32,16 +33,17 @@ private slots:
 
     void MotorSpeedChanged(int, int);
 
-    void readSensorData(int);
+    void readSensorData();
 
     void disconnectDoIt(bool);
 
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
+    QTimer *readDataTimer;
 
 signals:
-    void Status(int batteryStatus, int temperature);
+    void getStatus(int Status);
 };
 
 #endif // ROOMBA_H

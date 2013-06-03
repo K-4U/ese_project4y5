@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QTcpSocket>
 #include <QSlider>
+#include <QtCore>
 
 using namespace K4U;
 using namespace client;
@@ -36,8 +37,6 @@ public slots:
     void on_pbStop_clicked();
 
     void cbMotorBrushVacuumHandler();
-
-    void on_pbRefresh_clicked();
 
 private slots:
     void on_pbClean_clicked();
@@ -68,6 +67,8 @@ private slots:
 
     void on_pbDiplayLogs_clicked();
 
+    //void on_cbRefresh_clicked();
+
 private:
     Ui::Controllingroomba *ui;
     clsLog log;
@@ -79,7 +80,6 @@ signals:
     void ModeChanged(Modes newMode);
     void setMotorBrushVacuum(bool MainBrush, bool SideBrush, bool Vacuum);
     void setMotorSpeed(int setLeftMotorSpeed, int setRightMotorSpeed);
-    void readStatus(int Status);
 };
 
 #endif // CONTROLLINGROOMBA_H

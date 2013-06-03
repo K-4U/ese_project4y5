@@ -284,19 +284,6 @@
     <string>Backward</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pbRefresh">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>140</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Refresh</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbDisonnect">
    <property name="geometry">
     <rect>
@@ -321,6 +308,19 @@
    </property>
    <property name="text">
     <string>Display Logs</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="cbRefresh">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>150</y>
+     <width>70</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
    </property>
   </widget>
  </widget>

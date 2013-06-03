@@ -2,6 +2,8 @@
 #include "ui_controllingroomba.h"
 #include "roomba.h"
 #include "displaylogs.h"
+#include "mytimer.h"
+#include "QtCore"
 
 Controllingroomba::Controllingroomba(QWidget *parent) :
     QWidget(),
@@ -95,11 +97,6 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
     emit setMotorBrushVacuum(ui->cbMainBrush->checkState() == Qt::Checked,
             ui->cbSideBrush->checkState() == Qt::Checked,
             ui->cbVacuum->checkState() == Qt::Checked);
-}
-
-void Controllingroomba::on_pbRefresh_clicked()
-{
-    emit readStatus(1);
 }
 
 void Controllingroomba::on_pbDisonnect_clicked()

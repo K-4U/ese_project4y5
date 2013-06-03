@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Simulator.drawObjects;
+using System.Diagnostics;
 
 namespace Simulator {
 
@@ -101,12 +102,14 @@ namespace Simulator {
 
             this.initDrawers();
 			
-            //roomba.uncontrolledTest(1000, 1050);
+            roomba.uncontrolledTest(1000, 1050);
 
-        //    byte[] song = {50,32,0,32,50,32};
+            // ============= \\
+            roomba.setSensorValue(24, 15);
+            roomba.setSensorValue(25, 65535);
+            roomba.setSensorValue(26, 65535);
+            // ============= \\
 
-       //     roomba.start();
-         //   roomba.song(1,3,song);
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {

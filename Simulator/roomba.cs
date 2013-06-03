@@ -278,6 +278,24 @@ namespace Simulator {
             }
             return ret;
         }
+        public int roombaModeNr() {
+
+            int mode = 0;
+
+            switch (this.currentMode) {
+                case eRoombaModes.Off: mode = 0;
+                break;
+                case eRoombaModes.Passive: mode = 1;
+                break;
+                case eRoombaModes.Safe: mode = 2;
+                break;
+                case eRoombaModes.Full: mode = 3;
+                break;
+            }
+
+            return mode;
+
+        }
 
         private void streamFunc() {
             while (true) {
@@ -414,8 +432,26 @@ namespace Simulator {
             this.start();
             this.safe();
             this.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
-            byte[] bytes = {(byte)7,(byte)21};
+            byte[] bytes = { 
+                         (byte)7
+                        ,(byte)9
+                        ,(byte)10
+                        ,(byte)11
+                        ,(byte)12
+                        ,(byte)19
+                        ,(byte)20
+                        ,(byte)21
+                        ,(byte)24
+                        ,(byte)25
+                        ,(byte)26
+                        ,(byte)35
+                       };
             this.startStream(1, bytes);
+
+
+
+            //    byte[] song = {50,32,0,32,50,32};
+            //   roomba.song(1,3,song);
         }
 
         public void start() {
@@ -424,12 +460,14 @@ namespace Simulator {
             }
             this.currentMode = eRoombaModes.Passive;
             log("Switching mode to passive", TAG);
+            this.setSensorValue(35, roombaModeNr());
         }
 
         public void safe() {
             if (this.currentMode != eRoombaModes.Off) {
                 this.currentMode = eRoombaModes.Safe;
                 log("Switching mode to safe", TAG);
+                this.setSensorValue(35, roombaModeNr());
             } else {
                 throw new notInCorrectMode();
             }
@@ -439,6 +477,7 @@ namespace Simulator {
             if (this.currentMode != eRoombaModes.Off) {
                 this.currentMode = eRoombaModes.Full;
                 log("Switching mode to full", TAG);
+                this.setSensorValue(35, roombaModeNr());
             } else {
                 throw new notInCorrectMode();
             }
@@ -532,19 +571,6 @@ namespace Simulator {
         public void drivePwm(byte pwmRightHigh, byte pwmRightLow, byte pwmLeftHigh, byte pwmLeftLow) {
             if (this.checkMode(eRoombaModes.Safe, eRoombaModes.Full)) {
                 log("DrivePWM is not supported!", logTags.error);
-                /*this.drivingState.velocity = 0;
-                this.drivingState.radius = 0;
-                this.drivingState.leftSpeed = 0;
-                this.drivingState.rightSpeed = 0;
-                this.drivingState.leftPWM = (pwmLeftHigh << 8) | pwmLeftLow;
-                this.drivingState.rightPWM = (pwmRightHigh << 8) | pwmRightLow;
-                if (this.drivingState.leftPWM == 0 && this.drivingState.rightPWM == 0) {
-                    this.drivingState.isDriving = false;
-                    log("Stopped driving", TAG);
-                } else {
-                    this.drivingState.isDriving = true;
-                    log(String.Format("Driving @ {0} left, {1} right", this.drivingState.leftPWM, this.drivingState.rightPWM), TAG);
-                }*/
             } else {
                 throw new notInCorrectMode();
             }

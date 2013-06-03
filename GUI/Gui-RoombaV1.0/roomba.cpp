@@ -2,15 +2,14 @@
 #include "ui_roomba.h"
 #include "controllingroomba.h"
 #include "displaylogs.h"
+#include "mytimer.h"
+#include <QtGui>
 
 Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Roomba),
     server()
 {
-//    this->server = new clsServerConn("145.74.196.221", 1337);
-    this->server = new clsServerConn("localhost", 1337);
-
     ui->setupUi(this);
 }
 
@@ -43,10 +42,13 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
     this->server->sendCommand(toSend);
 }
 
-void Roomba::readSensorData(int readBatteryStatus)
+void Roomba::readSensorData()
 {
+    readDataTimer->start(1000);
+    emit getStatus(1);
+
     jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
-    toSend.addToData("ReadSensorData", readBatteryStatus);
+    toSend.addToData("ReadSensorData", 1);
     this->server->sendCommand(toSend);
 }
 
@@ -56,10 +58,16 @@ void Roomba::disconnectDoIt(bool disconnectDo)
     {
         this->server->doDisconnect();
     }
+    readDataTimer->stop();
 }
 
 void Roomba::on_pbConnect_clicked()
 {
+    char *IP = ui->leIP->text().toLatin1().data();
+//    this->server = new clsServerConn("145.74.196.221", 11223);
+    this->server = new clsServerConn(IP, 1337);
+
+
     Controllingroomba *controlling_roomba = new Controllingroomba(this);
     controlling_roomba->show();
 
@@ -72,11 +80,13 @@ void Roomba::on_pbConnect_clicked()
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
 
-    connect(controlling_roomba, SIGNAL(readStatus(int)),
-            this, SLOT(readSensorData(int)));
-
     connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
             this, SLOT(disconnectDoIt(bool)));
+
+
+    readDataTimer = new QTimer(this);
+    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readSensorData()));
+    readDataTimer->start(1000);
 
     this->hide();
 

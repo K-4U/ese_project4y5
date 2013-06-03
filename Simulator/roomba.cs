@@ -432,21 +432,6 @@ namespace Simulator {
             this.start();
             this.safe();
             this.driveDirect(drBytesRight[1], drBytesRight[0], drBytesLeft[1], drBytesLeft[0]);
-            byte[] bytes = { 
-                         (byte)7
-                        ,(byte)9
-                        ,(byte)10
-                        ,(byte)11
-                        ,(byte)12
-                        ,(byte)19
-                        ,(byte)20
-                        ,(byte)21
-                        ,(byte)24
-                        ,(byte)25
-                        ,(byte)26
-                        ,(byte)35
-                       };
-            this.startStream(1, bytes);
 
 
 
@@ -723,6 +708,7 @@ namespace Simulator {
                 btoSend[1] = (byte)byteCount;
 
                 this.send(btoSend.ToArray());
+                this.setSensorValue(18, 0);
             } else {
                 throw new notInCorrectMode();
             }

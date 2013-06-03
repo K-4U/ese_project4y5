@@ -102,9 +102,9 @@ namespace Simulator {
 
             this.initDrawers();
 			
-            roomba.uncontrolledTest(1000, 1050);
+       //     roomba.uncontrolledTest(1000, 1050);
 
-            // ============= \\
+            // DEFAULT, since Koen can't divide by 0. Sucker... ;) ============= \\
             roomba.setSensorValue(24, 15);
             roomba.setSensorValue(25, 65535);
             roomba.setSensorValue(26, 65535);
@@ -297,6 +297,38 @@ namespace Simulator {
         }
 
         #endregion
+
+        private void spotToolStripMenuItem_Click(object sender, EventArgs e) {
+            roomba.setSensorValue(18, 2);
+        }
+
+        private void cleanToolStripMenuItem_Click(object sender, EventArgs e) {
+            roomba.setSensorValue(18, 1);
+        }
+
+        private void dockToolStripMenuItem_Click(object sender, EventArgs e) {
+            roomba.setSensorValue(18, 4);
+        }
+
+        private void sendSensorsToolStripMenuItem_Click(object sender, EventArgs e) {
+            byte[] bytes = { 
+                 (byte)7
+                ,(byte)9
+                ,(byte)10
+                ,(byte)11
+                ,(byte)12
+                ,(byte)19
+                ,(byte)20
+                ,(byte)21
+                ,(byte)24
+                ,(byte)25
+                ,(byte)26
+                ,(byte)35
+                ,(byte)18
+            };
+
+            roomba.querySensor(1, bytes);
+        }
 
     }
 }

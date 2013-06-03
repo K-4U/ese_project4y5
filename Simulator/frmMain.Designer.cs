@@ -32,12 +32,16 @@
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetRoombaToCenterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pbRoom = new System.Windows.Forms.PictureBox();
             this.tim500 = new System.Windows.Forms.Timer(this.components);
             this.tim100 = new System.Windows.Forms.Timer(this.components);
             this.tim10 = new System.Windows.Forms.Timer(this.components);
             this.tim1000 = new System.Windows.Forms.Timer(this.components);
+            this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendSensorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).BeginInit();
@@ -63,7 +67,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.resetRoombaToCenterToolStripMenuItem});
+            this.buttonsToolStripMenuItem,
+            this.sendSensorsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1404, 24);
@@ -105,13 +110,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             // 
-            // resetRoombaToCenterToolStripMenuItem
-            // 
-            this.resetRoombaToCenterToolStripMenuItem.Name = "resetRoombaToCenterToolStripMenuItem";
-            this.resetRoombaToCenterToolStripMenuItem.Size = new System.Drawing.Size(145, 20);
-            this.resetRoombaToCenterToolStripMenuItem.Text = "Reset Roomba to center";
-            this.resetRoombaToCenterToolStripMenuItem.Click += new System.EventHandler(this.resetRoombaToCenterToolStripMenuItem_Click);
-            // 
             // pbRoom
             // 
             this.pbRoom.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -141,6 +139,44 @@
             this.tim1000.Enabled = true;
             this.tim1000.Interval = 1000;
             this.tim1000.Tick += new System.EventHandler(this.tim1000_Tick);
+            // 
+            // buttonsToolStripMenuItem
+            // 
+            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cleanToolStripMenuItem,
+            this.spotToolStripMenuItem,
+            this.dockToolStripMenuItem});
+            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.buttonsToolStripMenuItem.Text = "Buttons";
+            // 
+            // cleanToolStripMenuItem
+            // 
+            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
+            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cleanToolStripMenuItem.Text = "Clean";
+            this.cleanToolStripMenuItem.Click += new System.EventHandler(this.cleanToolStripMenuItem_Click);
+            // 
+            // spotToolStripMenuItem
+            // 
+            this.spotToolStripMenuItem.Name = "spotToolStripMenuItem";
+            this.spotToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.spotToolStripMenuItem.Text = "Spot";
+            this.spotToolStripMenuItem.Click += new System.EventHandler(this.spotToolStripMenuItem_Click);
+            // 
+            // dockToolStripMenuItem
+            // 
+            this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
+            this.dockToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dockToolStripMenuItem.Text = "Dock";
+            this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
+            // 
+            // sendSensorsToolStripMenuItem
+            // 
+            this.sendSensorsToolStripMenuItem.Name = "sendSensorsToolStripMenuItem";
+            this.sendSensorsToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
+            this.sendSensorsToolStripMenuItem.Text = "Send Sensors";
+            this.sendSensorsToolStripMenuItem.Click += new System.EventHandler(this.sendSensorsToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -179,8 +215,12 @@
         private System.Windows.Forms.Timer tim500;
         private System.Windows.Forms.Timer tim100;
         private System.Windows.Forms.Timer tim10;
-		private System.Windows.Forms.ToolStripMenuItem resetRoombaToCenterToolStripMenuItem;
 		private System.Windows.Forms.Timer tim1000;
+        private System.Windows.Forms.ToolStripMenuItem buttonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendSensorsToolStripMenuItem;
     }
 }
 

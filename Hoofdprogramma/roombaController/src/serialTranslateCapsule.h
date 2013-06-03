@@ -68,6 +68,9 @@ private:
 	// {{{RME classAttribute 'lengthNotYetReceived'
 	bool lengthNotYetReceived;
 	// }}}RME
+	// {{{RME classAttribute 'isSending'
+	bool isSending;
+	// }}}RME
 
 protected:
 	// {{{RME port 'serialRaw'

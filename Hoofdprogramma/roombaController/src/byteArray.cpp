@@ -91,7 +91,7 @@ byteArray::byteArray( unsigned char chars[], int length )
 unsigned char byteArray::get( int index )
 {
 	// {{{USR
-	if(index <= this->data.size()){
+	if(index < this->data.size()){
 	    return this->data[index];
 	}else{
 
@@ -156,6 +156,8 @@ void byteArray::print( void )
 {
 	// {{{USR
 #define HEX( x ) "0x" << setw(2) << setfill('0') << hex << (int)( x )
+
+	//  cout << dec << b.get(i) << endl;
 	int i;
 	for(i = 0; i < this->data.size(); i++){
 	    cout << HEX(this->data[i]) << " ";

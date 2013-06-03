@@ -174,19 +174,19 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 	this->stop();
 	//Drive backwards for just a bit please
 	this->drive(-100,-100);
-	Sleep(100);
+	Sleep(500);
 	this->stop();
 
 	//Check sensors:
 	if(bumpersTriggered.left && bumpersTriggered.right){
 	    //Head on collision! rotate 90 degrees and try again!
 	    this->angleToRotate = 90;
-	    this->drive(-100, 100);
+	    this->drive(100, -100);
 	    //Reset total angle
 	    Roomba.getTotalAngle(true).send();
 	}else if(bumpersTriggered.left){
 	    this->angleToRotate = 45;
-	    this->drive(-100, 100);
+	    this->drive(100, -100);
 	    //Reset total angle
 	    Roomba.getTotalAngle(true).send();
 	}

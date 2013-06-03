@@ -11,6 +11,7 @@
 
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
+#include <iostream>
 
 // }}}USR
 // }}}RME

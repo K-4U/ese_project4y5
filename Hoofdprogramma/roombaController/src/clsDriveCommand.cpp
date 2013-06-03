@@ -119,7 +119,7 @@ clsDriveCommand::clsDriveCommand( int left, int right )
 	// }}}RME
 {
 	// {{{USR
-	std::cout << "New drive command: L=" << left << " R=" << right << endl;
+	std::cout << dec << "New drive command: L=" << left << " R=" << right << endl;
 	this->left = left;
 	this->right = right;
 	// }}}USR

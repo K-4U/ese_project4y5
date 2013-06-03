@@ -478,6 +478,8 @@ clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 void clsRoomba::setSensor( int index, int value )
 {
 	// {{{USR
+	std::cout << "Sensor " << index << " = " << value << endl;
+
 	switch(index){
 	    case 7:
 	        //Needs some translating

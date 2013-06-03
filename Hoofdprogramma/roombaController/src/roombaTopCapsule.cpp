@@ -181,13 +181,34 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 
 	//Start timer for polling:
 	timer.informIn(30);
-
 	/*
-	//Full mode
-	b.append(130);
-	Serial.sendCommand(b).send();
+	if(this->isOperating){
+	    //Then, a stream
+	    b.append(148);
+	    //First the length:
+	    int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
+	    b.append(sizeOfArray);
+	    int i = 0;
+	    for(i=0;i < sizeOfArray; i++){
+	        b.append(sensorsToQuery[i][0]);
+	    }
+	}else{
+	    //Wait for buttons, battery charge and battery max:
+	    b.append(148);
+	    b.append(3);
+	    b.append(18);
+	    b.append(25);
+	    b.append(26);
+	}
+	toMain.sendData(b).send();
 	b.clear();
+	*/
 
+	//Full mode
+	b.append(131);
+	toMain.sendData(b).send();
+	b.clear();
+	/*
 	//And driving!
 	b.append(145);
 	b.append(3);
@@ -211,38 +232,48 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	// {{{USR
 	//It probably is a sensor list
 	//Translate everything to a variable.
+#define HEX( x ) "0x" << setw(2) << setfill('0') << hex << (int)( x )
+
 
 	byteArray b = *rtdata;
-	int s = b.size();
+	int s = b.size() -1;
 	int i = 0;
 
-	bool inSensorList;
+	//bool inSensorList;
+	cout << "Recv: ";
+	b.print();
 	while(i < s){
-	    if(!inSensorList){
-	        if(b.get(i) == 149){
+	/*    if(!inSensorList){
+	        if(b.get(i) == 149 || b.get(i) == 19){
 	            inSensorList = true;
 	            i++; //skip number of packets.
 	        }
-	    }else{
+	    }else{*/
 	        if(this->isOperating){
 	            int x = 0;
 	            int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
 	            for(x=0;x< sizeOfArray; x++){
-	                if(sensorsToQuery[x][0] == b.get(i)){
-	                    int value = 0;
+	                //if(sensorsToQuery[x][0] == b.get(i)){
+	                int value = 0;
+	                if(sensorsToQuery[x][1] == 2){
+	                    value = b.get(i) << 8;
 	                    i++;
-	                    if(sensorsToQuery[x][1] == 2){
-	                        value = b.get(i) << 8;
-	                        i++;
-	                    }
-	                    value += b.get(i);
-	                    this->roomba.setSensor(sensorsToQuery[x][0], value);
 	                }
+	                value += b.get(i);
+	                this->roomba.setSensor(sensorsToQuery[x][0], value);
+	                //}
 	            }
 	        }else{
 	            //Only three sensors;
-	            int sId = b.get(i);
+	            this->roomba.setSensor(18, b.get(i));
+	            clsRoomba::clsButtons btns = this->roomba.getButtons();
+	            cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
 	            i++;
+	            this->roomba.setSensor(25, (b.get(i) << 8) + b.get(i++));
+	            i++;
+	            this->roomba.setSensor(26, (b.get(i) << 8) + b.get(i++));
+	/*
+	          
 	            int v = b.get(i);
 
 	            if(sId != 18){
@@ -252,9 +283,9 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	            }
 
 	            //std::cout << "sId: " << sId << " V: " << v << endl;
-	            this->roomba.setSensor(sId, v);
+	            this->roomba.setSensor(sId, v);*/
 	        }
-	    }
+	    //}
 	    i++;
 	}
 	//this->roomba.printSensors();
@@ -308,7 +339,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	}else{
 	    //Probably buttons received. Check them plox
 	    clsRoomba::clsButtons btns = this->roomba.getButtons();
-	    //cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
+	    cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
 	    if(btns.clean == true){
 	        //Do this!
 	        std::cout << "Starting program!" << endl;
@@ -348,6 +379,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	    b.append(18);
 	    b.append(25);
 	    b.append(26);
+	    
 	}
 	toMain.sendData(b).send();
 	b.clear();

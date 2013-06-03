@@ -92,11 +92,21 @@ int serialTranslateCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_po
 INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( const byteArray * rtdata, serialRawProtocol::Conjugate * rtport )
 {
 	// {{{USR
+#define HEX( x ) "0x" << setw(2) << setfill('0') << hex << (int)( x )
+
 	byteArray b = *rtdata;
 	int i;
+
+	serialOut.commandReceived(b).send();
+
+	/*
 	for(i = 0; i <= b.size(); i++){
+
+	 //cout << HEX(b.get(i)) << endl;
+
 	    if(!this->inCommand){
-	        if(b.get(i) == 149){ //Sensor stream
+
+	        if(b.get(i) == 149 || b.get(i) == 19){ //Sensor stream
 	            //This is the sensor stream. The next byte is the length
 	            this->inCommand = true;
 	            this->lengthNotYetReceived = true;
@@ -120,7 +130,7 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition2_dataReceived( cons
 	        }
 	    }
 	}
-
+	*/
 
 	//cout << "STR: Data received: ";// << (char *)b.getAll() << endl;
 	//b.print();
@@ -134,16 +144,22 @@ INLINE_METHODS void serialTranslateCapsule_Actor::transition3_sendCommand( const
 	// {{{USR
 	byteArray b = *rtdata;
 
+	while(this->isSending){ } // Do. absolutely. Nothing... :D
+
+	this->isSending = true;
 	unsigned char data[b.size()];
 	int i = 0;
-	for(i = 0; i <= b.size(); i++){
-	    data[i] = b.getAll().Contents[i];
+	for(i = 0; i < b.size(); i++){
+	    data[i] = b.get(i);
 	}
+	data[i] = 0;
 
 	RS232_SendBuf(COM_PORT, data, b.size());
 
-	//cout << "STR: Sending data: ";
-	//b.print();
+	cout << "STR: Sending data: ";
+	b.print();
+
+	this->isSending = false;
 	// }}}USR
 }
 // }}}RME
@@ -316,7 +332,7 @@ const RTActor_class serialTranslateCapsule_Actor::rtg_class =
   , serialTranslateCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 5
+  , 6
   , serialTranslateCapsule_Actor::rtg_serialTranslateCapsule_fields
 };
 
@@ -411,6 +427,18 @@ const RTFieldDescriptor serialTranslateCapsule_Actor::rtg_serialTranslateCapsule
   , {
 		"lengthNotYetReceived"
 	  , RTOffsetOf( serialTranslateCapsule_Actor, lengthNotYetReceived )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'isSending'
+  , {
+		"isSending"
+	  , RTOffsetOf( serialTranslateCapsule_Actor, isSending )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME

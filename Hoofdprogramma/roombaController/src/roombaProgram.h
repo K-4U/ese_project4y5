@@ -14,6 +14,8 @@
 // {{{USR
 #include <stdio.h>
 #include <stdlib.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -67,6 +69,9 @@ protected:
 	// {{{RME port 'Roomba'
 	programProtocol::Base Roomba;
 	// }}}RME
+	// {{{RME port 'timer'
+	Timing::Base timer;
+	// }}}RME
 
 public:
 	roombaProgram_Actor( RTController * rtg_rts, RTActorRef * rtg_ref );
@@ -78,6 +83,9 @@ protected:
 	// }}}RME
 	// {{{RME operation 'stop()'
 	void stop( void );
+	// }}}RME
+	// {{{RME operation 'calculateTimeToRotateAngle(int,int,int)'
+	int calculateTimeToRotateAngle( int leftSpeed, int rightSpeed, int angleToRotate );
 	// }}}RME
 
 public:
@@ -103,12 +111,12 @@ protected:
 	// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumper'
 	INLINE_METHODS void transition4_bumper( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:bumperTriggered:J51AB626A0363:getTotalAngle'
-	INLINE_METHODS void transition5_getTotalAngle( const int * rtdata, programProtocol::Base * rtport );
+	// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
+	INLINE_METHODS void transition8_pijltje( const void * rtdata, Timing::Base * rtport );
 	// }}}RME
 
 private:
-	INLINE_CHAINS void chain8_Initial( void );
+	INLINE_CHAINS void chain5_Initial( void );
 	INLINE_CHAINS void chain1_Start( void );
 
 protected:
@@ -120,16 +128,10 @@ private:
 	INLINE_CHAINS void chain3_batteryFull( void );
 	INLINE_CHAINS void chain2_batteryTooLow( void );
 	INLINE_CHAINS void chain4_bumper( void );
-	INLINE_CHAINS void chain5_getTotalAngle( void );
-
-protected:
-	// {{{RME choicePoint ':TOP:checkRotatedAngle'
-	INLINE_METHODS int choicePoint2_checkRotatedAngle( const int * rtdata, programProtocol::Base * rtport );
-	// }}}RME
-
-private:
-	INLINE_CHAINS void chain6_straightOn( void );
-	INLINE_CHAINS void chain7_False( void );
+	INLINE_CHAINS void chain7_Stop( void );
+	INLINE_CHAINS void chain9_t1( void );
+	INLINE_CHAINS void chain6_StopHammerTime( void );
+	INLINE_CHAINS void chain8_pijltje( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

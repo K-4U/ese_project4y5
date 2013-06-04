@@ -422,6 +422,9 @@ const RTFieldDescriptor clsRoomba::rtg_clsButtons_fields[] =
 
 // {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'
 clsRoomba::clsRoomba( void )
+	: totalDistance( 0 )
+	, totalAngle( 0 )
+	, temperature( 0 )
 {
 }
 // }}}RME
@@ -511,8 +514,8 @@ void clsRoomba::setSensor( int index, int value )
 	        break;
 	    case 20:
 	        //Angle resets every time you ask for it
-	        this->angle = value;
-	        this->totalAngle += value;
+	        this->angle = (int16_t)value;
+	        this->totalAngle += (int16_t)value;
 	        break;
 	    case 21:
 	        //Sorry, i just don't know how to work with enums in Rational Rose Realtime..
@@ -747,7 +750,7 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 		"totalAngle"
 	  , RTOffsetOf( clsRoomba, totalAngle )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
-	  , &RTType_int
+	  , (const RTObject_class *)0
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0

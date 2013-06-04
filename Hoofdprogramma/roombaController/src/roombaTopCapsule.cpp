@@ -67,6 +67,7 @@ static const RTBindingDescriptor rtg_bindings_roombaProgramInstance[] =
 roombaTopCapsule_Actor::roombaTopCapsule_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 	: RTActor( rtg_rts, rtg_ref )
 	, isOperating( false )
+	, cleanWasTrue( false )
 {
 }
 
@@ -238,15 +239,15 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 
 	int s = b.size() - 1;
 	int i = 0;
-	cout << "RMB: ";
-	b.print();
+	//cout << "RMB: ";
+	//b.print();
 
 	while(i < s){
 	    if(this->isOperating){
 	        
 	        int x = 0;
 	        for(x=0;x< NUMSENSORS; x++){
-	            cout << sensorsToQuery[x][0] << " ";
+	            //cout << sensorsToQuery[x][0] << " ";
 	            int value = 0;
 	            if(sensorsToQuery[x][1] == 2){
 	                value = b.get(i) << 8;
@@ -311,21 +312,38 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	       (bmprs.right == true)){
 	        program.bumpersTriggered(bmprs).send();
 	    }
+	    //Probably buttons received. Check them plox
+	    clsRoomba::clsButtons btns = this->roomba.getButtons();
+	    if(btns.clean == true){
+	        this->cleanWasTrue = btns.clean;
+	    }else{
+	        if(this->cleanWasTrue){
+	            //STOOOPPP!!!
+	            program.stop().send();
+	            this->isOperating = false;
+	            this->cleanWasTrue = false;
+	        }
+	    }
 	}else{
 	    //Probably buttons received. Check them plox
 	    clsRoomba::clsButtons btns = this->roomba.getButtons();
 	    cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
 	    if(btns.clean == true){
-	        //Do this!
-	        std::cout << "Starting program!" << endl;
-	        int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
-	        //int battLevel = 90;
-	        program.start(battLevel).send();
-	        byteArray b;
-	        b.append(131);
+	        this->cleanWasTrue = btns.clean;
+	    }else{
+	        if(this->cleanWasTrue){
+	            //Do this!
+	            std::cout << "Starting program!" << endl;
+	            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
+	            //int battLevel = 90;
+	            program.start(battLevel).send();
+	            byteArray b;
+	            b.append(131);
 
-	        toMain.sendData(b).send();
-	        this->isOperating = true;
+	            toMain.sendData(b).send();
+	            this->isOperating = true;
+	            this->cleanWasTrue = false;
+	        }
 	    }
 	}
 	// }}}USR
@@ -362,7 +380,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	toMain.sendData(b).send();
 	b.clear();
 
-	timer.informIn(100); //Every 100 ms
+	timer.informIn(5); //Every 50 ms
 	// }}}USR
 }
 // }}}RME
@@ -679,7 +697,7 @@ const RTActor_class roombaTopCapsule_Actor::rtg_class =
   , roombaTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 2
+  , 3
   , roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields
 };
 
@@ -773,12 +791,24 @@ const RTFieldDescriptor roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields[] =
 		// }}}RME
 	}
 	// }}}RME
+	// {{{RME classAttribute 'cleanWasTrue'
+  , {
+		"cleanWasTrue"
+	  , RTOffsetOf( roombaTopCapsule_Actor, cleanWasTrue )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
 };
 #undef SUPER
 
 // {{{RME classAttribute 'sensorsToQuery'
 int sensorsToQuery[ NUMSENSORS ][ 2 ] = {{7, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 1}, {19, 2}, 
- {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}};
+ {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}, {18, 1}};
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationEnding'

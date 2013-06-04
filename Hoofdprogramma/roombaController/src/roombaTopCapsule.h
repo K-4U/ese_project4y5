@@ -15,12 +15,20 @@ class clsRoomba;
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
 #include <clsRoomba.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 // }}}USR
 // }}}RME
 
 // {{{RME classAttribute 'NUMSENSORS'
-#define NUMSENSORS 12
+#define NUMSENSORS 13
 // }}}RME
 
 extern const RTActorClass roombaTopCapsule;
@@ -53,6 +61,9 @@ private:
 	// }}}RME
 	// {{{RME classAttribute 'isOperating'
 	bool isOperating;
+	// }}}RME
+	// {{{RME classAttribute 'cleanWasTrue'
+	bool cleanWasTrue;
 	// }}}RME
 
 protected:

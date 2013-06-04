@@ -44,7 +44,6 @@ static const char * const rtg_state_names[] =
   , "roombaStart"
   , "bumperTriggered"
   , "checkBatteryLevel"
-  , "checkRotatedAngle"
 };
 
 #define SUPER RTActor
@@ -78,6 +77,31 @@ void roombaProgram_Actor::stop( void )
 	dr.right = 0;
 
 	Roomba.drive(dr).send();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'calculateTimeToRotateAngle(int,int,int)'
+int roombaProgram_Actor::calculateTimeToRotateAngle( int leftSpeed, int rightSpeed, int angleToRotate )
+{
+	// {{{USR
+	double dDistance = leftSpeed - rightSpeed;
+	//Calculate the angle at which the roomba is turning. angleAdj.
+	//We know that the difference between the wheels will give us a
+	//Triangle with equivalent legs
+	//When we aply some magic formulas to that(see below)
+	//We get the angle the roomba has rotated
+	double d = dDistance / 2;
+	double f = (d / 225);
+	double sinCalc = asin(f);
+	double angleAdj = ((sinCalc / M_PI) * 180);
+	angleAdj = (angleAdj * 2);
+
+	//AngleAdj now contains the value this thing will turn in 1 second.
+	angleAdj = angleAdj;
+	cout << "AA = " << angleAdj;
+	//And now in 1 ms
+	return abs((int)((angleToRotate / angleAdj) * 1000));
 	// }}}USR
 }
 // }}}RME
@@ -130,8 +154,27 @@ void roombaProgram_Actor::enterStateV( void )
 INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 {
 	// {{{USR
-	//Keep asking for sensor data!
-	Roomba.getTotalAngle(false).send();
+	//Check sensors:
+	if(bumpersTriggered.left && bumpersTriggered.right){
+	    //Head on collision! rotate 90 degrees and try again!
+	    this->drive(-100, 100);
+
+	    int theTime = calculateTimeToRotateAngle(-100, 100, 90);
+	    cout << "The Time = " << theTime << endl;
+	    timer.informIn(theTime/10);
+	}else if(bumpersTriggered.left){
+	    this->angleToRotate = 45;
+	    this->drive(100, -100);
+	    int theTime = calculateTimeToRotateAngle(100, -100, 45);
+	    cout << "The Time = " << theTime << endl;
+	    timer.informIn(theTime/10);
+	}else if(bumpersTriggered.right){
+	    this->angleToRotate = -45;
+	    this->drive(-100, 100);
+	    int theTime = calculateTimeToRotateAngle(-100, 100, -45);
+	    cout << "The Time = " << theTime << endl;
+	    timer.informIn(theTime/10);
+	}
 	// }}}USR
 }
 // }}}RME
@@ -170,46 +213,26 @@ INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rt
 INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	clsRoomba::clsBumpersAndCliff bumpersTriggered = *rtdata;
+	this->bumpersTriggered = *rtdata;
 	this->stop();
 	//Drive backwards for just a bit please
 	this->drive(-100,-100);
-	Sleep(500);
-	this->stop();
-
-	//Check sensors:
-	if(bumpersTriggered.left && bumpersTriggered.right){
-	    //Head on collision! rotate 90 degrees and try again!
-	    this->angleToRotate = 90;
-	    this->drive(100, -100);
-	    //Reset total angle
-	    Roomba.getTotalAngle(true).send();
-	}else if(bumpersTriggered.left){
-	    this->angleToRotate = 45;
-	    this->drive(100, -100);
-	    //Reset total angle
-	    Roomba.getTotalAngle(true).send();
-	}else if(bumpersTriggered.right){
-	    this->angleToRotate = -45;
-	    this->drive(-100, 100);
-	    //Reset total angle
-	    Roomba.getTotalAngle(true).send();
-	}
+	Sleep(1000);
 	// }}}USR
 }
 // }}}RME
 
-// {{{RME transition ':TOP:bumperTriggered:J51AB626A0363:getTotalAngle'
-INLINE_METHODS void roombaProgram_Actor::transition5_getTotalAngle( const int * rtdata, programProtocol::Base * rtport )
+// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
+INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdata, Timing::Base * rtport )
 {
 	// {{{USR
-	this->angleRotated = *rtdata;
-
+	this->stop();
+	cout << "RMB: Timer triggered" << endl;
 	// }}}USR
 }
 // }}}RME
 
-INLINE_CHAINS void roombaProgram_Actor::chain8_Initial( void )
+INLINE_CHAINS void roombaProgram_Actor::chain5_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
 	rtgChainBegin( 1, "Initial" );
@@ -276,49 +299,45 @@ INLINE_CHAINS void roombaProgram_Actor::chain4_bumper( void )
 	enterState( 4 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain5_getTotalAngle( void )
+INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 {
-	// transition ':TOP:bumperTriggered:J51AB626A0363:getTotalAngle'
-	rtgChainBegin( 4, "getTotalAngle" );
+	// transition ':TOP:roombaStart:J51ADAD78038C:Stop'
+	rtgChainBegin( 3, "Stop" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition5_getTotalAngle( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
-	if( choicePoint2_checkRotatedAngle( (const int *)msg->data, (programProtocol::Base *)msg->sap() ) )
-		chain6_straightOn();
-	else
-		chain7_False();
+	enterState( 2 );
 }
 
-// {{{RME choicePoint ':TOP:checkRotatedAngle'
-INLINE_METHODS int roombaProgram_Actor::choicePoint2_checkRotatedAngle( const int * rtdata, programProtocol::Base * rtport )
+INLINE_CHAINS void roombaProgram_Actor::chain9_t1( void )
 {
-	// {{{USR
-	if(this->angleToRotate <= *rtdata){
-	    return true;
-	}else{
-	    return false;
-	}
-	// }}}USR
-}
-// }}}RME
-
-INLINE_CHAINS void roombaProgram_Actor::chain6_straightOn( void )
-{
-	// transition ':TOP:checkRotatedAngle:straightOn'
-	rtgChainBegin( 6, "straightOn" );
-	rtgTransitionBegin();
-	rtgTransitionEnd();
-	enterState( 3 );
-}
-
-INLINE_CHAINS void roombaProgram_Actor::chain7_False( void )
-{
-	// transition ':TOP:checkRotatedAngle:False'
-	rtgChainBegin( 6, "False" );
+	// transition ':TOP:bumperTriggered:J51ADCE6F0025:t1'
+	rtgChainBegin( 4, "t1" );
+	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	rtgTransitionEnd();
 	enterState( 4 );
+}
+
+INLINE_CHAINS void roombaProgram_Actor::chain6_StopHammerTime( void )
+{
+	// transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
+	rtgChainBegin( 4, "StopHammerTime" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void roombaProgram_Actor::chain8_pijltje( void )
+{
+	// transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
+	rtgChainBegin( 4, "pijltje" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition8_pijltje( msg->data, (Timing::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 3 );
 }
 
 void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
@@ -334,7 +353,7 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				switch( signalIndex )
 				{
 				case 1:
-					chain8_Initial();
+					chain5_Initial();
 					return;
 				default:
 					break;
@@ -396,6 +415,9 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				case programProtocol::Base::rti_bumpersTriggered:
 					chain4_bumper();
 					return;
+				case programProtocol::Base::rti_stop:
+					chain7_Stop();
+					return;
 				default:
 					break;
 				}
@@ -423,8 +445,23 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				// {{{RME port 'Roomba'
 				switch( signalIndex )
 				{
-				case programProtocol::Base::rti_totalAngle:
-					chain5_getTotalAngle();
+				case programProtocol::Base::rti_bumpersTriggered:
+					chain9_t1();
+					return;
+				case programProtocol::Base::rti_stop:
+					chain6_StopHammerTime();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			case 2:
+				// {{{RME port 'timer'
+				switch( signalIndex )
+				{
+				case Timing::Base::rti_timeout:
+					chain8_pijltje();
 					return;
 				default:
 					break;
@@ -456,7 +493,7 @@ const RTActor_class roombaProgram_Actor::rtg_class =
   , &roombaProgram
   , 0
   , (const RTComponentDescriptor *)0
-  , 1
+  , 2
   , roombaProgram_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
@@ -482,6 +519,15 @@ const RTPortDescriptor roombaProgram_Actor::rtg_ports[] =
 	  , 1 // cardinality
 	  , 1
 	  , RTPortDescriptor::KindWired + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityPublic
+	}
+  , {
+		"timer"
+	  , (const char *)0
+	  , &Timing::Base::rt_class
+	  , RTOffsetOf( roombaProgram_Actor, roombaProgram_Actor::timer )
+	  , 1 // cardinality
+	  , 2
+	  , RTPortDescriptor::KindSpecial + RTPortDescriptor::NotificationDisabled + RTPortDescriptor::RegisterNotPermitted + RTPortDescriptor::VisibilityProtected
 	}
 };
 

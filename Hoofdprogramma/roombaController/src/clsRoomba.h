@@ -295,7 +295,7 @@ private:
 	int angle;
 	// }}}RME
 	// {{{RME classAttribute 'totalAngle'
-	int totalAngle;
+	int16_t totalAngle;
 	// }}}RME
 	// {{{RME classAttribute 'chargingState'
 	int chargingState;

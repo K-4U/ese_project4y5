@@ -24,10 +24,11 @@ struct programProtocol
 			rti_start = rtiLast_RTRootProtocol + 1
 		  , rti_bumpersTriggered
 		  , rti_totalAngle
+		  , rti_stop
 		};
 
 	protected:
-		enum { rtiLast_programProtocol = rti_totalAngle };
+		enum { rtiLast_programProtocol = rti_stop };
 
 	public:
 		// {{{RME inSignal 'start'
@@ -53,6 +54,14 @@ struct programProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal totalAngle( void );
+		// }}}RME
+		// {{{RME inSignal 'stop'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal stop( void );
 		// }}}RME
 		// {{{RME inSignal 'playSong'
 		// {{{RME general 'documentation'
@@ -183,6 +192,14 @@ struct programProtocol
 		// }}}RME
 		inline RTOutSignal totalAngle( const int & data );
 		// }}}RME
+		// {{{RME outSignal 'stop'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal stop( void );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -232,6 +249,18 @@ inline RTInSignal programProtocol::Base::bumpersTriggered( void )
 inline RTInSignal programProtocol::Base::totalAngle( void )
 {
 	return RTInSignal( this, rti_totalAngle );
+}
+// }}}RME
+
+// {{{RME inSignal 'stop'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal programProtocol::Base::stop( void )
+{
+	return RTInSignal( this, rti_stop );
 }
 // }}}RME
 
@@ -399,6 +428,18 @@ inline RTOutSignal programProtocol::Conjugate::bumpersTriggered( const clsRoomba
 inline RTOutSignal programProtocol::Conjugate::totalAngle( const int & data )
 {
 	return RTOutSignal( this, Base::rti_totalAngle, &data, &RTType_int );
+}
+// }}}RME
+
+// {{{RME outSignal 'stop'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal programProtocol::Conjugate::stop( void )
+{
+	return RTOutSignal( this, Base::rti_stop, (const void *)0, &RTType_void );
 }
 // }}}RME
 

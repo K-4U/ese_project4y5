@@ -13,7 +13,7 @@ const RTProtocolDescriptor programProtocol::Base::rt_class =
   , &programProtocol::Conjugate::rt_class
   , "programProtocol"
   , 0
-  , 5
+  , 6
   , programProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -41,6 +41,11 @@ const RTSignalDescriptor programProtocol::Base::rt_signals[] =
 		"start"
 	  , &RTType_int
 	  , programProtocol::Base::rti_start
+	}
+  , {
+		"stop"
+	  , &RTType_void
+	  , programProtocol::Base::rti_stop
 	}
   , {
 		"totalAngle"

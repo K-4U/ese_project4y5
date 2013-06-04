@@ -44,11 +44,16 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 
 void Roomba::readSensorData()
 {
-    readDataTimer->start(1000);
-    emit getStatus(1);
+    QVector<int> sensors;
+    sensors.append(19);
+    sensors.append(22);
+    sensors.append(24);
 
+
+
+    readDataTimer->start(1000);
     jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
-    toSend.addToData("ReadSensorData", 1);
+    toSend.addToData("Sensors", sensors);
     this->server->sendCommand(toSend);
 }
 

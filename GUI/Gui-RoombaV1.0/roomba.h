@@ -1,10 +1,13 @@
 #ifndef ROOMBA_H
 #define ROOMBA_H
 
+#include <vector>
+#include <QVector>
 #include <iostream>
 #include <QMainWindow>
 #include "RoombaConnect.h"
 #include "controllingroomba.h"
+#include "sensordata.h"
 #include "../resources/jsoncommand.h"
 #include "../resources/json.h"
 #include "../resources/clslog.h"

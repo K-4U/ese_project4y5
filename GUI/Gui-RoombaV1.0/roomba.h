@@ -48,10 +48,13 @@ private slots:
 
     void disconnectDoIt(bool);
 
+    void connected();
+
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
     QTimer *readDataTimer;
+    Controllingroomba *controlling_roomba;
 
 signals:
     void getStatus(int Status);

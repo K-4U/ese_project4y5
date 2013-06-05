@@ -71,14 +71,22 @@ void Roomba::disconnectDoIt(bool disconnectDo)
     readDataTimer->stop();
 }
 
+void Roomba::connected()
+{
+    this->hide();
+    controlling_roomba->show();
+}
+
 void Roomba::on_pbConnect_clicked()
 {
     QString IP;
     IP.append(ui->leIP->text());
     this->server = new clsServerConn(IP, 1337);
 
+    //Controllingroomba *controlling_roomba = new Controllingroomba(this);
 
-    Controllingroomba *controlling_roomba = new Controllingroomba(this);
+    connect(this->server, SIGNAL (connected()),
+            this, SLOT(connected()));
 
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
@@ -99,7 +107,5 @@ void Roomba::on_pbConnect_clicked()
 
     this->server->doConnect();
 
-    this->hide();
 
-    controlling_roomba->show();
 }

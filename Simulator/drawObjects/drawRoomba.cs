@@ -43,6 +43,7 @@ namespace Simulator.drawObjects {
         private bool isColliding = false;
         private bool isCharging = false;
         private bool isFalling = false;
+		private string interactionObject = "";
 		private wheel leftWheel;
 		private wheel rightWheel;
 		private PointF wheelPos;
@@ -110,7 +111,7 @@ namespace Simulator.drawObjects {
 
                 int returning = 0;
 
-                if (name == "pool") {
+                if (name.Substring(0,4) == "pool") {
 
                     byte[] bytes = { (byte)1 };
 
@@ -135,7 +136,7 @@ namespace Simulator.drawObjects {
 
                     this.isFalling = true;
 
-                } else if (name == "table") {
+				} else if (name.Substring(0, 5) == "table") {
 
                     if (a >= 0 && a <= 112.5) {
                         returning += 2;
@@ -151,9 +152,10 @@ namespace Simulator.drawObjects {
                         Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
                     }
 
+					this.interactionObject = name;
                     this.isColliding = true;
 
-                } else if (name == "dock") {
+				} else if (name.Substring(0, 4) == "dock") {
 
                     int charge;
 
@@ -171,20 +173,33 @@ namespace Simulator.drawObjects {
                 }
 
             } else {
+
+
                 byte[] bytes = { (byte)0 };
-                if (name == "pool") {
-                    sensor(9, bytes);
-                    sensor(10, bytes);
-                    sensor(11, bytes);
-                    sensor(12, bytes);
-                    this.isFalling = false;
-                } else if (name == "table") {
-                    sensor(7, bytes);
-                    this.isColliding = false;
-                } else if (name == "dock") {
-                    sensor(21, bytes);
-                    this.isCharging = false;
+
+                if (name.Substring(0,4) == "pool") {
+
+					sensor(9, bytes);
+					sensor(10, bytes);
+					sensor(11, bytes);
+					sensor(12, bytes);
+					this.isFalling = false;
+
+				} else if (name.Substring(0, 5) == "table") {
+
+					if ((name == this.interactionObject) && this.isColliding) {
+						sensor(7, bytes);
+						this.isColliding = false;
+					}
+
+				} else if (name == "dock") {
+
+					sensor(21, bytes);
+					this.isCharging = false;
+
                 }
+
+
             }
 
 		}

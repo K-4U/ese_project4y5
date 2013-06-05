@@ -58,6 +58,8 @@ namespace Simulator {
 
         static void setSensor(int sensorNr, byte[] values) {
 
+			//log(String.Format("{0}",values[0]), logTags.roomba);
+
             switch (sensorNr) {
                 case 7:
                 case 9:
@@ -78,12 +80,15 @@ namespace Simulator {
 
 		private void initDrawers() {
 			mDrawer = new drawer(ref this.pbRoom);
-            drawRoomba roombaDrawer = new drawRoomba(pbRoom.Width / 2, pbRoom.Height / 2, -90);
+            drawRoomba roombaDrawer = new drawRoomba((pbRoom.Width / 6)*2, pbRoom.Height / 2, -90);
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
-            mDrawer.addToDrawer("table", new drawTable(200, 200));
-            mDrawer.addToDrawer("pool", new drawPool(550, 400));
-            mDrawer.addToDrawer("dock", new drawDock(800, 200));
+			mDrawer.addToDrawer("table-1", new drawTable(0, 260));
+			mDrawer.addToDrawer("table-2", new drawTable(260, 0));
+			mDrawer.addToDrawer("table-3", new drawTable(520, 260));
+			mDrawer.addToDrawer("table-4", new drawTable(260, 520));
+       //     mDrawer.addToDrawer("pool_1", new drawPool(550, 400));
+        //    mDrawer.addToDrawer("dock_1", new drawDock(800, 200));
         }
         #endregion
 
@@ -102,7 +107,7 @@ namespace Simulator {
 
             this.initDrawers();
 			
-       //     roomba.uncontrolledTest(1000, 1050);
+            //roomba.uncontrolledTest(1000, 1050);
 
             // DEFAULT, since Koen can't divide by 0. Sucker... ;) ============= \\
             roomba.setSensorValue(24, 15);
@@ -324,7 +329,7 @@ namespace Simulator {
                 ,(byte)25
                 ,(byte)26
                 ,(byte)35
-                ,(byte)18
+                //,(byte)18
             };
 
             roomba.querySensor(1, bytes);

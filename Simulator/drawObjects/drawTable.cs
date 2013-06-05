@@ -12,7 +12,9 @@ namespace Simulator.drawObjects {
 	class drawTable : drawObject {
 		private const int widthInPx = 260;
 		private const int heightInPx = 260;
-		private new Pen p = Pens.DarkBlue;
+	//	private new Pen p = Pens.DarkBlue;
+
+		private Brush b = Brushes.DarkBlue;
 
 		public drawTable(int x, int y)
 			: base(x, y, widthInPx, heightInPx) {
@@ -20,7 +22,8 @@ namespace Simulator.drawObjects {
 		}
 
 		public override void draw(Graphics g) {
-			g.DrawRectangle(this.p, Rectangle.Round(base.loc));
+		//	g.DrawRectangle(this.p, Rectangle.Round(base.loc));
+			g.FillRectangle(this.b, Rectangle.Round(base.loc));
 		}
 	}
 

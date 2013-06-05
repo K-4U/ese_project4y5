@@ -692,12 +692,12 @@ namespace Simulator {
         public void querySensor(byte number, params byte[] packets){
             if (this.checkMode(eRoombaModes.Passive, eRoombaModes.Safe, eRoombaModes.Full)) {
                 List<byte> btoSend = new List<byte>();
-                btoSend.Add(149);
+                //btoSend.Add(149);
                 int byteCount = 0;
-                btoSend.Add(42); // Dummy figure
+                //btoSend.Add(42); // Dummy figure
                 foreach (int packetId in packets) {
                     byteCount++;
-                    btoSend.Add((byte)packetId);
+                    //btoSend.Add((byte)packetId);
                     byte[] bToAdd = this.sensors.getSensorValue(packetId);
                     foreach (byte data in bToAdd) {
                         byteCount++;
@@ -705,7 +705,7 @@ namespace Simulator {
                     }
                 }
                 //Fix length
-                btoSend[1] = (byte)byteCount;
+                //btoSend[1] = (byte)byteCount;
 
                 this.send(btoSend.ToArray());
                 this.setSensorValue(18, 0);

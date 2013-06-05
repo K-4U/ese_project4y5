@@ -44,11 +44,17 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 
 void Roomba::readSensorData()
 {
+    QList<QVariant> sensors;
+    QVariant sendData;
+    sensors.append(QVariant(22));
+    sensors.append(QVariant(19));
+
     readDataTimer->start(1000);
-    emit getStatus(1);
+    sendData = QVariant::fromValue(sensors);
+    //qDebug() << "sendData " << sendData;
 
     jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
-    toSend.addToData("ReadSensorData", 1);
+    toSend.addToData("Sensors", sendData);
     this->server->sendCommand(toSend);
 }
 

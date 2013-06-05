@@ -1,6 +1,8 @@
 #ifndef ROOMBACONNECT_H
 #define ROOMBACONNECT_H
 
+#include <QDebug>
+#include <QtCore>
 #include <QObject>
 #include <QTcpSocket>
 #include <QTextStream>

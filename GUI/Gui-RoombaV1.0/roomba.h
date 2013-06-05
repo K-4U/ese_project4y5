@@ -1,10 +1,18 @@
 #ifndef ROOMBA_H
 #define ROOMBA_H
 
+#include <QDebug>
+#include <QtCore>
+#include <vector>
+#include <QVector>
+#include <QVariantMap>
 #include <iostream>
 #include <QMainWindow>
+#include <QObject>
+#include <QVariantMap>
 #include "RoombaConnect.h"
 #include "controllingroomba.h"
+#include "sensordata.h"
 #include "../resources/jsoncommand.h"
 #include "../resources/json.h"
 #include "../resources/clslog.h"
@@ -23,7 +31,7 @@ class Roomba : public QMainWindow
 public:
     explicit Roomba(QWidget *parent = 0);
     ~Roomba();
-    
+
 private slots:
     void on_pbConnect_clicked();
 

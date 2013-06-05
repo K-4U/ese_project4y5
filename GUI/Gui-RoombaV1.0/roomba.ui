@@ -27,7 +27,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="leIP"/>
+         <widget class="QLineEdit" name="leIP">
+          <property name="text">
+           <string>localhost</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

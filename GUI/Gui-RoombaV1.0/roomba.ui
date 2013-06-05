@@ -41,15 +41,14 @@
         <property name="text">
          <string>connect</string>
         </property>
+        <property name="shortcut">
+         <string>Enter</string>
+        </property>
        </widget>
       </item>
      </layout>
     </item>
    </layout>
-   <zorder>pbConnect</zorder>
-   <zorder>leIP</zorder>
-   <zorder>label</zorder>
-   <zorder>leIP</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -78,7 +77,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>

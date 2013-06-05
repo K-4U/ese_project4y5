@@ -45,28 +45,19 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 
 void Roomba::readSensorData()
 {
+    QMap<int, int> map;
 
-    sensors.append(19);
-    sensors.append(22);
-    sensors.append(24);
     uValue.r = 22;
     uValue.g = 19;
 
+    map.insert(0, uValue.r);
+    map.insert(1, uValue.g);
     readDataTimer->start(1000);
     jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
-    toSend.addToData(",", uValue.r);
-    toSend.addToData("Sensors", uValue.g);
+    toSend.addToData("Sensors", map);
     this->server->sendCommand(toSend);
 }
 
-QVariantMap Roomba::toVariantMap() const{
-    QVariantMap value;
-    value["r"] = this->uValue.r;
-    value["g"] = this->uValue.g;
-
-//    ret["uColor"] = QVariant(color);
-
-}
 void Roomba::setSensor(const Roomba::sensordata &newSensorData){
     this->uValue = newSensorData;
 }

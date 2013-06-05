@@ -182,44 +182,13 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 
 	//Start timer for polling:
 	timer.informIn(30);
-	/*
-	if(this->isOperating){
-	    //Then, a stream
-	    b.append(148);
-	    //First the length:
-	    int sizeOfArray = (sizeof(sensorsToQuery) / sizeof(int)) / 2;
-	    b.append(sizeOfArray);
-	    int i = 0;
-	    for(i=0;i < sizeOfArray; i++){
-	        b.append(sensorsToQuery[i][0]);
-	    }
-	}else{
-	    //Wait for buttons, battery charge and battery max:
-	    b.append(148);
-	    b.append(3);
-	    b.append(18);
-	    b.append(25);
-	    b.append(26);
-	}
-	toMain.sendData(b).send();
-	b.clear();
-	*/
+
 
 	//Full mode
 	b.append(131);
 	toMain.sendData(b).send();
 	b.clear();
-	/*
-	//And driving!
-	b.append(145);
-	b.append(3);
-	b.append(232);
 
-	b.append(4);
-	b.append(26);
-	Serial.sendCommand(b).send();
-	b.clear();
-	*/
 
 	cout << "RMB: Initialized" << endl;
 
@@ -277,13 +246,69 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 {
 	// {{{USR
 	//Parse command:
+	byteArray b;
 	jsonCommand c = *rtdata;
+	cout << "RMB: Json received: " << c.command << endl;
 	if(c.command == "SETMOTORBRUSHVACUUM"){
 	    //std::cout << "RMB: Main: " << c.data["MainBrush"].asBool() << endl;
 	    this->roomba.setMotors(c.data["MainBrush"].asBool(), 
 	            c.data["SideBrush"].asBool(),
 	            c.data["Vacuum"].asBool());
 	    this->sendRoombaCommandSetMotors();
+	}else if(c.command == "NEWMODE"){
+	    switch(c.data["newmode"].asInt()){
+	        case 0:
+	            //stop
+	            if(this->isOperating){
+	                this->isOperating = false;
+	                program.stop().send();
+	            }
+	            cout << "Stop" << endl;
+	            break;
+	        case 1:
+	            //clean
+	            if(!this->isOperating){
+	                this->isOperating = true;
+	                int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
+	                program.start(battLevel).send();
+	            }
+	            cout << "clean" << endl;
+	            break;
+	        case 2:
+	            //clean on spot
+	            if(this->isOperating){
+	                this->isOperating = false;
+	                program.stop().send();
+	            }
+	            //Send button press
+	            b.append(165);
+	            b.append(2);
+	            toMain.sendData(b).send();
+	            cout << "COS" << endl;
+	            break;
+	        case 3:
+	            //search dock
+	            if(this->isOperating){
+	                this->isOperating = false;
+	                program.stop().send();
+	            }
+	            //Send button press
+	            b.append(165);
+	            b.append(4);
+	            toMain.sendData(b).send();
+	            cout << "DOCK" << endl;
+	            break;
+	    }
+	}else if(c.command == "MOTORSPEED"){
+	    if(!this->isOperating){
+	        b.append(145);
+	        b.append(c.data["right"].asInt() >> 8);
+	        b.append(c.data["right"].asInt() & 0xFF);
+	        b.append(c.data["left"].asInt() >> 8);
+	        b.append(c.data["left"].asInt() & 0xFF);
+
+	        toMain.sendData(b).send();
+	    }       
 	}
 	// }}}USR
 }
@@ -327,7 +352,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	}else{
 	    //Probably buttons received. Check them plox
 	    clsRoomba::clsButtons btns = this->roomba.getButtons();
-	    cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
+	    //cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
 	    if(btns.clean == true){
 	        this->cleanWasTrue = btns.clean;
 	    }else{
@@ -427,18 +452,11 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition9_drive( const clsDriveCom
 }
 // }}}RME
 
-// {{{RME transition ':TOP:Ready:J51AB77110307:getTotalAngle'
-INLINE_METHODS void roombaTopCapsule_Actor::transition10_getTotalAngle( const bool * rtdata, programProtocol::Conjugate * rtport )
+// {{{RME transition ':TOP:Ready:J51AB77110307:doSend'
+INLINE_METHODS void roombaTopCapsule_Actor::transition10_doSend( const byteArray * rtdata, programProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	int v = 0;
-	if(*rtdata == true){
-	    v = this->roomba.getAndResetTotalAngle();
-	}else{
-	    v = this->roomba.getTotalAngle();
-	}
-
-	program.totalAngle(v).send();
+	toMain.sendData(*rtdata).send();
 	// }}}USR
 }
 // }}}RME
@@ -530,13 +548,13 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain9_drive( void )
 	enterState( 2 );
 }
 
-INLINE_CHAINS void roombaTopCapsule_Actor::chain10_getTotalAngle( void )
+INLINE_CHAINS void roombaTopCapsule_Actor::chain10_doSend( void )
 {
-	// transition ':TOP:Ready:J51AB77110307:getTotalAngle'
-	rtgChainBegin( 2, "getTotalAngle" );
+	// transition ':TOP:Ready:J51AB77110307:doSend'
+	rtgChainBegin( 2, "doSend" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition10_getTotalAngle( (const bool *)msg->data, (programProtocol::Conjugate *)msg->sap() );
+	transition10_doSend( (const byteArray *)msg->data, (programProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -630,8 +648,8 @@ void roombaTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				case programProtocol::Conjugate::rti_drive:
 					chain9_drive();
 					return;
-				case programProtocol::Conjugate::rti_getTotalAngle:
-					chain10_getTotalAngle();
+				case programProtocol::Conjugate::rti_doSend:
+					chain10_doSend();
 					return;
 				default:
 					break;

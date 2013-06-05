@@ -87,6 +87,9 @@ protected:
 	// {{{RME operation 'calculateTimeToRotateAngle(int,int,int)'
 	int calculateTimeToRotateAngle( int leftSpeed, int rightSpeed, int angleToRotate );
 	// }}}RME
+	// {{{RME operation 'setMotors(bool,bool,bool)'
+	void setMotors( bool mainBrush, bool sideBrush, bool vacuum );
+	// }}}RME
 
 public:
 	virtual int _followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex );
@@ -110,6 +113,12 @@ protected:
 	// }}}RME
 	// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumper'
 	INLINE_METHODS void transition4_bumper( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
+	INLINE_METHODS void transition6_StopHammerTime( const void * rtdata, programProtocol::Base * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:roombaStart:J51ADAD78038C:Stop'
+	INLINE_METHODS void transition7_Stop( const void * rtdata, programProtocol::Base * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
 	INLINE_METHODS void transition8_pijltje( const void * rtdata, Timing::Base * rtport );

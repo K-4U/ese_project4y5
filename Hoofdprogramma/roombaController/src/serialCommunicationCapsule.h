@@ -75,14 +75,17 @@ protected:
 	// {{{RME enter ':TOP:pollData'
 	INLINE_METHODS void enter4_pollData( void );
 	// }}}RME
+	// {{{RME enter ':TOP:SetBaud'
+	INLINE_METHODS void enter5_SetBaud( void );
+	// }}}RME
 	// {{{RME transition ':TOP:Initial:Initial'
 	INLINE_METHODS void transition1_Initial( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:openPort:False'
 	INLINE_METHODS void transition2_False( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:openPort:True'
-	INLINE_METHODS void transition3_True( const void * rtdata, RTProtocol * rtport );
+	// {{{RME transition ':TOP:SetBaud:J51AEFD8B01BC:ReallyDone'
+	INLINE_METHODS void transition6_ReallyDone( const void * rtdata, RTProtocol * rtport );
 	// }}}RME
 
 private:

@@ -183,7 +183,6 @@ INLINE_METHODS void tcpTopCapsule_Actor::transition2_receiveCommand( const jsonC
 {
 	// {{{USR
 	//Just pass it on
-	cout << "Command received";
 	externalJsonPort.commandReceived(*rtdata).send();
 	// }}}USR
 }

@@ -93,7 +93,7 @@ int jsonTranslateCapsule_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_port
 INLINE_METHODS void jsonTranslateCapsule_Actor::transition1_dataReceived( const RTString * rtdata, tcpProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	cout << "J: Data received: " << *rtdata << endl;
+	//cout << "J: Data received: " << *rtdata << endl;
 	int i;
 	for(i=0;i<strlen(rtdata->Contents);i++){
 		char b = rtdata->Contents[i];

@@ -23,7 +23,6 @@ struct programProtocol
 		{
 			rti_start = rtiLast_RTRootProtocol + 1
 		  , rti_bumpersTriggered
-		  , rti_totalAngle
 		  , rti_stop
 		};
 
@@ -47,14 +46,6 @@ struct programProtocol
 		// }}}RME
 		inline RTInSignal bumpersTriggered( void );
 		// }}}RME
-		// {{{RME inSignal 'totalAngle'
-		// {{{RME general 'documentation'
-		/* {{{USR
-
-		   }}}USR */
-		// }}}RME
-		inline RTInSignal totalAngle( void );
-		// }}}RME
 		// {{{RME inSignal 'stop'
 		// {{{RME general 'documentation'
 		/* {{{USR
@@ -76,6 +67,7 @@ struct programProtocol
 		/* {{{USR
 		Argument gives reason code:
 		1 - Battery empty or too low.
+		2 - Requested from GUI
 		   }}}USR */
 		// }}}RME
 		inline RTOutSignal stopProgram( const int & data );
@@ -96,13 +88,13 @@ struct programProtocol
 		// }}}RME
 		inline RTOutSignal getSensor( const RTTypedValue_byteArray & data );
 		// }}}RME
-		// {{{RME inSignal 'getTotalAngle'
+		// {{{RME inSignal 'doSend'
 		// {{{RME general 'documentation'
 		/* {{{USR
-		Argument tells us wether to reset or not!
+
 		   }}}USR */
 		// }}}RME
-		inline RTOutSignal getTotalAngle( const bool & data );
+		inline RTOutSignal doSend( const RTTypedValue_byteArray & data );
 		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
@@ -120,11 +112,11 @@ struct programProtocol
 		  , rti_stopProgram
 		  , rti_drive
 		  , rti_getSensor
-		  , rti_getTotalAngle
+		  , rti_doSend
 		};
 
 	protected:
-		enum { rtiLast_programProtocol = rti_getTotalAngle };
+		enum { rtiLast_programProtocol = rti_doSend };
 
 	public:
 		// {{{RME outSignal 'playSong'
@@ -140,6 +132,7 @@ struct programProtocol
 		/* {{{USR
 		Argument gives reason code:
 		1 - Battery empty or too low.
+		2 - Requested from GUI
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal stopProgram( void );
@@ -160,13 +153,13 @@ struct programProtocol
 		// }}}RME
 		inline RTInSignal getSensor( void );
 		// }}}RME
-		// {{{RME outSignal 'getTotalAngle'
+		// {{{RME outSignal 'doSend'
 		// {{{RME general 'documentation'
 		/* {{{USR
-		Argument tells us wether to reset or not!
+
 		   }}}USR */
 		// }}}RME
-		inline RTInSignal getTotalAngle( void );
+		inline RTInSignal doSend( void );
 		// }}}RME
 		// {{{RME outSignal 'start'
 		// {{{RME general 'documentation'
@@ -183,14 +176,6 @@ struct programProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTOutSignal bumpersTriggered( const clsRoomba::RTTypedValue_clsBumpersAndCliff & data );
-		// }}}RME
-		// {{{RME outSignal 'totalAngle'
-		// {{{RME general 'documentation'
-		/* {{{USR
-
-		   }}}USR */
-		// }}}RME
-		inline RTOutSignal totalAngle( const int & data );
 		// }}}RME
 		// {{{RME outSignal 'stop'
 		// {{{RME general 'documentation'
@@ -240,18 +225,6 @@ inline RTInSignal programProtocol::Base::bumpersTriggered( void )
 }
 // }}}RME
 
-// {{{RME inSignal 'totalAngle'
-// {{{RME general 'documentation'
-/* {{{USR
-
-   }}}USR */
-// }}}RME
-inline RTInSignal programProtocol::Base::totalAngle( void )
-{
-	return RTInSignal( this, rti_totalAngle );
-}
-// }}}RME
-
 // {{{RME inSignal 'stop'
 // {{{RME general 'documentation'
 /* {{{USR
@@ -281,6 +254,7 @@ inline RTOutSignal programProtocol::Base::playSong( const int & data )
 /* {{{USR
 Argument gives reason code:
 1 - Battery empty or too low.
+2 - Requested from GUI
    }}}USR */
 // }}}RME
 inline RTOutSignal programProtocol::Base::stopProgram( const int & data )
@@ -313,15 +287,15 @@ inline RTOutSignal programProtocol::Base::getSensor( const RTTypedValue_byteArra
 }
 // }}}RME
 
-// {{{RME inSignal 'getTotalAngle'
+// {{{RME inSignal 'doSend'
 // {{{RME general 'documentation'
 /* {{{USR
-Argument tells us wether to reset or not!
+
    }}}USR */
 // }}}RME
-inline RTOutSignal programProtocol::Base::getTotalAngle( const bool & data )
+inline RTOutSignal programProtocol::Base::doSend( const RTTypedValue_byteArray & data )
 {
-	return RTOutSignal( this, Conjugate::rti_getTotalAngle, &data, &RTType_bool );
+	return RTOutSignal( this, Conjugate::rti_doSend, data.data, data.type );
 }
 // }}}RME
 
@@ -351,6 +325,7 @@ inline RTInSignal programProtocol::Conjugate::playSong( void )
 /* {{{USR
 Argument gives reason code:
 1 - Battery empty or too low.
+2 - Requested from GUI
    }}}USR */
 // }}}RME
 inline RTInSignal programProtocol::Conjugate::stopProgram( void )
@@ -383,15 +358,15 @@ inline RTInSignal programProtocol::Conjugate::getSensor( void )
 }
 // }}}RME
 
-// {{{RME outSignal 'getTotalAngle'
+// {{{RME outSignal 'doSend'
 // {{{RME general 'documentation'
 /* {{{USR
-Argument tells us wether to reset or not!
+
    }}}USR */
 // }}}RME
-inline RTInSignal programProtocol::Conjugate::getTotalAngle( void )
+inline RTInSignal programProtocol::Conjugate::doSend( void )
 {
-	return RTInSignal( this, rti_getTotalAngle );
+	return RTInSignal( this, rti_doSend );
 }
 // }}}RME
 
@@ -416,18 +391,6 @@ inline RTOutSignal programProtocol::Conjugate::start( const int & data )
 inline RTOutSignal programProtocol::Conjugate::bumpersTriggered( const clsRoomba::RTTypedValue_clsBumpersAndCliff & data )
 {
 	return RTOutSignal( this, Base::rti_bumpersTriggered, data.data, data.type );
-}
-// }}}RME
-
-// {{{RME outSignal 'totalAngle'
-// {{{RME general 'documentation'
-/* {{{USR
-
-   }}}USR */
-// }}}RME
-inline RTOutSignal programProtocol::Conjugate::totalAngle( const int & data )
-{
-	return RTOutSignal( this, Base::rti_totalAngle, &data, &RTType_int );
 }
 // }}}RME
 

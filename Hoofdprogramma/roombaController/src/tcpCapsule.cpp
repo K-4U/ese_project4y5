@@ -466,13 +466,13 @@ INLINE_METHODS int tcpCapsule_Actor::choicePoint7_getBytes( const void * rtdata,
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) 
 		{
-			printf("SOC: Bytes received by socket capsule: %d\n", iResult);
+			/*printf("SOC: Bytes received by socket capsule: %d\n", iResult);
 			for (int i = 0; i < iResult; i++)
 			{
 				cout << recvbuf[i];
 			}
 
-	        cout << endl;
+	        cout << endl;*/
 			// send data to the application capsule via the port appPort
 			mainConnection.dataReceived(RTString(recvbuf)).send();
 

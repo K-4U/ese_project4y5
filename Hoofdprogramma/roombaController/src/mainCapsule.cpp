@@ -151,8 +151,6 @@ INLINE_METHODS void mainCapsule_Actor::transition1_Initial( const void * rtdata,
 INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport )
 {
 	// {{{USR
-	cout << "MAI: GUI Data received." << endl;
-
 	Roomba.commandReceived(*rtdata).send();
 	// }}}USR
 }

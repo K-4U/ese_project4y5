@@ -44,6 +44,7 @@ static const char * const rtg_state_names[] =
   , "Ready"
   , "Error"
   , "pollData"
+  , "SetBaud"
   , "openPort"
   , "ClosePort"
 };
@@ -98,6 +99,9 @@ void serialCommunicationCapsule_Actor::enterStateV( void )
 	case 4:
 		enter4_pollData();
 		break;
+	case 5:
+		enter5_SetBaud();
+		break;
 	default:
 		RTActor::enterStateV();
 		break;
@@ -127,6 +131,16 @@ INLINE_METHODS void serialCommunicationCapsule_Actor::enter4_pollData( void )
 }
 // }}}RME
 
+// {{{RME enter ':TOP:SetBaud'
+INLINE_METHODS void serialCommunicationCapsule_Actor::enter5_SetBaud( void )
+{
+	// {{{USR
+	//Put baudrate correct plox
+
+	// }}}USR
+}
+// }}}RME
+
 // {{{RME transition ':TOP:Initial:Initial'
 INLINE_METHODS void serialCommunicationCapsule_Actor::transition1_Initial( const void * rtdata, RTProtocol * rtport )
 {
@@ -147,8 +161,8 @@ INLINE_METHODS void serialCommunicationCapsule_Actor::transition2_False( const v
 }
 // }}}RME
 
-// {{{RME transition ':TOP:openPort:True'
-INLINE_METHODS void serialCommunicationCapsule_Actor::transition3_True( const void * rtdata, RTProtocol * rtport )
+// {{{RME transition ':TOP:SetBaud:J51AEFD8B01BC:ReallyDone'
+INLINE_METHODS void serialCommunicationCapsule_Actor::transition6_ReallyDone( const void * rtdata, RTProtocol * rtport )
 {
 	// {{{USR
 	serialPort.comOpened().send();
@@ -192,9 +206,19 @@ INLINE_METHODS int serialCommunicationCapsule_Actor::choicePoint1_openPort( cons
 INLINE_CHAINS void serialCommunicationCapsule_Actor::chain3_True( void )
 {
 	// transition ':TOP:openPort:True'
+	rtgChainBegin( 6, "True" );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 5 );
+	// transition ':TOP:SetBaud:J51AEFD830294:True'
 	rtgChainBegin( 5, "True" );
 	rtgTransitionBegin();
-	transition3_True( msg->data, msg->sap() );
+	rtgTransitionEnd();
+	// transition ':TOP:SetBaud:J51AEFD8B01BC:ReallyDone'
+	rtgChainBegin( 5, "ReallyDone" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition6_ReallyDone( msg->data, msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -202,7 +226,7 @@ INLINE_CHAINS void serialCommunicationCapsule_Actor::chain3_True( void )
 INLINE_CHAINS void serialCommunicationCapsule_Actor::chain2_False( void )
 {
 	// transition ':TOP:openPort:False'
-	rtgChainBegin( 5, "False" );
+	rtgChainBegin( 6, "False" );
 	rtgTransitionBegin();
 	transition2_False( msg->data, msg->sap() );
 	rtgTransitionEnd();
@@ -320,6 +344,24 @@ void serialCommunicationCapsule_Actor::rtsBehavior( int signalIndex, int portInd
 			}
 			break;
 			// }}}RME
+		case 5:
+			// {{{RME state ':TOP:SetBaud'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+			// }}}RME
 		default:
 			unexpectedState();
 			return;
@@ -344,7 +386,7 @@ const RTActor_class serialCommunicationCapsule_Actor::rtg_class =
 {
 	(const RTActor_class *)0
   , rtg_state_names
-  , 4
+  , 5
   , serialCommunicationCapsule_Actor::rtg_parent_state
   , &serialCommunicationCapsule
   , 0
@@ -360,6 +402,7 @@ const RTActor_class serialCommunicationCapsule_Actor::rtg_class =
 const RTStateId serialCommunicationCapsule_Actor::rtg_parent_state[] =
 {
 	0
+  , 1
   , 1
   , 1
   , 1

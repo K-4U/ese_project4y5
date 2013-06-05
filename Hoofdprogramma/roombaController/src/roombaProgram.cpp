@@ -106,6 +106,22 @@ int roombaProgram_Actor::calculateTimeToRotateAngle( int leftSpeed, int rightSpe
 }
 // }}}RME
 
+// {{{RME operation 'setMotors(bool,bool,bool)'
+void roombaProgram_Actor::setMotors( bool mainBrush, bool sideBrush, bool vacuum )
+{
+	// {{{USR
+	byteArray b;
+
+	b.append(138);
+	b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
+
+	std::cout << "RMB: Sending";
+	b.print();
+	Roomba.doSend(b).send();
+	// }}}USR
+}
+// }}}RME
+
 int roombaProgram_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int rtg_repIndex )
 {
 	switch( rtg_portId )
@@ -129,7 +145,8 @@ int roombaProgram_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int
 INLINE_METHODS void roombaProgram_Actor::enter3_roombaStart( void )
 {
 	// {{{USR
-	this->drive(100,100);
+	this->drive(100,110);
+	this->setMotors(true,true,true);
 	// }}}USR
 }
 // }}}RME
@@ -159,19 +176,17 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    //Head on collision! rotate 90 degrees and try again!
 	    this->drive(-100, 100);
 
-	    int theTime = calculateTimeToRotateAngle(-100, 100, 90);
+	    int theTime = calculateTimeToRotateAngle(-100, 100, 30);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.left){
-	    this->angleToRotate = 45;
 	    this->drive(100, -100);
-	    int theTime = calculateTimeToRotateAngle(100, -100, 45);
+	    int theTime = calculateTimeToRotateAngle(100, -100, 180);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.right){
-	    this->angleToRotate = -45;
 	    this->drive(-100, 100);
-	    int theTime = calculateTimeToRotateAngle(-100, 100, -45);
+	    int theTime = calculateTimeToRotateAngle(-100, 100, -1);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}
@@ -215,9 +230,28 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 	// {{{USR
 	this->bumpersTriggered = *rtdata;
 	this->stop();
+	this->setMotors(false,false,false);
 	//Drive backwards for just a bit please
 	this->drive(-100,-100);
-	Sleep(1000);
+	Sleep(650);
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
+INLINE_METHODS void roombaProgram_Actor::transition6_StopHammerTime( const void * rtdata, programProtocol::Base * rtport )
+{
+	// {{{USR
+	Roomba.stopProgram(2);
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:roombaStart:J51ADAD78038C:Stop'
+INLINE_METHODS void roombaProgram_Actor::transition7_Stop( const void * rtdata, programProtocol::Base * rtport )
+{
+	// {{{USR
+	Roomba.stopProgram(2);
 	// }}}USR
 }
 // }}}RME
@@ -305,6 +339,7 @@ INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 	rtgChainBegin( 3, "Stop" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
+	transition7_Stop( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -325,6 +360,7 @@ INLINE_CHAINS void roombaProgram_Actor::chain6_StopHammerTime( void )
 	rtgChainBegin( 4, "StopHammerTime" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
+	transition6_StopHammerTime( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }

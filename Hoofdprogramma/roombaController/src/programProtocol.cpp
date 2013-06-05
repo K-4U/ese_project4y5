@@ -13,7 +13,7 @@ const RTProtocolDescriptor programProtocol::Base::rt_class =
   , &programProtocol::Conjugate::rt_class
   , "programProtocol"
   , 0
-  , 6
+  , 5
   , programProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -47,11 +47,6 @@ const RTSignalDescriptor programProtocol::Base::rt_signals[] =
 	  , &RTType_void
 	  , programProtocol::Base::rti_stop
 	}
-  , {
-		"totalAngle"
-	  , &RTType_int
-	  , programProtocol::Base::rti_totalAngle
-	}
 };
 
 const RTProtocolDescriptor programProtocol::Conjugate::rt_class =
@@ -70,6 +65,11 @@ const RTProtocolDescriptor programProtocol::Conjugate::rt_class =
 const RTSignalDescriptor programProtocol::Conjugate::rt_signals[] =
 {
 	{
+		"doSend"
+	  , &RTType_byteArray
+	  , programProtocol::Conjugate::rti_doSend
+	}
+  , {
 		"drive"
 	  , &RTType_clsDriveCommand
 	  , programProtocol::Conjugate::rti_drive
@@ -78,11 +78,6 @@ const RTSignalDescriptor programProtocol::Conjugate::rt_signals[] =
 		"getSensor"
 	  , &RTType_byteArray
 	  , programProtocol::Conjugate::rti_getSensor
-	}
-  , {
-		"getTotalAngle"
-	  , &RTType_bool
-	  , programProtocol::Conjugate::rti_getTotalAngle
 	}
   , {
 		"playSong"

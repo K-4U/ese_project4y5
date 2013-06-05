@@ -488,7 +488,6 @@ void clsRoomba::setSensor( int index, int value )
 	        //Needs some translating
 	        this->bumpers.left = (bool)(value & (0x02));
 	        this->bumpers.right = (bool)(value & (0x01));
-	        std::cout << "BMPRS = " << dec << value << endl;
 	        break;
 	    case 9:
 	        this->cliff.left = (bool)value;

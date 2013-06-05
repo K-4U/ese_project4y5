@@ -124,8 +124,8 @@ protected:
 	// {{{RME transition ':TOP:Ready:J51AB5BCB00F3:drive'
 	INLINE_METHODS void transition9_drive( const clsDriveCommand * rtdata, programProtocol::Conjugate * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:Ready:J51AB77110307:getTotalAngle'
-	INLINE_METHODS void transition10_getTotalAngle( const bool * rtdata, programProtocol::Conjugate * rtport );
+	// {{{RME transition ':TOP:Ready:J51AB77110307:doSend'
+	INLINE_METHODS void transition10_doSend( const byteArray * rtdata, programProtocol::Conjugate * rtport );
 	// }}}RME
 
 private:
@@ -136,7 +136,7 @@ private:
 	INLINE_CHAINS void chain7_playSong( void );
 	INLINE_CHAINS void chain8_stopProgram( void );
 	INLINE_CHAINS void chain9_drive( void );
-	INLINE_CHAINS void chain10_getTotalAngle( void );
+	INLINE_CHAINS void chain10_doSend( void );
 	INLINE_CHAINS void chain1_comReady( void );
 
 public:

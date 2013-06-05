@@ -4,7 +4,6 @@
 #include "displaylogs.h"
 #include "mytimer.h"
 #include <QtGui>
-#include <QVariantMap>
 
 Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
@@ -45,28 +44,19 @@ void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 
 void Roomba::readSensorData()
 {
-    QMap<int, int> map;
+    QList<QVariant> sensors;
+    QVariant sendData;
+    sensors.append(QVariant(22));
+    sensors.append(QVariant(19));
 
-    uValue.r = 22;
-    uValue.g = 19;
-
-    map.insert(0, uValue.r);
-    map.insert(1, uValue.g);
     readDataTimer->start(1000);
+    sendData = QVariant::fromValue(sensors);
+    //qDebug() << "sendData " << sendData;
+
     jsonCommand toSend(JSONCOMMAND_READSENSORDATA);
-    toSend.addToData("Sensors", map);
+    toSend.addToData("Sensors", sendData);
     this->server->sendCommand(toSend);
 }
-
-void Roomba::setSensor(const Roomba::sensordata &newSensorData){
-    this->uValue = newSensorData;
-}
-
-void Roomba::setSensor(const int r, const int g){
-    this->uValue.r = 22;
-    this->uValue.g = 19;
-}
-
 
 void Roomba::disconnectDoIt(bool disconnectDo)
 {

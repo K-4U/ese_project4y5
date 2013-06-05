@@ -1,11 +1,15 @@
 #ifndef ROOMBA_H
 #define ROOMBA_H
 
+#include <QDebug>
+#include <QtCore>
 #include <vector>
 #include <QVector>
 #include <QVariantMap>
 #include <iostream>
 #include <QMainWindow>
+#include <QObject>
+#include <QVariantMap>
 #include "RoombaConnect.h"
 #include "controllingroomba.h"
 #include "sensordata.h"
@@ -28,15 +32,6 @@ public:
     explicit Roomba(QWidget *parent = 0);
     ~Roomba();
 
-    struct sensordata{
-        int r;
-        int g;
-    };
-     QVector<int> sensors;
-    QVariantMap toVariantMap() const;
-    void setSensor(const int r, const int g);
-    void setSensor(const sensordata &newSensorData);
-    
 private slots:
     void on_pbConnect_clicked();
 
@@ -54,7 +49,6 @@ private:
     Ui::Roomba *ui;
     clsServerConn *server;
     QTimer *readDataTimer;
-    sensordata uValue;
 
 signals:
     void getStatus(int Status);

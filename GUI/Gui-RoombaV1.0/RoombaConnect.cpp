@@ -50,6 +50,7 @@ namespace client{
         QByteArray bAToSend;
         bAToSend.append(toSend.toJsonString());
         this->sock->write(bAToSend);
+        //qDebug() << "sendData " << toSend;
     }
 
     void clsServerConn::srvConnected(){

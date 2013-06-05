@@ -79,7 +79,6 @@ void Roomba::on_pbConnect_clicked()
 
 
     Controllingroomba *controlling_roomba = new Controllingroomba(this);
-    controlling_roomba->show();
 
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
@@ -98,7 +97,9 @@ void Roomba::on_pbConnect_clicked()
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(sendSensorDataRequest()));
     readDataTimer->start(1000);
 
+    this->server->doConnect();
+
     this->hide();
 
-    this->server->doConnect();
+    controlling_roomba->show();
 }

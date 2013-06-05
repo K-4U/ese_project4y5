@@ -1,6 +1,7 @@
 #ifndef ROOMBA_H
 #define ROOMBA_H
 
+#include <QString>
 #include <QDebug>
 #include <QtCore>
 #include <vector>
@@ -42,6 +43,8 @@ private slots:
     void MotorSpeedChanged(int, int);
 
     void readSensorData();
+
+    void sendSensorDataRequest();
 
     void disconnectDoIt(bool);
 

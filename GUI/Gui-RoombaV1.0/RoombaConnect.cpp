@@ -78,6 +78,9 @@ namespace client{
     void clsServerConn::handleEventReceived(QVariantMap data){
         clsEvent myEvent(data);
         switch(myEvent.getType()){
+            case EVENTTYPE_SENSORDATA:
+            emit this->sensorDataReceived(new eventSensor(data));
+            break;
  //           case EVENTTYPE_SERVERMSG:
  //               emit this->serverMessageReceived(new eventServerMessage(data));
  //               break;
@@ -122,9 +125,6 @@ namespace client{
             switch (comm.getCommand()) {
                 case JSONCOMMAND_EVENT:
                     this->handleEventReceived(comm.getData("event").toMap());
-                    break;
-                case JSONCOMMAND_SENSORDATARECEIVED:
-                    this->handleEventReceived(comm.getData("SensorData").toMap());
                     break;
                 default:
                     break;

@@ -58,9 +58,6 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_SENDSENSORDATAREQUEST:
             ret = "SENDSENSORDATAREQUEST";
             break;
-        case JSONCOMMAND_SENSORDATARECEIVED:
-            ret = "SENSORDATARECEIVED";
-            break;
         }
     return ret;
 }
@@ -85,8 +82,6 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_SETMOTOR;
     }else if(command == "SENDSENSORDATAREQUEST"){
         set = JSONCOMMAND_SENDSENSORDATAREQUEST;
-    }else if(command == "SENSORDATARECEIVED"){
-        set = JSONCOMMAND_SENSORDATARECEIVED;
     }
     this->command = set;
 }

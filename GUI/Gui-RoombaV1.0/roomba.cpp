@@ -1,6 +1,5 @@
 #include "roomba.h"
 #include "ui_roomba.h"
-#include "controllingroomba.h"
 #include "displaylogs.h"
 #include "mytimer.h"
 #include <QtGui>
@@ -46,8 +45,9 @@ void Roomba::sendSensorDataRequest()
 {
     QList<QVariant> sensors;
     QVariant sendData;
-    sensors.append(QVariant(22));
     sensors.append(QVariant(19));
+    sensors.append(QVariant(22));
+    sensors.append(QVariant(24));
 
     readDataTimer->start(1000);
     sendData = QVariant::fromValue(sensors);
@@ -59,7 +59,10 @@ void Roomba::sendSensorDataRequest()
 
 void Roomba::readSensorData()
 {
-    ;
+    int sensorID, sensorValue;
+    sensorID = 0;
+    sensorValue = 0;
+    emit sensorData(sensorID, sensorValue);
 }
 
 void Roomba::disconnectDoIt(bool disconnectDo)
@@ -71,10 +74,14 @@ void Roomba::disconnectDoIt(bool disconnectDo)
     readDataTimer->stop();
 }
 
-void Roomba::connected()
+void Roomba::roombaConnected()
 {
+    Controllingroomba *controlling_roomba = new Controllingroomba(this);
     this->hide();
     controlling_roomba->show();
+    readDataTimer = new QTimer(this);
+    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(sendSensorDataRequest()));
+    readDataTimer->start(1000);
 }
 
 void Roomba::on_pbConnect_clicked()
@@ -83,18 +90,10 @@ void Roomba::on_pbConnect_clicked()
     IP.append(ui->leIP->text());
     this->server = new clsServerConn(IP, 1337);
 
-    //Controllingroomba *controlling_roomba = new Controllingroomba(this);
+    Controllingroomba *controlling_roomba = new Controllingroomba(this);
 
     connect(this->server, SIGNAL (connected()),
-            this, SLOT(connected()));
-
-//    if(connectDo == true)
-//    {
-//        this->hide();
-//        controlling_roomba->show();
-//    }
-
-
+            this, SLOT(roombaConnected()));
 
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
@@ -108,12 +107,8 @@ void Roomba::on_pbConnect_clicked()
     connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
             this, SLOT(disconnectDoIt(bool)));
 
-
-    readDataTimer = new QTimer(this);
-    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(sendSensorDataRequest()));
-    readDataTimer->start(1000);
+    connect(this->server, SIGNAL (sensorDataReceived()),
+            this, SLOT(readSensorData()));
 
     this->server->doConnect();
-
-
 }

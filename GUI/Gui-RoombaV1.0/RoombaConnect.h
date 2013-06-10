@@ -13,7 +13,7 @@
 #include "../resources/jsoncommand.h"
 #include "../resources/json.h"
 #include "../resources/clsevent.h"
-#include "../resources/events/events.h"
+#include "sensordata.h"
 
 
 #define MAX_CONNECT_TIMEOUT_IN_MS 5000
@@ -92,7 +92,7 @@ namespace client{
              * \brief Triggered when the server wants us to know something
              * \param theMessage The message it sends
              */
-            void serverMessageReceived(eventServerMessage *theMessage);
+            void sensorDataReceived(eventSensor *theMessage);
 
             /*!
              * \brief Triggered when it cannot connect.

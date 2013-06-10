@@ -115,8 +115,6 @@ void roombaProgram_Actor::setMotors( bool mainBrush, bool sideBrush, bool vacuum
 	b.append(138);
 	b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
 
-	std::cout << "RMB: Sending";
-	b.print();
 	Roomba.doSend(b).send();
 	// }}}USR
 }
@@ -189,6 +187,9 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    int theTime = calculateTimeToRotateAngle(-100, 100, -1);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
+	}else{ //It was the side brush that brought us here.
+	    this->drive(100, -100);
+	    timer.informIn(1);
 	}
 	// }}}USR
 }
@@ -199,6 +200,7 @@ INLINE_METHODS void roombaProgram_Actor::transition1_Start( const int * rtdata, 
 {
 	// {{{USR
 	this->batteryLevel = *rtdata;
+
 	// }}}USR
 }
 // }}}RME
@@ -219,7 +221,7 @@ INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rt
 {
 	// {{{USR
 	cout << "Program starting!" << endl;
-
+	Roomba.playSong(1).send();
 	// }}}USR
 }
 // }}}RME
@@ -230,7 +232,7 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 	// {{{USR
 	this->bumpersTriggered = *rtdata;
 	this->stop();
-	this->setMotors(false,false,false);
+	this->setMotors(true, false, true);
 	//Drive backwards for just a bit please
 	this->drive(-100,-100);
 	Sleep(650);
@@ -242,7 +244,7 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 INLINE_METHODS void roombaProgram_Actor::transition6_StopHammerTime( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	Roomba.stopProgram(2);
+	Roomba.stopProgram(2).send();
 	// }}}USR
 }
 // }}}RME
@@ -251,7 +253,7 @@ INLINE_METHODS void roombaProgram_Actor::transition6_StopHammerTime( const void 
 INLINE_METHODS void roombaProgram_Actor::transition7_Stop( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	Roomba.stopProgram(2);
+	Roomba.stopProgram(2).send();
 	// }}}USR
 }
 // }}}RME
@@ -261,7 +263,6 @@ INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdat
 {
 	// {{{USR
 	this->stop();
-	cout << "RMB: Timer triggered" << endl;
 	// }}}USR
 }
 // }}}RME
@@ -342,6 +343,16 @@ INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 	transition7_Stop( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+}
+
+INLINE_CHAINS void roombaProgram_Actor::chain10_sideBrushOverCurrent( void )
+{
+	// transition ':TOP:roombaStart:J51B5916E0257:sideBrushOverCurrent'
+	rtgChainBegin( 3, "sideBrushOverCurrent" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	rtgTransitionEnd();
+	enterState( 4 );
 }
 
 INLINE_CHAINS void roombaProgram_Actor::chain9_t1( void )
@@ -453,6 +464,9 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 					return;
 				case programProtocol::Base::rti_stop:
 					chain7_Stop();
+					return;
+				case programProtocol::Base::rti_sideBrushOverCurrent:
+					chain10_sideBrushOverCurrent();
 					return;
 				default:
 					break;

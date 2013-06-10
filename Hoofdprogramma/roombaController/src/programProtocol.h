@@ -24,10 +24,11 @@ struct programProtocol
 			rti_start = rtiLast_RTRootProtocol + 1
 		  , rti_bumpersTriggered
 		  , rti_stop
+		  , rti_sideBrushOverCurrent
 		};
 
 	protected:
-		enum { rtiLast_programProtocol = rti_stop };
+		enum { rtiLast_programProtocol = rti_sideBrushOverCurrent };
 
 	public:
 		// {{{RME inSignal 'start'
@@ -53,6 +54,14 @@ struct programProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal stop( void );
+		// }}}RME
+		// {{{RME inSignal 'sideBrushOverCurrent'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal sideBrushOverCurrent( void );
 		// }}}RME
 		// {{{RME inSignal 'playSong'
 		// {{{RME general 'documentation'
@@ -185,6 +194,14 @@ struct programProtocol
 		// }}}RME
 		inline RTOutSignal stop( void );
 		// }}}RME
+		// {{{RME outSignal 'sideBrushOverCurrent'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal sideBrushOverCurrent( void );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -234,6 +251,18 @@ inline RTInSignal programProtocol::Base::bumpersTriggered( void )
 inline RTInSignal programProtocol::Base::stop( void )
 {
 	return RTInSignal( this, rti_stop );
+}
+// }}}RME
+
+// {{{RME inSignal 'sideBrushOverCurrent'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal programProtocol::Base::sideBrushOverCurrent( void )
+{
+	return RTInSignal( this, rti_sideBrushOverCurrent );
 }
 // }}}RME
 
@@ -403,6 +432,18 @@ inline RTOutSignal programProtocol::Conjugate::bumpersTriggered( const clsRoomba
 inline RTOutSignal programProtocol::Conjugate::stop( void )
 {
 	return RTOutSignal( this, Base::rti_stop, (const void *)0, &RTType_void );
+}
+// }}}RME
+
+// {{{RME outSignal 'sideBrushOverCurrent'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal programProtocol::Conjugate::sideBrushOverCurrent( void )
+{
+	return RTOutSignal( this, Base::rti_sideBrushOverCurrent, (const void *)0, &RTType_void );
 }
 // }}}RME
 

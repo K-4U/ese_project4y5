@@ -59,7 +59,7 @@ const RTObject_class RTType_clsRoomba =
   , RTstruct_encode
 #endif
   , (RTDestroyFunction)rtg_clsRoomba_destroy
-  , 13
+  , 14
   , clsRoomba::rtg_clsRoomba_fields
 };
 
@@ -450,6 +450,7 @@ clsRoomba::clsRoomba( const clsRoomba & rtg_arg )
 	, oiMode( rtg_arg.oiMode )
 	, motors( rtg_arg.motors )
 	, buttons( rtg_arg.buttons )
+	, sideBrushCurrent( rtg_arg.sideBrushCurrent )
 {
 }
 // }}}RME
@@ -472,6 +473,7 @@ clsRoomba & clsRoomba::operator=( const clsRoomba & rtg_arg )
 		oiMode = rtg_arg.oiMode;
 		motors = rtg_arg.motors;
 		buttons = rtg_arg.buttons;
+		sideBrushCurrent = rtg_arg.sideBrushCurrent;
 	}
 	return *this;
 }
@@ -531,6 +533,9 @@ void clsRoomba::setSensor( int index, int value )
 	        break;
 	    case 35:
 	        this->oiMode = value;
+	        break;
+	    case 57:
+	        this->sideBrushCurrent = (int16_t)value;
 	        break;
 	}
 	// }}}USR
@@ -636,6 +641,9 @@ int clsRoomba::getSensor( int index )
 	        break;
 	    case 35:
 	        return this->oiMode;
+	        break;
+	    case 57:
+	        return this->sideBrushCurrent;
 	        break;
 	}
 	// }}}USR
@@ -834,6 +842,18 @@ const RTFieldDescriptor clsRoomba::rtg_clsRoomba_fields[] =
 	  , RTOffsetOf( clsRoomba, buttons )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &clsRoomba::RTType_clsButtons
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'sideBrushCurrent'
+  , {
+		"sideBrushCurrent"
+	  , RTOffsetOf( clsRoomba, sideBrushCurrent )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , (const RTObject_class *)0
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0

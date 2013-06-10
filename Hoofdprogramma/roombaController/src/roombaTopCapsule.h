@@ -28,7 +28,7 @@ class clsRoomba;
 // }}}RME
 
 // {{{RME classAttribute 'NUMSENSORS'
-#define NUMSENSORS 13
+#define NUMSENSORS 14
 // }}}RME
 
 extern const RTActorClass roombaTopCapsule;
@@ -64,6 +64,9 @@ private:
 	// }}}RME
 	// {{{RME classAttribute 'cleanWasTrue'
 	bool cleanWasTrue;
+	// }}}RME
+	// {{{RME classAttribute 'dockWasTrue'
+	bool dockWasTrue;
 	// }}}RME
 
 protected:

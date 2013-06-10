@@ -68,6 +68,7 @@ roombaTopCapsule_Actor::roombaTopCapsule_Actor( RTController * rtg_rts, RTActorR
 	: RTActor( rtg_rts, rtg_ref )
 	, isOperating( false )
 	, cleanWasTrue( false )
+	, dockWasTrue( false )
 {
 }
 
@@ -165,7 +166,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 	//Send in our music.
 	//Battery failure:
 	// 45 44 43 42
-	/*
+
 	b.append(140);
 	b.append(0); //Store in 0
 	b.append(4);
@@ -178,7 +179,26 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * r
 	b.append(42);
 	b.append(16);
 	toMain.sendData(b).send();
-	*/
+
+
+	b.clear();
+	//Program start:
+	// 67 68 69 70
+
+	b.append(140);
+	b.append(1); //Store in 1
+	b.append(4);
+	b.append(67);
+	b.append(16);
+	b.append(68);
+	b.append(16);
+	b.append(69);
+	b.append(16);
+	b.append(70);
+	b.append(16);
+	toMain.sendData(b).send();
+
+
 
 	//Start timer for polling:
 	timer.informIn(30);
@@ -212,7 +232,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	//b.print();
 
 	while(i < s){
-	    if(this->isOperating){
+	    //if(this->isOperating){
 	        
 	        int x = 0;
 	        for(x=0;x< NUMSENSORS; x++){
@@ -226,14 +246,14 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition2_dataReceived( const byte
 	            this->roomba.setSensor(sensorsToQuery[x][0], value);
 	            i++;
 	        }
-	    }else{
+	    /*}else{
 	        //Only three sensors;
 	        this->roomba.setSensor(18, b.get(i));
 	        i++;
 	        this->roomba.setSensor(25, (b.get(i) << 8) + b.get(i++));
 	        i++;
 	        this->roomba.setSensor(26, (b.get(i) << 8) + b.get(i++));
-	    }
+	    }*/
 	    
 	}
 
@@ -337,6 +357,12 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	       (bmprs.right == true)){
 	        program.bumpersTriggered(bmprs).send();
 	    }
+
+	    int16_t sideCurrent = this->roomba.getSensor(57);
+	    if(sideCurrent > 180){
+	        program.sideBrushOverCurrent().send();
+	    }
+
 	    //Probably buttons received. Check them plox
 	    clsRoomba::clsButtons btns = this->roomba.getButtons();
 	    if(btns.clean == true){
@@ -345,7 +371,6 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	        if(this->cleanWasTrue){
 	            //STOOOPPP!!!
 	            program.stop().send();
-	            this->isOperating = false;
 	            this->cleanWasTrue = false;
 	        }
 	    }
@@ -380,7 +405,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 {
 	// {{{USR
 	byteArray b;
-	if(this->isOperating){
+	//if(this->isOperating){
 	    //Then, a stream
 	    b.append(149);
 	    //First the length:
@@ -393,7 +418,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	        l+= sensorsToQuery[i][1];
 	    }
 	    toMain.setCommandLength(l).send();
-	}else{
+	/*}else{
 	    //Wait for buttons, battery charge and battery max:
 	    b.append(149);
 	    b.append(3);
@@ -401,7 +426,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition6_askSensors( const void *
 	    b.append(25);
 	    b.append(26);
 	    toMain.setCommandLength(5).send();
-	}
+	}*/
 	toMain.sendData(b).send();
 	b.clear();
 
@@ -427,9 +452,35 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition7_playSong( const int * rt
 INLINE_METHODS void roombaTopCapsule_Actor::transition8_stopProgram( const int * rtdata, programProtocol::Conjugate * rtport )
 {
 	// {{{USR
+	std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
+
+	//Stop motors! OHMYGOD!
+	byteArray b;
+	b.append(145);
+	b.append(0);
+	b.append(0);
+	b.append(0);
+	b.append(0);
+
+
+	b.append(138);
+	b.append(0);
+
+	toMain.sendData(b).send();
+
+	Sleep(1000);
+
+	b.clear();
+	b.append(141);
+	b.append(0);
+
+	toMain.sendData(b).send();
+
+
+
 	this->isOperating = false;
 
-	std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
+
 	// }}}USR
 }
 // }}}RME
@@ -715,7 +766,7 @@ const RTActor_class roombaTopCapsule_Actor::rtg_class =
   , roombaTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 3
+  , 4
   , roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields
 };
 
@@ -821,12 +872,24 @@ const RTFieldDescriptor roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields[] =
 		// }}}RME
 	}
 	// }}}RME
+	// {{{RME classAttribute 'dockWasTrue'
+  , {
+		"dockWasTrue"
+	  , RTOffsetOf( roombaTopCapsule_Actor, dockWasTrue )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
 };
 #undef SUPER
 
 // {{{RME classAttribute 'sensorsToQuery'
 int sensorsToQuery[ NUMSENSORS ][ 2 ] = {{7, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 1}, {19, 2}, 
- {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}, {18, 1}};
+ {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}, {18, 1}, {57, 2}};
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationEnding'

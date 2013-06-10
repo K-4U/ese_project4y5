@@ -3691,7 +3691,10 @@
 								type "clsMotors")
 							(object ClassAttribute "buttons"
 								quid "51A5DAED03BE"
-								type "clsButtons"))
+								type "clsButtons")
+							(object ClassAttribute "sideBrushCurrent"
+								quid "51B588180028"
+								type "int16_t"))
 						operations (list Operations
 							(object Operation "setSensor"
 								quid "519C927001E8"
@@ -3746,6 +3749,9 @@
 |        break;
 |    case 35:
 |        this->oiMode = value;
+|        break;
+|    case 57:
+|        this->sideBrushCurrent = (int16_t)value;
 |        break;
 |}
 								
@@ -3856,6 +3862,9 @@
 |        break;
 |    case 35:
 |        return this->oiMode;
+|        break;
+|    case 57:
+|        return this->sideBrushCurrent;
 |        break;
 |}
 								
@@ -4082,7 +4091,7 @@
 								quid "519B623702CB"
 								initv 
 |{{7, 1}, {9, 1}, {10, 1}, {11, 1}, {12, 1}, {19, 2}, 
-| {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}, {18, 1}}
+| {20, 2}, {21, 1}, {24, 1}, {25, 2}, {26, 2}, {35, 1}, {18, 1}, {57, 2}}
 								
 								type "int[NUMSENSORS][2]")
 							(object ClassAttribute "NUMSENSORS"
@@ -4096,7 +4105,7 @@
 										name "AttributeKind"
 										value ("AttributeKindSet" 2)))
 								quid "519B688D029C"
-								initv "13"
+								initv "14"
 								type "int"
 								changeable "Frozen")
 							(object ClassAttribute "isOperating"
@@ -4105,6 +4114,10 @@
 								type "bool")
 							(object ClassAttribute "cleanWasTrue"
 								quid "51ADAE630075"
+								initv "false"
+								type "bool")
+							(object ClassAttribute "dockWasTrue"
+								quid "51B58AAA00A1"
 								initv "false"
 								type "bool"))
 						operations (list Operations
@@ -4242,7 +4255,7 @@
 |//Send in our music.
 |//Battery failure:
 |// 45 44 43 42
-|/*
+|
 |b.append(140);
 |b.append(0); //Store in 0
 |b.append(4);
@@ -4255,7 +4268,26 @@
 |b.append(42);
 |b.append(16);
 |toMain.sendData(b).send();
-|*/
+|
+|
+|b.clear();
+|//Program start:
+|// 67 68 69 70
+|
+|b.append(140);
+|b.append(1); //Store in 1
+|b.append(4);
+|b.append(67);
+|b.append(16);
+|b.append(68);
+|b.append(16);
+|b.append(69);
+|b.append(16);
+|b.append(70);
+|b.append(16);
+|toMain.sendData(b).send();
+|
+|
 |
 |//Start timer for polling:
 |timer.informIn(30);
@@ -4300,7 +4332,7 @@
 |//b.print();
 |
 |while(i < s){
-|    if(this->isOperating){
+|    //if(this->isOperating){
 |        
 |        int x = 0;
 |        for(x=0;x< NUMSENSORS; x++){
@@ -4314,14 +4346,14 @@
 |            this->roomba.setSensor(sensorsToQuery[x][0], value);
 |            i++;
 |        }
-|    }else{
+|    /*}else{
 |        //Only three sensors;
 |        this->roomba.setSensor(18, b.get(i));
 |        i++;
 |        this->roomba.setSensor(25, (b.get(i) << 8) + b.get(i++));
 |        i++;
 |        this->roomba.setSensor(26, (b.get(i) << 8) + b.get(i++));
-|    }
+|    }*/
 |    
 |}
 |
@@ -4447,6 +4479,12 @@
 |       (bmprs.right == true)){
 |        program.bumpersTriggered(bmprs).send();
 |    }
+|
+|    int16_t sideCurrent = this->roomba.getSensor(57);
+|    if(sideCurrent > 180){
+|        program.sideBrushOverCurrent().send();
+|    }
+|
 |    //Probably buttons received. Check them plox
 |    clsRoomba::clsButtons btns = this->roomba.getButtons();
 |    if(btns.clean == true){
@@ -4455,7 +4493,6 @@
 |        if(this->cleanWasTrue){
 |            //STOOOPPP!!!
 |            program.stop().send();
-|            this->isOperating = false;
 |            this->cleanWasTrue = false;
 |        }
 |    }
@@ -4490,7 +4527,7 @@
 											quid "51A5CE520115"
 											body 
 |byteArray b;
-|if(this->isOperating){
+|//if(this->isOperating){
 |    //Then, a stream
 |    b.append(149);
 |    //First the length:
@@ -4503,7 +4540,7 @@
 |        l+= sensorsToQuery[i][1];
 |    }
 |    toMain.setCommandLength(l).send();
-|}else{
+|/*}else{
 |    //Wait for buttons, battery charge and battery max:
 |    b.append(149);
 |    b.append(3);
@@ -4511,7 +4548,7 @@
 |    b.append(25);
 |    b.append(26);
 |    toMain.setCommandLength(5).send();
-|}
+|}*/
 |toMain.sendData(b).send();
 |b.clear();
 |
@@ -4559,9 +4596,35 @@
 										action (object Action
 											quid "51AB523902DE"
 											body 
+|std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
+|
+|//Stop motors! OHMYGOD!
+|byteArray b;
+|b.append(145);
+|b.append(0);
+|b.append(0);
+|b.append(0);
+|b.append(0);
+|
+|
+|b.append(138);
+|b.append(0);
+|
+|toMain.sendData(b).send();
+|
+|Sleep(1000);
+|
+|b.clear();
+|b.append(141);
+|b.append(0);
+|
+|toMain.sendData(b).send();
+|
+|
+|
 |this->isOperating = false;
 |
-|std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
+|
 											)
 										eventGuards (list eventGuardsList
 											(object EventGuard
@@ -4742,6 +4805,7 @@
 											quid "51ADAF960050"
 											pos (1598,728)
 											quidu "51ADAF960043"
+											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE))
 									statediagram (object State_Diagram ""
 										quid "519B580303C0"
@@ -5020,31 +5084,11 @@
 												pos (180,180)
 												quidu "519B68F40346"))
 										filterFlags 1))
-								(object TransView ":TOP:waitForCom:J519B68FC0073:comReady" @338
-									quid "519B580202B6"
-									uses_fill_color FALSE
-									quidu "519B580303BE"
-									label (object SegLabel @339
-										quid "519B580303C8"
-										pos (674,386)
-										positionBySuperclass FALSE
-										anchor_loc 3
-										max_width 128
-										justify 1
-										pctDist 0.752500
-										height 87)
-									positionBySuperclass FALSE
-									client @330
-									supplier @274
-									vertices (list Points
-										(566,415)
-										(640,470))
-									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB4F6F0301:playSong" @340
+								(object TransView ":TOP:Ready:J51AB4F6F0301:playSong" @338
 									quid "51AB4F6F02FF"
 									uses_fill_color FALSE
 									quidu "51AB4F6F0300"
-									label (object SegLabel @341
+									label (object SegLabel @339
 										quid "51AB4F6F030B"
 										pos (1448,284)
 										anchor_loc 3
@@ -5060,34 +5104,11 @@
 										(1478,325)
 										(1478,390))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB52300119:stopProgram" @342
-									quid "51AB52300117"
-									uses_fill_color FALSE
-									quidu "51AB52300118"
-									label (object SegLabel @343
-										quid "51AB52300123"
-										pos (1224,281)
-										positionBySuperclass FALSE
-										anchor_loc 3
-										max_width 175
-										justify 1
-										pctDist 0.500000
-										height 44
-										orientation 1)
-									positionBySuperclass FALSE
-									client @278
-									supplier @282
-									vertices (list Points
-										(1279,390)
-										(1279,325)
-										(1169,325)
-										(1169,390))
-									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB5BCB00F3:drive" @344
+								(object TransView ":TOP:Ready:J51AB5BCB00F3:drive" @340
 									quid "51AB5BCB00F1"
 									uses_fill_color FALSE
 									quidu "51AB5BCB00F2"
-									label (object SegLabel @345
+									label (object SegLabel @341
 										quid "51AB5BCB00FD"
 										pos (1051,281)
 										anchor_loc 3
@@ -5103,11 +5124,11 @@
 										(1096,325)
 										(1096,390))
 									line_style 6144)
-								(object TransView ":TOP:Initial:Initial" @346
+								(object TransView ":TOP:Initial:Initial" @342
 									quid "519B690001A6"
 									uses_fill_color FALSE
 									quidu "519B6901007F"
-									label (object SegLabel @347
+									label (object SegLabel @343
 										quid "519B69010085"
 										pos (285,199)
 										positionBySuperclass FALSE
@@ -5121,11 +5142,11 @@
 										(203,195)
 										(323,277))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB77110307:doSend" @348
+								(object TransView ":TOP:Ready:J51AB77110307:doSend" @344
 									quid "51AB77110305"
 									uses_fill_color FALSE
 									quidu "51AB77110306"
-									label (object SegLabel @349
+									label (object SegLabel @345
 										quid "51AB77110311"
 										pos (769,291)
 										positionBySuperclass FALSE
@@ -5144,11 +5165,11 @@
 										(866,325)
 										(866,390))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB647002D6:dataReceived" @350
+								(object TransView ":TOP:Ready:J51AB647002D6:dataReceived" @346
 									quid "519B5D190388"
 									uses_fill_color FALSE
 									quidu "519B5D190389"
-									label (object SegLabel @351
+									label (object SegLabel @347
 										quid "519B5D190394"
 										pos (1839,523)
 										positionBySuperclass FALSE
@@ -5166,31 +5187,11 @@
 										(1669,525)
 										(1605,544))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB645400D1:handleSensors" @352
-									quid "51A5BB97030C"
-									uses_fill_color FALSE
-									quidu "51A5BB97030D"
-									label (object SegLabel @353
-										quid "51A5BB970318"
-										pos (1828,730)
-										positionBySuperclass FALSE
-										max_width 209
-										pctDist 1.033898
-										height 155)
-									positionBySuperclass FALSE
-									client @285
-									supplier @290
-									vertices (list Points
-										(1606,669)
-										(1673,669)
-										(1673,728)
-										(1606,728))
-									line_style 6144)
-								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @354
+								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @348
 									quid "519B5D200002"
 									uses_fill_color FALSE
 									quidu "519B5D200003"
-									label (object SegLabel @355
+									label (object SegLabel @349
 										quid "519B5D20000F"
 										pos (1270,1116)
 										positionBySuperclass FALSE
@@ -5208,11 +5209,11 @@
 										(1214,1071)
 										(1214,1004))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @356
+								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @350
 									quid "51A5CE4A021D"
 									uses_fill_color FALSE
 									quidu "51A5CE4A021E"
-									label (object SegLabel @357
+									label (object SegLabel @351
 										quid "51A5CE4A0229"
 										pos (499,982)
 										positionBySuperclass FALSE
@@ -5230,6 +5231,69 @@
 										(584,959)
 										(569,897)
 										(631,875))
+									line_style 6144)
+								(object TransView ":TOP:Ready:J51AB645400D1:handleSensors" @352
+									quid "51A5BB97030C"
+									uses_fill_color FALSE
+									quidu "51A5BB97030D"
+									label (object SegLabel @353
+										quid "51A5BB970318"
+										pos (1827,730)
+										positionBySuperclass FALSE
+										max_width 209
+										pctDist 1.033898
+										height 155)
+									positionBySuperclass FALSE
+									client @285
+									supplier @290
+									vertices (list Points
+										(1606,669)
+										(1672,669)
+										(1672,728)
+										(1606,728))
+									line_style 6144)
+								(object TransView ":TOP:Ready:J51AB52300119:stopProgram" @354
+									quid "51AB52300117"
+									uses_fill_color FALSE
+									quidu "51AB52300118"
+									label (object SegLabel @355
+										quid "51AB52300123"
+										pos (1224,281)
+										positionBySuperclass FALSE
+										anchor_loc 3
+										max_width 175
+										justify 1
+										pctDist 0.500000
+										height 44
+										orientation 1)
+									positionBySuperclass FALSE
+									client @278
+									supplier @282
+									vertices (list Points
+										(1279,390)
+										(1279,325)
+										(1169,325)
+										(1169,390))
+									line_style 6144)
+								(object TransView ":TOP:waitForCom:J519B68FC0073:comReady" @356
+									quid "519B580202B6"
+									uses_fill_color FALSE
+									quidu "519B580303BE"
+									label (object SegLabel @357
+										quid "519B580303C8"
+										pos (674,386)
+										positionBySuperclass FALSE
+										anchor_loc 3
+										max_width 128
+										justify 1
+										pctDist 0.752500
+										height 87)
+									positionBySuperclass FALSE
+									client @330
+									supplier @274
+									vertices (list Points
+										(566,415)
+										(640,470))
 									line_style 6144)
 								(object NoteView @358
 									quid "51A477E80373"
@@ -5454,8 +5518,6 @@
 |b.append(138);
 |b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
 |
-|std::cout << "RMB: Sending";
-|b.print();
 |Roomba.doSend(b).send();
 								
 								parameters (list Parameters
@@ -5589,7 +5651,10 @@
 										target  ":TOP:checkBatteryLevel"
 										action (object Action
 											quid "51AB5A5D03A7"
-											body "this->batteryLevel = *rtdata;")
+											body 
+|this->batteryLevel = *rtdata;
+|
+											)
 										eventGuards (list eventGuardsList
 											(object EventGuard
 												quid "51AB5A4E0181"
@@ -5622,7 +5687,7 @@
 											quid "51AB686A03A8"
 											body 
 |cout << "Program starting!" << endl;
-|
+|Roomba.playSong(1).send();
 											))
 									(object Trans "bumper"
 										quid "51AB5CF303C9"
@@ -5633,7 +5698,7 @@
 											body 
 |this->bumpersTriggered = *rtdata;
 |this->stop();
-|this->setMotors(false,false,false);
+|this->setMotors(true, false, true);
 |//Drive backwards for just a bit please
 |this->drive(-100,-100);
 |Sleep(650);
@@ -5659,7 +5724,7 @@
 										target  ":TOP:roombaWaitForStart:J51ADAD54025B"
 										action (object Action
 											quid "51AF07F60374"
-											body "Roomba.stopProgram(2);")
+											body "Roomba.stopProgram(2).send();")
 										eventGuards (list eventGuardsList
 											(object EventGuard
 												quid "51ADAD6D0179"
@@ -5677,7 +5742,7 @@
 										target  ":TOP:roombaWaitForStart:J51ADAD780391"
 										action (object Action
 											quid "51AF07EB020F"
-											body "Roomba.stopProgram(2);")
+											body "Roomba.stopProgram(2).send();")
 										eventGuards (list eventGuardsList
 											(object EventGuard
 												quid "51ADAD840179"
@@ -5695,10 +5760,7 @@
 										target  ":TOP:roombaStart:J51ADB8DA02D8"
 										action (object Action
 											quid "51ADC5FD0284"
-											body 
-|this->stop();
-|cout << "RMB: Timer triggered" << endl;
-											)
+											body "this->stop();")
 										eventGuards (list eventGuardsList
 											(object EventGuard
 												quid "51ADB8EB0256"
@@ -5862,7 +5924,7 @@
 											boundIconAutoAdjust TRUE)
 										(object JuncPtVw ":TOP:roombaStart:J51AB5CF303CA" @390
 											quid "51AB5CF303CE"
-											pos (824,419)
+											pos (815,419)
 											quidu "51AB5CF303CA"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
@@ -5873,7 +5935,7 @@
 											boundIconAutoAdjust TRUE)
 										(object JuncPtVw ":TOP:roombaStart:J51ADB8DA02D8" @392
 											quid "51ADB8DA02DC"
-											pos (785,419)
+											pos (783,419)
 											quidu "51ADB8DA02D8"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE))
@@ -5959,44 +6021,44 @@
 									reversed TRUE)
 								(object StateView "Normal" "bumperTriggered" @407
 									quid "51AB61D400DC"
-									pos (828,573)
+									pos (812,685)
 									quidu "51AB61D40121"
 									width 312
 									height 89
 									label (object ItemLabel
 										quid "51AB61D40125"
-										pos (828,573)
+										pos (812,685)
 										max_width 241)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
 										(object JuncPtVw ":TOP:bumperTriggered:J51AB61DE016E" @408
 											quid "51AB61DE0176"
-											pos (826,528)
+											pos (815,639)
 											quidu "51AB61DE016E"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @409
-											quid "51ADAD54025A"
-											pos (894,528)
-											quidu "51ADAD540256"
-											positionBySuperclass FALSE
-											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @410
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @409
 											quid "51ADB8DA02D3"
-											pos (740,617)
+											pos (655,671)
 											quidu "51ADB8DA02CF"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @411
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @410
 											quid "51ADCE6F0029"
-											pos (984,603)
+											pos (967,716)
 											quidu "51ADCE6F0025"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @412
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @411
 											quid "51ADCE6F002E"
-											pos (960,617)
+											pos (943,729)
 											quidu "51ADCE6F002A"
+											positionBySuperclass FALSE
+											boundIconAutoAdjust TRUE)
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @412
+											quid "51ADAD54025A"
+											pos (863,639)
+											quidu "51ADAD540256"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE))
 									statediagram (object State_Diagram ""
@@ -6018,46 +6080,46 @@
 																quid "51AB61DE0175"
 																pos (820,156)
 																max_width 97)))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @416
-														quid "51ADAD540257"
-														pos (1155,96)
-														quidu "51ADAD540256"
-														juncPtIcon (object JuncPtIcon @417
-															quid "51ADAD540258"
-															pos (1155,186)
-															label (object ItemLabel
-																quid "51ADAD540259"
-																pos (1195,156))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @418
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @416
 														quid "51ADB8DA02D0"
 														pos (420,1134)
 														quidu "51ADB8DA02CF"
-														juncPtIcon (object JuncPtIcon @419
+														juncPtIcon (object JuncPtIcon @417
 															quid "51ADB8DA02D1"
 															pos (420,1044)
 															label (object ItemLabel
 																quid "51ADB8DA02D2"
 																pos (460,1074))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @420
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @418
 														quid "51ADCE6F0026"
 														pos (1584,972)
 														quidu "51ADCE6F0025"
-														juncPtIcon (object JuncPtIcon @421
+														juncPtIcon (object JuncPtIcon @419
 															quid "51ADCE6F0027"
 															pos (1494,972)
 															label (object ItemLabel
 																quid "51ADCE6F0028"
 																pos (1524,1012))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @422
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @420
 														quid "51ADCE6F002B"
 														pos (1470,1134)
 														quidu "51ADCE6F002A"
-														juncPtIcon (object JuncPtIcon @423
+														juncPtIcon (object JuncPtIcon @421
 															quid "51ADCE6F002C"
 															pos (1470,1044)
 															label (object ItemLabel
 																quid "51ADCE6F002D"
-																pos (1510,1074))))))
+																pos (1510,1074))))
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @422
+														quid "51ADAD540257"
+														pos (1155,96)
+														quidu "51ADAD540256"
+														juncPtIcon (object JuncPtIcon @423
+															quid "51ADAD540258"
+															pos (1155,186)
+															label (object ItemLabel
+																quid "51ADAD540259"
+																pos (1195,156))))))
 											(object StateView "StartState" "Initial" @424
 												quid "51AB61DE0172"
 												pos (180,180)
@@ -6081,11 +6143,105 @@
 										(535,209)
 										(536,297))
 									line_style 6144)
-								(object TransView ":TOP:checkBatteryLevel:batteryTooLow" @427
+								(object TransView ":TOP:Initial:Initial" @427
+									quid "51AB685D0036"
+									uses_fill_color FALSE
+									quidu "51AB685D02C3"
+									label (object SegLabel @428
+										quid "51AB685D02CA"
+										pos (273,128)
+										max_width 113
+										pctDist 0.506043
+										height 44)
+									client @369
+									supplier @373
+									vertices (list Points
+										(209,177)
+										(342,167))
+									line_style 6144)
+								(object TransView ":TOP:roombaStart:J51ADAD78038C:Stop" @429
+									quid "51ADAD740165"
+									uses_fill_color FALSE
+									quidu "51ADAD78038B"
+									label (object SegLabel @430
+										quid "51ADAD780396"
+										pos (1132,236)
+										max_width 63
+										pctDist 0.527710
+										height 38)
+									client @391
+									supplier @375
+									vertices (list Points
+										(925,334)
+										(1234,278)
+										(1181,200)
+										(726,181))
+									line_style 6144)
+								(object TransView ":TOP:bumperTriggered:J51ADB8DA02CF:pijltje" @431
+									quid "51ADB8D60256"
+									uses_fill_color FALSE
+									quidu "51ADB8DA02CE"
+									label (object SegLabel @432
+										quid "51ADB8DA02DD"
+										pos (519,704)
+										positionBySuperclass FALSE
+										max_width 113
+										pctDist 1.806366
+										height 31)
+									positionBySuperclass FALSE
+									client @409
+									supplier @392
+									vertices (list Points
+										(645,671)
+										(575,672)
+										(566,513)
+										(728,469)
+										(776,424))
+									line_style 6144)
+								(object TransView ":TOP:bumperTriggered:J51ADCE6F0025:t1" @433
+									quid "51ADCE6F0023"
+									uses_fill_color FALSE
+									quidu "51ADCE6F0024"
+									label (object SegLabel @434
+										quid "51ADCE6F002F"
+										pos (1030,818)
+										positionBySuperclass FALSE
+										max_width 31
+										pctDist 1.432000
+										height 8)
+									positionBySuperclass FALSE
+									client @410
+									supplier @411
+									vertices (list Points
+										(975,716)
+										(1039,722)
+										(1027,788)
+										(943,729))
+									line_style 6144)
+								(object TransView ":TOP:roombaStart:J51AB5CF303CA:bumper" @435
+									quid "51AB5CF10273"
+									uses_fill_color FALSE
+									quidu "51AB5CF303C9"
+									label (object SegLabel @436
+										quid "51AB5CF303D8"
+										pos (754,536)
+										positionBySuperclass FALSE
+										max_width 97
+										pctDist 0.539604
+										height 61
+										orientation 1)
+									positionBySuperclass FALSE
+									client @390
+									supplier @408
+									vertices (list Points
+										(815,427)
+										(815,629))
+									line_style 6144)
+								(object TransView ":TOP:checkBatteryLevel:batteryTooLow" @437
 									quid "51AB5A810225"
 									uses_fill_color FALSE
 									quidu "51AB5A85024B"
-									label (object SegLabel @428
+									label (object SegLabel @438
 										quid "51AB5A850251"
 										pos (349,385)
 										positionBySuperclass FALSE
@@ -6100,137 +6256,44 @@
 										(394,341)
 										(497,207))
 									line_style 6144)
-								(object TransView ":TOP:checkBatteryLevel:batteryFull" @429
+								(object TransView ":TOP:checkBatteryLevel:batteryFull" @439
 									quid "51AB5AAE0321"
 									uses_fill_color FALSE
 									quidu "51AB5AAF01EE"
-									label (object SegLabel @430
+									label (object SegLabel @440
 										quid "51AB5AAF01F4"
-										pos (644,307)
+										pos (644,308)
 										positionBySuperclass FALSE
 										max_width 175
-										pctDist 0.509102
-										height 44)
+										pctDist 0.512944
+										height 43)
 									positionBySuperclass FALSE
 									client @405
 									supplier @389
 									vertices (list Points
-										(579,342)
+										(579,343)
 										(694,359))
 									line_style 6144)
-								(object TransView ":TOP:Initial:Initial" @431
-									quid "51AB685D0036"
-									uses_fill_color FALSE
-									quidu "51AB685D02C3"
-									label (object SegLabel @432
-										quid "51AB685D02CA"
-										pos (273,128)
-										max_width 113
-										pctDist 0.506043
-										height 44)
-									client @369
-									supplier @373
-									vertices (list Points
-										(209,177)
-										(342,167))
-									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADAD540256:StopHammerTime" @433
+								(object TransView ":TOP:bumperTriggered:J51ADAD540256:StopHammerTime" @441
 									quid "51ADAD5001F1"
 									uses_fill_color FALSE
 									quidu "51ADAD540255"
-									label (object SegLabel @434
+									label (object SegLabel @442
 										quid "51ADAD540260"
-										pos (1467,346)
+										pos (1593,359)
 										positionBySuperclass FALSE
 										max_width 225
-										pctDist 1.050527
-										height 114
+										pctDist 0.434222
+										height 163
 										orientation 1)
 									positionBySuperclass FALSE
-									client @409
+									client @412
 									supplier @374
 									vertices (list Points
-										(901,523)
-										(1388,259)
+										(870,636)
+										(1494,494)
 										(1209,159)
 										(726,157))
-									line_style 6144)
-								(object TransView ":TOP:roombaStart:J51ADAD78038C:Stop" @435
-									quid "51ADAD740165"
-									uses_fill_color FALSE
-									quidu "51ADAD78038B"
-									label (object SegLabel @436
-										quid "51ADAD780396"
-										pos (1132,236)
-										max_width 63
-										pctDist 0.527710
-										height 38)
-									client @391
-									supplier @375
-									vertices (list Points
-										(925,334)
-										(1234,278)
-										(1181,200)
-										(726,181))
-									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADB8DA02CF:pijltje" @437
-									quid "51ADB8D60256"
-									uses_fill_color FALSE
-									quidu "51ADB8DA02CE"
-									label (object SegLabel @438
-										quid "51ADB8DA02DD"
-										pos (575,712)
-										positionBySuperclass FALSE
-										max_width 113
-										pctDist 1.078099
-										height 38)
-									positionBySuperclass FALSE
-									client @410
-									supplier @392
-									vertices (list Points
-										(731,619)
-										(575,672)
-										(566,513)
-										(728,469)
-										(778,424))
-									line_style 6144)
-								(object TransView ":TOP:roombaStart:J51AB5CF303CA:bumper" @439
-									quid "51AB5CF10273"
-									uses_fill_color FALSE
-									quidu "51AB5CF303C9"
-									label (object SegLabel @440
-										quid "51AB5CF303D8"
-										pos (895,481)
-										positionBySuperclass FALSE
-										max_width 97
-										pctDist 0.601908
-										height 70)
-									positionBySuperclass FALSE
-									client @390
-									supplier @408
-									vertices (list Points
-										(824,427)
-										(825,518))
-									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADCE6F0025:t1" @441
-									quid "51ADCE6F0023"
-									uses_fill_color FALSE
-									quidu "51ADCE6F0024"
-									label (object SegLabel @442
-										quid "51ADCE6F002F"
-										pos (1047,701)
-										positionBySuperclass FALSE
-										max_width 31
-										pctDist 1.373333
-										height 7)
-									positionBySuperclass FALSE
-									client @411
-									supplier @412
-									vertices (list Points
-										(992,603)
-										(1056,609)
-										(1044,675)
-										(966,621))
 									line_style 6144))
 							filterFlags 1)
 						language "C++"
@@ -6337,6 +6400,9 @@
 										quidu "519B56930157")
 									(object Signal "stop"
 										quid "51ADAD1F0146"
+										dataType  "void")
+									(object Signal "sideBrushOverCurrent"
+										quid "51B59124037A"
 										dataType  "void"))
 								outSignals (list outSignalsList
 									(object Signal "playSong"
@@ -8840,7 +8906,7 @@
 						quidu "518764D2025A"
 						compartment (object Compartment
 							quid "5188D84A0181"
-							pos (2137,1347)
+							pos (2137,1351)
 							anchor 2
 							nlines 7
 							max_width 450
@@ -8926,29 +8992,29 @@
 						IncludeOperation TRUE
 						showAggregations TRUE
 						quid "519B5DF80172"
-						pos (2816,364)
+						pos (2816,378)
 						label (object ItemLabel
 							quid "519B5DF80173"
-							pos (1963,117)
-							max_width 1707
+							pos (1961,112)
+							max_width 1710
 							label "roombaTopCapsule")
 						stereotype (object ItemLabel
 							quid "519B5DF80176"
-							pos (1963,83)
+							pos (1961,78)
 							anchor 10
-							max_width 1707
+							max_width 1710
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "518A226F036A"
 						compartment (object Compartment
 							quid "519B5DF8017A"
-							pos (1963,212)
+							pos (1961,205)
 							anchor 2
-							nlines 13
+							nlines 14
 							max_width 1553
 							justify 1)
-						width 1725
-						height 718
+						width 1728
+						height 756
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
@@ -8958,26 +9024,26 @@
 						quidu "519B57A40170"
 						label (object SegLabel @656
 							quid "519B5DF80193"
-							pos (2029,303)
+							pos (2028,307)
 							max_width 338
 							label "roombaTopCapsuleR1"
-							pctDist -0.210193
-							height 8)
+							pctDist -0.213589
+							height 6)
 						client @654
 						supplier @637
 						vertices (list Points
-							(1953,288)
-							(1588,257))
+							(1951,294)
+							(1588,259))
 						line_style 6144
 						label (object SegLabel @657
 							quid "519B5DF80195"
-							pos (1907,296)
+							pos (1869,297)
 							hidden TRUE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist 0.123277
-							height 12))))))
+							pctDist 0.223025
+							height 11))))))
 	root_subsystem (object SubSystem "Component View"
 		quid "5176778400A5"
 		physical_models (list unit_reference_list

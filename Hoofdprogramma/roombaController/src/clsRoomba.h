@@ -318,6 +318,9 @@ private:
 	// {{{RME classAttribute 'buttons'
 	clsButtons buttons;
 	// }}}RME
+	// {{{RME classAttribute 'sideBrushCurrent'
+	int16_t sideBrushCurrent;
+	// }}}RME
 
 public:
 	// {{{RME tool 'OT::Cpp' property 'GenerateDefaultConstructor'

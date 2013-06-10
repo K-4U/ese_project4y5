@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+	body { counter-reset: one; max-width: 1100px; padding: 50px; margin: 0 auto; }
+	img { max-width: 100%; }
+	
+	.chapter h1 {
+		counter-reset: two;
+		counter-increment: one;
+	}
+	.chapter h1:before {
+		content: counter(one) ". ";
+	}
+	.chapter h2 {
+		counter-reset: three;
+		counter-increment: two;
+	}
+	.chapter h2:before {
+		content: counter(one) "." counter(two) ". ";
+	}
+	.chapter h3 {
+		counter-increment: three;
+	}
+	.chapter h3:before {
+		content: counter(one) "." counter(two) "." counter(three) ". ";
+	}
+	
+	</style>
+	<title>Productrapport</title>
+</head>
+<body>
+
+	<section>
+	
+		<h1>Productrapport</h1>
+		<h2>iRobot Roomba</h2>
+		
+		<img src="assets/image001.jpg" alt="">
+		
+		<table>
+			<tr>
+				<td>Document</td>
+				<td>Productrapport</td>
+			</tr>
+			<tr>
+				<td>Opdrachtnemer</td>
+				<td>Hogeschool van Arnhem en Nijmegen</td>
+			</tr>
+			<tr>
+				<td>Opleidingsdeel</td>
+				<td>Hoofdfase ESE</td>
+			</tr>
+			<tr>
+				<td>Vakcode</td>
+				<td>PRJ4</td>
+			</tr>
+			<tr>
+				<td>Projectgroep</td>
+				<td>ES2-y5</td>
+			</tr>
+			<tr>
+				<td>Projectleden</td>
+				<td>Koen Beckers, Erik de Boer, Léon Gersen, Maarten Kompanje & Tim Rijssemus.</td>
+			</tr>
+			<tr>
+				<td>Opdrachtgever</td>
+				<td>Ruud Elsinghorst</td>
+			</tr>
+			<tr>
+				<td>Beoordelaar</td>
+				<td>Nico Bouwman</td>
+			</tr>
+			<tr>
+				<td>Datum en plaats</td>
+				<td>21-05-2013, Arnhem</td>
+			</tr>
+			<tr>
+				<td>Versie</td>
+				<td>1.0</td>
+			</tr>
+		</table>
+	
+	</section>
+
+	<section>
+	
+		<h1>Summary</h1>
+		
+		<p>The assignment is to control a robot called from a graphical user interface. There will also be a graphical simulator that can be used by the User Interface. The simulator will have the same options (including concerns sensors) as the real Roomba. This robot is a vacuum cleaner. It can detect objects and thereby avoid objects. The robot comprises a variety of sensors.</p>
+
+		<p>The programming of the user interface and the simulator have been written in C++. The transmission and reception of data and the softening thereof is programmed in Rose Real Time.</p>
+
+		<p>All requirements are realized. There have been many problems with programming in Rose RealTime. This is because in our group had no experience of working in this program. The simulator works in conjunction with the User Interface.</p>
+
+		<p>We thought it was a fun project. There was a lot of challenge , as no one had before programmed with Rose RealTime. Here we take a lot of experience. We are pleased to be working within the group.</p>
+	
+	</section>
+
+	<section>
+	
+		<h1>Voorwoord</h1>
+
+		<p>Terugkijkend op dit project was dit een lastig maar geslaagd project. We hebben het allen zeer leerzaam ervaren om dieper in te gaan op het programmeren in C++ en met name het gebruik van Rose Real Time. Voordat dit project startte had nog geen van ons ervaring met Rose Real Time. Zo hebben we geleerd hoe we een TCP/IP verbinding en Seriële communicatie kunnen programmeren in Rose Real Time.</p>
+
+		<p>Het is goed om te zien dat de User Interface en de simulator werken in samenwerking met Rose Real Time.</p>
+
+		<p>Een verbeterpunt voor een volgend project is om alle opdrachten beter in te plannen en ons aan dit tijd schema te houden. Het kwam vaak voor dat we achter liepen op schema. Dit kwam mede doordat onze project lid (Stefan Broekman) met de opleiding stopte. Uiteindelijk is dit door hard werken geen tijdsprobleem geworden.</p>
+
+		<p>We kijken terug op een geslaagd project en zijn tevreden met het product dat we hebben opgeleverd. Dit is onder andere mogelijk geweest door een goede samenwerking.</p>
+	
+	</section>
+
+	<section>
+	
+		<h1>Revisiehistorie</h1>
+	
+		<table>
+			<thead>
+				<tr>
+					<th>Datum</th>
+					<th>Opgewaardeerd door</th>
+					<th>Revisie</th>
+					<th>Commentaar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>04-06-2013</td>
+					<td>0</td>
+					<td>Maarten Kompanje</td>
+					<td>Start productrapport</td>				
+				</tr>
+			</tbody>
+		</table>
+	
+	</section>
+
+	<section class="chapter">
+		
+		<h1>Inleiding</h1>
+		
+		<p>Dit document is bedoelt om inzicht te krijgen in het product dat wij hebben opgeleverd. De opdracht was om een robotstofzuiger te bedienen en hierbij een simulator te maken.</p>
+
+		<p>De opdrachtgever is de heer Ruud Elsinghorst, de contactpersoon met de HAN is Nico Bouwman. De leden van projectgroep 5 van de ES2 (opleiding Embedded Systems Engineering) klas zijn verantwoordelijk voor  het uitvoeren van dit project.</p>
+
+		<p>In dit document wordt uitgelegd hoe deze Roomba geprogrammeerd is met de hierbij behorende User Interface en Roomba simulator. Hierbij is veelal gebruik gemaakt van de programmeer omgeving Rose Real Time. Deze robotstofzuiger gaat rijden zodra deze het startsignaal krijgt. Onderweg zuigt de robot alles op wat hij tegen komt. Zodra de robot een object(muur) raakt draait hij een x aantal graden en vervolgt zijn weg. Als de stofzuiger klaar is keert hij terug naar zijn dock waar de accu weer volgeladen wordt.</p>
+
+		<p>Wij hebben een User Interface ontworpen waarmee de Roomba zelf te bedienen is.  Ook beschikt het programma over andere onderdelen zoals het uitlezen van verschillende sensoren, denk hierbij aan hoe vol de accu zit, hoeveel vuil er in de Roomba zit, enzovoort.</p>
+
+		<p>Met deze zelfde User Interface is ook de simulator aan te sturen. De simulator heeft dezelfde opties als de ‘echte’ Roomba.</p>
+
+		<p>Het doorsturen van de informatie gebeurd met de software Rose Real Time. Vooraf hadden wij geen ervaring met deze programmeer omgeving. Het was dan ook een grote uitdaging om met deze software te gaan werken.</p>
+
+		<p>In dit document worden de Functionele en Technische specificaties beschreven die we bepaald hebben voor we aan de realisatie begonnen die daarna besproken worden. Vervolgens worden de test resultaten van de gemaakte programma beschreven.</p>
+	
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Functioneel ontwerp</h1>
+	
+		<div>
+		
+			<h2>Doelstelling Functioneel ontwerp</h2>
+			
+			<p>Dit document is gemaakt in opdracht van de opdrachtgever en heeft als doel het verkrijgen van een complete specificatie van het te ontwikkelen product. Dit document geeft duidelijk weer wat de functionele werking van de nieuwe besturing is. Een onderdeel hiervan is een beschrijving van de gebruikersinterface en een ontwerp van de handleiding. Het functioneel ontwerp dient te worden voldaan aan de eisen en wensen van de opdrachtgever.</p>
+		
+		</div>
+	
+		<div>
+		
+			<h2>Globaal IPO schema</h2>
+			
+			<h3>Het Systeem</h3>
+		
+			<ol>
+				<li>De Roomba gaat rijden(stofzuigen) als dit signaal gegeven wordt;</li>
+				<li>De Roomba ontwijkt obstakels en herkent afstapjes;</li>
+				<li>Verrichtingen van de Roomba kunnen op afstand gevolgd worden;</li>
+				<li>Instellingen kunnen op afstand worden aangebracht;</li>
+				<li>De Roomba kan via de GUI op afstand bestuurd worden;</li>
+			</ol>
+			
+			<h3>Hoofdfunctie</h3>
+			
+			<p>De hoofdfunctie van de Roomba is het schoonmaken van een ruimte zonder obstakels te raken of ergens van af te vallen. Als de Roomba klaar is met dit proces gaat deze terug naar zijn beginpunt. De instellingen kunnen op de computer ingesteld worden.</p>
+			
+			<h3>Subfuncties</h3>
+			
+			<p>De Roomba bevat de volgende subfuncties;</p>
+			<ol>
+				<li>De Roomba rijdt terug naar het beginpunt na het voltooien van de opdracht;</li>
+				<li>Er word een grafische interface ontworpen waarmee de Roomba gevolgd wordt;</li>
+				<li>Er kan ingevoerd worden hoelang de Roomba actief moet zijn;</li>
+				<li>De Roomba moet handmatig via de PC te bedienen zijn;</li>
+			</ol>
+			
+			<h3>Globaal IPO Schema</h3>
+			
+			<img src="assets/image003.png" alt="">
+			
+			<h3>IPO schema's Roomba</h3>
+			
+			<p>Het project bestaat uit een aantal functionele blokken waartussen onderlinge connecties bestaan. Deze blokken hebben betrekking op ingevoerde en uitgevoerde gegevens, en zijn afgebeeld in onderstaande figuur.</p>
+			
+			<img src="assets/image005.png" alt="">
+			
+			<ol>
+				<li><strong>Uitlezen</strong><br>De Roomba zal tijdens zijn geautomatiseerde route een logboek bijhouden, wat in dit blok uit te lezen is.</li>
+				<li><strong>Besturing</strong><br>De externe besturing laat de gebruiker de Roomba zonder automatisch plan bedienen.</li>
+				<li><strong>GUI</strong><br>De grafische user interface, waarin de gebruiker de besturing kan bedienen, en de gegevens van de Roomba kan uitlezen.</li>
+				<li><strong>Roomba controller</strong><br>In de controller wordt de daadwerkelijke bestuursopdracht voor de Roomba opgesteld.</li>
+				<li><strong>Internet</strong><br>De GUI moet via internet benaderbaar zijn. Dit gebeurt via het TCP/IP protocol.</li>
+				<li><strong>Interface</strong><br>De Roomba beschikt over een SCI interface, maar de meeste laptops niet. Deze verbinding moet dus worden omgezet.</li>
+				<li><strong>Simulator/Roomba</strong><br>Omdat de Roomba hardware niet altijd beschikbaar is, moet een simulator worden ingericht om de Roomba controller te kunnen testen.</li>
+			</ol>
+
+			<p>In het onderstaande schema is een globaal IPO schema van de sensoren en actuatoren weergegeven. Hier wordt verder op in gegaan in het technisch ontwerp.</p>
+			
+			<img src="assets/image007.jpg" alt="">
+			
+		</div>
+		
+		<div>
+			
+			<h2>Functionele specificaties</h2>
+			
+			<p>In dit hoofdstuk wordt ingegaan op de functionaliteit van het product. Het product is een werkend prototype van een Roombacontroller, welke gebruikt kan worden om een Irobot Roomba robotstofzuiger te besturen. Deze moet aan de onderstaande eisen voldoen.</p>
+	 
+			<strong>Functionele eisen:</strong>
+			<ol>
+				<li>De functionaliteit bieden die de Roomba nu ook biedt;</li>
+				<li>Verrichtingen van de Roomba op afstand kunnen volgen;</li>
+				<li>Instellingen op afstand kunnen aanbrengen;</li>
+				<li>Via de GUI op afstand de Roomba manueel besturen;</li>
+				<li>Optioneel toevoegen van extra functionaliteit;</li>
+			</ol>
+			
+			<strong>Technische eisen:</strong>
+			<ol>
+				<li>Loggen van alle berichten op de Roombacontroller;</li>
+				<li>Loggen sensorinformatie;</li>
+				<li>Voor het ontwerpen van de Roombaprocessing moet gebruik gemaakt worden van Rose RealTime en C++. De GUI en de Roombasimulator mogen in een andere C++ontwikkelomgeving worden ontwikkeld, maar voor al de ontworpen software geldt dat deze dient te worden beschreven met behulp van UML-diagrammen;</li>
+				<li>De Roombaprocessing moet ook zelfstandig zonder GUI kunnen draaien. Dat wil zeggen zodra instellingen via de GUI zijn ingevoerd moet de gevraagde functionaliteit zelfstandig door de Roombaprocessing kunnen worden uitgevoerd zonder dat de GUI is verbonden met de Roombaprocessing;</li>
+				<li>De benodigde hardware bestaat uit de USB-SCI-interfacemodule die de connector naar de Roomba bevat en de berichten van/naar de laptop omzet naar SCI-berichten. Budget voor aan te schaffen hardware is € 25,- <br>Optioneel: Eén Roombaprocessing-unit kan met meerdere GUI’s gelijktijdig verbinding maken. Op deze wijze is het bijvoorbeeld mogelijk om zowel lokaal als remote dezelfde informatie ter beschikking te hebben;</li>
+			</ol>
+			
+		</div>
+		
+		<div>
+		
+			<h2>User Interface</h2>
+			
+			<p>De GUI moet een heel aantal zaken bevatten. Deze worden overzichtelijk in de onderstaande grafiek weergegeven. De GUI wordt ontworpen in QT Creator met C++.</p>
+			
+			<img src="assets/image009.png" alt="">
+			
+		</div>
+		
+		<div>
+		
+			<h2>Gebruikershandleiding</h2>
+			
+			<h3>Inhoud</h3>
+
+			<p>Als onderdeel van de functionele specificatie wordt er een eerste aanzet van de user manual voor opdrachtgever en/of ontwikkelaars ontworpen. Hoe moet de besturing worden gebruikt? Ook moet deze gebruikershandleiding worden afgestemd met de opdrachtgever.</p>
+			 
+			<p>Door deze user manual te definiëren, krijgen klant/opdrachtgever en ontwikkelaars een goed beeld van het te ontwikkelen systeem en kan worden nagegaan of de functionele specificatie inderdaad compleet is. Een uitgebreide user manual volgt later in het project.</p>
+			
+			<h3>User Manual</h3>
+			
+			<strong>Voor de beste werking:</strong>
+			<ol>
+				<li>Leeg de Roomba en zijn filter na drie keer gebruiken;</li>
+				<li>Maak de borstels van de Roomba na drie keer gebruiken schoon;</li>
+				<li>Laat de Roomba altijd verbonden met zijn oplader;</li>
+				<li>Houd de wielen en bezems vrij van haar en andere rotzooi door regelmatig de onderkant na te kijken;</li>
+			</ol>
+ 
+			<strong>De Roomba heeft drie hardware matige knoppen:</strong>
+			<ol>
+				<li><strong>Spot</strong><br>De Spot knop zorgt ervoor dat de Roomba in een cirkel van ongeveer 1 meter zal schoonmaken, waarna hij terug zal gaan naar waar hij is begonnen.</li>
+				<li><strong>Clean</strong><br>De Clean knop zorgt ervoor dat de Roomba de hele kamer zal schoonmaken. Hij berekent hiervoor de beste route zodat hij binnen 60 minuten klaar is.</li>
+				<li><strong>Dock</strong><br>De Dock knop zal de Roomba instrueren om terug te gaan naar zijn dock om op te laden.</li>
+			</ol>
+ 
+			<strong>Batterijleven:</strong>
+			<p>Om het meeste uit de batterij te halen raden wij u aan om de Roomba altijd weg te zetten terwijl deze aan de oplader hangt.</p>
+			 
+			<p>Het beste is om de batterij volledige op te laden voordat u een schoonmaak ronde begint. Een volle batterij kan één schoonmaakronde volhouden.</p>
+			 
+			<p>Als de Roomba voor de eerste keer wordt opgeladen, of een lange tijd niet is opgeladen geweest, zal de Roomba een speciale 16 uur durende laadcyclus starten. Dit verlengt de levensduur van de batterij.</p>
+			
+			<h3>Fouten en oplossingen</h3>
+			
+			<p>Er kunnen zich complicaties voordoen tijdens het gebruik van het apparaat. In de officiële user manual zullen wij de gebruiker zo goed mogelijk proberen te begeleiden om deze eventuele problemen op te lossen. Bij een probleem zullen we de gebruiker door middel van een overzichtelijke tabel, dat je hieronder kunt vinden, eerst zelf een aantal standaard controles laten uitvoeren.</p>
+			
+			<img src="assets/image011.png" alt=""><br>
+			<img src="assets/image013.png" alt=""><br>
+			<img src="assets/image015.png" alt=""><br>
+			<img src="assets/image017.png" alt="">
+			
+		</div>
+
+	</section>
+
+	<section class="chapter">
+	
+		<h1>Technisch Ontwerp</h1>
+		
+		<div>
+		
+			<h2>Doestelling technisch ontwerp</h2>
+			
+			<p>Dit document is gemaakt om duidelijkheid te creëren over hoe het systeem in elkaar zit. Zo wordt het Hiërarchisch schema beschreven en laat de groep zien hoe het systeem er technisch uitziet in het Architectuur schema. Ten slot worden de Input-Proces-Output (Invoer-Verwerking-Uitvoer) systemen weergegeven. Hierin wordt beschreven hoe bepaalde signalen worden verwerkt en wat er dan uiteindelijk met deze signalen gedaan wordt.</p>
+			
+		</div>
+		
+		<div>
+		
+			<h2>Hiërarchische schema's</h2>
+		
+			<h3>Systeem</h3>
+			
+			<p>Het schema hieronder is het schema van het gehele systeem. Het gehele systeem bestaat uit het Docking station en de Roomba.</p>
+			
+			<img src="assets/image019.jpg" alt="">
+			
+			<h3>iRobot Roomba</h3>
+			
+			<img src="assets/image021.jpg" alt="">
+			
+			<h3>Dock</h3>
+			
+			<p>Het schema hieronder is het schema van het Docking station. De volgende dingen zijn aanwezig op het Docking station: Infrarood om te zenden naar de Roomba waardoor deze het docking station terug kan vinden. Laden voor het opladen van de Roomba.</p>
+			
+			<img src="assets/image023.jpg" alt="">
+			
+		</div>
+		
+		<div>
+		
+			<h2>Architectuurschema</h2>
+		
+			/* */
+		
+		</div>
+		
+		<div>
+		
+			<h2>IPO's</h2>
+			
+			<h3>Software</h3>
+			
+			/* */
+			
+			<h3>Hardware</h3>
+			
+			<p>In dit hoofdstuk worden de verschillende typen hardware besproken die gebruikt worden in dit project.</p>
+			
+			<h4>Bump sensor</h4>
+			<p>De bump sensor detecteert of de Roomba een object heeft geraakt.</p>
+			<img src="assets/image026.png" alt="">
+			
+			<h4>Wheel drop</h4>
+			<p>De wheel drop geeft aan of een van de of beide wielen van de Roomba een hoogteverschil hebben.</p>
+			<img src="assets/image028.png" alt="">
+		
+			<h4>Cliff sensor</h4>
+			<p>De cliff sensoren geven aan of er een object voor de Roomba ligt.</p>
+			<img src="assets/image030.png" alt="">
+			
+			<h4>Cliff signals</h4>
+			<p>De cliff signals geven aan hoe diep het object voor de Roomba ligt.</p>
+			<img src="assets/image032.png" alt="">
+			
+			<h4>Overcurrent</h4>
+			<p>Overcurrent geeft aan of een van de motoren of meerdere motoren een overcurrent hebben.</p>
+			<img src="assets/image034.png" alt="">
+			
+			<h4>Motor current</h4>
+			<p>Motor current geeft van elke motor aan of deze vooruit, achteruit of uit staat.</p>
+			<img src="assets/image036.png" alt="">
+			
+			<h4>Dirt detector</h4>
+			<p>De dirt detector geeft aan hoeveel viezigheid zich op de grond bevind.</p>
+			<img src="assets/image038.png" alt="">
+			
+			<h4>Infrared</h4>
+			<p>De infrared(infrarood) sensor detecteert of het signalen van het docking station krijgt en hoe sterk deze zijn.</p>
+			<img src="assets/image040.png" alt="">
+			
+			<h4>Buttons</h4>
+			<p>De buttons detecteren welke knop is ingedrukt en hoelang deze zijn ingedrukt.</p>
+			<img src="assets/image042.png" alt="">
+			
+			<h4>Distance</h4>
+			<p>Door de distance(afstand) op te vragen geeft de Roomba de afgelegde afstand (in mm) terug.</p>
+			<img src="assets/image044.png" alt="">
+			
+			<h4>Angle</h4>
+			<p>Door de angle op te vragen geeft de Roomba de afgelegde draaiing (in graden) terug.</p>
+			<img src="assets/image046.png" alt="">
+			
+			<h4>Voltage</h4>
+			<p>Door de voltage op te vragen geeft de Roomba het huidige voltage (in mV) terug.</p>
+			<img src="assets/image048.png" alt="">
+			
+			<h4>Current</h4>
+			<p>Door de current op te vragen geeft de Roomba aan of er stroom (in mA) in of uit vloeit en hoeveel dit is.</p>
+			<img src="assets/image050.png" alt="">
+			
+			<h4>Charging state</h4>
+			<p>Door de charging state op te vragen geeft de Roomba huidige oplaad status terug.</p>
+			<img src="assets/image052.png" alt="">
+			
+			<h4>Temperature</h4>
+			<p>Door de temperatuur op te vragen geeft de Roomba aan hoe warm de batterij is.</p>
+			<img src="assets/image054.png" alt="">
+			
+			<h4>Battery charge</h4>
+			<p>Door de battery charge op te vragen geeft de Roomba aan hoe vol de batterij is (in mAh).</p>
+			<img src="assets/image056.png" alt="">
+			
+			<h4>Battery capacity</h4>
+			<p>Door de battery capacity op te vragen geeft de Roomba aan wat de geschatte laadcapaciteit is. (in mAh).</p>
+			<img src="assets/image058.png" alt="">
+			
+			<h4>Stasis</h4>
+			<p>Door de stasis op te vragen geeft de Roomba of er vooruitgang geboekt wordt.</p>
+			<img src="assets/image060.png" alt="">
+			
+		</div>
+	
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Realisatie</h1>
+	
+		<div>
+		
+			<h2>Doestelling realisatiefase</h2>
+			
+			<p>Het doel van de realisatiefase is om een werkend eindproduct te krijgen. Alle onderdelen die wij hebben toegepast in dit project worden hierin beschreven en zal bestaan uit Rose RealTime, User Interface en de Simulator.</p>
+		
+		</div>
+	
+		<div>
+	
+			<h2>Rose RealTime</h2>
+	
+			<h3>Klasse diagram eindprogramma</h3>
+	
+			/* */
+	
+			<h3>TCP/IP verbinding met Rose RealTime</h3>
+			
+			<p>Een TCP/IP verbinding is een netwerkprotocol om via het netwerk verbinding met een andere computer te krijgen. Deze verbinding wordt gebruikt om de User Interface te koppelen met het systeem waar Rose RealTime op draait. Het state diagram van de TCP/IP capsule ziet er als volgt uit:</p>
+			
+			<img src="assets/image061.png" alt="">
+	
+			<p>Als eerste wordt de Winsock geïnitialiseerd. Dit zorgt voor  verbinding tussen en TCP/IP en Windows. Er wordt gekeken of de opgegeven poort en het lokale adres correct is(adressCorrect).  Nu wordt er gekeken of er gebruik wordt gemaakt van een IPv4v of IPv6(ValidSocket) verbinding. De verbinding is nu succesvol(bindingSuccesfull). Nadat de socket is geboden aan een IP-adres en een poort moet de moet de verbinding worden gelegd. Dit gebeurd in listening. Als deze verbinding correct is wordt de verbinding geaccepteerd(acceptConnection). De data wordt nu in getBytes binnengehaald. Dit choise point zit in een lus om alle data die binnenkomt te ontvangen. Als de connectie nu beëindigd wordt komt deze in de Reset terecht, is dit niet het geval gaat deze weer naar het acceptConnection choise point. Als elk ander beschreven choise point de waarde false krijgt gaat deze terug naar de reset en wordt er een foutmelding weergegeven.</p>
+	
+			<h3>Seriële communicatie met Rose RealTime </h3>
+	
+			<p>Voor het sturen van de informatie naar de Roomba wordt gebruik gemaakt van Seriële communicatie. Hierbij is gebruik gemaakt van een library (<a href="http://www.teuniz.net/RS-232/">http://www.teuniz.net/RS-232/</a>). In deze library staan verschillende functies waarvan wij de volgende functies hebben gebruikt:</p>
+			
+			<code>int RS232_OpenComport(int comport_number, int baudrate)</code>
+			
+			<p>Deze functie opent de COM-poort. Met comport_number kan de COM-poort gekozen worden.</p>
+			
+			<table>
+				<thead>
+					<tr>
+						<th>comport_number</th>
+						<th>COM-poort (Windows)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>0</td>
+						<td>COM1</td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td>COM2</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>COM3</td>
+					</tr>
+					<tr>
+						<td>3 t/m 15</td>
+						<td>COM4 t/m COM16</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<p>Baudrate krijgt het getal dat de baudrate moet zijn (bijvoorbeeld: 9600;)</p>
+			
+			<code>int RS232_PollComport(int comport_number, unsigned char *buf, int size)</code>
+			
+			<p>Met deze functie kunnen karakters worden ontvangen. comport_number is het nummer van de COM-poort zoals hierboven staat beschreven. Met de pointer *buf wordt de seriële data in de buffer gestopt. size bepaald de grote die de buffer maximaal mag zijn.</p>
+			
+			<code>int RS232_SendBuf(int comport_number, unsigned char *buf, int size)</code>
+			
+			<p>Met deze functie kunnen karakters verzonden worden. De variabelen hebben dezelfde functie als hierboven beschreven. Het verschil is dat de *buf gevuld wordt met data en serieel verstuurd wordt.</p>
+			
+			<code>void RS232_CloseComport(int comport_number)</code>
+			
+			<p>Deze functie sluit de seriële poort.</p>
+	
+			<p>Het state diagram van door de seriële communicatie ziet er nou als volgt uit:</p>
+
+			<img src="assets/image062.png" alt="">
+
+			<p>Er wordt eerst gekeken of de COM-poort geopend kan worden. Vervolgens wordt de buffer binnengehaald die serieel verstuurd is (getChars). Deze choise point zit in een lus zodat constant gecontroleerd kan worden over er nieuwe data binnenkomt. In een ander deel van het programma zal de COM-poort gesloten worden.</p>
+	
+			<h3>Opbouw programma in Rose RealTime</h3>
+	
+			<p>Het programma is opgedeeld in een TCP/IP deel, een serieel deel en een Roomba deel. In dit Roomba deel is het verwerken van gegevens voor de Roomba verwerkt.</p>
+
+			<img src="assets/image063.png" alt="">
+	
+			<p>Hier is de topCapsule van het Roomba deel te zien. Hierin wordt de status van de verschillende sensoren van de Roomba opgevraagd.</p>
+	
+			/* */
+	
+		</div>
+	
+		<div>
+		
+			<h2>De simulator</h2>
+
+			<p>Omdat er binnen het project, waaraan vijf projectgroepen deelnamen, slechts twee iRobot Roomba stofzuigers beschikbaar waren, moesten de praktijktests van de stofzuigerbesturing op een andere manier plaatsvinden. De projectgroep heeft daartoe een simulator ontwikkeld, waarin de verscheidene signalen die de Roomba ontvangt worden geïnterpreteerd. De simulator kan het traject dat de Roomba aflegt monitoren op een veel hogere snelheid dan de daadwerkelijke stofzuiger dat kan. Op deze manier kunnen reacties van de Roomba-besturing veel sneller worden getest en eventueel gecorrigeerd. Binnen de simulatoromgeving is een 'kamer' ingericht, waarin 'tafels' staan. Zodra de Roomba met een 'tafel' contact maakt, worden de juiste sensorwaarden bepaald en verstuurd. Hiervoor worden hoek- en impactberekeningen gemaakt, zodat ook de aangegeven hoeken precies kloppen. Het besturen van de simulator of het besturen van een daadwerkelijke stofzuiger maakt voor het aansturingsprogramma dus geen verschil.</p>
+	
+			<p>Omdat de Roomba over verschillende methoden van motoraansturing beschikt, is er aan het begin een keuze gemaakt om een van deze manieren te selecteren, en de andere niet te gebruiken. De roomba kan aangestuurd worden doormiddel van PWM waarden voor beide wielen, een vectorwaarde voor snelheid met een hoek waarin deze vector moet worden uitgevoerd en een directe snelheidsinput in millimeter per seconde voor de wielen. De groep heeft hierin een <strong>afweging</strong> gemaakt. Het aansturen met een PWM waarde is niet relevant voor de besturing vanuit de ontwikkelde controller, en is daarnaast niet goed voor te stellen. Deze aansturingsmogelijkheid viel dus af. De aansturing met een vector is evengoed lastig in te schatten, aangezien het besturen van achterwaartse bewegingen fouten in de door de Roomba aangeleverde data oplevert. Daarmee valt deze mogelijkheid dus ook af. Er is dus gekozen voor mogelijkheid drie; aansturen doormiddel van directe snelheden. Deze aansturingsmethode is dus ook de basis geweest van het opbouwen van de simulator.</p>
+	
+			<p>De tests voor het tekenen van van de Roomba in het simulatorscherm leverde een <strong>probleem</strong> op. Alle combinaties van voor en achterwaartse snelheden kwamen goed uit de tekentests, met uitzondering van een variabele (dus niet aan beide zijden gelijke) tegengestelde snelheid. Een dergelijke beweging zou een spiraal-achtige vorm opleveren, maar werd niet correct afgehandeld door de ontworpen berekeningen. Besloten is om deze uiterste <italic>edge-case</italic> niet te implementeren, aangezien achteruit rijden met de Roomba onhandig is. De Roomba beschikt namelijk niet over sensoren aan de achterzijde.</p>
+	
+			<p>De simulator zelf is geschreven in C#, waarbij gebruikt is gemaakt van de Microsoft Visual Studio <italic>IDE</italic>. De tekeningen van de Roomba stofzuiger en andere elementen in de 'kamer' zijn basaal, en bestaan uit simpele - al dan niet ingekleurde - geometrische vormen. In de simulator is een tabel opgenomen waarin verschillende waarden kunnen worden weergegeven die op de daadwerkelijke stofzuiger overduidelijk zijn, maar die niet in de tekening zijn opgenomen, zoals de aan/uit status van de stofzuiger.</p>
+	
+			<p>De simulatorcode bestaat uit een aantal onderdelen, waarvan het onderdeel 'serieel' als eerst ontwikkeld is. Dit onderdeel communiceerd met gebruik van een aantal standaard <italic>libraries</italic> met de COM-poort op de pc, waarvan vervolgens data kan worden gelezen. Deze data wordt vervolgens omgezet naar bruikbare gegevens, door deze door een <italic>Lookup-table</italic> te halen. In deze tabel staan gegevens over pakket-grootte en aan te roepen functies. Zodra de data correct ontvangen is, worden de benodigde functies aangeroepen. Deze functies behandelen de waarden die in de simulator worden bijgehouden. Los daarvan voert de simulatie elke 100 milliseconden een simulatie-routine uit, de de gevolgen van deze waarden berekent, plot en tekent op het scherm.</p>
+	
+			<p>Een van de lastige zaken is het bereken van de raakvlakken in de simulator. Dit is uiteindelijk met de volgende - naar code omgezette - berekening opgelost:</p>
+	
+<pre>
+if (!collisionArea.IsEmpty) {
+	// shows collisions on screen;
+	g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
+
+	double toRadian = (Math.PI / 180.0);
+	double toDegree = (180.0 / Math.PI);
+
+	if (collisionArea.Width > collisionArea.Height) {
+		
+		double invAngle = ((double)180.0 - a);
+		double sin = Math.Sin(invAngle * toRadian);
+		double sz = (WHEELBASE / 2.0) / sin;
+		a = Math.Acos((WHEELBASE/2)/sz)*toDegree;
+
+	}
+}
+</pre>
+<sub>Code voor het berekenen van raakhoeken.</sub>
+	
+			<p>In deze code wordt rekening gehouden van de raakvlakken van de 'tafels' en de Roomba, evenals met orientatie te opzichte van het horizontale vlak.</p>
+	
+			<p>Andere lastigheden die optraden tijdens het ontwikkelen van de simulator waren onder andere het bijhouden van afgelegde afstanden en hoeken, het plotten van gereden afstanden het het bepalen van grenswaarden voor de sensoren. Uiteraard is de code voor de simulator van uitgebreid commentaar voorzien, zodat eventuele aanpassingen in toekomst vergemakkelijkt is. Deze code is tevens bijgesloten met dit verslag.</p>
+
+		</div>
+	
+		<div>
+		
+			<h2>De User Interface</h2>
+	
+			/* */
+	
+		</div>
+	
+	</section>
+	
+	<section class="chapter">
+		
+		<h1>Testen en resultaten</h1>
+	
+		/* */
+	
+	</section>
+	
+	<section class="chapter">
+		
+		<h1>Conclusie en aanbevelingen</h1>
+	
+		<p>Het uiteindelijke resultaat is een User Interface die een Roomba kan laten rijden en verschillende sensoren kan uitlezen in samenwerking met Rose RealTime. Er is een simulator gemaakt die gebaseerd is op de echte Roomba. Deze simulator is ook aan te sturen met de User Interface. De simulator bestaat uit een “virtuele” Roomba. In het programma zijn objecten, muren en kuilen geplaatst. Deze zal de Roomba ontwijken.</p>
+
+		<p>We hebben niet kunnen realiseren dat het mogelijk is het zien welke afstand en/of welke weg de Roomba heeft afgelegd. Dit komt door het gebrek aan tijd. Wat een mogelijk verbeter punt aan het product kan zijn is het maken van een Android app, zodat het mogelijk is de Roomba User Interface op een smartphone te kunnen gebruiken.</p>
+
+		<p>We zijn tevreden over het eindproduct. Via de User Interface kunnen we de Roomba alles laten doen. Via dezelfde User Interface kunnen we tevens de simulator aansturen.</p>
+	
+	</section>
+	
+	<section>
+		
+		<h1>Literatuurlijst</h1>
+	
+		<h4>Json library:</h4>
+		<a href="http://www.json.org/">http://www.json.org/</a>
+
+		<h4>Seriële library:</h4>
+		<a href="http://www.teuniz.net/RS-232/">http://www.teuniz.net/RS-232/</a>
+
+		<h4>Voorbeeld warme drankautomaat op HAN Scholar</h4>
+		<a href="http://nl.wikipedia.org/wiki/TCP/IP">http://nl.wikipedia.org/wiki/TCP/IP</a>
+
+	</section>
+	
+	<section>
+		
+		<h1>Bijlagen</h1>
+	
+		<strong>Programmalistings</strong>
+	
+	</section>
+	
+</body>
+</html>

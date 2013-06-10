@@ -25,10 +25,11 @@ struct programProtocol
 		  , rti_bumpersTriggered
 		  , rti_stop
 		  , rti_sideBrushOverCurrent
+		  , rti_isCharging
 		};
 
 	protected:
-		enum { rtiLast_programProtocol = rti_sideBrushOverCurrent };
+		enum { rtiLast_programProtocol = rti_isCharging };
 
 	public:
 		// {{{RME inSignal 'start'
@@ -62,6 +63,14 @@ struct programProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal sideBrushOverCurrent( void );
+		// }}}RME
+		// {{{RME inSignal 'isCharging'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal isCharging( void );
 		// }}}RME
 		// {{{RME inSignal 'playSong'
 		// {{{RME general 'documentation'
@@ -202,6 +211,14 @@ struct programProtocol
 		// }}}RME
 		inline RTOutSignal sideBrushOverCurrent( void );
 		// }}}RME
+		// {{{RME outSignal 'isCharging'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal isCharging( const int & data );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -263,6 +280,18 @@ inline RTInSignal programProtocol::Base::stop( void )
 inline RTInSignal programProtocol::Base::sideBrushOverCurrent( void )
 {
 	return RTInSignal( this, rti_sideBrushOverCurrent );
+}
+// }}}RME
+
+// {{{RME inSignal 'isCharging'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal programProtocol::Base::isCharging( void )
+{
+	return RTInSignal( this, rti_isCharging );
 }
 // }}}RME
 
@@ -444,6 +473,18 @@ inline RTOutSignal programProtocol::Conjugate::stop( void )
 inline RTOutSignal programProtocol::Conjugate::sideBrushOverCurrent( void )
 {
 	return RTOutSignal( this, Base::rti_sideBrushOverCurrent, (const void *)0, &RTType_void );
+}
+// }}}RME
+
+// {{{RME outSignal 'isCharging'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal programProtocol::Conjugate::isCharging( const int & data )
+{
+	return RTOutSignal( this, Base::rti_isCharging, &data, &RTType_int );
 }
 // }}}RME
 

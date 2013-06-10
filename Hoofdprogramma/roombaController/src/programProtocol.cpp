@@ -13,7 +13,7 @@ const RTProtocolDescriptor programProtocol::Base::rt_class =
   , &programProtocol::Conjugate::rt_class
   , "programProtocol"
   , 0
-  , 6
+  , 7
   , programProtocol::Base::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -26,6 +26,11 @@ const RTSignalDescriptor programProtocol::Base::rt_signals[] =
 		"bumpersTriggered"
 	  , &clsRoomba::RTType_clsBumpersAndCliff
 	  , programProtocol::Base::rti_bumpersTriggered
+	}
+  , {
+		"isCharging"
+	  , &RTType_int
+	  , programProtocol::Base::rti_isCharging
 	}
   , {
 		"rtBound"

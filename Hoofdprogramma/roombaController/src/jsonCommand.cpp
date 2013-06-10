@@ -118,7 +118,7 @@ std::string jsonCommand::createJsonString( void )
 	Json::Value value;
 
 	value["command"] = (Json::Value) this->command;
-	value["arguments"] = (Json::Value) this->data;
+	value["data"] = (Json::Value) this->data;
 
 	return jsonWriter.write(value);
 	// }}}USR

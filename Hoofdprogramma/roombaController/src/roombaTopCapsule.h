@@ -69,6 +69,9 @@ private:
 	// {{{RME classAttribute 'dockWasTrue'
 	bool dockWasTrue;
 	// }}}RME
+	// {{{RME classAttribute 'searchingDock'
+	bool searchingDock;
+	// }}}RME
 
 protected:
 	// {{{RME capsuleRole 'roombaProgramInstance'

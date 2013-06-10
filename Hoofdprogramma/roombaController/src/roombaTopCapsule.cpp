@@ -301,8 +301,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	                program.stop().send();
 	            }
 	            //Send button press
-	            b.append(165);
-	            b.append(2);
+	            b.append(134);
 	            toMain.sendData(b).send();
 	            cout << "COS" << endl;
 	            break;
@@ -313,8 +312,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	                program.stop().send();
 	            }
 	            //Send button press
-	            b.append(165);
-	            b.append(4);
+	            b.append(143);
 	            toMain.sendData(b).send();
 	            cout << "DOCK" << endl;
 	            break;
@@ -336,20 +334,24 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	    Json::Value event;
 	    Json::Value eventData;
 	    event["type"] = "SENSORDATA";
+	    Json::Value sensorsToSend;
 	    
 	    for ( int index = 0; index < sensors.size(); ++index ){  // Iterates over the sequence elements.
-	        cout << "Sensor ID = " << sensors[index].asInt() << endl;
 	        Json::Value sensor;
 	        
 	        int v = this->roomba.getSensor(sensors[index].asInt());
 	        sensor["id"] = sensors[index].asInt();
 	        sensor["value"] = v;
 	        
-	        eventData.append(sensor);
+	        sensorsToSend.append(sensor);
 	    }
-	    event["data"] = eventData;
+	    eventData["Sensors"] = sensorsToSend;
 
-	    jsonCommand ret("EVENT", event);
+	    event["data"] = eventData;
+	    Json::Value root;
+	    root["event"] = event;
+
+	    jsonCommand ret("EVENT", root);
 
 	    toMain.sendCommand(ret).send();
 
@@ -383,7 +385,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    }
 
 	    int16_t sideCurrent = this->roomba.getSensor(57);
-	    if(sideCurrent > 180){
+	    if(sideCurrent > 200){
 	        program.sideBrushOverCurrent().send();
 	    }
 
@@ -402,15 +404,40 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    //Probably buttons received. Check them plox
 	    clsRoomba::clsButtons btns = this->roomba.getButtons();
 	    //cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
+	    if(btns.dock == true && this->searchingDock == false){
+	        this->dockWasTrue = btns.dock;
+	    }else if(this->searchingDock == false){
+	        if(this->dockWasTrue){
+	            //search dock
+	            if(this->isOperating){
+	                this->isOperating = false;
+	                program.stop().send();
+	            }
+	            //Send button press
+	            byteArray b;
+	            b.append(143);
+	            toMain.sendData(b).send();
+	            cout << "DOCK" << endl;
+	            this->dockWasTrue = false;
+	            this->searchingDock = true;
+	        }
+	    }
+	    if(this->roomba.getSensor(21) != 4 || this->searchingDock == true){
+	        this->searchingDock = false;
+	        //FOUND IT! :D
+	    }
+
+
 	    if(btns.clean == true){
 	        this->cleanWasTrue = btns.clean;
 	    }else{
 	        if(this->cleanWasTrue){
 	            //Do this!
-	            std::cout << "Starting program!" << endl;
 	            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
 	            //int battLevel = 90;
 	            program.start(battLevel).send();
+	            Sleep(10);
+	            program.isCharging(this->roomba.getSensor(21)).send();
 	            byteArray b;
 	            b.append(131);
 
@@ -478,23 +505,26 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition8_stopProgram( const int *
 	// {{{USR
 	std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
 
-	//Stop motors! OHMYGOD!
 	byteArray b;
-	b.append(145);
-	b.append(0);
-	b.append(0);
-	b.append(0);
-	b.append(0);
+	if(this->isOperating){
+	    //Stop motors! OHMYGOD!
+	    
+	    b.append(145);
+	    b.append(0);
+	    b.append(0);
+	    b.append(0);
+	    b.append(0);
 
 
-	b.append(138);
-	b.append(0);
+	    b.append(138);
+	    b.append(0);
 
-	toMain.sendData(b).send();
+	    toMain.sendData(b).send();
 
-	Sleep(1000);
+	    Sleep(1000);
+	    b.clear();
+	}
 
-	b.clear();
 	b.append(141);
 	b.append(0);
 
@@ -515,6 +545,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition9_drive( const clsDriveCom
 	// {{{USR
 	clsDriveCommand dr = *rtdata;
 	byteArray b;
+	b.append(131);
 	b.append(145);
 	b.append(dr.right >> 8);
 	b.append(dr.right & 0xFF);
@@ -790,7 +821,7 @@ const RTActor_class roombaTopCapsule_Actor::rtg_class =
   , roombaTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 4
+  , 5
   , roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields
 };
 
@@ -900,6 +931,18 @@ const RTFieldDescriptor roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields[] =
   , {
 		"dockWasTrue"
 	  , RTOffsetOf( roombaTopCapsule_Actor, dockWasTrue )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'searchingDock'
+  , {
+		"searchingDock"
+	  , RTOffsetOf( roombaTopCapsule_Actor, searchingDock )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
 		// }}}RME

@@ -43,6 +43,7 @@ static const char * const rtg_state_names[] =
   , "roombaWaitForStart"
   , "roombaStart"
   , "bumperTriggered"
+  , "CheckWhereWeAre"
   , "checkBatteryLevel"
 };
 
@@ -50,6 +51,8 @@ static const char * const rtg_state_names[] =
 
 roombaProgram_Actor::roombaProgram_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 	: RTActor( rtg_rts, rtg_ref )
+	, speedLeft( 150 )
+	, speedRight( 100 )
 {
 }
 
@@ -143,7 +146,7 @@ int roombaProgram_Actor::_followInV( RTBindingEnd & rtg_end, int rtg_portId, int
 INLINE_METHODS void roombaProgram_Actor::enter3_roombaStart( void )
 {
 	// {{{USR
-	this->drive(100,110);
+	this->drive(speedLeft, speedRight);
 	this->setMotors(true,true,true);
 	// }}}USR
 }
@@ -260,6 +263,38 @@ INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdat
 {
 	// {{{USR
 	this->stop();
+	speedLeft = 100;
+	speedRight = 100;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
+INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, programProtocol::Base * rtport )
+{
+	// {{{USR
+	//if we are charging, please drive backwards for a short period and then rotate 180
+	//THEN we start the program:
+	int whereAreWe = *rtdata;
+	std::cout << "PRM: WAW: " << whereAreWe << endl;
+	if(whereAreWe > 0 && whereAreWe != 4){
+	    //We are charging
+	    drive(-100, -100);
+	    Sleep(1000);
+	    this->drive(-100, 100);
+	    int theTime = calculateTimeToRotateAngle(-100, 100, 180);
+	    cout << "The Time = " << theTime << endl;
+	    Sleep(theTime);
+	}
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
+INLINE_METHODS void roombaProgram_Actor::transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport )
+{
+	// {{{USR
+	speedRight = 150;
 	// }}}USR
 }
 // }}}RME
@@ -291,7 +326,7 @@ INLINE_CHAINS void roombaProgram_Actor::chain1_Start( void )
 INLINE_METHODS int roombaProgram_Actor::choicePoint1_checkBatteryLevel( const int * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	if(this->batteryLevel < 80){
+	if(this->batteryLevel < 60){
 	    return false;
 	}else{
 	    return true;
@@ -303,17 +338,17 @@ INLINE_METHODS int roombaProgram_Actor::choicePoint1_checkBatteryLevel( const in
 INLINE_CHAINS void roombaProgram_Actor::chain3_batteryFull( void )
 {
 	// transition ':TOP:checkBatteryLevel:batteryFull'
-	rtgChainBegin( 5, "batteryFull" );
+	rtgChainBegin( 6, "batteryFull" );
 	rtgTransitionBegin();
 	transition3_batteryFull( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
-	enterState( 3 );
+	enterState( 5 );
 }
 
 INLINE_CHAINS void roombaProgram_Actor::chain2_batteryTooLow( void )
 {
 	// transition ':TOP:checkBatteryLevel:batteryTooLow'
-	rtgChainBegin( 5, "batteryTooLow" );
+	rtgChainBegin( 6, "batteryTooLow" );
 	rtgTransitionBegin();
 	transition2_batteryTooLow( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
@@ -340,6 +375,17 @@ INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 	transition7_Stop( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
+}
+
+INLINE_CHAINS void roombaProgram_Actor::chain11_overCurrent( void )
+{
+	// transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
+	rtgChainBegin( 3, "overCurrent" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition11_overCurrent( msg->data, (programProtocol::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 3 );
 }
 
 INLINE_CHAINS void roombaProgram_Actor::chain9_t1( void )
@@ -370,6 +416,17 @@ INLINE_CHAINS void roombaProgram_Actor::chain8_pijltje( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition8_pijltje( msg->data, (Timing::Base *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 3 );
+}
+
+INLINE_CHAINS void roombaProgram_Actor::chain10_t1( void )
+{
+	// transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
+	rtgChainBegin( 5, "t1" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition10_t1( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 3 );
 }
@@ -452,6 +509,9 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				case programProtocol::Base::rti_stop:
 					chain7_Stop();
 					return;
+				case programProtocol::Base::rti_sideBrushOverCurrent:
+					chain11_overCurrent();
+					return;
 				default:
 					break;
 				}
@@ -507,6 +567,36 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 			}
 			break;
 			// }}}RME
+		case 5:
+			// {{{RME state ':TOP:CheckWhereWeAre'
+			switch( portIndex )
+			{
+			case 0:
+				switch( signalIndex )
+				{
+				case 1:
+					return;
+				default:
+					break;
+				}
+				break;
+			case 1:
+				// {{{RME port 'Roomba'
+				switch( signalIndex )
+				{
+				case programProtocol::Base::rti_isCharging:
+					chain10_t1();
+					return;
+				default:
+					break;
+				}
+				break;
+				// }}}RME
+			default:
+				break;
+			}
+			break;
+			// }}}RME
 		default:
 			unexpectedState();
 			return;
@@ -522,7 +612,7 @@ const RTActor_class roombaProgram_Actor::rtg_class =
 {
 	(const RTActor_class *)0
   , rtg_state_names
-  , 4
+  , 5
   , roombaProgram_Actor::rtg_parent_state
   , &roombaProgram
   , 0
@@ -531,13 +621,14 @@ const RTActor_class roombaProgram_Actor::rtg_class =
   , roombaProgram_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 4
+  , 6
   , roombaProgram_Actor::rtg_roombaProgram_fields
 };
 
 const RTStateId roombaProgram_Actor::rtg_parent_state[] =
 {
 	0
+  , 1
   , 1
   , 1
   , 1
@@ -607,6 +698,30 @@ const RTFieldDescriptor roombaProgram_Actor::rtg_roombaProgram_fields[] =
   , {
 		"angleRotated"
 	  , RTOffsetOf( roombaProgram_Actor, angleRotated )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'speedLeft'
+  , {
+		"speedLeft"
+	  , RTOffsetOf( roombaProgram_Actor, speedLeft )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , &RTType_int
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'speedRight'
+  , {
+		"speedRight"
+	  , RTOffsetOf( roombaProgram_Actor, speedRight )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_int
 		// }}}RME

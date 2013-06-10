@@ -64,6 +64,12 @@ private:
 	// {{{RME classAttribute 'angleRotated'
 	int angleRotated;
 	// }}}RME
+	// {{{RME classAttribute 'speedLeft'
+	int speedLeft;
+	// }}}RME
+	// {{{RME classAttribute 'speedRight'
+	int speedRight;
+	// }}}RME
 
 protected:
 	// {{{RME port 'Roomba'
@@ -123,6 +129,12 @@ protected:
 	// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
 	INLINE_METHODS void transition8_pijltje( const void * rtdata, Timing::Base * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
+	INLINE_METHODS void transition10_t1( const int * rtdata, programProtocol::Base * rtport );
+	// }}}RME
+	// {{{RME transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
+	INLINE_METHODS void transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain5_Initial( void );
@@ -138,9 +150,11 @@ private:
 	INLINE_CHAINS void chain2_batteryTooLow( void );
 	INLINE_CHAINS void chain4_bumper( void );
 	INLINE_CHAINS void chain7_Stop( void );
+	INLINE_CHAINS void chain11_overCurrent( void );
 	INLINE_CHAINS void chain9_t1( void );
 	INLINE_CHAINS void chain6_StopHammerTime( void );
 	INLINE_CHAINS void chain8_pijltje( void );
+	INLINE_CHAINS void chain10_t1( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

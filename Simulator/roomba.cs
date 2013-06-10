@@ -250,6 +250,11 @@ namespace Simulator {
             public eDirection sideBrushDirection;
         }
 
+        public bool[] getEnginestates(){
+            bool[] data = { this.motorState.sideBrush, this.motorState.vacuum, this.motorState.mainBrush };
+            return data;
+        }
+
         struct stLeds {
             public bool checkRobot;
             public bool dock;

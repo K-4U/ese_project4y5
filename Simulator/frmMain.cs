@@ -106,7 +106,7 @@ namespace Simulator {
             roomba = new clsRoomba(log, send);
 
             this.initDrawers();
-			
+
             //roomba.uncontrolledTest(1000, 1050);
 
             // DEFAULT, since Koen can't divide by 0. Sucker... ;) ============= \\
@@ -115,6 +115,19 @@ namespace Simulator {
             roomba.setSensorValue(26, 65535);
             // ============= \\
 
+        }
+
+        public void listEngines(bool side, bool vacuum, bool main){
+
+            string[] row0 = { "Side Brush", side ? "On" : "Off" };
+            string[] row1 = { "Vacuum", vacuum ? "On" : "Off" };
+            string[] row2 = { "Main Brush", main ? "On" : "Off" };
+
+            dataGridView1.Rows.Clear();
+            dataGridView1.Rows.Add(row0);
+            dataGridView1.Rows.Add(row1);
+            dataGridView1.Rows.Add(row2);
+           
         }
 
 		private void resetRoombaToCenterToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -126,7 +139,9 @@ namespace Simulator {
 		}
 
         private void tim100_Tick(object sender, EventArgs e) {
-			this.mDrawer.timer(100);
+            this.mDrawer.timer(100);
+            bool[] bools = roomba.getEnginestates();
+            listEngines(bools[0], bools[1], bools[2]);
         }
 
 		private void tim1000_Tick(object sender, EventArgs e) {

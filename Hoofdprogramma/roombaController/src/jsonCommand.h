@@ -76,6 +76,9 @@ public:
 	// {{{RME operation 'createJsonString()'
 	std::string createJsonString( void );
 	// }}}RME
+	// {{{RME operation 'jsonCommand(std::string,Json::Value)'
+	jsonCommand( std::string jsonCommand, Json::Value data );
+	// }}}RME
 	static const RTFieldDescriptor rtg_jsonCommand_fields[];
 };
 

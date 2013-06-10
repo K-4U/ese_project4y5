@@ -187,9 +187,6 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    int theTime = calculateTimeToRotateAngle(-100, 100, -1);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
-	}else{ //It was the side brush that brought us here.
-	    this->drive(100, -100);
-	    timer.informIn(1);
 	}
 	// }}}USR
 }
@@ -345,16 +342,6 @@ INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 	enterState( 2 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain10_sideBrushOverCurrent( void )
-{
-	// transition ':TOP:roombaStart:J51B5916E0257:sideBrushOverCurrent'
-	rtgChainBegin( 3, "sideBrushOverCurrent" );
-	exitState( rtg_parent_state );
-	rtgTransitionBegin();
-	rtgTransitionEnd();
-	enterState( 4 );
-}
-
 INLINE_CHAINS void roombaProgram_Actor::chain9_t1( void )
 {
 	// transition ':TOP:bumperTriggered:J51ADCE6F0025:t1'
@@ -464,9 +451,6 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 					return;
 				case programProtocol::Base::rti_stop:
 					chain7_Stop();
-					return;
-				case programProtocol::Base::rti_sideBrushOverCurrent:
-					chain10_sideBrushOverCurrent();
 					return;
 				default:
 					break;

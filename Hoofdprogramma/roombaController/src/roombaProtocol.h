@@ -69,6 +69,14 @@ struct roombaProtocol
 		// }}}RME
 		inline RTOutSignal setCommandLength( const int & data );
 		// }}}RME
+		// {{{RME inSignal 'sendCommand'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal sendCommand( const RTTypedValue_jsonCommand & data );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -83,10 +91,11 @@ struct roombaProtocol
 		{
 			rti_sendData = rtiLast_RTRootProtocol + 1
 		  , rti_setCommandLength
+		  , rti_sendCommand
 		};
 
 	protected:
-		enum { rtiLast_roombaProtocol = rti_setCommandLength };
+		enum { rtiLast_roombaProtocol = rti_sendCommand };
 
 	public:
 		// {{{RME outSignal 'sendData'
@@ -104,6 +113,14 @@ struct roombaProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal setCommandLength( void );
+		// }}}RME
+		// {{{RME outSignal 'sendCommand'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal sendCommand( void );
 		// }}}RME
 		// {{{RME outSignal 'dataReceived'
 		// {{{RME general 'documentation'
@@ -205,6 +222,18 @@ inline RTOutSignal roombaProtocol::Base::setCommandLength( const int & data )
 }
 // }}}RME
 
+// {{{RME inSignal 'sendCommand'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal roombaProtocol::Base::sendCommand( const RTTypedValue_jsonCommand & data )
+{
+	return RTOutSignal( this, Conjugate::rti_sendCommand, data.data, data.type );
+}
+// }}}RME
+
 inline roombaProtocol::Conjugate::Conjugate( void )
 	: RTRootProtocol()
 {
@@ -235,6 +264,18 @@ inline RTInSignal roombaProtocol::Conjugate::sendData( void )
 inline RTInSignal roombaProtocol::Conjugate::setCommandLength( void )
 {
 	return RTInSignal( this, rti_setCommandLength );
+}
+// }}}RME
+
+// {{{RME outSignal 'sendCommand'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal roombaProtocol::Conjugate::sendCommand( void )
+{
+	return RTInSignal( this, rti_sendCommand );
 }
 // }}}RME
 

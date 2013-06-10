@@ -329,6 +329,30 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 
 	        toMain.sendData(b).send();
 	    }       
+	}else if(c.command == "SENDSENSORDATAREQUEST"){
+	    const Json::Value sensors = c.data["Sensors"];
+	    //Build event:
+	    
+	    Json::Value event;
+	    Json::Value eventData;
+	    event["type"] = "SENSORDATA";
+	    
+	    for ( int index = 0; index < sensors.size(); ++index ){  // Iterates over the sequence elements.
+	        cout << "Sensor ID = " << sensors[index].asInt() << endl;
+	        Json::Value sensor;
+	        
+	        int v = this->roomba.getSensor(sensors[index].asInt());
+	        sensor["id"] = sensors[index].asInt();
+	        sensor["value"] = v;
+	        
+	        eventData.append(sensor);
+	    }
+	    event["data"] = eventData;
+
+	    jsonCommand ret("EVENT", event);
+
+	    toMain.sendCommand(ret).send();
+
 	}
 	// }}}USR
 }

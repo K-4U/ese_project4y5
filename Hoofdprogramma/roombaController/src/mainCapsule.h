@@ -77,7 +77,7 @@ protected:
 	// {{{RME transition ':TOP:ready:J51A475DD0298:GUIDataReceived'
 	INLINE_METHODS void transition2_GUIDataReceived( const jsonCommand * rtdata, jsonProtocol::Conjugate * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:ready:J519345E300C5:serialDataReceived'
+	// {{{RME transition ':TOP:ready:J51B596CA016E:serialDataReceived'
 	INLINE_METHODS void transition3_serialDataReceived( const byteArray * rtdata, serialProtocol::Conjugate * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:waitingForCom:J519B520503E6:comOpened'
@@ -89,6 +89,9 @@ protected:
 	// {{{RME transition ':TOP:ready:J51AC8C82005A:setCommandLength'
 	INLINE_METHODS void transition7_setCommandLength( const int * rtdata, roombaProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:ready:J51B596D9006C:sendToGUI'
+	INLINE_METHODS void transition8_sendToGUI( const jsonCommand * rtdata, roombaProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain1_Initial( void );
@@ -96,6 +99,7 @@ private:
 	INLINE_CHAINS void chain3_serialDataReceived( void );
 	INLINE_CHAINS void chain6_roombaDataReceived( void );
 	INLINE_CHAINS void chain7_setCommandLength( void );
+	INLINE_CHAINS void chain8_sendToGUI( void );
 	INLINE_CHAINS void chain4_comOpened( void );
 	INLINE_CHAINS void chain5_comError( void );
 

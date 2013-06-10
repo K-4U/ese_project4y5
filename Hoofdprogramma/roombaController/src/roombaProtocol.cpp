@@ -55,7 +55,7 @@ const RTProtocolDescriptor roombaProtocol::Conjugate::rt_class =
   , &roombaProtocol::Base::rt_class
   , "roombaProtocol"
   , 0
-  , 4
+  , 5
   , roombaProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -73,6 +73,11 @@ const RTSignalDescriptor roombaProtocol::Conjugate::rt_signals[] =
 		"rtUnbound"
 	  , (const RTObject_class *)0
 	  , roombaProtocol::Conjugate::rti_rtUnbound
+	}
+  , {
+		"sendCommand"
+	  , &RTType_jsonCommand
+	  , roombaProtocol::Conjugate::rti_sendCommand
 	}
   , {
 		"sendData"

@@ -138,7 +138,6 @@ private:
 	INLINE_CHAINS void chain2_batteryTooLow( void );
 	INLINE_CHAINS void chain4_bumper( void );
 	INLINE_CHAINS void chain7_Stop( void );
-	INLINE_CHAINS void chain10_sideBrushOverCurrent( void );
 	INLINE_CHAINS void chain9_t1( void );
 	INLINE_CHAINS void chain6_StopHammerTime( void );
 	INLINE_CHAINS void chain8_pijltje( void );

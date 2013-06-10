@@ -156,7 +156,7 @@ INLINE_METHODS void mainCapsule_Actor::transition2_GUIDataReceived( const jsonCo
 }
 // }}}RME
 
-// {{{RME transition ':TOP:ready:J519345E300C5:serialDataReceived'
+// {{{RME transition ':TOP:ready:J51B596CA016E:serialDataReceived'
 INLINE_METHODS void mainCapsule_Actor::transition3_serialDataReceived( const byteArray * rtdata, serialProtocol::Conjugate * rtport )
 {
 	// {{{USR
@@ -194,6 +194,15 @@ INLINE_METHODS void mainCapsule_Actor::transition7_setCommandLength( const int *
 }
 // }}}RME
 
+// {{{RME transition ':TOP:ready:J51B596D9006C:sendToGUI'
+INLINE_METHODS void mainCapsule_Actor::transition8_sendToGUI( const jsonCommand * rtdata, roombaProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	GUI.sendCommand(*rtdata).send();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void mainCapsule_Actor::chain1_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -217,7 +226,7 @@ INLINE_CHAINS void mainCapsule_Actor::chain2_GUIDataReceived( void )
 
 INLINE_CHAINS void mainCapsule_Actor::chain3_serialDataReceived( void )
 {
-	// transition ':TOP:ready:J519345E300C5:serialDataReceived'
+	// transition ':TOP:ready:J51B596CA016E:serialDataReceived'
 	rtgChainBegin( 2, "serialDataReceived" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
@@ -244,6 +253,17 @@ INLINE_CHAINS void mainCapsule_Actor::chain7_setCommandLength( void )
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	transition7_setCommandLength( (const int *)msg->data, (roombaProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
+INLINE_CHAINS void mainCapsule_Actor::chain8_sendToGUI( void )
+{
+	// transition ':TOP:ready:J51B596D9006C:sendToGUI'
+	rtgChainBegin( 2, "sendToGUI" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition8_sendToGUI( (const jsonCommand *)msg->data, (roombaProtocol::Conjugate *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
@@ -340,6 +360,9 @@ void mainCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 					return;
 				case roombaProtocol::Conjugate::rti_setCommandLength:
 					chain7_setCommandLength();
+					return;
+				case roombaProtocol::Conjugate::rti_sendCommand:
+					chain8_sendToGUI();
 					return;
 				default:
 					break;

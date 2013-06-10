@@ -125,6 +125,24 @@ std::string jsonCommand::createJsonString( void )
 }
 // }}}RME
 
+// {{{RME operation 'jsonCommand(std::string,Json::Value)'
+jsonCommand::jsonCommand( std::string jsonCommand, Json::Value data )
+	// {{{RME tool 'OT::Cpp' property 'ConstructorInitializer'
+	// {{{USR
+
+	// }}}USR
+	// }}}RME
+{
+	// {{{USR
+	cout << "New JSON command: " << jsonCommand << endl;
+
+	this->command = jsonCommand;
+	this->data = data;
+
+	// }}}USR
+}
+// }}}RME
+
 const RTFieldDescriptor jsonCommand::rtg_jsonCommand_fields[] =
 {
 	// {{{RME classAttribute 'command'

@@ -67,7 +67,7 @@ private slots:
 
     void on_pbDiplayLogs_clicked();
 
-    //void on_cbRefresh_clicked();
+    void allSensorData(int, int);
 
 private:
     Ui::Controllingroomba *ui;

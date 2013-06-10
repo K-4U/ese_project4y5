@@ -48,7 +48,7 @@ private slots:
 
     void disconnectDoIt(bool);
 
-    void connected();
+    void roombaConnected();
 
 private:
     Ui::Roomba *ui;
@@ -57,7 +57,7 @@ private:
     Controllingroomba *controlling_roomba;
 
 signals:
-    void getStatus(int Status);
+    void sensorData(int sensorID, int sensorValue);
 };
 
 #endif // ROOMBA_H

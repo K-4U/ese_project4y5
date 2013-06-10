@@ -45,9 +45,18 @@ void Roomba::sendSensorDataRequest()
 {
     QList<QVariant> sensors;
     QVariant sendData;
-    sensors.append(QVariant(19));
-    sensors.append(QVariant(22));
-    sensors.append(QVariant(24));
+    sensors.append(QVariant(7));  //Bump and Wheel drops 1
+    sensors.append(QVariant(9));  //Cliff Left 1
+    sensors.append(QVariant(10)); //Cliff FrontLeft 1
+    sensors.append(QVariant(11)); //Cliff FrontRight 1
+    sensors.append(QVariant(12)); //Cliff Right 1
+    sensors.append(QVariant(19)); //Distance 2
+    sensors.append(QVariant(20)); //Angle 2
+    sensors.append(QVariant(21)); //Charging State 1
+    sensors.append(QVariant(24)); //Temperature 1
+    sensors.append(QVariant(25)); //Battery Charge 2
+    sensors.append(QVariant(26)); //Battery Capacity 2
+    sensors.append(QVariant(35)); //OI Mode 1
 
     readDataTimer->start(1000);
     sendData = QVariant::fromValue(sensors);
@@ -57,12 +66,13 @@ void Roomba::sendSensorDataRequest()
     this->server->sendCommand(toSend);
 }
 
-void Roomba::readSensorData()
+void Roomba::readSensorData(eventSensor *theMessage)
 {
-    int sensorID, sensorValue;
-    sensorID = 0;
-    sensorValue = 0;
-    emit sensorData(sensorID, sensorValue);
+    foreach(QVariant sensor, theMessage->getData("sensors").toList())
+    {
+        QVariantMap sensorMap = sensor.toMap();
+        emit sensorData(sensorMap["id"].toInt(), sensorMap["value"].toInt());
+    }
 }
 
 void Roomba::disconnectDoIt(bool disconnectDo)
@@ -79,21 +89,14 @@ void Roomba::roombaConnected()
     Controllingroomba *controlling_roomba = new Controllingroomba(this);
     this->hide();
     controlling_roomba->show();
+
     readDataTimer = new QTimer(this);
-    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(sendSensorDataRequest()));
+    connect(readDataTimer, SIGNAL(timeout()),
+            this, SLOT(sendSensorDataRequest()));
     readDataTimer->start(1000);
-}
 
-void Roomba::on_pbConnect_clicked()
-{
-    QString IP;
-    IP.append(ui->leIP->text());
-    this->server = new clsServerConn(IP, 1337);
-
-    Controllingroomba *controlling_roomba = new Controllingroomba(this);
-
-    connect(this->server, SIGNAL (connected()),
-            this, SLOT(roombaConnected()));
+    connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
+            this, SLOT(disconnectDoIt(bool)));
 
     connect(controlling_roomba, SIGNAL(ModeChanged(Modes)),
             this, SLOT(RoombaModeChanged(Modes)));
@@ -104,11 +107,18 @@ void Roomba::on_pbConnect_clicked()
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
 
-    connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
-            this, SLOT(disconnectDoIt(bool)));
+    connect(this->server, SIGNAL (sensorDataReceived(eventSensor *theMessage)),
+            this, SLOT(readSensorData(eventSensor *theMessage)));
+}
 
-    connect(this->server, SIGNAL (sensorDataReceived()),
-            this, SLOT(readSensorData()));
+void Roomba::on_pbConnect_clicked()
+{
+    QString IP;
+    IP.append(ui->leIP->text());
+    this->server = new clsServerConn(IP, 1337);
+
+    connect(this->server, SIGNAL (connected()),
+            this, SLOT(roombaConnected()));
 
     this->server->doConnect();
 }

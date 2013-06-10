@@ -15,8 +15,8 @@ Controllingroomba::Controllingroomba(QWidget *parent) :
 
     Roomba *roomba = new Roomba(this);
 
-    connect(roomba, SIGNAL(sensorData(int,int)),
-            this, SLOT(allSensorData(int,int)));
+    connect(roomba, SIGNAL(sensorData(int, int)),
+            this, SLOT(allSensorData(int, int)));
 
 }
 
@@ -105,9 +105,21 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
             ui->cbVacuum->checkState() == Qt::Checked);
 }
 
-void Controllingroomba::allSensorData(int, int)
+void Controllingroomba::allSensorData(int sensorID, int sensorValue)
 {
-    ;
+    switch(sensorID)
+    {
+        case 7:
+            //iets
+            break;
+        case 24:
+            QString temp = "Temperature: ";
+            temp += sensorValue;
+            ui->lbTemperature->setText(temp);
+            break;
+    }
+
+    //ui->cbMainBrush->setChecked();
 }
 
 void Controllingroomba::on_pbDisonnect_clicked()

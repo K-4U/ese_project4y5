@@ -32,19 +32,23 @@
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbRoom = new System.Windows.Forms.PictureBox();
-            this.tim500 = new System.Windows.Forms.Timer(this.components);
-            this.tim100 = new System.Windows.Forms.Timer(this.components);
-            this.tim10 = new System.Windows.Forms.Timer(this.components);
-            this.tim1000 = new System.Windows.Forms.Timer(this.components);
             this.buttonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendSensorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbRoom = new System.Windows.Forms.PictureBox();
+            this.tim500 = new System.Windows.Forms.Timer(this.components);
+            this.tim100 = new System.Windows.Forms.Timer(this.components);
+            this.tim10 = new System.Windows.Forms.Timer(this.components);
+            this.tim1000 = new System.Windows.Forms.Timer(this.components);
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Engine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -110,6 +114,44 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             // 
+            // buttonsToolStripMenuItem
+            // 
+            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cleanToolStripMenuItem,
+            this.spotToolStripMenuItem,
+            this.dockToolStripMenuItem});
+            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
+            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.buttonsToolStripMenuItem.Text = "Buttons";
+            // 
+            // cleanToolStripMenuItem
+            // 
+            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
+            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.cleanToolStripMenuItem.Text = "Clean";
+            this.cleanToolStripMenuItem.Click += new System.EventHandler(this.cleanToolStripMenuItem_Click);
+            // 
+            // spotToolStripMenuItem
+            // 
+            this.spotToolStripMenuItem.Name = "spotToolStripMenuItem";
+            this.spotToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.spotToolStripMenuItem.Text = "Spot";
+            this.spotToolStripMenuItem.Click += new System.EventHandler(this.spotToolStripMenuItem_Click);
+            // 
+            // dockToolStripMenuItem
+            // 
+            this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
+            this.dockToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.dockToolStripMenuItem.Text = "Dock";
+            this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
+            // 
+            // sendSensorsToolStripMenuItem
+            // 
+            this.sendSensorsToolStripMenuItem.Name = "sendSensorsToolStripMenuItem";
+            this.sendSensorsToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
+            this.sendSensorsToolStripMenuItem.Text = "Send Sensors";
+            this.sendSensorsToolStripMenuItem.Click += new System.EventHandler(this.sendSensorsToolStripMenuItem_Click);
+            // 
             // pbRoom
             // 
             this.pbRoom.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -140,49 +182,38 @@
             this.tim1000.Interval = 1000;
             this.tim1000.Tick += new System.EventHandler(this.tim1000_Tick);
             // 
-            // buttonsToolStripMenuItem
+            // dataGridView1
             // 
-            this.buttonsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cleanToolStripMenuItem,
-            this.spotToolStripMenuItem,
-            this.dockToolStripMenuItem});
-            this.buttonsToolStripMenuItem.Name = "buttonsToolStripMenuItem";
-            this.buttonsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
-            this.buttonsToolStripMenuItem.Text = "Buttons";
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Engine,
+            this.State});
+            this.dataGridView1.Location = new System.Drawing.Point(12, 37);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(244, 107);
+            this.dataGridView1.TabIndex = 3;
             // 
-            // cleanToolStripMenuItem
+            // Engine
             // 
-            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
-            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cleanToolStripMenuItem.Text = "Clean";
-            this.cleanToolStripMenuItem.Click += new System.EventHandler(this.cleanToolStripMenuItem_Click);
+            this.Engine.HeaderText = "Engine";
+            this.Engine.Name = "Engine";
+            this.Engine.ReadOnly = true;
             // 
-            // spotToolStripMenuItem
+            // State
             // 
-            this.spotToolStripMenuItem.Name = "spotToolStripMenuItem";
-            this.spotToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.spotToolStripMenuItem.Text = "Spot";
-            this.spotToolStripMenuItem.Click += new System.EventHandler(this.spotToolStripMenuItem_Click);
-            // 
-            // dockToolStripMenuItem
-            // 
-            this.dockToolStripMenuItem.Name = "dockToolStripMenuItem";
-            this.dockToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.dockToolStripMenuItem.Text = "Dock";
-            this.dockToolStripMenuItem.Click += new System.EventHandler(this.dockToolStripMenuItem_Click);
-            // 
-            // sendSensorsToolStripMenuItem
-            // 
-            this.sendSensorsToolStripMenuItem.Name = "sendSensorsToolStripMenuItem";
-            this.sendSensorsToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
-            this.sendSensorsToolStripMenuItem.Text = "Send Sensors";
-            this.sendSensorsToolStripMenuItem.Click += new System.EventHandler(this.sendSensorsToolStripMenuItem_Click);
+            this.State.HeaderText = "State";
+            this.State.Name = "State";
+            this.State.ReadOnly = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 776);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.pbRoom);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -196,6 +227,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,6 +253,9 @@
         private System.Windows.Forms.ToolStripMenuItem spotToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendSensorsToolStripMenuItem;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Engine;
+        private System.Windows.Forms.DataGridViewTextBoxColumn State;
     }
 }
 

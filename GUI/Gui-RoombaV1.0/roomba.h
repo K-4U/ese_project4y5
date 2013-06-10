@@ -42,7 +42,7 @@ private slots:
 
     void MotorSpeedChanged(int, int);
 
-    void readSensorData();
+    void readSensorData(eventSensor *theMessage);
 
     void sendSensorDataRequest();
 

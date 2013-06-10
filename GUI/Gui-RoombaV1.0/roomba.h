@@ -57,7 +57,7 @@ private:
     Controllingroomba *controlling_roomba;
 
 signals:
-    void sensorData(int sensorID, int sensorValue);
+
 };
 
 #endif // ROOMBA_H

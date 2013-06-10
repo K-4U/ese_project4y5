@@ -7,7 +7,8 @@
 Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Roomba),
-    server()
+    server(),
+    controlling_roomba(new Controllingroomba(this))
 {
     ui->setupUi(this);
 }
@@ -68,10 +69,10 @@ void Roomba::sendSensorDataRequest()
 
 void Roomba::readSensorData(eventSensor *theMessage)
 {
-    foreach(QVariant sensor, theMessage->getData("sensors").toList())
+    foreach(QVariant sensor, theMessage->getData("Sensors").toList())
     {
         QVariantMap sensorMap = sensor.toMap();
-        emit sensorData(sensorMap["id"].toInt(), sensorMap["value"].toInt());
+        this->controlling_roomba->allSensorData(sensorMap["id"].toInt(), sensorMap["value"].toInt());
     }
 }
 
@@ -86,7 +87,7 @@ void Roomba::disconnectDoIt(bool disconnectDo)
 
 void Roomba::roombaConnected()
 {
-    Controllingroomba *controlling_roomba = new Controllingroomba(this);
+    //Controllingroomba *controlling_roomba = new Controllingroomba(this);
     this->hide();
     controlling_roomba->show();
 
@@ -107,8 +108,8 @@ void Roomba::roombaConnected()
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
 
-    connect(this->server, SIGNAL (sensorDataReceived(eventSensor *theMessage)),
-            this, SLOT(readSensorData(eventSensor *theMessage)));
+    connect(this->server, SIGNAL (sensorDataReceived(eventSensor*)),
+            this, SLOT(readSensorData(eventSensor*)));
 }
 
 void Roomba::on_pbConnect_clicked()

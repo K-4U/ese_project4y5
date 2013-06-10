@@ -12,12 +12,6 @@ Controllingroomba::Controllingroomba(QWidget *parent) :
     parent(parent)
 {
     ui->setupUi(this);
-
-    Roomba *roomba = new Roomba(this);
-
-    connect(roomba, SIGNAL(sensorData(int, int)),
-            this, SLOT(allSensorData(int, int)));
-
 }
 
 Controllingroomba::~Controllingroomba()
@@ -114,7 +108,7 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue)
             break;
         case 24:
             QString temp = "Temperature: ";
-            temp += sensorValue;
+            temp += QString(sensorValue);
             ui->lbTemperature->setText(temp);
             break;
     }

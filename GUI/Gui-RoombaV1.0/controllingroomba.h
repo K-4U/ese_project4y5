@@ -33,6 +33,8 @@ public:
     explicit Controllingroomba(QWidget *parent = 0);
     ~Controllingroomba();
 
+    void allSensorData(int, int);
+
 public slots:
     void on_pbStop_clicked();
 
@@ -66,8 +68,6 @@ private slots:
     void on_pbDisonnect_clicked();
 
     void on_pbDiplayLogs_clicked();
-
-    void allSensorData(int, int);
 
 private:
     Ui::Controllingroomba *ui;

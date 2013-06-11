@@ -122,25 +122,25 @@
 		
 		<h1>Inleiding</h1>
 		
-		<p>Dit document is bedoelt om inzicht te krijgen in het product dat wij hebben opgeleverd. De opdracht was om een robotstofzuiger te bedienen en hierbij een simulator te maken.</p>
+		<p>Dit document is bedoeld om inzicht te krijgen in het product dat wij hebben opgeleverd. De opdracht luid als volgt: 'Lever een werkend prototype, van een Roombacontroller, die kan worden gebruikt om een iRobot Roomba robotstofzuiger mee te besturen'.</p>
 
 		<p>De opdrachtgever is de heer Ruud Elsinghorst, de contactpersoon met de HAN is Nico Bouwman. De leden van projectgroep 5 van de ES2 (opleiding Embedded Systems Engineering) klas zijn verantwoordelijk voor  het uitvoeren van dit project.</p>
 
-		<p>In dit document wordt uitgelegd hoe deze Roomba geprogrammeerd is met de hierbij behorende User Interface en Roomba simulator. Hierbij is veelal gebruik gemaakt van de programmeer omgeving Rose Real Time. Deze robotstofzuiger gaat rijden zodra deze het startsignaal krijgt. Onderweg zuigt de robot alles op wat hij tegen komt. Zodra de robot een object(muur) raakt draait hij een x aantal graden en vervolgt zijn weg. Als de stofzuiger klaar is keert hij terug naar zijn dock waar de accu weer volgeladen wordt.</p>
+		<p>In dit document wordt uitgelegd hoe deze Roomba geprogrammeerd is met de hierbij behorende User Interface en Roomba simulator. Hierbij is veelal gebruik gemaakt van de programmeeromgeving Rose Real Time. Deze robotstofzuiger gaat rijden zodra deze het startsignaal krijgt. Onderweg zuigt de robot alles op wat hij tegen komt. Zodra de robot een object, zoals een muur of een tafel, raakt draait hij een aantal graden en vervolgt hij zijn weg. Als de stofzuiger klaar is keert hij terug naar zijn dock waar de accu weer volgeladen wordt.</p>
 
-		<p>Wij hebben een User Interface ontworpen waarmee de Roomba zelf te bedienen is.  Ook beschikt het programma over andere onderdelen zoals het uitlezen van verschillende sensoren, denk hierbij aan hoe vol de accu zit, hoeveel vuil er in de Roomba zit, enzovoort.</p>
+		<p>De projectgroep heeft een User Interface ontworpen waarmee de Roomba zelf te bedienen is.  Ook beschikt het programma over andere onderdelen zoals het uitlezen van verschillende sensoren, zoals het laadniveau van de accu of de hoeveelheid vuil in de opslag van de stofzuiger. Met deze User Interface is ook de simulator aan te sturen. De simulator heeft dezelfde opties als de ‘echte’ Roomba.</p>
 
-		<p>Met deze zelfde User Interface is ook de simulator aan te sturen. De simulator heeft dezelfde opties als de ‘echte’ Roomba.</p>
-
-		<p>Het doorsturen van de informatie gebeurd met de software Rose Real Time. Vooraf hadden wij geen ervaring met deze programmeer omgeving. Het was dan ook een grote uitdaging om met deze software te gaan werken.</p>
-
-		<p>In dit document worden de Functionele en Technische specificaties beschreven die we bepaald hebben voor we aan de realisatie begonnen die daarna besproken worden. Vervolgens worden de test resultaten van de gemaakte programma beschreven.</p>
+		<p>Het doorsturen van de informatie gebeurd met de software Rose Real Time. De projectgroep had bij aanvang van dit project geen ervaring met deze programmeeromgeving. Het was dan ook een grote uitdaging om met deze software te gaan werken.</p>
+		
+		<p>Naast deze inleiding is dit verslag in 5 hoofdstukken opgebouwd. In het tweede hoofdstuk worden de functionele specificaties van het project beschreven. In dit hoofdstuk is te vinden wat het systeem moet doen, en hoe de gebruiker het systeem ziet. Daarnaast worden functionele blokken en connecties daartussen gedefineerd. In hoofdstuk 3 wordt het technisch ontwerp uit de doeken gedaan. Dit hoofdstuk bevat blok- en hiërarchische schema's, maakt een onderscheid tussen hardware en software en weegt alternatieve mogelijkheden tegen elkaar af. In hoofdstuk 4 wordt de realisatie van het project beschreven. Dit deel van het verslag bevat detailontwerpen, beschrijvingen van toegepaste oplossingen en onderdelen en gemaakte berekeningen. Het testen van het project wordt in het vijfde hoofdstuk toegelicht. Naast een beschrijving van de testopzet en testresultaten komen tests per module en integratietest aan bod. In hoofdstuk 6 zijn conclusies en aanbevelingen toegevoegd, en worden product aanvullingen, uitgebreidingen en verbeteringen behandeld.</p>
 	
 	</section>
 	
 	<section class="chapter">
 	
 		<h1>Functioneel ontwerp</h1>
+	
+		<p>Dit hoofdstuk, het functioneel ontwerp, bevat een korte beschrijving van de hoofdfunctie van het te ontwerpen system. Er wordt een globaal input-output schema (IPO) opgesteld, en de functionele specificatie wordt tot in details beschreven.</p>
 	
 		<div>
 		

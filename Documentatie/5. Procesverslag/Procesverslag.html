@@ -66,9 +66,11 @@
 		
 		<h1>Inleiding</h1>
 		
-		<p>Als projectgroep hebben wij de opdracht gekregen om een Roomba te kunnen besturen via een User Interface. Diezelfde User Interface moet ook een Roomba simulator kunnen aansturen. In dit verslag wordt beschreven hoe het proces van begin tot eind is verlopen. Het doel van dit verslag is om duidelijkheid te geven over hoe het project is verlopen. Dit document is bedoeld voor de opdrachtgever, de projectmanager en de beoordelaars.</p>
+		<p>Dit verslag beschrijft het proces zoals projectgroep 5 dat gevolgt heeft tijdens het ontwikkelen van een besturing voor een iRobot Roomba stofzuiger. Aan de hand van dit verslag kan de projectgroep zichzelf evalueren en eventueel verbeteringen in volgende projecten doorvoeren. Dit verslag is naast de projectgroep bestemd voor haar begeleider, zodat hij een inzage in het projectwerk van de groepsleden kan krijgen.</p> 
 		
-		<p>Eerst staat beschreven hoe de opdracht en probleemstelling luidt en wat de bijpassende aanpak daarvoor is. Daarna staat beschreven hoe de planning is en welke fases daarbij een rol speelden. Vervolgens staan de problemen die daarbij een rol hadden beschreven. Daarna staat de samen werking beschreven en de individuele projectvaardigheden. Ten slotte staat de conclusie beschreven.</p>
+		<p>De projectgroep kreeg de opdracht een Roomba stofzuiger te kunnen besturen via een User Interface. Diezelfde User Interface moet ook een Roomba simulator kunnen aansturen. In dit verslag wordt beschreven hoe het proces van begin tot eind is verlopen. De opdracht luidde letterlijk: 'Lever een werkend prototype, van een Roombacontroller, die kan worden gebruikt om een iRobot Roomba robotstofzuiger mee te besturen'.</p>
+		
+		<p>Dit verslag bestaat, naast deze inleiding, uit vijf hoofdstukken. Ten eerste een opdrachtbeschrijving, waarin de ontvangen opdracht wordt toegelicht. Daarnaast is een hoofdstuk over de planning opgenomen, waarin het plannen van het project is beschreven. Vervolgens wordt de samenwerking toegelicht, waarin ook een bijdragefactor is aangegeven. Ten slotte geeft elk projectlid een individuele reflectie en wordt er een conclusie over het totale project gegeven.</p>
 		
 	</section>
 	
@@ -80,7 +82,9 @@
 		
 			<h2>Opdracht</h2>
 		
-			<p>De opdracht is om een Roomba te kunnen besturen en het uitlezen van de sensoren die op deze Roomba zitten. De Roomba is te bedienen via de User Interface en ook de sensoren zijn uit te lezen via deze interface. Er wordt een Simulator gemaakt die dezelfde functies heeft als de “echte” Roomba. Het verwerken van alle gegevens moet in de software Rose RealTime gebeuren.</p>
+			<p>De opdracht die de projectgroep heeft gekregen luidt als volgt: 'Lever een werkend prototype, van een Roombacontroller, die kan worden gebruikt om een iRobot Roomba robotstofzuiger mee te besturen'.</p>
+		
+			<p>De projectgroep heeft de opdracht opgepakt als het kunnen besturen en uitlezen van de sensoren die op de Roomba stofzuiger aanwezig zijn. De Roomba is te bedienen via de User Interface en ook de sensoren zijn uit te lezen via deze interface. Er wordt een simulator ontwikkeld die dezelfde functies heeft als de "echte" Roomba. Het verwerken van alle gegevens moet in de software Rose RealTime gebeuren.</p>
 		
 		</div>
 		
@@ -90,27 +94,37 @@
 		
 			<p>Hogeschool van Arnhem en Nijmegen wilde een via de computer besturen Roomba met hierbij een simulator en heeft daarvoor de hulp van de projectgroep ingeroepen. Aan de hand van een plan van aanpak wordt de opdracht door de projectgroep uitgevoerd.</p>
 		
+			<p>De stofzuiger beschikt over een seriele ingang, waarmee de standaard besturing van de Roomba te overschrijven is. Deze poort neemt signalen aan die volgens een datasheet worden geïnterpreteerd. De projectgroep moet nu drie projectonderdelen ontwikkelen:</p>
+			
+			<p><strong>De aansturing.</strong> Dit onderdeel, dat volgens de projectspecificatie verplicht met Rational Rose Realtime ontwikkeld moet worden, ontvangen signalen die de Roomba verstuurt, ontvangt andere signalen, 'bedenkt' en planning voor de Roomba en stuurt deze planning in voor de Roomba te begrijpen signalen terug.</p>
+			
+			<p><strong>De simulator.</strong> Aangezien de Hogeschool slechts twee stofzuigers beschikbaar heeft voor vijf projectgroepen, moest er een andere testmethode ontwikkeld worden. Deze simulator kan de signalen van de aansturing ontvangen, en aan de hand van een geschetste 'kamer' sensorwaarden genereren en terugzenden.</p>
+			
+			<p><strong>De user-interface.</strong> Deze omgeving draait op een computer en biedt voor menselijke gebruikers een methode om de sensorgegevens van de stofzuiger in te zien. Tevens kunnen instructies aan de Roomba worden teruggezonden.</p>
+		
 		</div>
 		
 		<div>
 		
 			<h2>Aanpak</h2>
 		
-			<p>De manier van aanpak was als volgt: Eerst zijn de documenten ontwikkeld:</p>
+			<p>De projectgroep heeft het project aangepakt door eerst een serie documenten op te stellen, waarin planningen worden gemaakt en het product in onderdelen wordt uitgesplitst. Deze documenten zijn de volgende:</p>
 		
 			<h3>Plan van aanpak</h3>
 		
-			<p>Als eerste is er een plan van aanpak gemaakt. Hierin staan vermeld: </p>
+			<p>Als eerste is er een plan van aanpak gemaakt. Hierin staan vermeld:</p>
 			
 			<ol>
-				<li><strong>Achtergronden van het project</strong><br>Informatie over de opdrachtgever en de opdrachtnemer staan hier vermeld.</li>
-				<li><strong>Projectresultaat</strong><br>Hierin staat vermeld dat er wordt gewerkt volgens het SMART principe:
+				<li><strong>Achtergronden van het project</strong><br>
+				Informatie over de opdrachtgever en de opdrachtnemer staan hier vermeld.</li>
+				<li><strong>Projectresultaat</strong><br>
+				Hierin staat vermeld dat er wordt gewerkt volgens het SMART principe:
 					<br><i>S</i>pecifiek,
 					<br><i>M</i>eetbaar,
 					<br><i>A</i>cceptabel,
 					<br><i>R</i>ealistisch en
 					<br><i>T</i>ijdgebonden.</li>
-				<li><strong>Projectactiviteiten</strong><br>
+				<li><strong>Projectactiviteiten</strong>
 					<br>a. Initiële fase 
 					<br>b. Definitie fase 
 					<br>c. Functioneel ontwerp fase 
@@ -170,40 +184,27 @@
 		
 		<div>
 		
-			<h2>Planning</h2>
+			<h2>Planning en Activiteiten</h2>
 		
 			<p>Er wordt gewerkt volgens de volgende structuur.</p>
 			
+			<img src="assets/image001.png" alt="">
+			
 			<ol>
 				<li><strong>Initiële fase</strong><br>
-				In deze fase bekijken we de haalbaarheid van het project tegenover de wensen van opdrachtgever. we bekijken alle mogelijkheden zodat het resultaat maximaal wordt.</li>
+				In deze fase onderzocht de projectgroep de haalbaarheid van het project tegenover de wensen van opdrachtgever. De mogelijkheden en eisen van de projectgroep zijn onderzocht, zodat het resultaat zo goed mogelijk aan de eisen en wensen voldoet. Tijdens deze fase heeft de groep de documenten zoals die voor de Roomba beschikbaar zijn bekeken, een plan van aanpak opgesteld aan de hand van de opdrachtbeschrijving en de benodigde software geinstalleerd.</li>
 				<li><strong>Definitie fase</strong><br>
-				In deze fase definiëren we hoe we het beste aan de eisen van de klant kunnen voldoen.</li>
+				In deze fase definiëert de projectgroep hoe zij het beste aan de eisen van de klant kan voldoen. Tijdens deze fase zijn afspraken gemaakt over de rollen binnen het project, het opleveren van producten en het beheersen van het projectproces.</li>
 				<li><strong>Functioneel ontwerp</strong><br>
-				In deze fase maken we van de eisen een gedetailleerde functionele specificatie. Hierin staan de functies van ons product uitgebreid beschreven.</li>
+				In deze fase maakt de projectgroep van de eisen een gedetailleerde functionele specificatie. Hierin staan de functies van ons product uitgebreid beschreven.</li>
 				<li><strong>Technisch ontwerp</strong><br>
-				In deze fase vertalen we de functies uit de vorige fase naar een technisch schema/ontwerp. Dit gebeurt zo nauwkeurig mogelijk zodat we bij de volgende fases niet voor onaangename verassingen komen.</li>
+				In deze fase vertaalt de projectgroep functies uit de vorige fase naar een technisch schema/ontwerp. Dit gebeurt zo nauwkeurig mogelijk zodat bij de volgende fases geen verassingen of problemen op treden. Tijdens deze fase worden technische details uitgezocht en gedocumenteerd.</li>
 				<li><strong>Realisatie fase</strong><br>
-				In deze fase wordt het technisch ontwerp uitgevoerd. Er wordt een prototype ontwikkeld om te testen of de idee.</li>
+				In deze fase wordt het technisch ontwerp uitgevoerd. Er wordt een prototype ontwikkeld. De projectgroep heeft in deze fase de daadwerkelijk programmatuur ontworpen, ontwikkeld, en geschreven. Daarnaast is in deze fase de projectdocumentatie opgesteld.</li>
 				<li><strong>Testfase</strong><br>
-				In deze fase wordt het ontwerp getest door middel van een prototype.</li>
+				In deze fase wordt het ontwerp getest door middel van een prototype, en wordt er gekeken of het project aan de eisen voldoet.</li>
 				<li><strong>Nazorg</strong><br>
 				In deze fase wordt bekeken of de klant nog uitbreidingen wenst. Ook maken we in deze fase een handleiding en zorgen we voor verdere documentatie. Het voordeel van het werken op de bovenstaande manier is dat het aantal fouten dat gemaakt wordt tot het minimum is gereduceerd. Dit omdat stap voor stap elke fase gestructureerd wordt afgehandeld.</li>
-			</ol>
-			
-		</div>
-		
-		<div>
-		
-			<h2>Activiteiten</h2>
-		
-			<p>Tijdens het project hebben de volgende activiteiten afgespeeld:</p>
-			
-			<ol>
-				<li>Documentatie schrijven</li>
-				<li>Brainstormen over het ontwerp</li>
-				<li>Realiseren van het ontwerp</li>
-				<li>Testen van het ontwerp</li>
 			</ol>
 			
 		</div>
@@ -216,8 +217,14 @@
 		
 			<p>Sommige onderdelen van het project kostten meer tijd dan dat op de planning stond. Oplossing: Planning aanpassen en zoveel mogelijk de verloren tijd inhalen. Tegenvallende resultaten na het testen van code. Oplossing: Proberen de code te verbeteren.</p>
 			
-			/* */
-		
+			rose installeren
+			io modes
+			sci document incorrect
+			roomba instellen
+			stefan stopt
+			geen initele kennis rose
+			missende informatica kennis
+			
 		</div>
 	
 	</section>
@@ -232,7 +239,16 @@
 			
 			<p>Op de volgende schema's is te zien wat het aandeel van welk project lid was in welk onderdeel.</p>
 			
-			<p>De bijdragefactoren zijn dus als volgt verdeeld.</p>
+			
+			<img src="assets/image003.jpg" alt="">
+			<img src="assets/image005.jpg" alt="">
+			<img src="assets/image007.jpg" alt="">
+			<img src="assets/image009.jpg" alt="">
+			<img src="assets/image011.jpg" alt="">
+			<img src="assets/image013.jpg" alt="">
+			
+			
+			<p>De individuele bijdragefactoren in het project zijn door de projectgroep als volgt bepaald:</p>
 			<table>
 				<tr><td>Erik</td><td>X</td></tr>
 				<tr><td>Léon</td><td>X</td></tr>
@@ -240,6 +256,10 @@
 				<tr><td>Tim</td><td>X</td></tr>
 				<tr><td>Maarten</td><td>X</td></tr>
 			</table>
+			
+			<br>
+			
+			<img src="assets/image015.jpg" alt="">
 			
 		</div>
 		

@@ -65,7 +65,7 @@ const RTProtocolDescriptor programProtocol::Conjugate::rt_class =
   , &programProtocol::Base::rt_class
   , "programProtocol"
   , 0
-  , 7
+  , 8
   , programProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -103,6 +103,11 @@ const RTSignalDescriptor programProtocol::Conjugate::rt_signals[] =
 		"rtUnbound"
 	  , (const RTObject_class *)0
 	  , programProtocol::Conjugate::rti_rtUnbound
+	}
+  , {
+		"setMotors"
+	  , &clsRoomba::RTType_clsMotors
+	  , programProtocol::Conjugate::rti_setMotors
 	}
   , {
 		"stopProgram"

@@ -113,12 +113,13 @@ int roombaProgram_Actor::calculateTimeToRotateAngle( int leftSpeed, int rightSpe
 void roombaProgram_Actor::setMotors( bool mainBrush, bool sideBrush, bool vacuum )
 {
 	// {{{USR
-	byteArray b;
+	clsRoomba::clsMotors m;
+	m.mainBrush = mainBrush;
+	m.sideBrush = sideBrush;
+	m.vacuum = vacuum;
 
-	b.append(138);
-	b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
+	Roomba.setMotors(m).send();
 
-	Roomba.doSend(b).send();
 	// }}}USR
 }
 // }}}RME
@@ -191,6 +192,9 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}
+
+	bumpersTriggered.left = false;
+	bumpersTriggered.right = false;
 	// }}}USR
 }
 // }}}RME
@@ -326,7 +330,7 @@ INLINE_CHAINS void roombaProgram_Actor::chain1_Start( void )
 INLINE_METHODS int roombaProgram_Actor::choicePoint1_checkBatteryLevel( const int * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	if(this->batteryLevel < 60){
+	if(this->batteryLevel <= MINBATTERY){
 	    return false;
 	}else{
 	    return true;

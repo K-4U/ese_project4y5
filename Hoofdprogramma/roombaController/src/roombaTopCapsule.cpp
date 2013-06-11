@@ -355,6 +355,28 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 
 	    toMain.sendCommand(ret).send();
 
+	}else if(c.command == "GETCURRENTACTION"){
+	    //What are we doing?
+	    Json::Value root;
+	    if(this->isOperating){
+	        root["CurrentAction"] = 1;
+	    }else if(this->searchingDock){
+	        root["CurrentAction"] = 2;
+	    }else{
+	        root["CurrentAction"] = 0;
+	    }
+
+	    jsonCommand ret("CURRENTACTION", root);
+
+	    toMain.sendCommand(ret).send();
+	}else if(c.command == "GETMOTORBRUSHVACUUM"){
+	    clsRoomba::clsMotors m = this->roomba.getMotors();
+	    Json::Value root;
+	    root["MainBrush"] = m.mainBrush;
+	    root["SideBrush"] = m.sideBrush;
+	    root["Vacuum"] = m.vacuum;
+
+	    jsonCommand ret("MOTORBRUSHVACUUM", root);
 	}
 	// }}}USR
 }
@@ -374,6 +396,53 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition4_Initial( const void * rt
 INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byteArray * rtdata, roombaProtocol::Base * rtport )
 {
 	// {{{USR
+	clsRoomba::clsButtons btns = this->roomba.getButtons();
+	//cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
+
+	if(btns.dock == true && this->searchingDock == false){
+	    this->dockWasTrue = btns.dock;
+	}else if(this->searchingDock == false){
+	    if(this->dockWasTrue){
+	        //search dock
+	        if(this->isOperating){
+	            this->isOperating = false;
+	            program.stop().send();
+	        }
+	        //Send button press
+	        byteArray b;
+	        b.append(143);
+	        toMain.sendData(b).send();
+	        this->dockWasTrue = false;
+	        this->searchingDock = true;
+	    }
+	}
+
+	if(btns.clean == true){
+	    this->cleanWasTrue = btns.clean;
+	}else{
+	    if(this->cleanWasTrue){
+	        if(this->isOperating){
+	            //STOOOPPP!!!
+	            program.stop().send();
+	            this->cleanWasTrue = false;
+	        }else{
+	            //Do this!
+	            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
+	            //int battLevel = 90;
+	            program.start(battLevel).send();
+	            Sleep(100);
+	            program.isCharging(this->roomba.getSensor(21)).send();
+	            byteArray b;
+	            b.append(131);
+
+	            toMain.sendData(b).send();
+	            this->isOperating = true;
+	            this->cleanWasTrue = false;
+	        }
+	    }
+	}
+
+
 	if(this->isOperating){
 	    //Check all sensors:
 	    clsRoomba::clsBumpersAndCliff bmprs = this->roomba.getBumpers();
@@ -388,63 +457,10 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    if(sideCurrent > 200){
 	        program.sideBrushOverCurrent().send();
 	    }
-
-	    //Probably buttons received. Check them plox
-	    clsRoomba::clsButtons btns = this->roomba.getButtons();
-	    if(btns.clean == true){
-	        this->cleanWasTrue = btns.clean;
-	    }else{
-	        if(this->cleanWasTrue){
-	            //STOOOPPP!!!
-	            program.stop().send();
-	            this->cleanWasTrue = false;
-	        }
-	    }
 	}else{
-	    //Probably buttons received. Check them plox
-	    clsRoomba::clsButtons btns = this->roomba.getButtons();
-	    //cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
-	    if(btns.dock == true && this->searchingDock == false){
-	        this->dockWasTrue = btns.dock;
-	    }else if(this->searchingDock == false){
-	        if(this->dockWasTrue){
-	            //search dock
-	            if(this->isOperating){
-	                this->isOperating = false;
-	                program.stop().send();
-	            }
-	            //Send button press
-	            byteArray b;
-	            b.append(143);
-	            toMain.sendData(b).send();
-	            cout << "DOCK" << endl;
-	            this->dockWasTrue = false;
-	            this->searchingDock = true;
-	        }
-	    }
 	    if(this->roomba.getSensor(21) != 4 || this->searchingDock == true){
 	        this->searchingDock = false;
 	        //FOUND IT! :D
-	    }
-
-
-	    if(btns.clean == true){
-	        this->cleanWasTrue = btns.clean;
-	    }else{
-	        if(this->cleanWasTrue){
-	            //Do this!
-	            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
-	            //int battLevel = 90;
-	            program.start(battLevel).send();
-	            Sleep(10);
-	            program.isCharging(this->roomba.getSensor(21)).send();
-	            byteArray b;
-	            b.append(131);
-
-	            toMain.sendData(b).send();
-	            this->isOperating = true;
-	            this->cleanWasTrue = false;
-	        }
 	    }
 	}
 	// }}}USR
@@ -567,6 +583,18 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition10_doSend( const byteArray
 }
 // }}}RME
 
+// {{{RME transition ':TOP:Ready:J51B718480383:SetMotors'
+INLINE_METHODS void roombaTopCapsule_Actor::transition11_SetMotors( const clsRoomba::clsMotors * rtdata, programProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	clsRoomba::clsMotors m = *rtdata;
+
+	roomba.setMotors(m.mainBrush, m.sideBrush, m.vacuum);
+	this->sendRoombaCommandSetMotors();
+	// }}}USR
+}
+// }}}RME
+
 INLINE_CHAINS void roombaTopCapsule_Actor::chain4_Initial( void )
 {
 	// transition ':TOP:Initial:Initial'
@@ -665,6 +693,17 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain10_doSend( void )
 	enterState( 2 );
 }
 
+INLINE_CHAINS void roombaTopCapsule_Actor::chain11_SetMotors( void )
+{
+	// transition ':TOP:Ready:J51B718480383:SetMotors'
+	rtgChainBegin( 2, "SetMotors" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition11_SetMotors( (const clsRoomba::clsMotors *)msg->data, (programProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
 INLINE_CHAINS void roombaTopCapsule_Actor::chain1_comReady( void )
 {
 	// transition ':TOP:waitForCom:J519B68FC0073:comReady'
@@ -756,6 +795,9 @@ void roombaTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 					return;
 				case programProtocol::Conjugate::rti_doSend:
 					chain10_doSend();
+					return;
+				case programProtocol::Conjugate::rti_setMotors:
+					chain11_SetMotors();
 					return;
 				default:
 					break;

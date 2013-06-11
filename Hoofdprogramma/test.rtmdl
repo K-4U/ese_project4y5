@@ -3882,8 +3882,6 @@
 |this->motors.mainBrush = mainBrush;
 |this->motors.sideBrush = sideBrush;
 |this->motors.vacuum = vacuum;
-|
-|std::cout << "RMB: Arg: " << mainBrush << " STOR: " << this->motors.mainBrush << endl;
 								
 								parameters (list Parameters
 									(object Parameter "mainBrush"
@@ -3899,7 +3897,6 @@
 							(object Operation "getMotors"
 								quid "51A47C900255"
 								body 
-|std::cout << "RMB: MAIN: " << this->motors.mainBrush << endl;
 |*mainBrush = this->motors.mainBrush;
 |*sideBrush = this->motors.sideBrush;
 |*vacuum = this->motors.vacuum;
@@ -3994,7 +3991,11 @@
 							(object Operation "getTotalAngle"
 								quid "51AB5443009B"
 								body "return this->totalAngle;"
-								result "int"))
+								result "int")
+							(object Operation "getMotors"
+								quid "51B71935017D"
+								body "return this->motors;"
+								result "clsRoomba::clsMotors"))
 						nestedClasses (list nestedClasses
 							(object Class "clsBumpersAndCliff"
 								attributes (list Attribute_Set
@@ -4320,6 +4321,13 @@
 											(object JuncPt "J51B5A3C90125"
 												quid "51B5A3C90125"
 												isEntry TRUE
+												externallyVisible TRUE)
+											(object JuncPt "J51B718480383"
+												quid "51B718480383"
+												externallyVisible TRUE)
+											(object JuncPt "J51B718480388"
+												quid "51B718480388"
+												isEntry TRUE
 												externallyVisible TRUE))
 										transitions (list transition_list
 											(object Trans "t1"
@@ -4568,6 +4576,28 @@
 |
 |    toMain.sendCommand(ret).send();
 |
+|}else if(c.command == "GETCURRENTACTION"){
+|    //What are we doing?
+|    Json::Value root;
+|    if(this->isOperating){
+|        root["CurrentAction"] = 1;
+|    }else if(this->searchingDock){
+|        root["CurrentAction"] = 2;
+|    }else{
+|        root["CurrentAction"] = 0;
+|    }
+|
+|    jsonCommand ret("CURRENTACTION", root);
+|
+|    toMain.sendCommand(ret).send();
+|}else if(c.command == "GETMOTORBRUSHVACUUM"){
+|    clsRoomba::clsMotors m = this->roomba.getMotors();
+|    Json::Value root;
+|    root["MainBrush"] = m.mainBrush;
+|    root["SideBrush"] = m.sideBrush;
+|    root["Vacuum"] = m.vacuum;
+|
+|    jsonCommand ret("MOTORBRUSHVACUUM", root);
 |}
 											)
 										eventGuards (list eventGuardsList
@@ -4598,6 +4628,53 @@
 										action (object Action
 											quid "51AB6443013B"
 											body 
+|clsRoomba::clsButtons btns = this->roomba.getButtons();
+|//cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
+|
+|if(btns.dock == true && this->searchingDock == false){
+|    this->dockWasTrue = btns.dock;
+|}else if(this->searchingDock == false){
+|    if(this->dockWasTrue){
+|        //search dock
+|        if(this->isOperating){
+|            this->isOperating = false;
+|            program.stop().send();
+|        }
+|        //Send button press
+|        byteArray b;
+|        b.append(143);
+|        toMain.sendData(b).send();
+|        this->dockWasTrue = false;
+|        this->searchingDock = true;
+|    }
+|}
+|
+|if(btns.clean == true){
+|    this->cleanWasTrue = btns.clean;
+|}else{
+|    if(this->cleanWasTrue){
+|        if(this->isOperating){
+|            //STOOOPPP!!!
+|            program.stop().send();
+|            this->cleanWasTrue = false;
+|        }else{
+|            //Do this!
+|            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
+|            //int battLevel = 90;
+|            program.start(battLevel).send();
+|            Sleep(100);
+|            program.isCharging(this->roomba.getSensor(21)).send();
+|            byteArray b;
+|            b.append(131);
+|
+|            toMain.sendData(b).send();
+|            this->isOperating = true;
+|            this->cleanWasTrue = false;
+|        }
+|    }
+|}
+|
+|
 |if(this->isOperating){
 |    //Check all sensors:
 |    clsRoomba::clsBumpersAndCliff bmprs = this->roomba.getBumpers();
@@ -4612,63 +4689,10 @@
 |    if(sideCurrent > 200){
 |        program.sideBrushOverCurrent().send();
 |    }
-|
-|    //Probably buttons received. Check them plox
-|    clsRoomba::clsButtons btns = this->roomba.getButtons();
-|    if(btns.clean == true){
-|        this->cleanWasTrue = btns.clean;
-|    }else{
-|        if(this->cleanWasTrue){
-|            //STOOOPPP!!!
-|            program.stop().send();
-|            this->cleanWasTrue = false;
-|        }
-|    }
 |}else{
-|    //Probably buttons received. Check them plox
-|    clsRoomba::clsButtons btns = this->roomba.getButtons();
-|    //cout << "Buttons: C: " << btns.clean << " S: " << btns.spot << " D: " << btns.dock << endl;
-|    if(btns.dock == true && this->searchingDock == false){
-|        this->dockWasTrue = btns.dock;
-|    }else if(this->searchingDock == false){
-|        if(this->dockWasTrue){
-|            //search dock
-|            if(this->isOperating){
-|                this->isOperating = false;
-|                program.stop().send();
-|            }
-|            //Send button press
-|            byteArray b;
-|            b.append(143);
-|            toMain.sendData(b).send();
-|            cout << "DOCK" << endl;
-|            this->dockWasTrue = false;
-|            this->searchingDock = true;
-|        }
-|    }
 |    if(this->roomba.getSensor(21) != 4 || this->searchingDock == true){
 |        this->searchingDock = false;
 |        //FOUND IT! :D
-|    }
-|
-|
-|    if(btns.clean == true){
-|        this->cleanWasTrue = btns.clean;
-|    }else{
-|        if(this->cleanWasTrue){
-|            //Do this!
-|            int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
-|            //int battLevel = 90;
-|            program.start(battLevel).send();
-|            Sleep(10);
-|            program.isCharging(this->roomba.getSensor(21)).send();
-|            byteArray b;
-|            b.append(131);
-|
-|            toMain.sendData(b).send();
-|            this->isOperating = true;
-|            this->cleanWasTrue = false;
-|        }
 |    }
 |}
 											))
@@ -4840,7 +4864,30 @@
 														quidu "51AB4A6F02B3")
 													signals (list signalsList
 														signals  ":base:doSend"
-														quidu "51ADD3890322"))))))))
+														quidu "51ADD3890322")))))
+									(object Trans "SetMotors"
+										quid "51B718480382"
+										source  ":TOP:Ready:J51B718480383"
+										target  ":TOP:Ready:J51B718480388"
+										action (object Action
+											quid "51B718720179"
+											body 
+|clsRoomba::clsMotors m = *rtdata;
+|
+|roomba.setMotors(m.mainBrush, m.sideBrush, m.vacuum);
+|this->sendRoombaCommandSetMotors();
+											)
+										eventGuards (list eventGuardsList
+											(object EventGuard
+												quid "51B718590163"
+												Event (object PortEvent
+													quid "51B718590164"
+													ports (list portsList
+														ports  ":Structure:program"
+														quidu "51AB4A6F02B3")
+													signals (list signalsList
+														signals  ":base:setMotors"
+														quidu "51B717FA02C6"))))))))
 						statediagram (object State_Diagram "State Diagram"
 							quid "518A226F036F"
 							items (list diagram_item_list
@@ -4964,142 +5011,154 @@
 											pos (1598,752)
 											quidu "51B5A3C90125"
 											positionBySuperclass FALSE
+											boundIconAutoAdjust TRUE)
+										(object JuncPtVw ":TOP:Ready:J51B718480383" @299
+											quid "51B718480387"
+											pos (1538,416)
+											quidu "51B718480383"
+											positionBySuperclass FALSE
+											boundIconAutoAdjust TRUE)
+										(object JuncPtVw ":TOP:Ready:J51B718480388" @300
+											quid "51B71848038C"
+											pos (1585,465)
+											quidu "51B718480388"
+											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE))
 									statediagram (object State_Diagram ""
 										quid "519B580303C0"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "Ready" @299
+											(object StateView "Perimeter" "Ready" @301
 												quid "519B580303C2"
 												pos (840,615)
 												quidu "519B57F80309"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:Ready:J519B580303BF" @300
+													(object JuncPtVw ":TOP:Ready:J519B580303BF" @302
 														quid "519B580303C4"
 														pos (96,447)
 														quidu "519B580303BF"
-														juncPtIcon (object JuncPtIcon @301
+														juncPtIcon (object JuncPtIcon @303
 															quid "519B580303C5"
 															pos (186,447)
 															label (object ItemLabel
 																quid "519B580303C6"
 																pos (156,487)
 																max_width 128)))
-													(object JuncPtVw ":TOP:Ready:J519B5D200005" @302
+													(object JuncPtVw ":TOP:Ready:J519B5D200005" @304
 														quid "519B5D200006"
 														pos (1170,1134)
 														quidu "519B5D200005"
-														juncPtIcon (object JuncPtIcon @303
+														juncPtIcon (object JuncPtIcon @305
 															quid "519B5D200007"
 															pos (1170,1044)
 															label (object ItemLabel
 																quid "519B5D200008"
 																pos (1210,1074)
 																max_width 241)))
-													(object JuncPtVw ":TOP:Ready:J51A5CE4A021F" @304
+													(object JuncPtVw ":TOP:Ready:J51A5CE4A021F" @306
 														quid "51A5CE4A0220"
 														pos (96,1014)
 														quidu "51A5CE4A021F"
-														juncPtIcon (object JuncPtIcon @305
+														juncPtIcon (object JuncPtIcon @307
 															quid "51A5CE4A0221"
 															pos (186,1014)
 															label (object ItemLabel
 																quid "51A5CE4A0222"
 																pos (156,1054)
 																max_width 159)))
-													(object JuncPtVw ":TOP:Ready:J51AB4F6F0301" @306
+													(object JuncPtVw ":TOP:Ready:J51AB4F6F0301" @308
 														quid "51AB4F6F0302"
 														pos (1260,96)
 														quidu "51AB4F6F0301"
-														juncPtIcon (object JuncPtIcon @307
+														juncPtIcon (object JuncPtIcon @309
 															quid "51AB4F6F0303"
 															pos (1260,186)
 															label (object ItemLabel
 																quid "51AB4F6F0304"
 																pos (1300,156)
 																max_width 128)))
-													(object JuncPtVw ":TOP:Ready:J51AB52300119" @308
+													(object JuncPtVw ":TOP:Ready:J51AB52300119" @310
 														quid "51AB5230011A"
 														pos (735,96)
 														quidu "51AB52300119"
-														juncPtIcon (object JuncPtIcon @309
+														juncPtIcon (object JuncPtIcon @311
 															quid "51AB5230011B"
 															pos (735,186)
 															label (object ItemLabel
 																quid "51AB5230011C"
 																pos (775,156)
 																max_width 175)))
-													(object JuncPtVw ":TOP:Ready:J51AB5B8D011F" @310
+													(object JuncPtVw ":TOP:Ready:J51AB5B8D011F" @312
 														quid "51AB5B8D0120"
 														pos (96,920)
 														quidu "51AB5B8D011F"
-														juncPtIcon (object JuncPtIcon @311
+														juncPtIcon (object JuncPtIcon @313
 															quid "51AB5B8D0121"
 															pos (186,920)
 															label (object ItemLabel
 																quid "51AB5B8D0122"
 																pos (156,960)
 																max_width 159)))
-													(object JuncPtVw ":TOP:Ready:J51AB5B9301A2" @312
+													(object JuncPtVw ":TOP:Ready:J51AB5B9301A2" @314
 														quid "51AB5B9301A3"
 														pos (990,1134)
 														quidu "51AB5B9301A2"
-														juncPtIcon (object JuncPtIcon @313
+														juncPtIcon (object JuncPtIcon @315
 															quid "51AB5B9301A4"
 															pos (990,1044)
 															label (object ItemLabel
 																quid "51AB5B9301A5"
 																pos (1030,1074)
 																max_width 241)))
-													(object JuncPtVw ":TOP:Ready:J51AB5BA60031" @314
+													(object JuncPtVw ":TOP:Ready:J51AB5BA60031" @316
 														quid "51AB5BA60032"
 														pos (1395,96)
 														quidu "51AB5BA60031"
-														juncPtIcon (object JuncPtIcon @315
+														juncPtIcon (object JuncPtIcon @317
 															quid "51AB5BA60033"
 															pos (1395,186)
 															label (object ItemLabel
 																quid "51AB5BA60034"
 																pos (1435,156)
 																max_width 128)))
-													(object JuncPtVw ":TOP:Ready:J51AB5BB30271" @316
+													(object JuncPtVw ":TOP:Ready:J51AB5BB30271" @318
 														quid "51AB5BB30272"
 														pos (915,96)
 														quidu "51AB5BB30271"
-														juncPtIcon (object JuncPtIcon @317
+														juncPtIcon (object JuncPtIcon @319
 															quid "51AB5BB30273"
 															pos (915,186)
 															label (object ItemLabel
 																quid "51AB5BB30274"
 																pos (955,156)
 																max_width 175)))
-													(object JuncPtVw ":TOP:Ready:J51AB5BCB00F3" @318
+													(object JuncPtVw ":TOP:Ready:J51AB5BCB00F3" @320
 														quid "51AB5BCB00F4"
 														pos (660,96)
 														quidu "51AB5BCB00F3"
-														juncPtIcon (object JuncPtIcon @319
+														juncPtIcon (object JuncPtIcon @321
 															quid "51AB5BCB00F5"
 															pos (660,186)
 															label (object ItemLabel
 																quid "51AB5BCB00F6"
 																pos (700,156)
 																max_width 81)))
-													(object JuncPtVw ":TOP:Ready:J51AB5BCB00F8" @320
+													(object JuncPtVw ":TOP:Ready:J51AB5BCB00F8" @322
 														quid "51AB5BCB00F9"
 														pos (810,96)
 														quidu "51AB5BCB00F8"
-														juncPtIcon (object JuncPtIcon @321
+														juncPtIcon (object JuncPtIcon @323
 															quid "51AB5BCB00FA"
 															pos (810,186)
 															label (object ItemLabel
 																quid "51AB5BCB00FB"
 																pos (850,156)
 																max_width 81)))
-													(object JuncPtVw ":TOP:Ready:J51AB645400D1" @322
+													(object JuncPtVw ":TOP:Ready:J51AB645400D1" @324
 														quid "51AB645400D2"
 														pos (1584,563)
 														quidu "51AB645400D1"
 														positionBySuperclass FALSE
-														juncPtIcon (object JuncPtIcon @323
+														juncPtIcon (object JuncPtIcon @325
 															quid "51AB645400D3"
 															pos (1494,563)
 															label (object ItemLabel
@@ -5108,69 +5167,89 @@
 																positionBySuperclass FALSE
 																max_width 209)
 															positionBySuperclass FALSE))
-													(object JuncPtVw ":TOP:Ready:J51AB647002D6" @324
+													(object JuncPtVw ":TOP:Ready:J51AB647002D6" @326
 														quid "51AB647002D8"
 														pos (1584,248)
 														quidu "51AB647002D6"
-														juncPtIcon (object JuncPtIcon @325
+														juncPtIcon (object JuncPtIcon @327
 															quid "51AB647002D9"
 															pos (1494,248)
 															label (object ItemLabel
 																quid "51AB647002DA"
 																pos (1524,288)
 																max_width 191)))
-													(object JuncPtVw ":TOP:Ready:J51AB647201BD" @326
+													(object JuncPtVw ":TOP:Ready:J51AB647201BD" @328
 														quid "51AB647201BE"
 														pos (1584,395)
 														quidu "51AB647201BD"
-														juncPtIcon (object JuncPtIcon @327
+														juncPtIcon (object JuncPtIcon @329
 															quid "51AB647201BF"
 															pos (1494,395)
 															label (object ItemLabel
 																quid "51AB647201C0"
 																pos (1524,435)
 																max_width 191)))
-													(object JuncPtVw ":TOP:Ready:J51AB77110307" @328
+													(object JuncPtVw ":TOP:Ready:J51AB77110307" @330
 														quid "51AB77110308"
 														pos (585,96)
 														quidu "51AB77110307"
-														juncPtIcon (object JuncPtIcon @329
+														juncPtIcon (object JuncPtIcon @331
 															quid "51AB77110309"
 															pos (585,186)
 															label (object ItemLabel
 																quid "51AB7711030A"
 																pos (625,156)
 																max_width 97)))
-													(object JuncPtVw ":TOP:Ready:J51AB77190173" @330
+													(object JuncPtVw ":TOP:Ready:J51AB77190173" @332
 														quid "51AB77190174"
 														pos (450,96)
 														quidu "51AB77190173"
-														juncPtIcon (object JuncPtIcon @331
+														juncPtIcon (object JuncPtIcon @333
 															quid "51AB77190175"
 															pos (450,186)
 															label (object ItemLabel
 																quid "51AB77190176"
 																pos (490,156)
 																max_width 97)))
-													(object JuncPtVw ":TOP:Ready:J51B5A3C90125" @332
+													(object JuncPtVw ":TOP:Ready:J51B5A3C90125" @334
 														quid "51B5A3C90126"
 														pos (1584,710)
 														quidu "51B5A3C90125"
-														juncPtIcon (object JuncPtIcon @333
+														juncPtIcon (object JuncPtIcon @335
 															quid "51B5A3C90127"
 															pos (1494,710)
 															label (object ItemLabel
 																quid "51B5A3C90128"
-																pos (1524,750))))))
-											(object StateView "StartState" "Initial" @334
+																pos (1524,750))))
+													(object JuncPtVw ":TOP:Ready:J51B718480383" @336
+														quid "51B718480384"
+														pos (1499,98)
+														quidu "51B718480383"
+														juncPtIcon (object JuncPtIcon @337
+															quid "51B718480385"
+															pos (1482,186)
+															label (object ItemLabel
+																quid "51B718480386"
+																pos (1522,156))))
+													(object JuncPtVw ":TOP:Ready:J51B718480388" @338
+														quid "51B718480389"
+														pos (1584,206)
+														quidu "51B718480388"
+														juncPtIcon (object JuncPtIcon @339
+															quid "51B71848038A"
+															pos (1494,206)
+															label (object ItemLabel
+																quid "51B71848038B"
+																pos (1524,246))))))
+											(object StateView "StartState" "Initial" @340
 												quid "519B580303C3"
 												pos (180,180)
 												quidu "519B57F80311")
-											(object TransView ":TOP:Ready:J51AB647201BD:t1" @335
+											(object TransView ":TOP:Ready:J51AB647201BD:t1" @341
 												quid "51A5BBA200B9"
 												uses_fill_color FALSE
 												quidu "51A5BBA3004B"
-												label (object SegLabel @336
+												label (object SegLabel @342
 													quid "51A5BBA3004C"
 													pos (1391,444)
 													positionBySuperclass FALSE
@@ -5179,14 +5258,14 @@
 													height 103
 													orientation 1)
 												positionBySuperclass FALSE
-												client @327
-												supplier @323
+												client @329
+												supplier @325
 												vertices (list Points
 													(1494,424)
 													(1494,532))
 												line_style 6144))
 										filterFlags 1))
-								(object StateView "Normal" "waitForCom" @337
+								(object StateView "Normal" "waitForCom" @343
 									quid "519B68F402FF"
 									pos (440,362)
 									quidu "519B68F4033F"
@@ -5196,13 +5275,13 @@
 										max_width 159)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:waitForCom:J519B68FC0073" @338
+										(object JuncPtVw ":TOP:waitForCom:J519B68FC0073" @344
 											quid "519B68FC007B"
 											pos (560,410)
 											quidu "519B68FC0073"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:waitForCom:J519B69010080" @339
+										(object JuncPtVw ":TOP:waitForCom:J519B69010080" @345
 											quid "519B69010084"
 											pos (331,283)
 											quidu "519B69010080"
@@ -5211,41 +5290,41 @@
 									statediagram (object State_Diagram ""
 										quid "519B68FC0074"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "waitForCom" @340
+											(object StateView "Perimeter" "waitForCom" @346
 												quid "519B68FC0076"
 												pos (840,615)
 												quidu "519B68F4033F"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:waitForCom:J519B68FC0073" @341
+													(object JuncPtVw ":TOP:waitForCom:J519B68FC0073" @347
 														quid "519B68FC0078"
 														pos (1584,773)
 														quidu "519B68FC0073"
-														juncPtIcon (object JuncPtIcon @342
+														juncPtIcon (object JuncPtIcon @348
 															quid "519B68FC0079"
 															pos (1494,773)
 															label (object ItemLabel
 																quid "519B68FC007A"
 																pos (1524,813))))
-													(object JuncPtVw ":TOP:waitForCom:J519B69010080" @343
+													(object JuncPtVw ":TOP:waitForCom:J519B69010080" @349
 														quid "519B69010081"
 														pos (169,101)
 														quidu "519B69010080"
-														juncPtIcon (object JuncPtIcon @344
+														juncPtIcon (object JuncPtIcon @350
 															quid "519B69010082"
 															pos (196,187)
 															label (object ItemLabel
 																quid "519B69010083"
 																pos (236,157))))))
-											(object StateView "StartState" "Initial" @345
+											(object StateView "StartState" "Initial" @351
 												quid "519B68FC0077"
 												pos (180,180)
 												quidu "519B68F40346"))
 										filterFlags 1))
-								(object TransView ":TOP:Ready:J51AB4F6F0301:playSong" @346
+								(object TransView ":TOP:Ready:J51AB4F6F0301:playSong" @352
 									quid "51AB4F6F02FF"
 									uses_fill_color FALSE
 									quidu "51AB4F6F0300"
-									label (object SegLabel @347
+									label (object SegLabel @353
 										quid "51AB4F6F030B"
 										pos (1448,284)
 										anchor_loc 3
@@ -5261,11 +5340,11 @@
 										(1478,325)
 										(1478,390))
 									line_style 6144)
-								(object TransView ":TOP:Initial:Initial" @348
+								(object TransView ":TOP:Initial:Initial" @354
 									quid "519B690001A6"
 									uses_fill_color FALSE
 									quidu "519B6901007F"
-									label (object SegLabel @349
+									label (object SegLabel @355
 										quid "519B69010085"
 										pos (285,199)
 										positionBySuperclass FALSE
@@ -5274,16 +5353,16 @@
 										height 42)
 									positionBySuperclass FALSE
 									client @280
-									supplier @339
+									supplier @345
 									vertices (list Points
 										(203,195)
 										(323,277))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB77110307:doSend" @350
+								(object TransView ":TOP:Ready:J51AB77110307:doSend" @356
 									quid "51AB77110305"
 									uses_fill_color FALSE
 									quidu "51AB77110306"
-									label (object SegLabel @351
+									label (object SegLabel @357
 										quid "51AB77110311"
 										pos (769,291)
 										positionBySuperclass FALSE
@@ -5302,11 +5381,11 @@
 										(866,325)
 										(866,390))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB647002D6:dataReceived" @352
+								(object TransView ":TOP:Ready:J51AB647002D6:dataReceived" @358
 									quid "519B5D190388"
 									uses_fill_color FALSE
 									quidu "519B5D190389"
-									label (object SegLabel @353
+									label (object SegLabel @359
 										quid "519B5D190394"
 										pos (1839,523)
 										positionBySuperclass FALSE
@@ -5324,11 +5403,11 @@
 										(1669,525)
 										(1605,544))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @354
+								(object TransView ":TOP:Ready:J51A5CE4A021F:askSensors" @360
 									quid "51A5CE4A021D"
 									uses_fill_color FALSE
 									quidu "51A5CE4A021E"
-									label (object SegLabel @355
+									label (object SegLabel @361
 										quid "51A5CE4A0229"
 										pos (499,982)
 										positionBySuperclass FALSE
@@ -5347,11 +5426,11 @@
 										(569,897)
 										(631,875))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB52300119:stopProgram" @356
+								(object TransView ":TOP:Ready:J51AB52300119:stopProgram" @362
 									quid "51AB52300117"
 									uses_fill_color FALSE
 									quidu "51AB52300118"
-									label (object SegLabel @357
+									label (object SegLabel @363
 										quid "51AB52300123"
 										pos (1224,281)
 										positionBySuperclass FALSE
@@ -5370,11 +5449,11 @@
 										(1169,325)
 										(1169,390))
 									line_style 6144)
-								(object TransView ":TOP:waitForCom:J519B68FC0073:comReady" @358
+								(object TransView ":TOP:waitForCom:J519B68FC0073:comReady" @364
 									quid "519B580202B6"
 									uses_fill_color FALSE
 									quidu "519B580303BE"
-									label (object SegLabel @359
+									label (object SegLabel @365
 										quid "519B580303C8"
 										pos (674,386)
 										positionBySuperclass FALSE
@@ -5384,37 +5463,17 @@
 										pctDist 0.752500
 										height 87)
 									positionBySuperclass FALSE
-									client @338
+									client @344
 									supplier @282
 									vertices (list Points
 										(566,415)
 										(640,470))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB5BCB00F3:drive" @360
-									quid "51AB5BCB00F1"
-									uses_fill_color FALSE
-									quidu "51AB5BCB00F2"
-									label (object SegLabel @361
-										quid "51AB5BCB00FD"
-										pos (1051,281)
-										anchor_loc 3
-										max_width 81
-										justify 1
-										pctDist 0.500000
-										height 44)
-									client @291
-									supplier @292
-									vertices (list Points
-										(1006,390)
-										(1006,325)
-										(1096,325)
-										(1096,390))
-									line_style 6144)
-								(object TransView ":TOP:Ready:J51AB645400D1:handleSensors" @362
+								(object TransView ":TOP:Ready:J51AB645400D1:handleSensors" @366
 									quid "51A5BB97030C"
 									uses_fill_color FALSE
 									quidu "51A5BB97030D"
-									label (object SegLabel @363
+									label (object SegLabel @367
 										quid "51A5BB970318"
 										pos (1827,742)
 										positionBySuperclass FALSE
@@ -5430,11 +5489,11 @@
 										(1672,753)
 										(1606,752))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @364
+								(object TransView ":TOP:Ready:J519B5D200005:commandReceived" @368
 									quid "519B5D200002"
 									uses_fill_color FALSE
 									quidu "519B5D200003"
-									label (object SegLabel @365
+									label (object SegLabel @369
 										quid "519B5D20000F"
 										pos (1269,1117)
 										positionBySuperclass FALSE
@@ -5452,7 +5511,47 @@
 										(1213,1072)
 										(1213,1004))
 									line_style 6144)
-								(object NoteView @366
+								(object TransView ":TOP:Ready:J51AB5BCB00F3:drive" @370
+									quid "51AB5BCB00F1"
+									uses_fill_color FALSE
+									quidu "51AB5BCB00F2"
+									label (object SegLabel @371
+										quid "51AB5BCB00FD"
+										pos (1051,281)
+										anchor_loc 3
+										max_width 81
+										justify 1
+										pctDist 0.500000
+										height 44)
+									client @291
+									supplier @292
+									vertices (list Points
+										(1006,390)
+										(1006,325)
+										(1096,325)
+										(1096,390))
+									line_style 6144)
+								(object TransView ":TOP:Ready:J51B718480383:SetMotors" @372
+									quid "51B718480381"
+									uses_fill_color FALSE
+									quidu "51B718480382"
+									label (object SegLabel @373
+										quid "51B71848038D"
+										pos (1690,356)
+										positionBySuperclass FALSE
+										max_width 144
+										pctDist 0.541532
+										height 79)
+									positionBySuperclass FALSE
+									client @299
+									supplier @300
+									vertices (list Points
+										(1544,410)
+										(1600,374)
+										(1652,431)
+										(1592,460))
+									line_style 6144)
+								(object NoteView @374
 									quid "51A477E80373"
 									pos (1190,1245)
 									label (object ItemLabel
@@ -5468,12 +5567,12 @@
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "518A226F0373"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @367
+								(object CapsulePerimeterVw "Structure" @375
 									quid "518A226F0375"
 									pos (840,615)
 									quidu "518A226F036E"
 									boundIcons (list boundIconsList
-										(object PortVw ":Structure:toMain" @368
+										(object PortVw ":Structure:toMain" @376
 											quid "519B58B702CA"
 											pos (1581,97)
 											quidu "519B58B70323"
@@ -5483,7 +5582,7 @@
 												nlines 2
 												max_width 272
 												label "toMain"))))
-								(object CapsuleRoleVw ":Structure:roombaProgramInstance" @369
+								(object CapsuleRoleVw ":Structure:roombaProgramInstance" @377
 									quid "51AB4BEB0322"
 									pos (973,762)
 									quidu "51AB4BEC0082"
@@ -5497,7 +5596,7 @@
 										label "roombaProgramInstance")
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ConnectionPtVw ":Structure:roombaProgramInstance:Roomba" @370
+										(object ConnectionPtVw ":Structure:roombaProgramInstance:Roomba" @378
 											quid "51AB4BEC0084"
 											pos (812,672)
 											label (object ItemLabel
@@ -5508,7 +5607,7 @@
 												max_width 288
 												label "Roomba")
 											positionBySuperclass FALSE)))
-								(object PortVw ":Structure:timer" @371
+								(object PortVw ":Structure:timer" @379
 									quid "51A5CE110358"
 									pos (306,138)
 									quidu "51A5CE0F0294"
@@ -5518,7 +5617,7 @@
 										nlines 2
 										max_width 144
 										label "timer"))
-								(object PortVw ":Structure:program" @372
+								(object PortVw ":Structure:program" @380
 									quid "51AB4A720157"
 									pos (804,372)
 									quidu "51AB4A6F02B3"
@@ -5530,7 +5629,7 @@
 										max_width 303
 										label "program")
 									positionBySuperclass FALSE)
-								(object PortVw ":Structure:frame" @373
+								(object PortVw ":Structure:frame" @381
 									quid "51AB64CF030B"
 									pos (216,486)
 									quidu "51AB64CE0172"
@@ -5540,19 +5639,19 @@
 										nlines 2
 										max_width 144
 										label "frame"))
-								(object ConnectorVw ":Structure:C51AB4FAF02A2" @374
+								(object ConnectorVw ":Structure:C51AB4FAF02A2" @382
 									quid "51AB4FAE004E"
 									stereotype TRUE
 									uses_fill_color FALSE
 									quidu "51AB4FAF02A2"
-									label (object SegLabel @375
+									label (object SegLabel @383
 										quid "51AB4FAF02A4"
 										pos (875,531)
 										max_width 209
 										pctDist 0.495539
 										height 68)
-									client @372
-									supplier @370
+									client @380
+									supplier @378
 									vertices (list Points
 										(804,408)
 										(811,660))
@@ -5613,6 +5712,15 @@
 							(object ClassAttribute "speedRight"
 								quid "51B5A6ED0217"
 								initv "100"
+								type "int")
+							(object ClassAttribute "MINBATTERY"
+								attributes (list Attribute_Set
+									(object Attribute
+										tool "OT::Cpp"
+										name "AttributeKind"
+										value ("AttributeKindSet" 2)))
+								quid "51B705F301FA"
+								initv "90"
 								type "int"))
 						operations (list Operations
 							(object Operation "drive"
@@ -5678,12 +5786,13 @@
 							(object Operation "setMotors"
 								quid "51ADD27B0062"
 								body 
-|byteArray b;
+|clsRoomba::clsMotors m;
+|m.mainBrush = mainBrush;
+|m.sideBrush = sideBrush;
+|m.vacuum = vacuum;
 |
-|b.append(138);
-|b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
+|Roomba.setMotors(m).send();
 |
-|Roomba.doSend(b).send();
 								
 								parameters (list Parameters
 									(object Parameter "mainBrush"
@@ -5765,7 +5874,7 @@
 										guard (object Guard
 											quid "51AB5A7003B9"
 											expression 
-|if(this->batteryLevel < 60){
+|if(this->batteryLevel <= MINBATTERY){
 |    return false;
 |}else{
 |    return true;
@@ -5795,6 +5904,9 @@
 |    cout << "The Time = " << theTime << endl;
 |    timer.informIn(theTime/10);
 |}
+|
+|bumpersTriggered.left = false;
+|bumpersTriggered.right = false;
 											)
 										states (list States
 											(object InitialPt "Initial"
@@ -6028,19 +6140,19 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "51AB4887029E"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @376
+								(object StateView "Perimeter" "TOP" @384
 									quid "51AB488702A0"
 									pos (870,726)
 									quidu "51AB4887029B"
 									width 1559
 									height 1271
 									positionBySuperclass FALSE)
-								(object StateView "StartState" "Initial" @377
+								(object StateView "StartState" "Initial" @385
 									quid "51AB488702A1"
 									pos (180,180)
 									quidu "51AB4887029C"
 									positionBySuperclass FALSE)
-								(object StateView "Normal" "roombaWaitForStart" @378
+								(object StateView "Normal" "roombaWaitForStart" @386
 									quid "51AB48B60318"
 									pos (535,157)
 									quidu "51AB48B60366"
@@ -6052,30 +6164,30 @@
 										max_width 288)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A2600DB" @379
+										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A2600DB" @387
 											quid "51AB5A2600DF"
 											pos (535,201)
 											quidu "51AB5A2600DB"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A85024C" @380
+										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A85024C" @388
 											quid "51AB5A850250"
 											pos (503,201)
 											quidu "51AB5A85024C"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB685D02C5" @381
+										(object JuncPtVw ":TOP:roombaWaitForStart:J51AB685D02C5" @389
 											quid "51AB685D02C9"
 											pos (352,167)
 											quidu "51AB685D02C5"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD54025B" @382
+										(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD54025B" @390
 											quid "51ADAD54025F"
 											pos (718,157)
 											quidu "51ADAD54025B"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD780391" @383
+										(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD780391" @391
 											quid "51ADAD780395"
 											pos (718,181)
 											quidu "51ADAD780391"
@@ -6083,67 +6195,67 @@
 									statediagram (object State_Diagram ""
 										quid "51AB48BA014F"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "roombaWaitForStart" @384
+											(object StateView "Perimeter" "roombaWaitForStart" @392
 												quid "51AB48BA0151"
 												pos (840,615)
 												quidu "51AB48B60366"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A2600DB" @385
+													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A2600DB" @393
 														quid "51AB5A2600DC"
 														pos (885,1134)
 														quidu "51AB5A2600DB"
-														juncPtIcon (object JuncPtIcon @386
+														juncPtIcon (object JuncPtIcon @394
 															quid "51AB5A2600DD"
 															pos (885,1044)
 															label (object ItemLabel
 																quid "51AB5A2600DE"
 																pos (925,1074))))
-													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A85024C" @387
+													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB5A85024C" @395
 														quid "51AB5A85024D"
 														pos (705,1134)
 														quidu "51AB5A85024C"
-														juncPtIcon (object JuncPtIcon @388
+														juncPtIcon (object JuncPtIcon @396
 															quid "51AB5A85024E"
 															pos (705,1044)
 															label (object ItemLabel
 																quid "51AB5A85024F"
 																pos (745,1074))))
-													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB685D02C5" @389
+													(object JuncPtVw ":TOP:roombaWaitForStart:J51AB685D02C5" @397
 														quid "51AB685D02C6"
 														pos (96,741)
 														quidu "51AB685D02C5"
-														juncPtIcon (object JuncPtIcon @390
+														juncPtIcon (object JuncPtIcon @398
 															quid "51AB685D02C7"
 															pos (186,741)
 															label (object ItemLabel
 																quid "51AB685D02C8"
 																pos (156,781))))
-													(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD54025B" @391
+													(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD54025B" @399
 														quid "51ADAD54025C"
 														pos (1584,626)
 														quidu "51ADAD54025B"
-														juncPtIcon (object JuncPtIcon @392
+														juncPtIcon (object JuncPtIcon @400
 															quid "51ADAD54025D"
 															pos (1494,626)
 															label (object ItemLabel
 																quid "51ADAD54025E"
 																pos (1524,666))))
-													(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD780391" @393
+													(object JuncPtVw ":TOP:roombaWaitForStart:J51ADAD780391" @401
 														quid "51ADAD780392"
 														pos (1584,909)
 														quidu "51ADAD780391"
-														juncPtIcon (object JuncPtIcon @394
+														juncPtIcon (object JuncPtIcon @402
 															quid "51ADAD780393"
 															pos (1494,909)
 															label (object ItemLabel
 																quid "51ADAD780394"
 																pos (1524,949))))))
-											(object StateView "StartState" "Initial" @395
+											(object StateView "StartState" "Initial" @403
 												quid "51AB48BA0152"
 												pos (180,180)
 												quidu "51AB48B60368"))
 										filterFlags 1))
-								(object StateView "Normal" "roombaStart" @396
+								(object StateView "Normal" "roombaStart" @404
 									quid "51AB599E0217"
 									pos (1240,779)
 									quidu "51AB599E025A"
@@ -6154,35 +6266,35 @@
 										max_width 175)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:roombaStart:J51AB5CF303CA" @397
+										(object JuncPtVw ":TOP:roombaStart:J51AB5CF303CA" @405
 											quid "51AB5CF303CE"
 											pos (1236,853)
 											quidu "51AB5CF303CA"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaStart:J51ADAD78038C" @398
+										(object JuncPtVw ":TOP:roombaStart:J51ADAD78038C" @406
 											quid "51ADAD780390"
 											pos (1247,703)
 											quidu "51ADAD78038C"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaStart:J51B5A22101C5" @399
+										(object JuncPtVw ":TOP:roombaStart:J51B5A22101C5" @407
 											quid "51B5A22101C9"
 											pos (1199,703)
 											quidu "51B5A22101C5"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaStart:J51B5A7140151" @400
+										(object JuncPtVw ":TOP:roombaStart:J51B5A7140151" @408
 											quid "51B5A7140155"
 											pos (1149,704)
 											quidu "51B5A7140151"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaStart:J51B5A71F03DF" @401
+										(object JuncPtVw ":TOP:roombaStart:J51B5A71F03DF" @409
 											quid "51B5A71F03E3"
 											pos (1212,853)
 											quidu "51B5A71F03DF"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:roombaStart:J51B5A72903A0" @402
+										(object JuncPtVw ":TOP:roombaStart:J51B5A72903A0" @410
 											quid "51B5A72903A4"
 											pos (1120,788)
 											quidu "51B5A72903A0"
@@ -6190,83 +6302,83 @@
 									statediagram (object State_Diagram ""
 										quid "51AB59A001A6"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "roombaStart" @403
+											(object StateView "Perimeter" "roombaStart" @411
 												quid "51AB59A001A8"
 												pos (840,615)
 												quidu "51AB599E025A"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:roombaStart:J51AB5CF303CA" @404
+													(object JuncPtVw ":TOP:roombaStart:J51AB5CF303CA" @412
 														quid "51AB5CF303CB"
 														pos (900,1134)
 														quidu "51AB5CF303CA"
-														juncPtIcon (object JuncPtIcon @405
+														juncPtIcon (object JuncPtIcon @413
 															quid "51AB5CF303CC"
 															pos (900,1044)
 															label (object ItemLabel
 																quid "51AB5CF303CD"
 																pos (940,1074)
 																max_width 97)))
-													(object JuncPtVw ":TOP:roombaStart:J51ADAD78038C" @406
+													(object JuncPtVw ":TOP:roombaStart:J51ADAD78038C" @414
 														quid "51ADAD78038D"
 														pos (1425,96)
 														quidu "51ADAD78038C"
-														juncPtIcon (object JuncPtIcon @407
+														juncPtIcon (object JuncPtIcon @415
 															quid "51ADAD78038E"
 															pos (1425,186)
 															label (object ItemLabel
 																quid "51ADAD78038F"
 																pos (1465,156)
 																max_width 63)))
-													(object JuncPtVw ":TOP:roombaStart:J51B5A22101C5" @408
+													(object JuncPtVw ":TOP:roombaStart:J51B5A22101C5" @416
 														quid "51B5A22101C6"
 														pos (600,96)
 														quidu "51B5A22101C5"
-														juncPtIcon (object JuncPtIcon @409
+														juncPtIcon (object JuncPtIcon @417
 															quid "51B5A22101C7"
 															pos (600,186)
 															label (object ItemLabel
 																quid "51B5A22101C8"
 																pos (640,156)
 																max_width 31)))
-													(object JuncPtVw ":TOP:roombaStart:J51B5A7140151" @410
+													(object JuncPtVw ":TOP:roombaStart:J51B5A7140151" @418
 														quid "51B5A7140152"
 														pos (270,96)
 														quidu "51B5A7140151"
-														juncPtIcon (object JuncPtIcon @411
+														juncPtIcon (object JuncPtIcon @419
 															quid "51B5A7140153"
 															pos (270,186)
 															label (object ItemLabel
 																quid "51B5A7140154"
 																pos (310,156)
 																max_width 175)))
-													(object JuncPtVw ":TOP:roombaStart:J51B5A71F03DF" @412
+													(object JuncPtVw ":TOP:roombaStart:J51B5A71F03DF" @420
 														quid "51B5A71F03E0"
 														pos (660,1134)
 														quidu "51B5A71F03DF"
-														juncPtIcon (object JuncPtIcon @413
+														juncPtIcon (object JuncPtIcon @421
 															quid "51B5A71F03E1"
 															pos (660,1044)
 															label (object ItemLabel
 																quid "51B5A71F03E2"
 																pos (700,1074)
 																max_width 113)))
-													(object JuncPtVw ":TOP:roombaStart:J51B5A72903A0" @414
+													(object JuncPtVw ":TOP:roombaStart:J51B5A72903A0" @422
 														quid "51B5A72903A1"
 														pos (96,678)
 														quidu "51B5A72903A0"
-														juncPtIcon (object JuncPtIcon @415
+														juncPtIcon (object JuncPtIcon @423
 															quid "51B5A72903A2"
 															pos (186,678)
 															label (object ItemLabel
 																quid "51B5A72903A3"
 																pos (156,718)
 																max_width 175)))))
-											(object StateView "StartState" "Initial" @416
+											(object StateView "StartState" "Initial" @424
 												quid "51AB59A001A9"
 												pos (180,180)
 												quidu "51AB599E0263"))
 										filterFlags 1))
-								(object ChoicePtVw "checkBatteryLevel" @417
+								(object ChoicePtVw "checkBatteryLevel" @425
 									quid "51AB5A180334"
 									pos (537,343)
 									quidu "51AB5A180389"
@@ -6277,21 +6389,21 @@
 										max_width 272)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ChoicePtPtVw "in" @418
+										(object ChoicePtPtVw "in" @426
 											quid "51AB5A18038B"
 											pos (537,305)
 											positionBySuperclass FALSE)
-										(object ChoicePtPtVw "true" @419
+										(object ChoicePtPtVw "true" @427
 											quid "51AB5A18038C"
 											pos (575,343)
 											positionBySuperclass FALSE)
-										(object ChoicePtPtVw "false" @420
+										(object ChoicePtPtVw "false" @428
 											quid "51AB5A18038E"
 											pos (499,343)
 											positionBySuperclass FALSE))
 									angle 1.570796
 									reversed TRUE)
-								(object StateView "Normal" "bumperTriggered" @421
+								(object StateView "Normal" "bumperTriggered" @429
 									quid "51AB61D400DC"
 									pos (1228,1053)
 									quidu "51AB61D40121"
@@ -6303,31 +6415,31 @@
 										max_width 241)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:bumperTriggered:J51AB61DE016E" @422
+										(object JuncPtVw ":TOP:bumperTriggered:J51AB61DE016E" @430
 											quid "51AB61DE0176"
 											pos (1229,1008)
 											quidu "51AB61DE016E"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @423
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @431
 											quid "51ADCE6F0029"
 											pos (1383,1084)
 											quidu "51ADCE6F0025"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @424
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @432
 											quid "51ADCE6F002E"
 											pos (1359,1097)
 											quidu "51ADCE6F002A"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @425
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @433
 											quid "51ADAD54025A"
 											pos (1255,1008)
 											quidu "51ADAD540256"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @426
+										(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @434
 											quid "51ADB8DA02D3"
 											pos (1205,1008)
 											quidu "51ADB8DA02CF"
@@ -6336,68 +6448,68 @@
 									statediagram (object State_Diagram ""
 										quid "51AB61DE016F"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "bumperTriggered" @427
+											(object StateView "Perimeter" "bumperTriggered" @435
 												quid "51AB61DE0171"
 												pos (840,615)
 												quidu "51AB61D40121"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:bumperTriggered:J51AB61DE016E" @428
+													(object JuncPtVw ":TOP:bumperTriggered:J51AB61DE016E" @436
 														quid "51AB61DE0173"
 														pos (780,96)
 														quidu "51AB61DE016E"
-														juncPtIcon (object JuncPtIcon @429
+														juncPtIcon (object JuncPtIcon @437
 															quid "51AB61DE0174"
 															pos (780,186)
 															label (object ItemLabel
 																quid "51AB61DE0175"
 																pos (820,156)
 																max_width 97)))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @430
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F0025" @438
 														quid "51ADCE6F0026"
 														pos (1584,972)
 														quidu "51ADCE6F0025"
-														juncPtIcon (object JuncPtIcon @431
+														juncPtIcon (object JuncPtIcon @439
 															quid "51ADCE6F0027"
 															pos (1494,972)
 															label (object ItemLabel
 																quid "51ADCE6F0028"
 																pos (1524,1012))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @432
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @440
 														quid "51ADCE6F002B"
 														pos (1470,1134)
 														quidu "51ADCE6F002A"
-														juncPtIcon (object JuncPtIcon @433
+														juncPtIcon (object JuncPtIcon @441
 															quid "51ADCE6F002C"
 															pos (1470,1044)
 															label (object ItemLabel
 																quid "51ADCE6F002D"
 																pos (1510,1074))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @434
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @442
 														quid "51ADAD540257"
 														pos (1155,96)
 														quidu "51ADAD540256"
-														juncPtIcon (object JuncPtIcon @435
+														juncPtIcon (object JuncPtIcon @443
 															quid "51ADAD540258"
 															pos (1155,186)
 															label (object ItemLabel
 																quid "51ADAD540259"
 																pos (1195,156))))
-													(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @436
+													(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @444
 														quid "51ADB8DA02D0"
 														pos (735,96)
 														quidu "51ADB8DA02CF"
-														juncPtIcon (object JuncPtIcon @437
+														juncPtIcon (object JuncPtIcon @445
 															quid "51ADB8DA02D1"
 															pos (735,186)
 															label (object ItemLabel
 																quid "51ADB8DA02D2"
 																pos (775,156))))))
-											(object StateView "StartState" "Initial" @438
+											(object StateView "StartState" "Initial" @446
 												quid "51AB61DE0172"
 												pos (180,180)
 												quidu "51AB61D4012C"))
 										filterFlags 1))
-								(object StateView "Normal" "CheckWhereWeAre" @439
+								(object StateView "Normal" "CheckWhereWeAre" @447
 									quid "51B5A207012F"
 									pos (908,410)
 									quidu "51B5A207016D"
@@ -6409,12 +6521,12 @@
 										max_width 241)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A20D0183" @440
+										(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A20D0183" @448
 											quid "51B5A20D018B"
 											pos (783,368)
 											quidu "51B5A20D0183"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A22101B3" @441
+										(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A22101B3" @449
 											quid "51B5A22101C4"
 											pos (943,451)
 											quidu "51B5A22101B3"
@@ -6423,41 +6535,41 @@
 									statediagram (object State_Diagram ""
 										quid "51B5A20D0184"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "CheckWhereWeAre" @442
+											(object StateView "Perimeter" "CheckWhereWeAre" @450
 												quid "51B5A20D0186"
 												pos (840,615)
 												quidu "51B5A207016D"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A20D0183" @443
+													(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A20D0183" @451
 														quid "51B5A20D0188"
 														pos (360,96)
 														quidu "51B5A20D0183"
-														juncPtIcon (object JuncPtIcon @444
+														juncPtIcon (object JuncPtIcon @452
 															quid "51B5A20D0189"
 															pos (360,186)
 															label (object ItemLabel
 																quid "51B5A20D018A"
 																pos (400,156))))
-													(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A22101B3" @445
+													(object JuncPtVw ":TOP:CheckWhereWeAre:J51B5A22101B3" @453
 														quid "51B5A22101C1"
 														pos (1020,1134)
 														quidu "51B5A22101B3"
-														juncPtIcon (object JuncPtIcon @446
+														juncPtIcon (object JuncPtIcon @454
 															quid "51B5A22101C2"
 															pos (1020,1044)
 															label (object ItemLabel
 																quid "51B5A22101C3"
 																pos (1060,1074))))))
-											(object StateView "StartState" "Initial" @447
+											(object StateView "StartState" "Initial" @455
 												quid "51B5A20D0187"
 												pos (180,180)
 												quidu "51B5A207017D"))
 										filterFlags 1))
-								(object TransView ":TOP:roombaWaitForStart:J51AB5A2600DB:Start" @448
+								(object TransView ":TOP:roombaWaitForStart:J51AB5A2600DB:Start" @456
 									quid "51AB5A240254"
 									uses_fill_color FALSE
 									quidu "51AB5A2600DA"
-									label (object SegLabel @449
+									label (object SegLabel @457
 										quid "51AB5A2600E0"
 										pos (578,241)
 										positionBySuperclass FALSE
@@ -6465,51 +6577,51 @@
 										pctDist 0.369141
 										height 43)
 									positionBySuperclass FALSE
-									client @379
-									supplier @418
+									client @387
+									supplier @426
 									vertices (list Points
 										(535,209)
 										(536,297))
 									line_style 6144)
-								(object TransView ":TOP:Initial:Initial" @450
+								(object TransView ":TOP:Initial:Initial" @458
 									quid "51AB685D0036"
 									uses_fill_color FALSE
 									quidu "51AB685D02C3"
-									label (object SegLabel @451
+									label (object SegLabel @459
 										quid "51AB685D02CA"
 										pos (273,128)
 										max_width 113
 										pctDist 0.506043
 										height 44)
-									client @377
-									supplier @381
+									client @385
+									supplier @389
 									vertices (list Points
 										(209,177)
 										(342,167))
 									line_style 6144)
-								(object TransView ":TOP:roombaStart:J51ADAD78038C:Stop" @452
+								(object TransView ":TOP:roombaStart:J51ADAD78038C:Stop" @460
 									quid "51ADAD740165"
 									uses_fill_color FALSE
 									quidu "51ADAD78038B"
-									label (object SegLabel @453
+									label (object SegLabel @461
 										quid "51ADAD780396"
 										pos (1172,260)
 										max_width 63
 										pctDist 0.481923
 										height 41)
-									client @398
-									supplier @383
+									client @406
+									supplier @391
 									vertices (list Points
 										(1246,693)
 										(1234,278)
 										(1181,200)
 										(726,181))
 									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADCE6F0025:t1" @454
+								(object TransView ":TOP:bumperTriggered:J51ADCE6F0025:t1" @462
 									quid "51ADCE6F0023"
 									uses_fill_color FALSE
 									quidu "51ADCE6F0024"
-									label (object SegLabel @455
+									label (object SegLabel @463
 										quid "51ADCE6F002F"
 										pos (1446,1186)
 										positionBySuperclass FALSE
@@ -6517,19 +6629,19 @@
 										pctDist 1.432000
 										height 8)
 									positionBySuperclass FALSE
-									client @423
-									supplier @424
+									client @431
+									supplier @432
 									vertices (list Points
 										(1391,1084)
 										(1455,1090)
 										(1443,1156)
 										(1359,1097))
 									line_style 6144)
-								(object TransView ":TOP:roombaStart:J51AB5CF303CA:bumper" @456
+								(object TransView ":TOP:roombaStart:J51AB5CF303CA:bumper" @464
 									quid "51AB5CF10273"
 									uses_fill_color FALSE
 									quidu "51AB5CF303C9"
-									label (object SegLabel @457
+									label (object SegLabel @465
 										quid "51AB5CF303D8"
 										pos (1315,900)
 										positionBySuperclass FALSE
@@ -6537,17 +6649,17 @@
 										pctDist 0.258601
 										height 82)
 									positionBySuperclass FALSE
-									client @397
-									supplier @422
+									client @405
+									supplier @430
 									vertices (list Points
 										(1235,861)
 										(1229,998))
 									line_style 6144)
-								(object TransView ":TOP:checkBatteryLevel:batteryTooLow" @458
+								(object TransView ":TOP:checkBatteryLevel:batteryTooLow" @466
 									quid "51AB5A810225"
 									uses_fill_color FALSE
 									quidu "51AB5A85024B"
-									label (object SegLabel @459
+									label (object SegLabel @467
 										quid "51AB5A850251"
 										pos (349,385)
 										positionBySuperclass FALSE
@@ -6555,18 +6667,18 @@
 										pctDist 1.459192
 										height 44)
 									positionBySuperclass FALSE
-									client @420
-									supplier @380
+									client @428
+									supplier @388
 									vertices (list Points
 										(491,342)
 										(394,341)
 										(497,207))
 									line_style 6144)
-								(object TransView ":TOP:checkBatteryLevel:batteryFull" @460
+								(object TransView ":TOP:checkBatteryLevel:batteryFull" @468
 									quid "51AB5AAE0321"
 									uses_fill_color FALSE
 									quidu "51AB5AAF01EE"
-									label (object SegLabel @461
+									label (object SegLabel @469
 										quid "51AB5AAF01F4"
 										pos (684,281)
 										positionBySuperclass FALSE
@@ -6574,17 +6686,17 @@
 										pctDist 0.496371
 										height 74)
 									positionBySuperclass FALSE
-									client @419
-									supplier @440
+									client @427
+									supplier @448
 									vertices (list Points
 										(579,343)
 										(773,366))
 									line_style 6144)
-								(object TransView ":TOP:CheckWhereWeAre:J51B5A22101B3:t1" @462
+								(object TransView ":TOP:CheckWhereWeAre:J51B5A22101B3:t1" @470
 									quid "51B5A2200240"
 									uses_fill_color FALSE
 									quidu "51B5A22101B2"
-									label (object SegLabel @463
+									label (object SegLabel @471
 										quid "51B5A22101CA"
 										pos (1073,516)
 										positionBySuperclass FALSE
@@ -6592,17 +6704,17 @@
 										pctDist 0.381761
 										height 45)
 									positionBySuperclass FALSE
-									client @441
-									supplier @399
+									client @449
+									supplier @407
 									vertices (list Points
 										(949,456)
 										(1192,696))
 									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADAD540256:StopHammerTime" @464
+								(object TransView ":TOP:bumperTriggered:J51ADAD540256:StopHammerTime" @472
 									quid "51ADAD5001F1"
 									uses_fill_color FALSE
 									quidu "51ADAD540255"
-									label (object SegLabel @465
+									label (object SegLabel @473
 										quid "51ADAD540260"
 										pos (1600,368)
 										positionBySuperclass FALSE
@@ -6611,8 +6723,8 @@
 										height 162
 										orientation 1)
 									positionBySuperclass FALSE
-									client @425
-									supplier @382
+									client @433
+									supplier @390
 									vertices (list Points
 										(1262,1003)
 										(1522,859)
@@ -6620,11 +6732,11 @@
 										(1209,159)
 										(726,157))
 									line_style 6144)
-								(object TransView ":TOP:roombaStart:J51B5A7140151:overCurrent" @466
+								(object TransView ":TOP:roombaStart:J51B5A7140151:overCurrent" @474
 									quid "51B5A70B01DB"
 									uses_fill_color FALSE
 									quidu "51B5A70B01DC"
-									label (object SegLabel @467
+									label (object SegLabel @475
 										quid "51B5A70B01EF"
 										pos (951,738)
 										positionBySuperclass FALSE
@@ -6633,19 +6745,19 @@
 										height 108
 										orientation 1)
 									positionBySuperclass FALSE
-									client @400
-									supplier @402
+									client @408
+									supplier @410
 									vertices (list Points
 										(1141,698)
 										(1091,657)
 										(1046,794)
 										(1110,788))
 									line_style 6144)
-								(object TransView ":TOP:bumperTriggered:J51ADB8DA02CF:pijltje" @468
+								(object TransView ":TOP:bumperTriggered:J51ADB8DA02CF:pijltje" @476
 									quid "51ADB8D60256"
 									uses_fill_color FALSE
 									quidu "51ADB8DA02CE"
-									label (object SegLabel @469
+									label (object SegLabel @477
 										quid "51ADB8DA02DD"
 										pos (1133,974)
 										positionBySuperclass FALSE
@@ -6653,8 +6765,8 @@
 										pctDist 0.151874
 										height 73)
 									positionBySuperclass FALSE
-									client @426
-									supplier @401
+									client @434
+									supplier @409
 									vertices (list Points
 										(1205,998)
 										(1211,861))
@@ -6664,12 +6776,12 @@
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "51AB488702A2"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @470
+								(object CapsulePerimeterVw "Structure" @478
 									quid "51AB488702A4"
 									pos (840,615)
 									quidu "51AB4887029D"
 									boundIcons (list boundIconsList
-										(object PortVw ":Structure:Roomba" @471
+										(object PortVw ":Structure:Roomba" @479
 											quid "51AB4A990167"
 											pos (578,96)
 											quidu "51AB4A9901B5"
@@ -6679,7 +6791,7 @@
 												nlines 2
 												max_width 288
 												label "Roomba"))))
-								(object PortVw ":Structure:timer" @472
+								(object PortVw ":Structure:timer" @480
 									quid "51ADB8540328"
 									pos (306,138)
 									quidu "51ADB853012A"
@@ -6732,11 +6844,11 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "519B588C0156"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @473
+								(object StateView "Perimeter" "TOP" @481
 									quid "519B588C0158"
 									pos (840,615)
 									quidu "519B588C0153")
-								(object StateView "StartState" "Initial" @474
+								(object StateView "StartState" "Initial" @482
 									quid "519B588C0159"
 									pos (180,180)
 									quidu "519B588C0154"))
@@ -6799,15 +6911,19 @@
 									(object Signal "doSend"
 										quid "51ADD3890322"
 										dataType  "Logical View::Serial::byteArray"
-										quidu "519230B50055"))))
+										quidu "519230B50055")
+									(object Signal "setMotors"
+										quid "51B717FA02C6"
+										dataType  "Logical View::Roomba::clsRoomba::clsMotors"
+										quidu "51A478DB03AD"))))
 						statediagram (object State_Diagram "State Diagram"
 							quid "51AB493C03C0"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @475
+								(object StateView "Perimeter" "TOP" @483
 									quid "51AB493C03C2"
 									pos (840,615)
 									quidu "51AB493C03BD")
-								(object StateView "StartState" "Initial" @476
+								(object StateView "StartState" "Initial" @484
 									quid "51AB493C03C3"
 									pos (180,180)
 									quidu "51AB493C03BE"))
@@ -6861,7 +6977,7 @@
 										name "AttributeKind"
 										value ("AttributeKindSet" 1)))
 								quid "519225C500D1"
-								initv "3"
+								initv "9"
 								type "int"
 								scope "Classifier"
 								visibility "Public")
@@ -7206,15 +7322,15 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "519224D302D6"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @477
+								(object StateView "Perimeter" "TOP" @485
 									quid "519224D302D8"
 									pos (840,615)
 									quidu "519224D302D3")
-								(object StateView "StartState" "Initial" @478
+								(object StateView "StartState" "Initial" @486
 									quid "519224D302D9"
 									pos (180,180)
 									quidu "519224D302D4")
-								(object StateView "Normal" "ready" @479
+								(object StateView "Normal" "ready" @487
 									quid "5192288701C3"
 									pos (898,641)
 									quidu "51922887020B"
@@ -7226,61 +7342,61 @@
 										max_width 81)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:ready:J5192289A0092" @480
+										(object JuncPtVw ":TOP:ready:J5192289A0092" @488
 											quid "5192289A0096"
 											pos (657,416)
 											quidu "5192289A0092"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J51922F8C025B" @481
+										(object JuncPtVw ":TOP:ready:J51922F8C025B" @489
 											quid "51922F8C025F"
 											pos (1236,555)
 											quidu "51922F8C025B"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J51922F8C0260" @482
+										(object JuncPtVw ":TOP:ready:J51922F8C0260" @490
 											quid "51922F8C0264"
 											pos (1236,703)
 											quidu "51922F8C0260"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J5193582D0135" @483
+										(object JuncPtVw ":TOP:ready:J5193582D0135" @491
 											quid "5193582D0140"
 											pos (1040,865)
 											quidu "5193582D0135"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J5193582D0141" @484
+										(object JuncPtVw ":TOP:ready:J5193582D0141" @492
 											quid "5193582D0145"
 											pos (891,865)
 											quidu "5193582D0141"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J519B511B0342" @485
+										(object JuncPtVw ":TOP:ready:J519B511B0342" @493
 											quid "519B511B0346"
 											pos (842,416)
 											quidu "519B511B0342"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J519B511B0347" @486
+										(object JuncPtVw ":TOP:ready:J519B511B0347" @494
 											quid "519B511B034B"
 											pos (979,416)
 											quidu "519B511B0347"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J519B513C00E7" @487
+										(object JuncPtVw ":TOP:ready:J519B513C00E7" @495
 											quid "519B513C00EB"
 											pos (560,766)
 											quidu "519B513C00E7"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J519B513C00EC" @488
+										(object JuncPtVw ":TOP:ready:J519B513C00EC" @496
 											quid "519B513C00F0"
 											pos (560,623)
 											quidu "519B513C00EC"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J51AC8CD800D7" @489
+										(object JuncPtVw ":TOP:ready:J51AC8CD800D7" @497
 											quid "51AC8CD800DB"
 											pos (1125,416)
 											quidu "51AC8CD800D7"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:ready:J51AC8CD800DC" @490
+										(object JuncPtVw ":TOP:ready:J51AC8CD800DC" @498
 											quid "51AC8CD800E0"
 											pos (1201,435)
 											quidu "51AC8CD800DC"
@@ -7288,147 +7404,147 @@
 									statediagram (object State_Diagram ""
 										quid "5192288F0089"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "ready" @491
+											(object StateView "Perimeter" "ready" @499
 												quid "5192288F008B"
 												pos (840,615)
 												quidu "51922887020B"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:ready:J5192289A0092" @492
+													(object JuncPtVw ":TOP:ready:J5192289A0092" @500
 														quid "5192289A0093"
 														pos (330,96)
 														quidu "5192289A0092"
-														juncPtIcon (object JuncPtIcon @493
+														juncPtIcon (object JuncPtIcon @501
 															quid "5192289A0094"
 															pos (330,186)
 															label (object ItemLabel
 																quid "5192289A0095"
 																pos (370,156))))
-													(object JuncPtVw ":TOP:ready:J51922F8C025B" @494
+													(object JuncPtVw ":TOP:ready:J51922F8C025B" @502
 														quid "51922F8C025C"
 														pos (1584,416)
 														quidu "51922F8C025B"
-														juncPtIcon (object JuncPtIcon @495
+														juncPtIcon (object JuncPtIcon @503
 															quid "51922F8C025D"
 															pos (1494,416)
 															label (object ItemLabel
 																quid "51922F8C025E"
 																pos (1524,456))))
-													(object JuncPtVw ":TOP:ready:J51922F8C0260" @496
+													(object JuncPtVw ":TOP:ready:J51922F8C0260" @504
 														quid "51922F8C0261"
 														pos (1584,762)
 														quidu "51922F8C0260"
-														juncPtIcon (object JuncPtIcon @497
+														juncPtIcon (object JuncPtIcon @505
 															quid "51922F8C0262"
 															pos (1494,762)
 															label (object ItemLabel
 																quid "51922F8C0263"
 																pos (1524,802))))
-													(object JuncPtVw ":TOP:ready:J5193582D0135" @498
+													(object JuncPtVw ":TOP:ready:J5193582D0135" @506
 														quid "5193582D013D"
 														pos (1155,1134)
 														quidu "5193582D0135"
-														juncPtIcon (object JuncPtIcon @499
+														juncPtIcon (object JuncPtIcon @507
 															quid "5193582D013E"
 															pos (1155,1044)
 															label (object ItemLabel
 																quid "5193582D013F"
 																pos (1195,1074))))
-													(object JuncPtVw ":TOP:ready:J5193582D0141" @500
+													(object JuncPtVw ":TOP:ready:J5193582D0141" @508
 														quid "5193582D0142"
 														pos (825,1134)
 														quidu "5193582D0141"
-														juncPtIcon (object JuncPtIcon @501
+														juncPtIcon (object JuncPtIcon @509
 															quid "5193582D0143"
 															pos (825,1044)
 															label (object ItemLabel
 																quid "5193582D0144"
 																pos (865,1074))))
-													(object JuncPtVw ":TOP:ready:J519B511B0342" @502
+													(object JuncPtVw ":TOP:ready:J519B511B0342" @510
 														quid "519B511B0343"
 														pos (690,96)
 														quidu "519B511B0342"
-														juncPtIcon (object JuncPtIcon @503
+														juncPtIcon (object JuncPtIcon @511
 															quid "519B511B0344"
 															pos (690,186)
 															label (object ItemLabel
 																quid "519B511B0345"
 																pos (730,156))))
-													(object JuncPtVw ":TOP:ready:J519B511B0347" @504
+													(object JuncPtVw ":TOP:ready:J519B511B0347" @512
 														quid "519B511B0348"
 														pos (1020,96)
 														quidu "519B511B0347"
-														juncPtIcon (object JuncPtIcon @505
+														juncPtIcon (object JuncPtIcon @513
 															quid "519B511B0349"
 															pos (1020,186)
 															label (object ItemLabel
 																quid "519B511B034A"
 																pos (1060,156))))
-													(object JuncPtVw ":TOP:ready:J519B513C00E7" @506
+													(object JuncPtVw ":TOP:ready:J519B513C00E7" @514
 														quid "519B513C00E8"
 														pos (96,909)
 														quidu "519B513C00E7"
-														juncPtIcon (object JuncPtIcon @507
+														juncPtIcon (object JuncPtIcon @515
 															quid "519B513C00E9"
 															pos (186,909)
 															label (object ItemLabel
 																quid "519B513C00EA"
 																pos (156,949))))
-													(object JuncPtVw ":TOP:ready:J519B513C00EC" @508
+													(object JuncPtVw ":TOP:ready:J519B513C00EC" @516
 														quid "519B513C00ED"
 														pos (96,573)
 														quidu "519B513C00EC"
-														juncPtIcon (object JuncPtIcon @509
+														juncPtIcon (object JuncPtIcon @517
 															quid "519B513C00EE"
 															pos (186,573)
 															label (object ItemLabel
 																quid "519B513C00EF"
 																pos (156,613))))
-													(object JuncPtVw ":TOP:ready:J51AC8CD800D7" @510
+													(object JuncPtVw ":TOP:ready:J51AC8CD800D7" @518
 														quid "51AC8CD800D8"
 														pos (1350,96)
 														quidu "51AC8CD800D7"
-														juncPtIcon (object JuncPtIcon @511
+														juncPtIcon (object JuncPtIcon @519
 															quid "51AC8CD800D9"
 															pos (1350,186)
 															label (object ItemLabel
 																quid "51AC8CD800DA"
 																pos (1390,156))))
-													(object JuncPtVw ":TOP:ready:J51AC8CD800DC" @512
+													(object JuncPtVw ":TOP:ready:J51AC8CD800DC" @520
 														quid "51AC8CD800DD"
 														pos (1511,101)
 														quidu "51AC8CD800DC"
-														juncPtIcon (object JuncPtIcon @513
+														juncPtIcon (object JuncPtIcon @521
 															quid "51AC8CD800DE"
 															pos (1484,187)
 															label (object ItemLabel
 																quid "51AC8CD800DF"
 																pos (1524,157))))))
-											(object StateView "StartState" "Initial" @514
+											(object StateView "StartState" "Initial" @522
 												quid "5192288F008C"
 												pos (180,180)
 												quidu "519228870212"))
 										filterFlags 1))
-								(object TransView ":TOP:Initial:Initial" @515
+								(object TransView ":TOP:Initial:Initial" @523
 									quid "519228990152"
 									uses_fill_color FALSE
 									quidu "5192289A0091"
-									label (object SegLabel @516
+									label (object SegLabel @524
 										quid "5192289A0097"
 										pos (448,263)
 										max_width 113
 										pctDist 0.504476
 										height 44)
-									client @478
-									supplier @480
+									client @486
+									supplier @488
 									vertices (list Points
 										(205,192)
 										(648,411))
 									line_style 6144)
-								(object TransView ":TOP:ready:J51922F8C025B:commandReceived" @517
+								(object TransView ":TOP:ready:J51922F8C025B:commandReceived" @525
 									quid "51922F8C0259"
 									uses_fill_color FALSE
 									quidu "51922F8C025A"
-									label (object SegLabel @518
+									label (object SegLabel @526
 										quid "51922F8C0265"
 										pos (1381,726)
 										positionBySuperclass FALSE
@@ -7436,55 +7552,55 @@
 										pctDist 1.155405
 										height 70)
 									positionBySuperclass FALSE
-									client @481
-									supplier @482
+									client @489
+									supplier @490
 									vertices (list Points
 										(1244,555)
 										(1311,555)
 										(1311,703)
 										(1244,703))
 									line_style 6144)
-								(object TransView ":TOP:ready:J5193582D0135:sendCommand" @519
+								(object TransView ":TOP:ready:J5193582D0135:sendCommand" @527
 									quid "5193582D0133"
 									uses_fill_color FALSE
 									quidu "5193582D0134"
-									label (object SegLabel @520
+									label (object SegLabel @528
 										quid "5193582D0146"
 										pos (966,985)
 										max_width 175
 										pctDist 0.498233
 										height 45)
-									client @483
-									supplier @484
+									client @491
+									supplier @492
 									vertices (list Points
 										(1040,873)
 										(1040,940)
 										(891,940)
 										(891,873))
 									line_style 6144)
-								(object TransView ":TOP:ready:J519B511B0342:comOpened" @521
+								(object TransView ":TOP:ready:J519B511B0342:comOpened" @529
 									quid "519B511B0340"
 									uses_fill_color FALSE
 									quidu "519B511B0341"
-									label (object SegLabel @522
+									label (object SegLabel @530
 										quid "519B511B034C"
 										pos (911,297)
 										max_width 144
 										pctDist 0.501873
 										height 44)
-									client @485
-									supplier @486
+									client @493
+									supplier @494
 									vertices (list Points
 										(842,406)
 										(842,341)
 										(979,341)
 										(979,406))
 									line_style 6144)
-								(object TransView ":TOP:ready:J519B513C00E7:comError" @523
+								(object TransView ":TOP:ready:J519B513C00E7:comError" @531
 									quid "519B513C00E5"
 									uses_fill_color FALSE
 									quidu "519B513C00E6"
-									label (object SegLabel @524
+									label (object SegLabel @532
 										quid "519B513C00F1"
 										pos (385,688)
 										positionBySuperclass FALSE
@@ -7492,26 +7608,26 @@
 										pctDist 0.523810
 										height 100)
 									positionBySuperclass FALSE
-									client @487
-									supplier @488
+									client @495
+									supplier @496
 									vertices (list Points
 										(550,766)
 										(485,766)
 										(485,623)
 										(550,623))
 									line_style 6144)
-								(object TransView ":TOP:ready:J51AC8CD800D7:setCommandLength" @525
+								(object TransView ":TOP:ready:J51AC8CD800D7:setCommandLength" @533
 									quid "51AC8CD800D5"
 									uses_fill_color FALSE
 									quidu "51AC8CD800D6"
-									label (object SegLabel @526
+									label (object SegLabel @534
 										quid "51AC8CD800E1"
 										pos (1236,337)
 										max_width 256
 										pctDist 0.502104
 										height 44)
-									client @489
-									supplier @490
+									client @497
+									supplier @498
 									vertices (list Points
 										(1130,409)
 										(1178,363)
@@ -7523,12 +7639,12 @@
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "519224D302DA"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @527
+								(object CapsulePerimeterVw "Structure" @535
 									quid "519224D302DC"
 									pos (840,615)
 									quidu "519224D302D5"
 									boundIcons (list boundIconsList
-										(object PortVw ":Structure:externalSerial" @528
+										(object PortVw ":Structure:externalSerial" @536
 											quid "51922F6C039F"
 											pos (1060,96)
 											quidu "51922F6D000E"
@@ -7540,7 +7656,7 @@
 												max_width 288
 												label "externalSerial")
 											positionBySuperclass FALSE)))
-								(object CapsuleRoleVw ":Structure:serialCommunicationInstance" @529
+								(object CapsuleRoleVw ":Structure:serialCommunicationInstance" @537
 									quid "5192273A01CA"
 									pos (498,842)
 									quidu "5192273B0109"
@@ -7554,7 +7670,7 @@
 										label "serialCommunicationInstance")
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ConnectionPtVw ":Structure:serialCommunicationInstance:serialPort" @530
+										(object ConnectionPtVw ":Structure:serialCommunicationInstance:serialPort" @538
 											quid "5192273B010B"
 											pos (804,832)
 											label (object ItemLabel
@@ -7565,7 +7681,7 @@
 												max_width 319
 												label "serialPort")
 											positionBySuperclass FALSE)))
-								(object CapsuleRoleVw ":Structure:serialTranslateCapsuleR1" @531
+								(object CapsuleRoleVw ":Structure:serialTranslateCapsuleR1" @539
 									quid "51922E8300B5"
 									pos (1262,826)
 									quidu "51922E83032C"
@@ -7579,7 +7695,7 @@
 										label "serialTranslateCapsuleR1")
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ConnectionPtVw ":Structure:serialTranslateCapsuleR1:serialRaw" @532
+										(object ConnectionPtVw ":Structure:serialTranslateCapsuleR1:serialRaw" @540
 											quid "51922E83032F"
 											pos (992,832)
 											label (object ItemLabel
@@ -7590,7 +7706,7 @@
 												max_width 338
 												label "serialRaw")
 											positionBySuperclass FALSE)
-										(object ConnectionPtVw ":Structure:serialTranslateCapsuleR1:serialOut" @533
+										(object ConnectionPtVw ":Structure:serialTranslateCapsuleR1:serialOut" @541
 											quid "51922F10038E"
 											pos (1012,736)
 											label (object ItemLabel
@@ -7601,7 +7717,7 @@
 												max_width 272
 												label "serialOut")
 											positionBySuperclass FALSE)))
-								(object PortVw ":Structure:frame" @534
+								(object PortVw ":Structure:frame" @542
 									quid "519228730353"
 									pos (308,308)
 									quidu "51922872027C"
@@ -7613,7 +7729,7 @@
 										max_width 144
 										label "frame")
 									positionBySuperclass FALSE)
-								(object PortVw ":Structure:internalSerial" @535
+								(object PortVw ":Structure:internalSerial" @543
 									quid "51922F0602E7"
 									pos (1012,468)
 									quidu "51922F060327"
@@ -7625,29 +7741,29 @@
 										max_width 288
 										label "internalSerial")
 									positionBySuperclass FALSE)
-								(object ConnectorVw ":Structure:C51922E8D0057" @536
+								(object ConnectorVw ":Structure:C51922E8D0057" @544
 									quid "51922E8B02F2"
 									stereotype TRUE
 									uses_fill_color FALSE
 									quidu "51922E8D0057"
-									label (object SegLabel @537
+									label (object SegLabel @545
 										quid "51922E8D0059"
 										pos (901,788)
 										max_width 209
 										pctDist 0.524096
 										height 44)
-									client @530
-									supplier @532
+									client @538
+									supplier @540
 									vertices (list Points
 										(814,832)
 										(980,832))
 									line_style 6144)
-								(object ConnectorVw ":Structure:C51922F590369" @538
+								(object ConnectorVw ":Structure:C51922F590369" @546
 									quid "51922F5900E1"
 									stereotype TRUE
 									uses_fill_color FALSE
 									quidu "51922F590369"
-									label (object SegLabel @539
+									label (object SegLabel @547
 										quid "51922F59036C"
 										pos (968,616)
 										positionBySuperclass FALSE
@@ -7655,8 +7771,8 @@
 										pctDist 0.490909
 										height 44)
 									positionBySuperclass FALSE
-									client @533
-									supplier @535
+									client @541
+									supplier @543
 									vertices (list Points
 										(1012,724)
 										(1012,504))
@@ -7878,15 +7994,15 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "519224DC0235"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @540
+								(object StateView "Perimeter" "TOP" @548
 									quid "519224DC0237"
 									pos (840,615)
 									quidu "519224DC0232")
-								(object StateView "StartState" "Initial" @541
+								(object StateView "StartState" "Initial" @549
 									quid "519224DC0238"
 									pos (180,180)
 									quidu "519224DC0233")
-								(object StateView "Normal" "Ready" @542
+								(object StateView "Normal" "Ready" @550
 									quid "519224F60313"
 									pos (1144,778)
 									quidu "519224F6034A"
@@ -7896,17 +8012,17 @@
 										max_width 81)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:Ready:J519C85FA02CA" @543
+										(object JuncPtVw ":TOP:Ready:J519C85FA02CA" @551
 											quid "519C85FA02CE"
 											pos (1259,705)
 											quidu "519C85FA02CA"
 											positionBySuperclass FALSE)
-										(object JuncPtVw ":TOP:Ready:J519C863D033F" @544
+										(object JuncPtVw ":TOP:Ready:J519C863D033F" @552
 											quid "519C863D0343"
 											pos (1119,687)
 											quidu "519C863D033F"
 											positionBySuperclass FALSE)
-										(object JuncPtVw ":TOP:Ready:J51AEFD8B01C1" @545
+										(object JuncPtVw ":TOP:Ready:J51AEFD8B01C1" @553
 											quid "51AEFD8B01C5"
 											pos (1024,739)
 											quidu "51AEFD8B01C1"
@@ -7915,49 +8031,49 @@
 									statediagram (object State_Diagram ""
 										quid "5192254802C7"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "Ready" @546
+											(object StateView "Perimeter" "Ready" @554
 												quid "5192254802C9"
 												pos (840,615)
 												quidu "519224F6034A"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:Ready:J519C85FA02CA" @547
+													(object JuncPtVw ":TOP:Ready:J519C85FA02CA" @555
 														quid "519C85FA02CB"
 														pos (1579,168)
 														quidu "519C85FA02CA"
-														juncPtIcon (object JuncPtIcon @548
+														juncPtIcon (object JuncPtIcon @556
 															quid "519C85FA02CC"
 															pos (1494,196)
 															label (object ItemLabel
 																quid "519C85FA02CD"
 																pos (1524,236)
 																max_width 81)))
-													(object JuncPtVw ":TOP:Ready:J519C863D033F" @549
+													(object JuncPtVw ":TOP:Ready:J519C863D033F" @557
 														quid "519C863D0340"
 														pos (690,96)
 														quidu "519C863D033F"
-														juncPtIcon (object JuncPtIcon @550
+														juncPtIcon (object JuncPtIcon @558
 															quid "519C863D0341"
 															pos (690,186)
 															label (object ItemLabel
 																quid "519C863D0342"
 																pos (730,156)
 																max_width 63)))
-													(object JuncPtVw ":TOP:Ready:J51AEFD8B01C1" @551
+													(object JuncPtVw ":TOP:Ready:J51AEFD8B01C1" @559
 														quid "51AEFD8B01C2"
 														pos (96,384)
 														quidu "51AEFD8B01C1"
-														juncPtIcon (object JuncPtIcon @552
+														juncPtIcon (object JuncPtIcon @560
 															quid "51AEFD8B01C3"
 															pos (186,384)
 															label (object ItemLabel
 																quid "51AEFD8B01C4"
 																pos (156,424))))))
-											(object StateView "StartState" "Initial" @553
+											(object StateView "StartState" "Initial" @561
 												quid "5192254802CA"
 												pos (180,180)
 												quidu "519224F60355"))
 										filterFlags 1))
-								(object ChoicePtVw "openPort" @554
+								(object ChoicePtVw "openPort" @562
 									quid "5192252E01C0"
 									pos (423,391)
 									quidu "5192252E0201"
@@ -7968,21 +8084,21 @@
 										max_width 128)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ChoicePtPtVw "false" @555
+										(object ChoicePtPtVw "false" @563
 											quid "5192252E0205"
 											pos (385,392)
 											positionBySuperclass FALSE)
-										(object ChoicePtPtVw "true" @556
+										(object ChoicePtPtVw "true" @564
 											quid "5192252E0203"
 											pos (461,390)
 											positionBySuperclass FALSE)
-										(object ChoicePtPtVw "in" @557
+										(object ChoicePtPtVw "in" @565
 											quid "5192252E0202"
 											pos (422,353)
 											positionBySuperclass FALSE))
 									angle 1.535890
 									reversed TRUE)
-								(object ChoicePtVw "ClosePort" @558
+								(object ChoicePtVw "ClosePort" @566
 									quid "519225880231"
 									pos (1287,999)
 									quidu "519225880270"
@@ -7993,23 +8109,23 @@
 										max_width 144)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object ChoicePtPtVw "false" @559
+										(object ChoicePtPtVw "false" @567
 											quid "519225880274"
 											pos (1325,998)
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object ChoicePtPtVw "true" @560
+										(object ChoicePtPtVw "true" @568
 											quid "519225880272"
 											pos (1249,999)
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object ChoicePtPtVw "in" @561
+										(object ChoicePtPtVw "in" @569
 											quid "519225880271"
 											pos (1287,961)
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE))
 									angle 1.535890)
-								(object StateView "Normal" "Error" @562
+								(object StateView "Normal" "Error" @570
 									quid "519C85D700B0"
 									pos (296,730)
 									quidu "519C85D70114"
@@ -8019,7 +8135,7 @@
 										max_width 81)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:Error:J519C85DC01BC" @563
+										(object JuncPtVw ":TOP:Error:J519C85DC01BC" @571
 											quid "519C85DC01C4"
 											pos (319,639)
 											quidu "519C85DC01BC"
@@ -8028,27 +8144,27 @@
 									statediagram (object State_Diagram ""
 										quid "519C85DC01BD"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "Error" @564
+											(object StateView "Perimeter" "Error" @572
 												quid "519C85DC01BF"
 												pos (840,615)
 												quidu "519C85D70114"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:Error:J519C85DC01BC" @565
+													(object JuncPtVw ":TOP:Error:J519C85DC01BC" @573
 														quid "519C85DC01C1"
 														pos (1155,96)
 														quidu "519C85DC01BC"
-														juncPtIcon (object JuncPtIcon @566
+														juncPtIcon (object JuncPtIcon @574
 															quid "519C85DC01C2"
 															pos (1155,186)
 															label (object ItemLabel
 																quid "519C85DC01C3"
 																pos (1195,156))))))
-											(object StateView "StartState" "Initial" @567
+											(object StateView "StartState" "Initial" @575
 												quid "519C85DC01C0"
 												pos (180,180)
 												quidu "519C85D7011E"))
 										filterFlags 1))
-								(object StateView "Normal" "pollData" @568
+								(object StateView "Normal" "pollData" @576
 									quid "519C893802B5"
 									pos (1176,330)
 									quidu "519C893802FB"
@@ -8058,13 +8174,13 @@
 										max_width 128)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:pollData:J519C89550142" @569
+										(object JuncPtVw ":TOP:pollData:J519C89550142" @577
 											quid "519C89550146"
 											pos (1167,420)
 											quidu "519C89550142"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:pollData:J519C895A03AA" @570
+										(object JuncPtVw ":TOP:pollData:J519C895A03AA" @578
 											quid "519C895A03AE"
 											pos (1231,420)
 											quidu "519C895A03AA"
@@ -8072,55 +8188,55 @@
 									statediagram (object State_Diagram ""
 										quid "519C89460390"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "pollData" @571
+											(object StateView "Perimeter" "pollData" @579
 												quid "519C89460392"
 												pos (840,615)
 												quidu "519C893802FB"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:pollData:J519C89550142" @572
+													(object JuncPtVw ":TOP:pollData:J519C89550142" @580
 														quid "519C89550143"
 														pos (688,1134)
 														quidu "519C89550142"
-														juncPtIcon (object JuncPtIcon @573
+														juncPtIcon (object JuncPtIcon @581
 															quid "519C89550144"
 															pos (688,1044)
 															label (object ItemLabel
 																quid "519C89550145"
 																pos (728,1074)
 																max_width 63)))
-													(object JuncPtVw ":TOP:pollData:J519C895A03AA" @574
+													(object JuncPtVw ":TOP:pollData:J519C895A03AA" @582
 														quid "519C895A03AB"
 														pos (869,1134)
 														quidu "519C895A03AA"
-														juncPtIcon (object JuncPtIcon @575
+														juncPtIcon (object JuncPtIcon @583
 															quid "519C895A03AC"
 															pos (869,1044)
 															label (object ItemLabel
 																quid "519C895A03AD"
 																pos (909,1074)
 																max_width 81)))))
-											(object StateView "StartState" "Initial" @576
+											(object StateView "StartState" "Initial" @584
 												quid "519C89460393"
 												pos (180,180)
 												quidu "519C89380305")
-											(object TransView ":TOP:pollData:J519C895A03AA:timer" @577
+											(object TransView ":TOP:pollData:J519C895A03AA:timer" @585
 												quid "519C897701BF"
 												uses_fill_color FALSE
 												quidu "519C89780025"
-												label (object SegLabel @578
+												label (object SegLabel @586
 													quid "519C8978002F"
 													pos (778,1044)
 													max_width 81
 													pctDist 0.495868
 													height 0)
-												client @575
-												supplier @573
+												client @583
+												supplier @581
 												vertices (list Points
 													(838,1044)
 													(717,1044))
 												line_style 6144))
 										filterFlags 1))
-								(object StateView "Normal" "SetBaud" @579
+								(object StateView "Normal" "SetBaud" @587
 									quid "51AEFD6D0363"
 									pos (696,618)
 									quidu "51AEFD6D03B1"
@@ -8130,12 +8246,12 @@
 										max_width 113)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:SetBaud:J51AEFD830294" @580
+										(object JuncPtVw ":TOP:SetBaud:J51AEFD830294" @588
 											quid "51AEFD830298"
 											pos (623,528)
 											quidu "51AEFD830294"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:SetBaud:J51AEFD8B01BC" @581
+										(object JuncPtVw ":TOP:SetBaud:J51AEFD8B01BC" @589
 											quid "51AEFD8B01C0"
 											pos (816,654)
 											quidu "51AEFD8B01BC"
@@ -8144,77 +8260,77 @@
 									statediagram (object State_Diagram ""
 										quid "51AEFD6F036F"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "SetBaud" @582
+											(object StateView "Perimeter" "SetBaud" @590
 												quid "51AEFD6F0371"
 												pos (840,615)
 												quidu "51AEFD6D03B1"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:SetBaud:J51AEFD830294" @583
+													(object JuncPtVw ":TOP:SetBaud:J51AEFD830294" @591
 														quid "51AEFD830295"
 														pos (647,96)
 														quidu "51AEFD830294"
-														juncPtIcon (object JuncPtIcon @584
+														juncPtIcon (object JuncPtIcon @592
 															quid "51AEFD830296"
 															pos (647,186)
 															label (object ItemLabel
 																quid "51AEFD830297"
 																pos (687,156)
 																max_width 63)))
-													(object JuncPtVw ":TOP:SetBaud:J51AEFD8B01BC" @585
+													(object JuncPtVw ":TOP:SetBaud:J51AEFD8B01BC" @593
 														quid "51AEFD8B01BD"
 														pos (1584,838)
 														quidu "51AEFD8B01BC"
-														juncPtIcon (object JuncPtIcon @586
+														juncPtIcon (object JuncPtIcon @594
 															quid "51AEFD8B01BE"
 															pos (1494,838)
 															label (object ItemLabel
 																quid "51AEFD8B01BF"
 																pos (1524,878)
 																max_width 159)))))
-											(object StateView "StartState" "Initial" @587
+											(object StateView "StartState" "Initial" @595
 												quid "51AEFD6F0372"
 												pos (180,180)
 												quidu "51AEFD6D03B3")
-											(object TransView ":TOP:SetBaud:J51AEFD830294:True" @588
+											(object TransView ":TOP:SetBaud:J51AEFD830294:True" @596
 												quid "51AEFD9E01FC"
 												uses_fill_color FALSE
 												quidu "51AEFD9F016E"
-												label (object SegLabel @589
+												label (object SegLabel @597
 													quid "51AEFD9F016F"
 													pos (1069,511)
 													max_width 63
 													pctDist 0.499608
 													height 0
 													orientation 1)
-												client @584
-												supplier @586
+												client @592
+												supplier @594
 												vertices (list Points
 													(669,203)
 													(1470,819))
 												line_style 6144))
 										filterFlags 1))
-								(object TransView ":TOP:Initial:Initial" @590
+								(object TransView ":TOP:Initial:Initial" @598
 									quid "5192253F02DD"
 									uses_fill_color FALSE
 									quidu "5192254101A1"
-									label (object SegLabel @591
+									label (object SegLabel @599
 										quid "5192254101A2"
 										pos (310,272)
 										max_width 113
 										pctDist 0.501105
 										height 0
 										orientation 1)
-									client @541
-									supplier @557
+									client @549
+									supplier @565
 									vertices (list Points
 										(203,195)
 										(417,348))
 									line_style 6144)
-								(object TransView ":TOP:openPort:False" @592
+								(object TransView ":TOP:openPort:False" @600
 									quid "51922548005E"
 									uses_fill_color FALSE
 									quidu "5192254802C5"
-									label (object SegLabel @593
+									label (object SegLabel @601
 										quid "5192254802CF"
 										pos (380,478)
 										positionBySuperclass FALSE
@@ -8222,17 +8338,17 @@
 										pctDist 0.332966
 										height 19)
 									positionBySuperclass FALSE
-									client @555
-									supplier @563
+									client @563
+									supplier @571
 									vertices (list Points
 										(382,395)
 										(321,630))
 									line_style 6144)
-								(object TransView ":TOP:pollData:J519C89550142:True" @594
+								(object TransView ":TOP:pollData:J519C89550142:True" @602
 									quid "519225790302"
 									uses_fill_color FALSE
 									quidu "519225790303"
-									label (object SegLabel @595
+									label (object SegLabel @603
 										quid "519225790305"
 										pos (1111,515)
 										positionBySuperclass FALSE
@@ -8241,17 +8357,17 @@
 										height 38
 										orientation 1)
 									positionBySuperclass FALSE
-									client @569
-									supplier @544
+									client @577
+									supplier @552
 									vertices (list Points
 										(1165,428)
 										(1120,678))
 									line_style 6144)
-								(object TransView ":TOP:Ready:J519C85FA02CA:timer" @596
+								(object TransView ":TOP:Ready:J519C85FA02CA:timer" @604
 									quid "519C85F80306"
 									uses_fill_color FALSE
 									quidu "519C85FA02C0"
-									label (object SegLabel @597
+									label (object SegLabel @605
 										quid "519C85FA02CF"
 										pos (1274,602)
 										positionBySuperclass FALSE
@@ -8260,17 +8376,17 @@
 										height 26
 										orientation 1)
 									positionBySuperclass FALSE
-									client @543
-									supplier @570
+									client @551
+									supplier @578
 									vertices (list Points
 										(1257,695)
 										(1231,428))
 									line_style 6144)
-								(object TransView ":TOP:openPort:True" @598
+								(object TransView ":TOP:openPort:True" @606
 									quid "519225710300"
 									uses_fill_color FALSE
 									quidu "51922573004C"
-									label (object SegLabel @599
+									label (object SegLabel @607
 										quid "51922573004D"
 										pos (558,433)
 										positionBySuperclass FALSE
@@ -8278,17 +8394,17 @@
 										pctDist 0.490695
 										height 30)
 									positionBySuperclass FALSE
-									client @556
-									supplier @580
+									client @564
+									supplier @588
 									vertices (list Points
 										(464,393)
 										(615,522))
 									line_style 6144)
-								(object TransView ":TOP:SetBaud:J51AEFD8B01BC:ReallyDone" @600
+								(object TransView ":TOP:SetBaud:J51AEFD8B01BC:ReallyDone" @608
 									quid "51AEFD8A0279"
 									uses_fill_color FALSE
 									quidu "51AEFD8B01AD"
-									label (object SegLabel @601
+									label (object SegLabel @609
 										quid "51AEFD8B01C6"
 										pos (939,649)
 										positionBySuperclass FALSE
@@ -8296,8 +8412,8 @@
 										pctDist 0.503863
 										height 51)
 									positionBySuperclass FALSE
-									client @581
-									supplier @545
+									client @589
+									supplier @553
 									vertices (list Points
 										(823,656)
 										(1015,735))
@@ -8307,12 +8423,12 @@
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "519224DC0239"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @602
+								(object CapsulePerimeterVw "Structure" @610
 									quid "519224DC023B"
 									pos (840,615)
 									quidu "519224DC0234"
 									boundIcons (list boundIconsList
-										(object PortVw ":Structure:serialPort" @603
+										(object PortVw ":Structure:serialPort" @611
 											quid "5192270202B3"
 											pos (1584,564)
 											quidu "5192270202FA"
@@ -8324,7 +8440,7 @@
 												max_width 319
 												label "serialPort")
 											positionBySuperclass FALSE)))
-								(object PortVw ":Structure:timer" @604
+								(object PortVw ":Structure:timer" @612
 									quid "519C858E034B"
 									pos (578,478)
 									quidu "519C858E0391"
@@ -8587,15 +8703,15 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "51922E6202B4"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @605
+								(object StateView "Perimeter" "TOP" @613
 									quid "51922E6202B6"
 									pos (840,615)
 									quidu "51922E6202B1")
-								(object StateView "StartState" "Initial" @606
+								(object StateView "StartState" "Initial" @614
 									quid "51922E6202B7"
 									pos (180,180)
 									quidu "51922E6202B2")
-								(object StateView "Normal" "S1" @607
+								(object StateView "Normal" "S1" @615
 									quid "519230830383"
 									pos (773,569)
 									quidu "5192308303BA"
@@ -8607,64 +8723,64 @@
 										max_width 31)
 									positionBySuperclass FALSE
 									boundIcons (list boundIconsList
-										(object JuncPtVw ":TOP:S1:J5192345201EF" @608
+										(object JuncPtVw ":TOP:S1:J5192345201EF" @616
 											quid "5192345201F7"
 											pos (528,442)
 											quidu "5192345201EF"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J519234560116" @609
+										(object JuncPtVw ":TOP:S1:J519234560116" @617
 											quid "51923456011A"
 											pos (1018,460)
 											quidu "519234560116"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J51923456011B" @610
+										(object JuncPtVw ":TOP:S1:J51923456011B" @618
 											quid "51923456011F"
 											pos (1018,661)
 											quidu "51923456011B"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J5193551C029A" @611
+										(object JuncPtVw ":TOP:S1:J5193551C029A" @619
 											quid "5193551C029E"
 											pos (837,769)
 											quidu "5193551C029A"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J5193551C029F" @612
+										(object JuncPtVw ":TOP:S1:J5193551C029F" @620
 											quid "5193551C02A3"
 											pos (651,769)
 											quidu "5193551C029F"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J519B507801FB" @613
+										(object JuncPtVw ":TOP:S1:J519B507801FB" @621
 											quid "519B507801FF"
 											pos (660,368)
 											quidu "519B507801FB"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J519B50780200" @614
+										(object JuncPtVw ":TOP:S1:J519B50780200" @622
 											quid "519B50780204"
 											pos (847,368)
 											quidu "519B50780200"
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J519B50B801E5" @615
+										(object JuncPtVw ":TOP:S1:J519B50B801E5" @623
 											quid "519B50B801E9"
 											pos (528,677)
 											quidu "519B50B801E5"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J519B50B801EA" @616
+										(object JuncPtVw ":TOP:S1:J519B50B801EA" @624
 											quid "519B50B801EE"
 											pos (528,480)
 											quidu "519B50B801EA"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J51AC8BCA02BB" @617
+										(object JuncPtVw ":TOP:S1:J51AC8BCA02BB" @625
 											quid "51AC8BCA02BF"
 											pos (1007,408)
 											quidu "51AC8BCA02BB"
 											positionBySuperclass FALSE
 											boundIconAutoAdjust TRUE)
-										(object JuncPtVw ":TOP:S1:J51AC8BD60208" @618
+										(object JuncPtVw ":TOP:S1:J51AC8BD60208" @626
 											quid "51AC8BD6020C"
 											pos (930,368)
 											quidu "51AC8BD60208"
@@ -8673,165 +8789,165 @@
 									statediagram (object State_Diagram ""
 										quid "5192345201F0"
 										items (list diagram_item_list
-											(object StateView "Perimeter" "S1" @619
+											(object StateView "Perimeter" "S1" @627
 												quid "5192345201F2"
 												pos (840,615)
 												quidu "5192308303BA"
 												boundIcons (list boundIconsList
-													(object JuncPtVw ":TOP:S1:J5192345201EF" @620
+													(object JuncPtVw ":TOP:S1:J5192345201EF" @628
 														quid "5192345201F4"
 														pos (96,237)
 														quidu "5192345201EF"
-														juncPtIcon (object JuncPtIcon @621
+														juncPtIcon (object JuncPtIcon @629
 															quid "5192345201F5"
 															pos (186,237)
 															label (object ItemLabel
 																quid "5192345201F6"
 																pos (156,277))))
-													(object JuncPtVw ":TOP:S1:J519234560116" @622
+													(object JuncPtVw ":TOP:S1:J519234560116" @630
 														quid "519234560117"
 														pos (1584,332)
 														quidu "519234560116"
-														juncPtIcon (object JuncPtIcon @623
+														juncPtIcon (object JuncPtIcon @631
 															quid "519234560118"
 															pos (1494,332)
 															label (object ItemLabel
 																quid "519234560119"
 																pos (1524,372))))
-													(object JuncPtVw ":TOP:S1:J51923456011B" @624
+													(object JuncPtVw ":TOP:S1:J51923456011B" @632
 														quid "51923456011C"
 														pos (1584,857)
 														quidu "51923456011B"
-														juncPtIcon (object JuncPtIcon @625
+														juncPtIcon (object JuncPtIcon @633
 															quid "51923456011D"
 															pos (1494,857)
 															label (object ItemLabel
 																quid "51923456011E"
 																pos (1524,897))))
-													(object JuncPtVw ":TOP:S1:J5193551C029A" @626
+													(object JuncPtVw ":TOP:S1:J5193551C029A" @634
 														quid "5193551C029B"
 														pos (1035,1134)
 														quidu "5193551C029A"
-														juncPtIcon (object JuncPtIcon @627
+														juncPtIcon (object JuncPtIcon @635
 															quid "5193551C029C"
 															pos (1035,1044)
 															label (object ItemLabel
 																quid "5193551C029D"
 																pos (1075,1074))))
-													(object JuncPtVw ":TOP:S1:J5193551C029F" @628
+													(object JuncPtVw ":TOP:S1:J5193551C029F" @636
 														quid "5193551C02A0"
 														pos (465,1134)
 														quidu "5193551C029F"
-														juncPtIcon (object JuncPtIcon @629
+														juncPtIcon (object JuncPtIcon @637
 															quid "5193551C02A1"
 															pos (465,1044)
 															label (object ItemLabel
 																quid "5193551C02A2"
 																pos (505,1074))))
-													(object JuncPtVw ":TOP:S1:J519B507801FB" @630
+													(object JuncPtVw ":TOP:S1:J519B507801FB" @638
 														quid "519B507801FC"
 														pos (510,96)
 														quidu "519B507801FB"
-														juncPtIcon (object JuncPtIcon @631
+														juncPtIcon (object JuncPtIcon @639
 															quid "519B507801FD"
 															pos (510,186)
 															label (object ItemLabel
 																quid "519B507801FE"
 																pos (550,156))))
-													(object JuncPtVw ":TOP:S1:J519B50780200" @632
+													(object JuncPtVw ":TOP:S1:J519B50780200" @640
 														quid "519B50780201"
 														pos (1065,96)
 														quidu "519B50780200"
-														juncPtIcon (object JuncPtIcon @633
+														juncPtIcon (object JuncPtIcon @641
 															quid "519B50780202"
 															pos (1065,186)
 															label (object ItemLabel
 																quid "519B50780203"
 																pos (1105,156))))
-													(object JuncPtVw ":TOP:S1:J519B50B801E5" @634
+													(object JuncPtVw ":TOP:S1:J519B50B801E5" @642
 														quid "519B50B801E6"
 														pos (96,899)
 														quidu "519B50B801E5"
-														juncPtIcon (object JuncPtIcon @635
+														juncPtIcon (object JuncPtIcon @643
 															quid "519B50B801E7"
 															pos (186,899)
 															label (object ItemLabel
 																quid "519B50B801E8"
 																pos (156,939))))
-													(object JuncPtVw ":TOP:S1:J519B50B801EA" @636
+													(object JuncPtVw ":TOP:S1:J519B50B801EA" @644
 														quid "519B50B801EB"
 														pos (96,384)
 														quidu "519B50B801EA"
-														juncPtIcon (object JuncPtIcon @637
+														juncPtIcon (object JuncPtIcon @645
 															quid "519B50B801EC"
 															pos (186,384)
 															label (object ItemLabel
 																quid "519B50B801ED"
 																pos (156,424))))
-													(object JuncPtVw ":TOP:S1:J51AC8BCA02BB" @638
+													(object JuncPtVw ":TOP:S1:J51AC8BCA02BB" @646
 														quid "51AC8BCA02BC"
 														pos (1584,195)
 														quidu "51AC8BCA02BB"
-														juncPtIcon (object JuncPtIcon @639
+														juncPtIcon (object JuncPtIcon @647
 															quid "51AC8BCA02BD"
 															pos (1494,200)
 															label (object ItemLabel
 																quid "51AC8BCA02BE"
 																pos (1524,240))))
-													(object JuncPtVw ":TOP:S1:J51AC8BD60208" @640
+													(object JuncPtVw ":TOP:S1:J51AC8BD60208" @648
 														quid "51AC8BD60209"
 														pos (1320,96)
 														quidu "51AC8BD60208"
-														juncPtIcon (object JuncPtIcon @641
+														juncPtIcon (object JuncPtIcon @649
 															quid "51AC8BD6020A"
 															pos (1320,186)
 															label (object ItemLabel
 																quid "51AC8BD6020B"
 																pos (1360,156))))))
-											(object StateView "StartState" "Initial" @642
+											(object StateView "StartState" "Initial" @650
 												quid "5192345201F3"
 												pos (180,180)
 												quidu "5192308303C2"))
 										filterFlags 1))
-								(object TransView ":TOP:Initial:Initial" @643
+								(object TransView ":TOP:Initial:Initial" @651
 									quid "519234510305"
 									uses_fill_color FALSE
 									quidu "5192345201EE"
-									label (object SegLabel @644
+									label (object SegLabel @652
 										quid "5192345201F8"
 										pos (384,280)
 										max_width 113
 										pctDist 0.491093
 										height 43)
-									client @606
-									supplier @608
+									client @614
+									supplier @616
 									vertices (list Points
 										(202,197)
 										(520,436))
 									line_style 6144)
-								(object TransView ":TOP:S1:J519B507801FB:comOpened" @645
+								(object TransView ":TOP:S1:J519B507801FB:comOpened" @653
 									quid "519B507801F9"
 									uses_fill_color FALSE
 									quidu "519B507801FA"
-									label (object SegLabel @646
+									label (object SegLabel @654
 										quid "519B50780205"
 										pos (754,249)
 										max_width 144
 										pctDist 0.501577
 										height 44)
-									client @613
-									supplier @614
+									client @621
+									supplier @622
 									vertices (list Points
 										(660,358)
 										(660,293)
 										(847,293)
 										(847,358))
 									line_style 6144)
-								(object TransView ":TOP:S1:J519B50B801E5:comError" @647
+								(object TransView ":TOP:S1:J519B50B801E5:comError" @655
 									quid "519B50B801E3"
 									uses_fill_color FALSE
 									quidu "519B50B801E4"
-									label (object SegLabel @648
+									label (object SegLabel @656
 										quid "519B50B801EF"
 										pos (384,578)
 										positionBySuperclass FALSE
@@ -8839,19 +8955,19 @@
 										pctDist 0.501529
 										height 69)
 									positionBySuperclass FALSE
-									client @615
-									supplier @616
+									client @623
+									supplier @624
 									vertices (list Points
 										(518,677)
 										(453,677)
 										(453,480)
 										(518,480))
 									line_style 6144)
-								(object TransView ":TOP:S1:J5193551C029A:sendCommand" @649
+								(object TransView ":TOP:S1:J5193551C029A:sendCommand" @657
 									quid "5193551C0290"
 									uses_fill_color FALSE
 									quidu "5193551C0291"
-									label (object SegLabel @650
+									label (object SegLabel @658
 										quid "5193551C02A4"
 										pos (744,889)
 										positionBySuperclass FALSE
@@ -8859,19 +8975,19 @@
 										pctDist 0.500000
 										height 45)
 									positionBySuperclass FALSE
-									client @611
-									supplier @612
+									client @619
+									supplier @620
 									vertices (list Points
 										(837,777)
 										(837,844)
 										(651,844)
 										(651,777))
 									line_style 6144)
-								(object TransView ":TOP:S1:J519234560116:dataReceived" @651
+								(object TransView ":TOP:S1:J519234560116:dataReceived" @659
 									quid "519234560114"
 									uses_fill_color FALSE
 									quidu "519234560115"
-									label (object SegLabel @652
+									label (object SegLabel @660
 										quid "519234560120"
 										pos (1285,613)
 										positionBySuperclass FALSE
@@ -8879,19 +8995,19 @@
 										pctDist 0.656716
 										height 192)
 									positionBySuperclass FALSE
-									client @609
-									supplier @610
+									client @617
+									supplier @618
 									vertices (list Points
 										(1026,460)
 										(1093,460)
 										(1093,661)
 										(1026,661))
 									line_style 6144)
-								(object TransView ":TOP:S1:J51AC8BCA02BB:lengthReceived" @653
+								(object TransView ":TOP:S1:J51AC8BCA02BB:lengthReceived" @661
 									quid "51AC8BCA02B9"
 									uses_fill_color FALSE
 									quidu "51AC8BCA02BA"
-									label (object SegLabel @654
+									label (object SegLabel @662
 										quid "51AC8BCA02C5"
 										pos (1071,297)
 										positionBySuperclass FALSE
@@ -8900,8 +9016,8 @@
 										height 60
 										orientation 1)
 									positionBySuperclass FALSE
-									client @617
-									supplier @618
+									client @625
+									supplier @626
 									vertices (list Points
 										(1013,402)
 										(1069,366)
@@ -8913,12 +9029,12 @@
 						structureDiagram (object CollaborationDiagram "Structure Diagram"
 							quid "51922E6202B8"
 							items (list diagram_item_list
-								(object CapsulePerimeterVw "Structure" @655
+								(object CapsulePerimeterVw "Structure" @663
 									quid "51922E6202BA"
 									pos (840,615)
 									quidu "51922E6202B3"
 									boundIcons (list boundIconsList
-										(object PortVw ":Structure:serialRaw" @656
+										(object PortVw ":Structure:serialRaw" @664
 											quid "51922E70032C"
 											pos (96,616)
 											quidu "51922E70037B"
@@ -8928,7 +9044,7 @@
 												nlines 2
 												max_width 338
 												label "serialRaw"))
-										(object PortVw ":Structure:serialOut" @657
+										(object PortVw ":Structure:serialOut" @665
 											quid "51922F0F004B"
 											pos (731,96)
 											quidu "51922F0F009A"
@@ -8938,7 +9054,7 @@
 												nlines 2
 												max_width 272
 												label "serialOut"))))
-								(object PortVw ":Structure:timer" @658
+								(object PortVw ":Structure:timer" @666
 									quid "519C985D022E"
 									pos (306,138)
 									quidu "519C985C0060"
@@ -8978,11 +9094,11 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "5192268101CE"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @659
+								(object StateView "Perimeter" "TOP" @667
 									quid "5192268101D0"
 									pos (840,615)
 									quidu "5192268101CB")
-								(object StateView "StartState" "Initial" @660
+								(object StateView "StartState" "Initial" @668
 									quid "5192268101D1"
 									pos (180,180)
 									quidu "5192268101CC"))
@@ -9025,11 +9141,11 @@
 						statediagram (object State_Diagram "State Diagram"
 							quid "51922EBB02A1"
 							items (list diagram_item_list
-								(object StateView "Perimeter" "TOP" @661
+								(object StateView "Perimeter" "TOP" @669
 									quid "51922EBB02A3"
 									pos (840,615)
 									quidu "51922EBB029E")
-								(object StateView "StartState" "Initial" @662
+								(object StateView "StartState" "Initial" @670
 									quid "51922EBB02A4"
 									pos (180,180)
 									quidu "51922EBB029F"))
@@ -9040,7 +9156,7 @@
 			(object ClassDiagram "Main"
 				quid "3619364703D4"
 				items (list diagram_item_list
-					(object CapsuleVw "mainCapsule" @663
+					(object CapsuleVw "mainCapsule" @671
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9062,7 +9178,7 @@
 						quidu "517679F9026D"
 						compartment (object Compartment
 							quid "5188D8110042"
-							pos (1721,938)
+							pos (1721,934)
 							anchor 2
 							nlines 7
 							max_width 497
@@ -9072,7 +9188,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "topCap" @664
+					(object CapsuleVw "topCap" @672
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9097,7 +9213,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "tcpTopCapsule" @665
+					(object CapsuleVw "tcpTopCapsule" @673
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9129,7 +9245,7 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "tcpCapsule" @666
+					(object CapsuleVw "tcpCapsule" @674
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9161,24 +9277,24 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleRoleRelVw ":Structure:tcpInstance" @667
+					(object CapsuleRoleRelVw ":Structure:tcpInstance" @675
 						quid "5188D8250272"
 						uses_fill_color FALSE
 						quidu "51875EA901A5"
-						label (object SegLabel @668
+						label (object SegLabel @676
 							quid "5188D8250273"
 							pos (152,1012)
 							max_width 225
 							label "tcpInstance"
 							pctDist -1.547577
 							height 433)
-						client @666
-						supplier @665
+						client @674
+						supplier @673
 						vertices (list Points
 							(659,1087)
 							(774,953))
 						line_style 6144
-						label (object SegLabel @669
+						label (object SegLabel @677
 							quid "5188D8250275"
 							pos (49,1024)
 							hidden TRUE
@@ -9187,7 +9303,7 @@
 							label ""
 							pctDist -1.979026
 							height 503))
-					(object ProtocolVw "jsonProtocol" @670
+					(object ProtocolVw "jsonProtocol" @678
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9209,7 +9325,7 @@
 						quidu "51875F9A015E"
 						compartment (object Compartment
 							quid "5188D82C02F0"
-							pos (1261,1493)
+							pos (1261,1497)
 							anchor 2
 							nlines 3
 							max_width 512
@@ -9220,11 +9336,11 @@
 						autoResize TRUE
 						showInSignals TRUE
 						showOutSignals TRUE)
-					(object PortRelVw ":Structure:internalJsonPort" @671
+					(object PortRelVw ":Structure:internalJsonPort" @679
 						quid "5188D82C0321"
 						uses_fill_color FALSE
 						quidu "51875FA2029B"
-						label (object SegLabel @672
+						label (object SegLabel @680
 							quid "5188D82C0322"
 							pos (1458,1167)
 							positionBySuperclass FALSE
@@ -9234,13 +9350,13 @@
 							height 138
 							orientation 1)
 						positionBySuperclass FALSE
-						client @670
-						supplier @665
+						client @678
+						supplier @673
 						vertices (list Points
 							(1407,1326)
 							(1117,953))
 						line_style 6144
-						label (object SegLabel @673
+						label (object SegLabel @681
 							quid "5188D82C0325"
 							pos (1832,80)
 							hidden TRUE
@@ -9251,7 +9367,7 @@
 							pctDist 1.529855
 							height 1100
 							orientation 1)
-						label (object SegLabel @674
+						label (object SegLabel @682
 							quid "5188D82C0323"
 							pos (1878,117)
 							positionBySuperclass FALSE
@@ -9261,7 +9377,7 @@
 							pctDist 1.408271
 							height 1114
 							orientation 1))
-					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @675
+					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @683
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9277,7 +9393,7 @@
 						quidu "518764D2025A"
 						compartment (object Compartment
 							quid "5188D84A0181"
-							pos (2138,1331)
+							pos (2138,1333)
 							anchor 2
 							nlines 8
 							max_width 450
@@ -9286,7 +9402,7 @@
 						height 425
 						annotation 8
 						autoResize TRUE)
-					(object ProtocolVw "tcpProtocol" @676
+					(object ProtocolVw "tcpProtocol" @684
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
@@ -9319,11 +9435,11 @@
 						autoResize TRUE
 						showInSignals TRUE
 						showOutSignals TRUE)
-					(object PortRelVw ":Structure:mainConnection" @677
+					(object PortRelVw ":Structure:mainConnection" @685
 						quid "5188D8520145"
 						uses_fill_color FALSE
 						quidu "5176786302E2"
-						label (object SegLabel @678
+						label (object SegLabel @686
 							quid "5188D8520146"
 							pos (214,2524)
 							positionBySuperclass FALSE
@@ -9332,13 +9448,13 @@
 							pctDist -1.355056
 							height 199)
 						positionBySuperclass FALSE
-						client @676
-						supplier @666
+						client @684
+						supplier @674
 						vertices (list Points
 							(391,2095)
 							(375,1786))
 						line_style 6144
-						label (object SegLabel @679
+						label (object SegLabel @687
 							quid "5188D8520149"
 							pos (270,1862)
 							hidden TRUE
@@ -9348,7 +9464,7 @@
 							label ""
 							pctDist 0.772251
 							height 109)
-						label (object SegLabel @680
+						label (object SegLabel @688
 							quid "5188D8520147"
 							pos (276,1934)
 							positionBySuperclass FALSE
@@ -9357,16 +9473,16 @@
 							label "<<Port>>"
 							pctDist 0.538862
 							height 106))
-					(object CapsuleVw "roombaTopCapsule" @681
+					(object CapsuleVw "roombaTopCapsule" @689
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
 						quid "519B5DF80172"
-						pos (2816,397)
+						pos (2816,402)
 						label (object ItemLabel
 							quid "519B5DF80173"
-							pos (1963,112)
+							pos (1963,116)
 							max_width 1706
 							label "roombaTopCapsule")
 						stereotype (object ItemLabel
@@ -9379,42 +9495,42 @@
 						quidu "518A226F036A"
 						compartment (object Compartment
 							quid "519B5DF8017A"
-							pos (1963,205)
+							pos (1963,215)
 							anchor 2
 							nlines 15
-							max_width 1553
+							max_width 1712
 							justify 1)
 						width 1724
-						height 794
+						height 804
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleRoleRelVw ":Structure:roombaTopCapsuleR1" @682
+					(object CapsuleRoleRelVw ":Structure:roombaTopCapsuleR1" @690
 						quid "519B5DF80192"
 						uses_fill_color FALSE
 						quidu "519B57A40170"
-						label (object SegLabel @683
+						label (object SegLabel @691
 							quid "519B5DF80193"
-							pos (2029,310)
+							pos (2029,311)
 							max_width 338
 							label "roombaTopCapsuleR1"
-							pctDist -0.209053
-							height 3)
-						client @681
-						supplier @664
+							pctDist -0.208298
+							height 0)
+						client @689
+						supplier @672
 						vertices (list Points
-							(1953,299)
+							(1953,302)
 							(1588,260))
 						line_style 6144
-						label (object SegLabel @684
+						label (object SegLabel @692
 							quid "519B5DF80195"
 							pos (1870,300)
 							hidden TRUE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist 0.224541
-							height 10))))))
+							pctDist 0.225048
+							height 7))))))
 	root_subsystem (object SubSystem "Component View"
 		quid "5176778400A5"
 		physical_models (list unit_reference_list
@@ -9599,7 +9715,7 @@
 			(object Module_Diagram "Main"
 				quid "36641F810172"
 				items (list diagram_item_list
-					(object ComponentVw "Component View::roombaController" @685
+					(object ComponentVw "Component View::roombaController" @693
 						quid "5176859B0172"
 						pos (1514,433)
 						font (object Font
@@ -9622,7 +9738,7 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ComponentVw "Component View::RTComponents::RTComponent" @686
+					(object ComponentVw "Component View::RTComponents::RTComponent" @694
 						quid "5176859C02A3"
 						pos (2192,925)
 						font (object Font
@@ -9645,18 +9761,18 @@
 						height 186
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @687
+					(object ModVisView "" @695
 						quid "517685AC0182"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517685AD00B8"
-						client @685
-						supplier @686
+						client @693
+						supplier @694
 						vertices (list Points
 							(1611,508)
 							(2067,837))
 						line_style 6144)
-					(object ComponentVw "Component View::tcpIpLib" @688
+					(object ComponentVw "Component View::tcpIpLib" @696
 						quid "517686A800C3"
 						pos (528,321)
 						font (object Font
@@ -9679,18 +9795,18 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @689
+					(object ModVisView "" @697
 						quid "517686AD00DB"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517686AE00BD"
-						client @685
-						supplier @688
+						client @693
+						supplier @696
 						vertices (list Points
 							(1260,403)
 							(845,356))
 						line_style 6144)
-					(object ComponentVw "Component View::jsonLib" @690
+					(object ComponentVw "Component View::jsonLib" @698
 						quid "51876F7902A7"
 						pos (903,944)
 						font (object Font
@@ -9713,18 +9829,18 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @691
+					(object ModVisView "" @699
 						quid "51876F7C003B"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "51876F7C03A2"
-						client @685
-						supplier @690
+						client @693
+						supplier @698
 						vertices (list Points
 							(1416,508)
 							(987,867))
 						line_style 6144)
-					(object ComponentVw "Component View::serialCommunicationLib" @692
+					(object ComponentVw "Component View::serialCommunicationLib" @700
 						quid "5192279200E5"
 						pos (1683,145)
 						label (object ItemLabel
@@ -9745,13 +9861,13 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @693
+					(object ModVisView "" @701
 						quid "519227940185"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "519227940351"
-						client @685
-						supplier @692
+						client @693
+						supplier @700
 						vertices (list Points
 							(1551,356)
 							(1626,220))

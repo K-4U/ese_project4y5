@@ -134,6 +134,9 @@ protected:
 	// {{{RME transition ':TOP:Ready:J51AB77110307:doSend'
 	INLINE_METHODS void transition10_doSend( const byteArray * rtdata, programProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51B718480383:SetMotors'
+	INLINE_METHODS void transition11_SetMotors( const clsRoomba::clsMotors * rtdata, programProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain4_Initial( void );
@@ -144,6 +147,7 @@ private:
 	INLINE_CHAINS void chain8_stopProgram( void );
 	INLINE_CHAINS void chain9_drive( void );
 	INLINE_CHAINS void chain10_doSend( void );
+	INLINE_CHAINS void chain11_SetMotors( void );
 	INLINE_CHAINS void chain1_comReady( void );
 
 public:

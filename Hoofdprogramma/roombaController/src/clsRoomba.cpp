@@ -567,8 +567,6 @@ void clsRoomba::setMotors( bool mainBrush, bool sideBrush, bool vacuum )
 	this->motors.mainBrush = mainBrush;
 	this->motors.sideBrush = sideBrush;
 	this->motors.vacuum = vacuum;
-
-	std::cout << "RMB: Arg: " << mainBrush << " STOR: " << this->motors.mainBrush << endl;
 	// }}}USR
 }
 // }}}RME
@@ -577,7 +575,6 @@ void clsRoomba::setMotors( bool mainBrush, bool sideBrush, bool vacuum )
 void clsRoomba::getMotors( bool * mainBrush, bool * sideBrush, bool * vacuum )
 {
 	// {{{USR
-	std::cout << "RMB: MAIN: " << this->motors.mainBrush << endl;
 	*mainBrush = this->motors.mainBrush;
 	*sideBrush = this->motors.sideBrush;
 	*vacuum = this->motors.vacuum;
@@ -686,6 +683,15 @@ int clsRoomba::getTotalAngle( void )
 {
 	// {{{USR
 	return this->totalAngle;
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME operation 'getMotors()'
+clsRoomba::clsMotors clsRoomba::getMotors( void )
+{
+	// {{{USR
+	return this->motors;
 	// }}}USR
 }
 // }}}RME

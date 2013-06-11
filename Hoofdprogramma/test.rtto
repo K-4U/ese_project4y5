@@ -112,4 +112,13 @@
 				class_attributes  "Logical View::Roomba::roombaTopCapsule::roomba"
 				quidu "519B574302A5"
 				class_attributes  "Logical View::Roomba::roombaTopCapsule::isOperating"
-				quidu "51A5D9A80390"))))
+				quidu "51A5D9A80390"))
+		(object MSCDaemon "Trace1"
+			daemonProcess "Deployment View::roombaControllerMain::roombaControllerInstance"
+			quid "51B7034D00C6"
+			capsuleInstance  "/"
+			quidu "51ADA0280244"
+			daemonTracingFlag TRUE
+			capsulePaths (list capsulePathsList
+				capsulePaths  "/roombaTopCapsuleR1:0/roombaProgramInstance:0"
+				quidu "51AB64AE033B"))))

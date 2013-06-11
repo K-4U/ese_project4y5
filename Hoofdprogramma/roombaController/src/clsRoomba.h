@@ -368,6 +368,9 @@ public:
 	// {{{RME operation 'getTotalAngle()'
 	int getTotalAngle( void );
 	// }}}RME
+	// {{{RME operation 'getMotors()'
+	clsMotors getMotors( void );
+	// }}}RME
 	static const RTFieldDescriptor rtg_clsRoomba_fields[];
 };
 

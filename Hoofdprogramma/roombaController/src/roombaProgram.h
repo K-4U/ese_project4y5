@@ -27,6 +27,10 @@
 // }}}USR
 // }}}RME
 
+// {{{RME classAttribute 'MINBATTERY'
+#define MINBATTERY 90
+// }}}RME
+
 extern const RTActorClass roombaProgram;
 
 #define SUPER RTActor

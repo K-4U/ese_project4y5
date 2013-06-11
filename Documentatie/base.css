@@ -1,0 +1,48 @@
+
+	body {
+		counter-reset: one;
+		max-width: 1000px;
+		margin: 0 auto;
+		font-family: Cambria;
+	}
+	h1 {
+	
+	}
+	h2 {
+		font-size: 1.3em;
+	}
+	h3 {
+		font-size: 1.1em;
+	}
+	img {
+		max-width: 100%;
+	}
+	section {
+		page-break-after: always;
+	}
+	section div {
+		page-break-inside: avoid;
+		padding-left: 30px;
+	}
+	
+	.chapter h1 {
+		counter-reset: two;
+		counter-increment: one;
+	}
+	.chapter h1:before {
+		content: counter(one) ". ";
+	}
+	.chapter h2 {
+		counter-reset: three;
+		counter-increment: two;
+	}
+	.chapter h2:before {
+		content: counter(one) "." counter(two) ". ";
+	}
+	.chapter h3 {
+		counter-increment: three;
+	}
+	.chapter h3:before {
+		content: counter(one) "." counter(two) "." counter(three) ". ";
+	}
+	

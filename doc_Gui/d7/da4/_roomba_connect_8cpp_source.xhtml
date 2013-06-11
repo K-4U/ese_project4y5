@@ -144,107 +144,118 @@ $(document).ready(function(){initNavTree('d7/da4/_roomba_connect_8cpp_source.xht
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Connecting&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">clsServerConn::sendCommand</a>(<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;toSend){</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">//this-&gt;log &lt;&lt; &quot;Sending json object: &quot; &lt;&lt; docToSend-&gt;toJson() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Sending JSON: &quot;</span> &lt;&lt; toSend &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        QByteArray bAToSend;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        bAToSend.append(toSend.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a0b681a1fedfb2e89397b1f71e29edf78" title="Transforms this object to a nice JSON string.">toJsonString</a>() + <span class="stringliteral">&quot;\r\n&quot;</span>);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        this-&gt;sock-&gt;write(bAToSend);</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#afc2a5295649e3f39c545227b3c4985cc">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#afc2a5295649e3f39c545227b3c4985cc">clsServerConn::doDisconnect</a>(){</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        this-&gt;isConnected = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        this-&gt;isConnecting = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        this-&gt;sock-&gt;disconnectFromHost();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Disconnected&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#adaecfe74ef1fb16f35613587aa1dada8">   47</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#adaecfe74ef1fb16f35613587aa1dada8">clsServerConn::srvConnected</a>(){</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Connected!&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        this-&gt;isConnecting = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        this-&gt;isConnected = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af4d99891fc606ce032facfd9e27692ca" title="Emitted when the client has a succesfull connection to the server.">connected</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459">   47</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">clsServerConn::sendCommand</a>(<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;toSend){</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="comment">//this-&gt;log &lt;&lt; &quot;Sending json object: &quot; &lt;&lt; toSend.toJsonString() &lt;&lt; endl;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Sending JSON: &quot;</span> &lt;&lt; toSend &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        QByteArray bAToSend;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        bAToSend.append(toSend.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a0b681a1fedfb2e89397b1f71e29edf78" title="Transforms this object to a nice JSON string.">toJsonString</a>());</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        this-&gt;sock-&gt;write(bAToSend);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#acd2aa4131c06ed51738fb041c86ed640">   55</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#acd2aa4131c06ed51738fb041c86ed640">clsServerConn::srvDisconnected</a>(){</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Disconnected&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#adaecfe74ef1fb16f35613587aa1dada8">   55</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#adaecfe74ef1fb16f35613587aa1dada8">clsServerConn::srvConnected</a>(){</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Connected!&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        this-&gt;isConnecting = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        this-&gt;isConnected = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#ad5a08372105d83e34538e457374525f6" title="Emitted when the client lost connection to the server.">disconnected</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        this-&gt;isConnected = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af4d99891fc606ce032facfd9e27692ca" title="Emitted when the client has a succesfull connection to the server.">connected</a>();</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> clsServerConn::handleEventRequest(<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;comm){</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">//Let them flow, all the chats!</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        QList&lt;QVariant&gt; events = comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#ae829f45e11a50fa00024a5d9951cd748" title="Gets an item from the internal data map.">getData</a>(<span class="stringliteral">&quot;events&quot;</span>).toList();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">foreach</span>(QVariant myEvent, events){</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            this-&gt;handleEventReceived(myEvent.toMap());</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#acd2aa4131c06ed51738fb041c86ed640">   63</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#acd2aa4131c06ed51738fb041c86ed640">clsServerConn::srvDisconnected</a>(){</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Disconnected&quot;</span> &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        this-&gt;isConnecting = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        this-&gt;isConnected = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#ad5a08372105d83e34538e457374525f6" title="Emitted when the client lost connection to the server.">disconnected</a>();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> clsServerConn::handleEventReceived(QVariantMap data){</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="../../db/d8b/classshared_1_1events_1_1cls_event.xhtml" title="The main event class.">clsEvent</a> myEvent(data);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">switch</span>(myEvent.getType()){</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; <span class="comment">//           case EVENTTYPE_SERVERMSG:</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; <span class="comment">//               emit this-&gt;serverMessageReceived(new eventServerMessage(data));</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; <span class="comment">//               break;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">break</span>; <span class="comment">//ERROR!</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">bool</span> clsServerConn::checkForJsonCommand(QByteArray toAdd, <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;comm){</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordtype">bool</span> ret = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">foreach</span>(<span class="keywordtype">char</span> b, toAdd){</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">if</span> (!inString){</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">if</span>(b == <span class="charliteral">&#39;{&#39;</span> || b == <span class="charliteral">&#39;[&#39;</span>){</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    depth++;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(b == <span class="charliteral">&#39;}&#39;</span> || b == <span class="charliteral">&#39;]&#39;</span>){</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    depth--;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">if</span> (b==<span class="charliteral">&#39;&quot;&#39;</span>){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                inString = !inString;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            this-&gt;buffer-&gt;append(b);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">if</span>(depth == 0){</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                <span class="comment">//Clear the buffer.</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordflow">if</span>(comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a2db6f8da6bc5a4c677201f044b69bb10" title="getCommand">getCommand</a>() == <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea5a1225369cff150bae9fe4fa44ae3094">JSONCOMMAND_NONE</a>){</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    ret = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    comm = <span class="keyword">new</span> <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a>(*this-&gt;buffer);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Data received: \t&quot;</span> &lt;&lt; this-&gt;buffer &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    this-&gt;buffer-&gt;clear();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> clsServerConn::handleEventRequest(<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;comm){</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">//Let them flow, all the chats!</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        QList&lt;QVariant&gt; events = comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#ae829f45e11a50fa00024a5d9951cd748" title="Gets an item from the internal data map.">getData</a>(<span class="stringliteral">&quot;events&quot;</span>).toList();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">foreach</span>(QVariant myEvent, events){</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            this-&gt;handleEventReceived(myEvent.toMap());</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> clsServerConn::handleEventReceived(QVariantMap data){</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="../../db/d8b/classshared_1_1events_1_1cls_event.xhtml" title="The main event class.">clsEvent</a> myEvent(data);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">switch</span>(myEvent.getType()){</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="../../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0db14bad84e44f20d465db50022c43ad">EVENTTYPE_SENSORDATA</a>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a3d0bfa9115b030296f550804c58642a5" title="Triggered when the server wants us to know something.">sensorDataReceived</a>(<span class="keyword">new</span> <a class="code" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a>(data));</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; <span class="comment">//           case EVENTTYPE_SERVERMSG:</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; <span class="comment">//               emit this-&gt;serverMessageReceived(new eventServerMessage(data));</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; <span class="comment">//               break;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keywordflow">break</span>; <span class="comment">//ERROR!</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">bool</span> clsServerConn::checkForJsonCommand(QByteArray toAdd, <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> &amp;comm){</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordtype">bool</span> ret = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="keywordflow">foreach</span>(<span class="keywordtype">char</span> b, toAdd){</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">if</span> (!inString){</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keywordflow">if</span>(b == <span class="charliteral">&#39;{&#39;</span> || b == <span class="charliteral">&#39;[&#39;</span>){</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    depth++;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                }<span class="keywordflow">else</span> <span class="keywordflow">if</span>(b == <span class="charliteral">&#39;}&#39;</span> || b == <span class="charliteral">&#39;]&#39;</span>){</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    depth--;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span> (b==<span class="charliteral">&#39;&quot;&#39;</span>){</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                inString = !inString;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a0f7c8da07639a563b9d88780eb22748e">  111</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a0f7c8da07639a563b9d88780eb22748e">clsServerConn::readData</a>(){</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> comm(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea5a1225369cff150bae9fe4fa44ae3094">JSONCOMMAND_NONE</a>);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">if</span>(this-&gt;checkForJsonCommand(this-&gt;sock-&gt;readAll(), comm)){</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">switch</span> (comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a2db6f8da6bc5a4c677201f044b69bb10" title="getCommand">getCommand</a>()) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea8f959603b734b8f0bfdff3918e6292de">JSONCOMMAND_EVENT</a>:</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                    this-&gt;handleEventReceived(comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#ae829f45e11a50fa00024a5d9951cd748" title="Gets an item from the internal data map.">getData</a>(<span class="stringliteral">&quot;event&quot;</span>).toMap());</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        }</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a5ec4520ae6b50789ef650436b6339d43">  124</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a5ec4520ae6b50789ef650436b6339d43">clsServerConn::connectTimeout</a>(){</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">if</span>(this-&gt;isConnecting &amp;&amp; this-&gt;isConnected == <span class="keyword">false</span>){</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;            this-&gt;sock-&gt;abort();</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af0d708fd1a5059ca1b2c8c0829bbb690" title="Triggered when it cannot connect.">sgnConnectTimeout</a>();</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            this-&gt;buffer-&gt;append(b);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">if</span>(depth == 0){</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="comment">//Clear the buffer.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                <span class="keywordflow">if</span>(comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a2db6f8da6bc5a4c677201f044b69bb10" title="getCommand">getCommand</a>() == <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea5a1225369cff150bae9fe4fa44ae3094">JSONCOMMAND_NONE</a>){</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                    ret = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    comm = <span class="keyword">new</span> <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a>(*this-&gt;buffer);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                    this-&gt;log &lt;&lt; <span class="stringliteral">&quot;Data received: \t&quot;</span> &lt;&lt; this-&gt;buffer &lt;&lt; <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#aaddaee50fab2801df390147891b0c09d">endl</a>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                    this-&gt;buffer-&gt;clear();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a0f7c8da07639a563b9d88780eb22748e">  122</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a0f7c8da07639a563b9d88780eb22748e">clsServerConn::readData</a>(){</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> comm(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea5a1225369cff150bae9fe4fa44ae3094">JSONCOMMAND_NONE</a>);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span>(this-&gt;checkForJsonCommand(this-&gt;sock-&gt;readAll(), comm)){</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">switch</span> (comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#a2db6f8da6bc5a4c677201f044b69bb10" title="getCommand">getCommand</a>()) {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                <span class="keywordflow">case</span> <a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea8f959603b734b8f0bfdff3918e6292de">JSONCOMMAND_EVENT</a>:</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    this-&gt;handleEventReceived(comm.<a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml#ae829f45e11a50fa00024a5d9951cd748" title="Gets an item from the internal data map.">getData</a>(<span class="stringliteral">&quot;event&quot;</span>).toMap());</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a5ec4520ae6b50789ef650436b6339d43">  135</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a5ec4520ae6b50789ef650436b6339d43">clsServerConn::connectTimeout</a>(){</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">if</span>(this-&gt;isConnecting &amp;&amp; this-&gt;isConnected == <span class="keyword">false</span>){</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            this-&gt;sock-&gt;abort();</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            emit this-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af0d708fd1a5059ca1b2c8c0829bbb690" title="Triggered when it cannot connect.">sgnConnectTimeout</a>();</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_713f85d3cb573ec9d5959296a71ef3d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_363bf6cd8c10418d3eb556232d62176b.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../d7/da4/_roomba_connect_8cpp.xhtml">RoombaConnect.cpp</a></li>
-    <li class="footer">Generated on Mon May 13 2013 10:41:39 for ESE Project 4 by
+    <li class="navelem"><a class="el" href="../../dir_171b764decf33d63a7df2fab4f4bc6d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_737cf77e168c1785336c935ecc5b9559.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../d7/da4/_roomba_connect_8cpp.xhtml">RoombaConnect.cpp</a></li>
+    <li class="footer">Generated on Tue Jun 11 2013 13:14:23 for ESE Project 4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -1,0 +1,27 @@
+var class_ui___controllingroomba =
+[
+    [ "retranslateUi", "d3/d58/class_ui___controllingroomba.xhtml#a9b4161f6d942251c8a9b9a71111bded0", null ],
+    [ "setupUi", "d3/d58/class_ui___controllingroomba.xhtml#aa8c63ed0b21ce8ced7d35f27f7273dc9", null ],
+    [ "cbMainBrush", "d3/d58/class_ui___controllingroomba.xhtml#a9d998eea810696918373228e88c840c5", null ],
+    [ "cbSideBrush", "d3/d58/class_ui___controllingroomba.xhtml#a596c81035d773c6f831c56054a136e21", null ],
+    [ "cbVacuum", "d3/d58/class_ui___controllingroomba.xhtml#a21b5b18db5e7483238915716bf2ed6f5", null ],
+    [ "hsMotorSpeed", "d3/d58/class_ui___controllingroomba.xhtml#a120c015506da018aa32b3e1579b26bee", null ],
+    [ "lbBattery", "d3/d58/class_ui___controllingroomba.xhtml#af76ffdfdfecf6983c6831cdf21d93ebe", null ],
+    [ "lbDistance", "d3/d58/class_ui___controllingroomba.xhtml#a28c69f724807032f79b8e093275b1cff", null ],
+    [ "lbMotorSpeed", "d3/d58/class_ui___controllingroomba.xhtml#afc2edec91941f65ee7f75b39f4136e04", null ],
+    [ "lbTemperature", "d3/d58/class_ui___controllingroomba.xhtml#a2d8d1f492d3668718fb7393229c71717", null ],
+    [ "lbTotalDistance", "d3/d58/class_ui___controllingroomba.xhtml#ae8562bfd921814e177577511ccddd5b9", null ],
+    [ "pbClean", "d3/d58/class_ui___controllingroomba.xhtml#afe6c95dd6d32b1e2473205d3780f9c22", null ],
+    [ "pbCleanSpot", "d3/d58/class_ui___controllingroomba.xhtml#ad57a735c125b7f7c167f38619a351e25", null ],
+    [ "pbClose", "d3/d58/class_ui___controllingroomba.xhtml#a0f3dc6fb7b2959b256623dac70869821", null ],
+    [ "pbDock", "d3/d58/class_ui___controllingroomba.xhtml#a460f350c7b146c6498106f2b154d65c7", null ],
+    [ "pbDriveBackward", "d3/d58/class_ui___controllingroomba.xhtml#a90d646ae92710d2c70b986fd43aa45b0", null ],
+    [ "pbDriveForward", "d3/d58/class_ui___controllingroomba.xhtml#ae658dd6aff447c9cf865dc77e1d41921", null ],
+    [ "pbDriveLeft", "d3/d58/class_ui___controllingroomba.xhtml#af1b908d10e44ae86aa3780bdd5e6cbaf", null ],
+    [ "pbDriveRight", "d3/d58/class_ui___controllingroomba.xhtml#a47eb6d447d3e1a729d44e2ebd1848613", null ],
+    [ "pbResetRoomba", "d3/d58/class_ui___controllingroomba.xhtml#a711d1523f1581d17ea7f99c2a387a9f1", null ],
+    [ "pbStop", "d3/d58/class_ui___controllingroomba.xhtml#ae7ea0e5626c418b36519a8d066a67f8e", null ],
+    [ "pbUpload", "d3/d58/class_ui___controllingroomba.xhtml#ac6fd6fd3ce815dafe839c17926830a70", null ],
+    [ "prBattery", "d3/d58/class_ui___controllingroomba.xhtml#a8f55e0b3b6b85c0823ffbbefed859c57", null ],
+    [ "txtManualcommands", "d3/d58/class_ui___controllingroomba.xhtml#ae10c75350b37a3c9db44ec7d9efa9dc9", null ]
+];

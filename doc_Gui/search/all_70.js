@@ -1,4 +1,27 @@
 var searchData=
 [
-  ['parse',['parse',['../d2/d6d/namespace_qt_json.xhtml#ad92865ae39b2b148f6c788d7cf28c894',1,'QtJson::parse(const QString &amp;json)'],['../d2/d6d/namespace_qt_json.xhtml#ac4e31a9350b0df760c664c30f6e52162',1,'QtJson::parse(const QString &amp;json, bool &amp;success)']]]
+  ['parse',['parse',['../d2/d6d/namespace_qt_json.xhtml#ad92865ae39b2b148f6c788d7cf28c894',1,'QtJson::parse(const QString &amp;json)'],['../d2/d6d/namespace_qt_json.xhtml#ac4e31a9350b0df760c664c30f6e52162',1,'QtJson::parse(const QString &amp;json, bool &amp;success)']]],
+  ['pbclean',['pbClean',['../d3/d58/class_ui___controllingroomba.xhtml#afe6c95dd6d32b1e2473205d3780f9c22',1,'Ui_Controllingroomba']]],
+  ['pbcleanspot',['pbCleanSpot',['../d3/d58/class_ui___controllingroomba.xhtml#ad57a735c125b7f7c167f38619a351e25',1,'Ui_Controllingroomba']]],
+  ['pbclose',['pbClose',['../d3/d58/class_ui___controllingroomba.xhtml#a0f3dc6fb7b2959b256623dac70869821',1,'Ui_Controllingroomba']]],
+  ['pbclosedisplaylogs',['pbCloseDisplayLogs',['../db/dfa/class_ui___display_logs.xhtml#a17f8fb4ba4fb9d7001e50bd96ed06af9',1,'Ui_DisplayLogs']]],
+  ['pbcloseinformation',['pbCloseInformation',['../dc/d24/class_ui___information.xhtml#aeebce535d2e754941eb0ca703f688168',1,'Ui_Information']]],
+  ['pbcloseroomba',['pbCloseRoomba',['../d8/de5/class_ui___roomba.xhtml#a6fd10e09a7fdb350c7a38eb5687d6a5d',1,'Ui_Roomba']]],
+  ['pbclosesettingsroomba',['pbCloseSettingsRoomba',['../d5/d57/class_ui___settings_roomba.xhtml#a4fd125c160486c202f837ffbc1e5749e',1,'Ui_SettingsRoomba']]],
+  ['pbconnect',['pbConnect',['../d8/de5/class_ui___roomba.xhtml#a415ba5fd91a2ba935f41ee99f92b76d2',1,'Ui_Roomba']]],
+  ['pbcontrolroomba',['pbControlRoomba',['../d8/de5/class_ui___roomba.xhtml#a42c9c3120af188d8bd69b3777451267b',1,'Ui_Roomba']]],
+  ['pbdisonnect',['pbDisonnect',['../d8/de5/class_ui___roomba.xhtml#a523432dc7b422707304fe3b05c3c8e65',1,'Ui_Roomba']]],
+  ['pbdisplaylogs',['pbDisplayLogs',['../d8/de5/class_ui___roomba.xhtml#a806702733f712be83d5d6f0b478665de',1,'Ui_Roomba']]],
+  ['pbdock',['pbDock',['../d3/d58/class_ui___controllingroomba.xhtml#a460f350c7b146c6498106f2b154d65c7',1,'Ui_Controllingroomba']]],
+  ['pbdrivebackward',['pbDriveBackward',['../d3/d58/class_ui___controllingroomba.xhtml#a90d646ae92710d2c70b986fd43aa45b0',1,'Ui_Controllingroomba']]],
+  ['pbdriveforward',['pbDriveForward',['../d3/d58/class_ui___controllingroomba.xhtml#ae658dd6aff447c9cf865dc77e1d41921',1,'Ui_Controllingroomba']]],
+  ['pbdriveleft',['pbDriveLeft',['../d3/d58/class_ui___controllingroomba.xhtml#af1b908d10e44ae86aa3780bdd5e6cbaf',1,'Ui_Controllingroomba']]],
+  ['pbdriveright',['pbDriveRight',['../d3/d58/class_ui___controllingroomba.xhtml#a47eb6d447d3e1a729d44e2ebd1848613',1,'Ui_Controllingroomba']]],
+  ['pbinformation',['pbInformation',['../d8/de5/class_ui___roomba.xhtml#a382408fd4c45e1c954c57570eba7217f',1,'Ui_Roomba']]],
+  ['pbread',['pbRead',['../db/dfa/class_ui___display_logs.xhtml#a6dbbe5f1de47d8f0e8ca658645c16a1d',1,'Ui_DisplayLogs']]],
+  ['pbresetroomba',['pbResetRoomba',['../d3/d58/class_ui___controllingroomba.xhtml#a711d1523f1581d17ea7f99c2a387a9f1',1,'Ui_Controllingroomba']]],
+  ['pbstop',['pbStop',['../d3/d58/class_ui___controllingroomba.xhtml#ae7ea0e5626c418b36519a8d066a67f8e',1,'Ui_Controllingroomba']]],
+  ['pbupload',['pbUpload',['../d3/d58/class_ui___controllingroomba.xhtml#ac6fd6fd3ce815dafe839c17926830a70',1,'Ui_Controllingroomba']]],
+  ['prbattery',['prBattery',['../d3/d58/class_ui___controllingroomba.xhtml#a8f55e0b3b6b85c0823ffbbefed859c57',1,'Ui_Controllingroomba']]],
+  ['prbatterystatus',['prBatteryStatus',['../dc/d24/class_ui___information.xhtml#a6354897b7558172bcd78b695c040bee4',1,'Ui_Information']]]
 ];

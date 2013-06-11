@@ -1,14 +1,18 @@
 <map id="GUI/resources/json.h" name="GUI/resources/json.h">
-<area shape="rect" id="node2" href="$dc/d96/jsoncommand_8h.xhtml" title="GUI/resources/jsoncommand.h" alt="" coords="589,80,789,107"/>
-<area shape="rect" id="node3" href="$d4/dca/_roomba_connect_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.h" alt="" coords="491,155,637,197"/>
-<area shape="rect" id="node13" href="$dd/d55/json_8cpp.xhtml" title="GUI/resources/json.cpp" alt="" coords="814,80,972,107"/>
-<area shape="rect" id="node11" href="$d7/da4/_roomba_connect_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.cpp" alt="" coords="609,246,756,287"/>
-<area shape="rect" id="node12" href="$d9/d73/jsoncommand_8cpp.xhtml" title="GUI/resources/jsoncommand.cpp" alt="" coords="721,163,935,189"/>
-<area shape="rect" id="node4" href="$dd/da1/roomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.h" alt="" coords="439,246,585,287"/>
-<area shape="rect" id="node5" href="$d5/dd2/controllingroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.cpp" alt="" coords="5,337,157,378"/>
-<area shape="rect" id="node6" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="183,337,329,378"/>
-<area shape="rect" id="node7" href="$da/d0b/information_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/information.cpp" alt="" coords="353,337,500,378"/>
-<area shape="rect" id="node8" href="$df/d0a/main_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/main.cpp" alt="" coords="524,337,671,378"/>
-<area shape="rect" id="node9" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="695,337,841,378"/>
-<area shape="rect" id="node10" href="$da/d3b/settingsroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/settingsroomba.cpp" alt="" coords="865,337,1012,378"/>
+<area shape="rect" id="node2" href="$da/d4b/controllingroomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.h" alt="" coords="73,246,220,287"/>
+<area shape="rect" id="node12" href="$dc/d96/jsoncommand_8h.xhtml" title="GUI/resources/jsoncommand.h" alt="" coords="498,80,699,107"/>
+<area shape="rect" id="node13" href="$d4/dca/_roomba_connect_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.h" alt="" coords="387,155,533,197"/>
+<area shape="rect" id="node4" href="$dd/da1/roomba_8h.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.h" alt="" coords="524,337,671,378"/>
+<area shape="rect" id="node17" href="$dd/d55/json_8cpp.xhtml" title="GUI/resources/json.cpp" alt="" coords="950,80,1108,107"/>
+<area shape="rect" id="node3" href="$d0/de4/moc__controllingroomba_8cpp.xhtml" title="GUI/bin/debug/debug\l/moc_controllingroomba.cpp" alt="" coords="119,337,304,378"/>
+<area shape="rect" id="node6" href="$d5/dd2/controllingroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.cpp" alt="" coords="5,427,157,469"/>
+<area shape="rect" id="node5" href="$df/db0/moc__roomba_8cpp.xhtml" title="GUI/bin/debug/debug\l/moc_roomba.cpp" alt="" coords="695,427,837,469"/>
+<area shape="rect" id="node7" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="863,427,1009,469"/>
+<area shape="rect" id="node8" href="$da/d0b/information_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/information.cpp" alt="" coords="1033,427,1180,469"/>
+<area shape="rect" id="node9" href="$d8/da8/_gui-_roomba_v1_80_2main_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/main.cpp" alt="" coords="183,427,329,469"/>
+<area shape="rect" id="node10" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="353,427,500,469"/>
+<area shape="rect" id="node11" href="$da/d3b/settingsroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/settingsroomba.cpp" alt="" coords="524,427,671,469"/>
+<area shape="rect" id="node15" href="$d7/da4/_roomba_connect_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/RoombaConnect.cpp" alt="" coords="497,246,644,287"/>
+<area shape="rect" id="node16" href="$d9/d73/jsoncommand_8cpp.xhtml" title="GUI/resources/jsoncommand.cpp" alt="" coords="659,163,873,189"/>
+<area shape="rect" id="node14" href="$d3/d0e/moc___roomba_connect_8cpp.xhtml" title="GUI/bin/debug/debug\l/moc_RoombaConnect.cpp" alt="" coords="244,246,423,287"/>
 </map>

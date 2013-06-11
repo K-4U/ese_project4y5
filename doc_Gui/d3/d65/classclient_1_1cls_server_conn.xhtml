@@ -121,14 +121,12 @@ $(document).ready(function(){initNavTree('d3/d65/classclient_1_1cls_server_conn.
 <div class="dynheader">
 Inheritance diagram for client::clsServerConn:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="../../d9/d0c/classclient_1_1cls_server_conn__inherit__graph.svg" width="155" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../d9/d0c/classclient_1_1cls_server_conn__inherit__graph.svg" width="155" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="../../graph_legend.xhtml">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for client::clsServerConn:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="../../db/d6b/classclient_1_1cls_server_conn__coll__graph.svg" width="155" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
-</div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../db/d6b/classclient_1_1cls_server_conn__coll__graph.svg" width="155" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="../../graph_legend.xhtml">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-slots"></a>
@@ -150,9 +148,9 @@ Signals</h2></td></tr>
 <tr class="memitem:ad5a08372105d83e34538e457374525f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#ad5a08372105d83e34538e457374525f6">disconnected</a> ()</td></tr>
 <tr class="memdesc:ad5a08372105d83e34538e457374525f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emitted when the client lost connection to the server.  <a href="#ad5a08372105d83e34538e457374525f6">More...</a><br/></td></tr>
 <tr class="separator:ad5a08372105d83e34538e457374525f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7756cad0bea903cd816c1fb68cac65fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a7756cad0bea903cd816c1fb68cac65fe">serverMessageReceived</a> (<a class="el" href="../../d6/dfe/classshared_1_1events_1_1event_server_message.xhtml">eventServerMessage</a> *theMessage)</td></tr>
-<tr class="memdesc:a7756cad0bea903cd816c1fb68cac65fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered when the server wants us to know something.  <a href="#a7756cad0bea903cd816c1fb68cac65fe">More...</a><br/></td></tr>
-<tr class="separator:a7756cad0bea903cd816c1fb68cac65fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0bfa9115b030296f550804c58642a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a3d0bfa9115b030296f550804c58642a5">sensorDataReceived</a> (<a class="el" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a> *theMessage)</td></tr>
+<tr class="memdesc:a3d0bfa9115b030296f550804c58642a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered when the server wants us to know something.  <a href="#a3d0bfa9115b030296f550804c58642a5">More...</a><br/></td></tr>
+<tr class="separator:a3d0bfa9115b030296f550804c58642a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0d708fd1a5059ca1b2c8c0829bbb690"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af0d708fd1a5059ca1b2c8c0829bbb690">sgnConnectTimeout</a> ()</td></tr>
 <tr class="memdesc:af0d708fd1a5059ca1b2c8c0829bbb690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggered when it cannot connect.  <a href="#af0d708fd1a5059ca1b2c8c0829bbb690">More...</a><br/></td></tr>
 <tr class="separator:af0d708fd1a5059ca1b2c8c0829bbb690"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,11 +166,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a997f9cd3d63321807f60472308acc459"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459">sendCommand</a> (<a class="el" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml">jsonCommand</a> &amp;toSend)</td></tr>
 <tr class="memdesc:a997f9cd3d63321807f60472308acc459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a JSON command to the server.  <a href="#a997f9cd3d63321807f60472308acc459">More...</a><br/></td></tr>
 <tr class="separator:a997f9cd3d63321807f60472308acc459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2a5295649e3f39c545227b3c4985cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#afc2a5295649e3f39c545227b3c4985cc">doDisconnect</a> ()</td></tr>
+<tr class="separator:afc2a5295649e3f39c545227b3c4985cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that has a connection to the server. </p>
 
-<p>Definition at line <a class="el" href="../../d4/dca/_roomba_connect_8h_source.xhtml#l00026">26</a> of file <a class="el" href="../../d4/dca/_roomba_connect_8h_source.xhtml">RoombaConnect.h</a>.</p>
+<p>Definition at line <a class="el" href="../../d4/dca/_roomba_connect_8h_source.xhtml#l00028">28</a> of file <a class="el" href="../../d4/dca/_roomba_connect_8h_source.xhtml">RoombaConnect.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ad9d8caf021df2cd15ce27bcf207d86d0"></a>
 <div class="memitem">
@@ -251,6 +251,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Emitted when the client has a succesfull connection to the server. </p>
 
+<p>Definition at line <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml#l00175">175</a> of file <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml">moc_RoombaConnect.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a5ec4520ae6b50789ef650436b6339d43"></a>
@@ -274,7 +276,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00124">124</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00135">135</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
@@ -301,6 +303,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Emitted when the client lost connection to the server. </p>
 
+<p>Definition at line <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml#l00181">181</a> of file <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml">moc_RoombaConnect.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="af4589d93eb4b606423cb4b5e4a583f4e"></a>
@@ -319,6 +323,23 @@ Public Member Functions</h2></td></tr>
 <p>Actually connect. </p>
 
 <p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00029">29</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afc2a5295649e3f39c545227b3c4985cc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void client::clsServerConn::doDisconnect </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00039">39</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
@@ -343,7 +364,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00111">111</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00122">122</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
@@ -369,11 +390,11 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00039">39</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00047">47</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7756cad0bea903cd816c1fb68cac65fe"></a>
+<a class="anchor" id="a3d0bfa9115b030296f550804c58642a5"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -381,9 +402,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void client::clsServerConn::serverMessageReceived </td>
+          <td class="memname">void client::clsServerConn::sensorDataReceived </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d6/dfe/classshared_1_1events_1_1event_server_message.xhtml">eventServerMessage</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a> *&#160;</td>
           <td class="paramname"><em>theMessage</em></td><td>)</td>
           <td></td>
         </tr>
@@ -428,6 +449,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Triggered when it cannot connect. </p>
 
+<p>Definition at line <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml#l00194">194</a> of file <a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml">moc_RoombaConnect.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="adaecfe74ef1fb16f35613587aa1dada8"></a>
@@ -451,7 +474,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00047">47</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00055">55</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
@@ -476,12 +499,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00055">55</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml#l00063">63</a> of file <a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>GUI/Gui-RoombaV1.0/<a class="el" href="../../d4/dca/_roomba_connect_8h_source.xhtml">RoombaConnect.h</a></li>
+<li>GUI/bin/debug/debug/<a class="el" href="../../d3/d0e/moc___roomba_connect_8cpp_source.xhtml">moc_RoombaConnect.cpp</a></li>
 <li>GUI/Gui-RoombaV1.0/<a class="el" href="../../d7/da4/_roomba_connect_8cpp_source.xhtml">RoombaConnect.cpp</a></li>
 </ul>
 </div><!-- contents -->
@@ -490,7 +514,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d7/d1c/namespaceclient.xhtml">client</a></li><li class="navelem"><a class="el" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml">clsServerConn</a></li>
-    <li class="footer">Generated on Mon May 13 2013 10:41:39 for ESE Project 4 by
+    <li class="footer">Generated on Tue Jun 11 2013 13:14:24 for ESE Project 4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

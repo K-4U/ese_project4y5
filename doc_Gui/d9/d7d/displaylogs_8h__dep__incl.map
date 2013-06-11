@@ -1,4 +1,6 @@
 <map id="GUI/Gui&#45;RoombaV1.0/displaylogs.h" name="GUI/Gui&#45;RoombaV1.0/displaylogs.h">
-<area shape="rect" id="node2" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="5,97,152,138"/>
-<area shape="rect" id="node3" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="176,97,323,138"/>
+<area shape="rect" id="node2" href="$d0/dcf/moc__display_logs_8cpp.xhtml" title="GUI/bin/debug/debug\l/moc_displayLogs.cpp" alt="" coords="5,97,157,138"/>
+<area shape="rect" id="node3" href="$d5/dd2/controllingroomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/controllingroomba.cpp" alt="" coords="182,97,335,138"/>
+<area shape="rect" id="node4" href="$d1/d10/displaylogs_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/displaylogs.cpp" alt="" coords="360,97,507,138"/>
+<area shape="rect" id="node5" href="$de/d67/roomba_8cpp.xhtml" title="GUI/Gui&#45;RoombaV1.0\l/roomba.cpp" alt="" coords="531,97,677,138"/>
 </map>

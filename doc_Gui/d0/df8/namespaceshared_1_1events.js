@@ -1,5 +1,6 @@
 var namespaceshared_1_1events =
 [
+    [ "eventSensor", "d6/d35/classshared_1_1events_1_1event_sensor.xhtml", "d6/d35/classshared_1_1events_1_1event_sensor" ],
     [ "clsEvent", "db/d8b/classshared_1_1events_1_1cls_event.xhtml", "db/d8b/classshared_1_1events_1_1cls_event" ],
     [ "eventChat", "d1/d68/classshared_1_1events_1_1event_chat.xhtml", "d1/d68/classshared_1_1events_1_1event_chat" ],
     [ "eventServerMessage", "d6/dfe/classshared_1_1events_1_1event_server_message.xhtml", "d6/dfe/classshared_1_1events_1_1event_server_message" ],

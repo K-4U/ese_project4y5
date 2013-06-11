@@ -1,3 +1,8 @@
 <map id="GUI/Gui&#45;RoombaV1.0/controllingroomba.h" name="GUI/Gui&#45;RoombaV1.0/controllingroomba.h">
-<area shape="rect" id="node2" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="167,96,307,123"/>
+<area shape="rect" id="node2" href="$d4/d05/json_8h.xhtml" title="../resources/json.h" alt="" coords="5,245,136,272"/>
+<area shape="rect" id="node5" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="116,171,303,197"/>
+<area shape="rect" id="node14" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="690,96,819,123"/>
+<area shape="rect" id="node8" href="$d7/d62/clslog_8h.xhtml" title="clslog.h" alt="" coords="876,320,943,347"/>
+<area shape="rect" id="node20" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="385,245,537,272"/>
+<area shape="rect" id="node21" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="327,171,424,197"/>
 </map>

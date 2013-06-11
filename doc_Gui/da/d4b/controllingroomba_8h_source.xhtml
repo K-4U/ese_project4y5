@@ -109,40 +109,95 @@ $(document).ready(function(){initNavTree('da/d4b/controllingroomba_8h_source.xht
 <a href="../../da/d4b/controllingroomba_8h.xhtml">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef CONTROLLINGROOMBA_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CONTROLLINGROOMBA_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../resources/clslog.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;QWidget&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">using namespace </span>K4U;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="../../dc/df0/namespace_ui.xhtml">    8</a></span>&#160;<span class="keyword">namespace </span>Ui {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a> : <span class="keyword">public</span> QWidget</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    Q_OBJECT</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>(QWidget *parent = 0);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    ~<a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">private</span> slots:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> on_pushButton_6_clicked();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">void</span> on_pbUpload_clicked();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    Ui::Controllingroomba *ui;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="../../da/d64/class_k4_u_1_1cls_log.xhtml" title="Custom logging class.">clsLog</a> log;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif // CONTROLLINGROOMBA_H</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../resources/json.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../resources/jsoncommand.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/dca/_roomba_connect_8h.xhtml">RoombaConnect.h</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../resources/clslog.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../resources/clsevent.h&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;QWidget&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;QTcpSocket&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;QSlider&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;QtCore&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using namespace </span>K4U;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using namespace </span>client;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">   17</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">Modes</a>{</div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09af45b2775b837b9b386ea9430c964d183">   18</a></span>&#160;    <a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09af45b2775b837b9b386ea9430c964d183">MODESTOPPED</a> = 0x00,</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a61dac7ab37744c7c8e3feac8ce334163">   19</a></span>&#160;    <a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a61dac7ab37744c7c8e3feac8ce334163">MODECLEAN</a>,</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a1e14a128992a6fea03f6221f34daa649">   20</a></span>&#160;    <a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a1e14a128992a6fea03f6221f34daa649">MODECLEANONSPOT</a>,</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a6282e7ee93cd21500a3c81235751108f">   21</a></span>&#160;    <a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09a6282e7ee93cd21500a3c81235751108f">MODEDOCK</a></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span>Ui {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a> : <span class="keyword">public</span> QWidget</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    Q_OBJECT</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>(QWidget *parent = 0);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ~<a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">void</span> allSensorData(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span> slots:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span> on_pbStop_clicked();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">void</span> cbMotorBrushVacuumHandler();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">private</span> slots:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> on_pbClean_clicked();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">void</span> on_pbCleanSpot_clicked();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> on_pbClose_clicked();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span> on_pbDock_clicked();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> on_pbDriveLeft_pressed();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> on_pbDriveBackward_pressed();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> on_pbDriveRight_pressed();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> on_pbDriveForward_pressed();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> on_pbDriveForward_released();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> on_pbDriveBackward_released();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> on_pbDriveLeft_released();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">void</span> on_pbDriveRight_released();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> on_pbDisonnect_clicked();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> on_pbDiplayLogs_clicked();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="../../df/dbf/class_ui_1_1_controllingroomba.xhtml">Ui::Controllingroomba</a> *ui;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="../../da/d64/class_k4_u_1_1cls_log.xhtml" title="Custom logging class.">clsLog</a> log;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    QTcpSocket *sock;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    QWidget *parent;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;signals:</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> disconnectDo(<span class="keywordtype">bool</span> disconnect);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> ModeChanged(<a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">Modes</a> newMode);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> setMotorBrushVacuum(<span class="keywordtype">bool</span> MainBrush, <span class="keywordtype">bool</span> SideBrush, <span class="keywordtype">bool</span> Vacuum);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">void</span> setMotorSpeed(<span class="keywordtype">int</span> setLeftMotorSpeed, <span class="keywordtype">int</span> setRightMotorSpeed);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif // CONTROLLINGROOMBA_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_713f85d3cb573ec9d5959296a71ef3d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_363bf6cd8c10418d3eb556232d62176b.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../da/d4b/controllingroomba_8h.xhtml">controllingroomba.h</a></li>
-    <li class="footer">Generated on Mon May 13 2013 10:41:39 for ESE Project 4 by
+    <li class="navelem"><a class="el" href="../../dir_171b764decf33d63a7df2fab4f4bc6d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_737cf77e168c1785336c935ecc5b9559.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../da/d4b/controllingroomba_8h.xhtml">controllingroomba.h</a></li>
+    <li class="footer">Generated on Tue Jun 11 2013 13:14:23 for ESE Project 4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

@@ -4,6 +4,8 @@ var hierarchy =
     [ "COMPortInfo", "d4/d33/class_c_o_m_port_info.xhtml", null ],
     [ "Simulator.drawObjects.drawer", "d7/d9d/class_simulator_1_1draw_objects_1_1drawer.xhtml", null ],
     [ "Simulator.drawObjects.drawObject", "d9/d92/class_simulator_1_1draw_objects_1_1draw_object.xhtml", [
+      [ "Simulator.drawObjects.drawDock", "d2/d23/class_simulator_1_1draw_objects_1_1draw_dock.xhtml", null ],
+      [ "Simulator.drawObjects.drawPool", "d5/dd8/class_simulator_1_1draw_objects_1_1draw_pool.xhtml", null ],
       [ "Simulator.drawObjects.drawRoomba", "d1/d07/class_simulator_1_1draw_objects_1_1draw_roomba.xhtml", null ],
       [ "Simulator.drawObjects.drawTable", "de/d49/class_simulator_1_1draw_objects_1_1draw_table.xhtml", null ]
     ] ],
@@ -17,5 +19,6 @@ var hierarchy =
     [ "Form", null, [
       [ "Simulator.frmMain", "d8/d1e/class_simulator_1_1frm_main.xhtml", null ]
     ] ],
-    [ "Simulator.serialServer", "d6/d97/class_simulator_1_1serial_server.xhtml", null ]
+    [ "Simulator.serialServer", "d6/d97/class_simulator_1_1serial_server.xhtml", null ],
+    [ "Simulator.clsRoomba.stDrivingState", "d5/d14/struct_simulator_1_1cls_roomba_1_1st_driving_state.xhtml", null ]
 ];

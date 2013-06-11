@@ -1,6 +1,7 @@
 var class_simulator_1_1cls_roomba =
 [
     [ "notInCorrectMode", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode.xhtml", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode" ],
+    [ "stDrivingState", "d5/d14/struct_simulator_1_1cls_roomba_1_1st_driving_state.xhtml", "d5/d14/struct_simulator_1_1cls_roomba_1_1st_driving_state" ],
     [ "clsRoomba", "db/def/class_simulator_1_1cls_roomba.xhtml#afcf4b9bd2d994d8089550731f33bce9e", null ],
     [ "clean", "db/def/class_simulator_1_1cls_roomba.xhtml#ae7067d7bb7cec3547b1f6463656382cd", null ],
     [ "drive", "db/def/class_simulator_1_1cls_roomba.xhtml#a4690c246084668e68dbf8a35069c7559", null ],
@@ -8,6 +9,7 @@ var class_simulator_1_1cls_roomba =
     [ "drivePwm", "db/def/class_simulator_1_1cls_roomba.xhtml#ae93079a1a394e8876982af3caf4a5230", null ],
     [ "full", "db/def/class_simulator_1_1cls_roomba.xhtml#a6898660bbf9ba55526b229ea10076810", null ],
     [ "getAngle", "db/def/class_simulator_1_1cls_roomba.xhtml#ac923768a6feb9f36909ac917490c07de", null ],
+    [ "getEnginestates", "db/def/class_simulator_1_1cls_roomba.xhtml#a76050cabac09b917dd9e6fc6b3cb0d50", null ],
     [ "getSensor", "db/def/class_simulator_1_1cls_roomba.xhtml#a505566961e621aa18cf12a9d57b1cdf9", null ],
     [ "getSpeed", "db/def/class_simulator_1_1cls_roomba.xhtml#af57bf8b4172978ae8f56fc3a9099c012", null ],
     [ "leds", "db/def/class_simulator_1_1cls_roomba.xhtml#aa72b18804bcc0b8cc479a968d4fd1ee2", null ],
@@ -18,10 +20,13 @@ var class_simulator_1_1cls_roomba =
     [ "power", "db/def/class_simulator_1_1cls_roomba.xhtml#a26a8b16141d102b916c71c9e07bd83e6", null ],
     [ "pwmMotors", "db/def/class_simulator_1_1cls_roomba.xhtml#afc9f4841dfb226197b39cb4ad1afa74b", null ],
     [ "querySensor", "db/def/class_simulator_1_1cls_roomba.xhtml#a291ca5c500174720deb2cb2593247c79", null ],
+    [ "roombaModeNr", "db/def/class_simulator_1_1cls_roomba.xhtml#ad6f5cb76ff46af1ca1050bbaaa440ac5", null ],
     [ "safe", "db/def/class_simulator_1_1cls_roomba.xhtml#a92fc59be16d1670753f0c5ec4ce12747", null ],
-    [ "sendDelegate", "db/def/class_simulator_1_1cls_roomba.xhtml#aeb9655d2214564399fc9ae787f5b4959", null ],
+    [ "sendDelegate", "db/def/class_simulator_1_1cls_roomba.xhtml#a0af5dd8846919805c1a2f5874fbb37e7", null ],
+    [ "setSensorValue", "db/def/class_simulator_1_1cls_roomba.xhtml#aa981756dd50655b4ee36ddd291e66c77", null ],
     [ "song", "db/def/class_simulator_1_1cls_roomba.xhtml#ac426b72c80d27703f4271c7f4486d069", null ],
     [ "spot", "db/def/class_simulator_1_1cls_roomba.xhtml#a807f00f614c0ca935ac0a53b8cbc0a6d", null ],
     [ "start", "db/def/class_simulator_1_1cls_roomba.xhtml#a095a81b82b3f19f5f54f1a5ce7803fbd", null ],
-    [ "startStream", "db/def/class_simulator_1_1cls_roomba.xhtml#a1d2073cd6bf51379e4ec3df81428d676", null ]
+    [ "startStream", "db/def/class_simulator_1_1cls_roomba.xhtml#a1d2073cd6bf51379e4ec3df81428d676", null ],
+    [ "uncontrolledTest", "db/def/class_simulator_1_1cls_roomba.xhtml#a7d25b5050d91ff9f9aedea625844de61", null ]
 ];

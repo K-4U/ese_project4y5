@@ -107,68 +107,137 @@ $(document).ready(function(){initNavTree('de/d67/roomba_8cpp_source.xhtml','../.
 </div><!--header-->
 <div class="contents">
 <a href="../../de/d67/roomba_8cpp.xhtml">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dd/da1/roomba_8h.xhtml">roomba.h</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;ui_roomba.h&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d4b/controllingroomba_8h.xhtml">controllingroomba.h</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/d4d/settingsroomba_8h.xhtml">settingsroomba.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../db/d3a/information_8h.xhtml">information.h</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d82/displaylogs_8h.xhtml">displaylogs.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="../../d5/d2a/class_roomba.xhtml#af3e068aa96496bfae8fc7cddb503d3c1">    8</a></span>&#160;<a class="code" href="../../d5/d2a/class_roomba.xhtml#af3e068aa96496bfae8fc7cddb503d3c1">Roomba::Roomba</a>(QWidget *parent) :</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    QMainWindow(parent),</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    ui(new Ui::<a class="code" href="../../d5/d2a/class_roomba.xhtml">Roomba</a>),</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    server()</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d88/ui__roomba_8h.xhtml">ui_roomba.h</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d82/displaylogs_8h.xhtml">displaylogs.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../df/dd0/_gui-_roomba_v1_80_2mytimer_8h.xhtml">mytimer.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;QtGui&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="../../d5/d2a/class_roomba.xhtml#af3e068aa96496bfae8fc7cddb503d3c1">    7</a></span>&#160;<a class="code" href="../../d5/d2a/class_roomba.xhtml#af3e068aa96496bfae8fc7cddb503d3c1">Roomba::Roomba</a>(QWidget *parent) :</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    QMainWindow(parent),</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    ui(new Ui::<a class="code" href="../../d5/d2a/class_roomba.xhtml">Roomba</a>),</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    server(),</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    controlling_roomba(new <a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>(this))</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    this-&gt;server = <span class="keyword">new</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml" title="Class that has a connection to the server.">clsServerConn</a>(<span class="stringliteral">&quot;145.74.199.121&quot;</span>, 1337);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    ui-&gt;setupUi(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="../../d5/d2a/class_roomba.xhtml#aab92a0ccb84bc12bb3be637ef761c63b">   18</a></span>&#160;<a class="code" href="../../d5/d2a/class_roomba.xhtml#aab92a0ccb84bc12bb3be637ef761c63b">Roomba::~Roomba</a>()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">delete</span> ui;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> Roomba::on_pushButton_2_clicked()</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a> *controlling_roomba = <span class="keyword">new</span> <a class="code" href="../../dc/dd3/class_controllingroomba.xhtml">Controllingroomba</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    controlling_roomba-&gt;show();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    this-&gt;close();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> Roomba::on_pushButton_3_clicked()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d1/d84/class_settings_roomba.xhtml">SettingsRoomba</a> *settings_roomba = <span class="keyword">new</span> <a class="code" href="../../d1/d84/class_settings_roomba.xhtml">SettingsRoomba</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    settings_roomba-&gt;show();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    this-&gt;close();</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    ui-&gt;<a class="code" href="../../d8/de5/class_ui___roomba.xhtml#ad35e0ce9da9c964e729c245da5853d51">setupUi</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="../../d5/d2a/class_roomba.xhtml#aab92a0ccb84bc12bb3be637ef761c63b">   16</a></span>&#160;<a class="code" href="../../d5/d2a/class_roomba.xhtml#aab92a0ccb84bc12bb3be637ef761c63b">Roomba::~Roomba</a>()</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">delete</span> ui;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> Roomba::RoombaModeChanged(<a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">Modes</a> newMode)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> toSend(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea2b2f81f8ff9d39ddbec2e3a7ee4302f6">JSONCOMMAND_NEWMODE</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;newmode&quot;</span>, newMode);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">sendCommand</a>(toSend);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> Roomba::MotorBrushVacuumChanged(<span class="keywordtype">bool</span> MainBrush, <span class="keywordtype">bool</span> SideBrush, <span class="keywordtype">bool</span> Vacuum)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> toSend(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75eaf6382176711df27b9e3aa0ceea31a640">JSONCOMMAND_SETMOTORBRUSHVACUUM</a>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;MainBrush&quot;</span>, MainBrush);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;SideBrush&quot;</span>, SideBrush);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;Vacuum&quot;</span>, Vacuum);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">sendCommand</a>(toSend);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> Roomba::on_pushButton_4_clicked()</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> Roomba::MotorSpeedChanged(<span class="keywordtype">int</span> setLeftMotorSpeed, <span class="keywordtype">int</span> setRightMotorSpeed)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="../../d1/d35/class_information.xhtml">Information</a> *information_roomba = <span class="keyword">new</span> <a class="code" href="../../d1/d35/class_information.xhtml">Information</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    information_roomba-&gt;show();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    this-&gt;close();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> toSend(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ea7e6c053b978bb786dd734f8cdea541ee">JSONCOMMAND_SETMOTOR</a>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;LeftMotorSpeed&quot;</span>, setLeftMotorSpeed);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;RightMotorSpeed&quot;</span>, setRightMotorSpeed);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">sendCommand</a>(toSend);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> Roomba::on_pushButton_5_clicked()</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> Roomba::sendSensorDataRequest()</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../df/d99/class_display_logs.xhtml">DisplayLogs</a> *display_logs = <span class="keyword">new</span> <a class="code" href="../../df/d99/class_display_logs.xhtml">DisplayLogs</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    display_logs-&gt;show();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    this-&gt;close();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> Roomba::on_pbConnect_clicked()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af4589d93eb4b606423cb4b5e4a583f4e" title="Actually connect.">doConnect</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    QList&lt;QVariant&gt; sensors;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    QVariant sendData;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    sensors.append(QVariant(7));  <span class="comment">//Bump and Wheel drops 1</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    sensors.append(QVariant(9));  <span class="comment">//Cliff Left 1</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    sensors.append(QVariant(10)); <span class="comment">//Cliff FrontLeft 1</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    sensors.append(QVariant(11)); <span class="comment">//Cliff FrontRight 1</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    sensors.append(QVariant(12)); <span class="comment">//Cliff Right 1</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    sensors.append(QVariant(19)); <span class="comment">//Distance 2</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    sensors.append(QVariant(20)); <span class="comment">//Angle 2</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    sensors.append(QVariant(21)); <span class="comment">//Charging State 1</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    sensors.append(QVariant(24)); <span class="comment">//Temperature 1</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    sensors.append(QVariant(25)); <span class="comment">//Battery Charge 2</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    sensors.append(QVariant(26)); <span class="comment">//Battery Capacity 2</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    sensors.append(QVariant(35)); <span class="comment">//OI Mode 1</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    readDataTimer-&gt;start(1000);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    sendData = QVariant::fromValue(sensors);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="../../d2/dc1/class_k4_u_1_1json_command.xhtml" title="The jsonCommand class.">jsonCommand</a> toSend(<a class="code" href="../../d6/d75/namespace_k4_u.xhtml#a7edfadcc446c5a68af90f9aec6abd75ead55e17f73c2b240d70480a7f94799df5">JSONCOMMAND_SENDSENSORDATAREQUEST</a>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    toSend.addToData(<span class="stringliteral">&quot;Sensors&quot;</span>, sendData);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459" title="Send a JSON command to the server.">sendCommand</a>(toSend);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">void</span> Roomba::readSensorData(<a class="code" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a> *theMessage)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;{</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">foreach</span>(QVariant sensor, theMessage-&gt;<a class="code" href="../../db/d8b/classshared_1_1events_1_1cls_event.xhtml#ac3acc2e80a92d28a980a50595517bf4a" title="Get data from the events data map.">getData</a>(<span class="stringliteral">&quot;Sensors&quot;</span>).toList())</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        QVariantMap sensorMap = sensor.toMap();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        this-&gt;controlling_roomba-&gt;<a class="code" href="../../dc/dd3/class_controllingroomba.xhtml#a3dc20a91eff93320716230db6f07df73">allSensorData</a>(sensorMap[<span class="stringliteral">&quot;id&quot;</span>].toInt(), sensorMap[<span class="stringliteral">&quot;value&quot;</span>].toInt());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">void</span> Roomba::disconnectDoIt(<span class="keywordtype">bool</span> disconnectDo)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span>(disconnectDo == <span class="keyword">true</span>)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#afc2a5295649e3f39c545227b3c4985cc">doDisconnect</a>();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    readDataTimer-&gt;stop();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keywordtype">void</span> Roomba::roombaConnected()</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">//Controllingroomba *controlling_roomba = new Controllingroomba(this);</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    this-&gt;hide();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    controlling_roomba-&gt;show();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    readDataTimer = <span class="keyword">new</span> QTimer(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    connect(readDataTimer, SIGNAL(timeout()),</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">this</span>, SLOT(sendSensorDataRequest()));</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    readDataTimer-&gt;start(1000);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    connect(controlling_roomba, SIGNAL(disconnectDo(<span class="keywordtype">bool</span>)),</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">this</span>, SLOT(disconnectDoIt(<span class="keywordtype">bool</span>)));</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    connect(controlling_roomba, SIGNAL(ModeChanged(<a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">Modes</a>)),</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">this</span>, SLOT(RoombaModeChanged(<a class="code" href="../../da/d4b/controllingroomba_8h.xhtml#a5ba261125d0e6e60801792a10232cc09">Modes</a>)));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    connect(controlling_roomba, SIGNAL(setMotorBrushVacuum(<span class="keywordtype">bool</span>, <span class="keywordtype">bool</span>, <span class="keywordtype">bool</span>)),</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keyword">this</span>, SLOT(MotorBrushVacuumChanged(<span class="keywordtype">bool</span>, <span class="keywordtype">bool</span>, <span class="keywordtype">bool</span>)));</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    connect(controlling_roomba, SIGNAL(setMotorSpeed(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>)),</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">this</span>, SLOT(MotorSpeedChanged(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>)));</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    connect(this-&gt;server, SIGNAL (sensorDataReceived(<a class="code" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a>*)),</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">this</span>, SLOT(readSensorData(<a class="code" href="../../d6/d35/classshared_1_1events_1_1event_sensor.xhtml">eventSensor</a>*)));</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keywordtype">void</span> Roomba::on_pbConnect_clicked()</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;{</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    QString IP;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    IP.append(ui-&gt;leIP-&gt;text());</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    this-&gt;server = <span class="keyword">new</span> <a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml" title="Class that has a connection to the server.">clsServerConn</a>(IP, 1337);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    connect(this-&gt;server, SIGNAL (connected()),</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keyword">this</span>, SLOT(roombaConnected()));</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    this-&gt;server-&gt;<a class="code" href="../../d3/d65/classclient_1_1cls_server_conn.xhtml#af4589d93eb4b606423cb4b5e4a583f4e" title="Actually connect.">doConnect</a>();</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../dir_713f85d3cb573ec9d5959296a71ef3d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_363bf6cd8c10418d3eb556232d62176b.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../de/d67/roomba_8cpp.xhtml">roomba.cpp</a></li>
-    <li class="footer">Generated on Mon May 13 2013 10:41:39 for ESE Project 4 by
+    <li class="navelem"><a class="el" href="../../dir_171b764decf33d63a7df2fab4f4bc6d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_737cf77e168c1785336c935ecc5b9559.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../de/d67/roomba_8cpp.xhtml">roomba.cpp</a></li>
+    <li class="footer">Generated on Tue Jun 11 2013 13:14:23 for ESE Project 4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

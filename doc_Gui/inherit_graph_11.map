@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$db/d8b/classshared_1_1events_1_1cls_event.xhtml" title="The main event class." alt="" coords="5,180,168,207"/>
+<area shape="rect" id="node2" href="$d1/d68/classshared_1_1events_1_1event_chat.xhtml" title="Class containing a chatEvent." alt="" coords="228,5,399,32"/>
+<area shape="rect" id="node3" href="$d6/d35/classshared_1_1events_1_1event_sensor.xhtml" title="shared::events::eventSensor" alt="" coords="221,56,406,83"/>
+<area shape="rect" id="node4" href="$d6/dfe/classshared_1_1events_1_1event_server_message.xhtml" title="Class that contains data for when the server wants to say something." alt="" coords="223,107,403,149"/>
+<area shape="rect" id="node5" href="$d5/de1/classshared_1_1events_1_1event_user_change_nick.xhtml" title="Class containing a user who changes his nick&#45;event (nick|status)" alt="" coords="228,173,399,214"/>
+<area shape="rect" id="node6" href="$d3/dcc/classshared_1_1events_1_1event_user_change_status.xhtml" title="Class containing a user who changes his status&#45;event (nick|status)" alt="" coords="228,238,399,279"/>
+<area shape="rect" id="node7" href="$dd/d05/classshared_1_1events_1_1event_user_join.xhtml" title="Class containing a user JOIN event." alt="" coords="216,304,411,331"/>
+<area shape="rect" id="node8" href="$d9/d9f/classshared_1_1events_1_1event_user_leave.xhtml" title="Class containing a user PART event." alt="" coords="228,355,399,397"/>
+</map>

@@ -13,7 +13,8 @@ var dir_02de32643c62db6df59640b35d9a9cf0 =
     [ "Program.cs", "dd/d5c/_program_8cs.xhtml", null ],
     [ "roomba.cs", "da/d97/roomba_8cs.xhtml", [
       [ "clsRoomba", "db/def/class_simulator_1_1cls_roomba.xhtml", "db/def/class_simulator_1_1cls_roomba" ],
-      [ "notInCorrectMode", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode.xhtml", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode" ]
+      [ "notInCorrectMode", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode.xhtml", "d3/def/class_simulator_1_1cls_roomba_1_1not_in_correct_mode" ],
+      [ "stDrivingState", "d5/d14/struct_simulator_1_1cls_roomba_1_1st_driving_state.xhtml", "d5/d14/struct_simulator_1_1cls_roomba_1_1st_driving_state" ]
     ] ],
     [ "serialServer.cs", "df/d4b/serial_server_8cs.xhtml", "df/d4b/serial_server_8cs" ]
 ];

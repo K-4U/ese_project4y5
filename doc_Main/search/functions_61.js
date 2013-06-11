@@ -1,7 +1,7 @@
 var searchData=
 [
   ['all',['all',['../d2/de2/class_json_1_1_features.xhtml#a9f17db1b4ebbef8c645825344959481b',1,'Json::Features']]],
-  ['append',['append',['../df/dcf/class_json_1_1_value.xhtml#a3b7c0ef3bb1958cafdf10483e93ed711',1,'Json::Value']]],
+  ['append',['append',['../df/dcf/class_json_1_1_value.xhtml#a3b7c0ef3bb1958cafdf10483e93ed711',1,'Json::Value::append()'],['../df/d1b/classbyte_array.xhtml#a91dc81d7a199f2630d619070f4d81984',1,'byteArray::append()']]],
   ['asbool',['asBool',['../df/dcf/class_json_1_1_value.xhtml#a7402c797285c020566c3db5f8ae4e940',1,'Json::Value']]],
   ['ascstring',['asCString',['../df/dcf/class_json_1_1_value.xhtml#aa900f2afa2e097086b7759f31d501efc',1,'Json::Value']]],
   ['asdouble',['asDouble',['../df/dcf/class_json_1_1_value.xhtml#a33434ed1c0217a34d04c95fa5342fd37',1,'Json::Value']]],

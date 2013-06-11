@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$d9/d92/classjson_translate_capsule___actor.xhtml" title="jsonTranslateCapsule\l_Actor" alt="" coords="145,5,292,46"/>
+<area shape="rect" id="node3" href="$da/de2/classmain_capsule___actor.xhtml" title="mainCapsule_Actor" alt="" coords="151,71,286,97"/>
+<area shape="rect" id="node4" href="$d0/d6b/classroomba_program___actor.xhtml" title="roombaProgram_Actor" alt="" coords="143,121,295,148"/>
+<area shape="rect" id="node5" href="$d1/d40/classroomba_top_capsule___actor.xhtml" title="roombaTopCapsule_Actor" alt="" coords="133,172,304,199"/>
+<area shape="rect" id="node6" href="$d8/dc1/classserial_communication_capsule___actor.xhtml" title="serialCommunicationCapsule\l_Actor" alt="" coords="123,223,314,265"/>
+<area shape="rect" id="node7" href="$d7/df9/classserial_top_capsule___actor.xhtml" title="serialTopCapsule_Actor" alt="" coords="139,289,298,316"/>
+<area shape="rect" id="node8" href="$d6/dfc/classserial_translate_capsule___actor.xhtml" title="serialTranslateCapsule\l_Actor" alt="" coords="142,341,295,382"/>
+<area shape="rect" id="node9" href="$d5/de4/classtcp_capsule___actor.xhtml" title="tcpCapsule_Actor" alt="" coords="156,407,281,433"/>
+<area shape="rect" id="node10" href="$d8/d7f/classtcp_top_capsule___actor.xhtml" title="tcpTopCapsule_Actor" alt="" coords="145,457,292,484"/>
+<area shape="rect" id="node11" href="$d4/dcc/classtop_cap___actor.xhtml" title="topCap_Actor" alt="" coords="168,508,269,535"/>
+</map>

@@ -4,6 +4,7 @@ var searchData=
   ['index',['index',['../df/d7a/class_json_1_1_value_iterator_base.xhtml#aa90591f5f7f8d2f06cc4605816b53738',1,'Json::ValueIteratorBase']]],
   ['isarray',['isArray',['../df/dcf/class_json_1_1_value.xhtml#ac8c898f93543e55b67418f94bced20af',1,'Json::Value']]],
   ['isbool',['isBool',['../df/dcf/class_json_1_1_value.xhtml#a3c3716cc7a0216cb1b654bb8f61c8d13',1,'Json::Value']]],
+  ['ischarging',['isCharging',['../da/dbb/classprogram_protocol_1_1_base.xhtml#a85973b93a6230388fac04376df00837b',1,'programProtocol::Base::isCharging()'],['../de/d54/classprogram_protocol_1_1_conjugate.xhtml#a4271d3db3515182e2e096c515f5e8aed',1,'programProtocol::Conjugate::isCharging()']]],
   ['isconvertibleto',['isConvertibleTo',['../df/dcf/class_json_1_1_value.xhtml#a7ec153803631a27abf58cba2bb1af70c',1,'Json::Value']]],
   ['isdouble',['isDouble',['../df/dcf/class_json_1_1_value.xhtml#a0ea567fa51fc808851698bef59b43626',1,'Json::Value']]],
   ['isequal',['isEqual',['../df/d7a/class_json_1_1_value_iterator_base.xhtml#a21820d6ee564e541bd118b21e4741962',1,'Json::ValueIteratorBase']]],

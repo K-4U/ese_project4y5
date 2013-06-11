@@ -10,6 +10,8 @@ var dir_2d817e41ca203892b20a90b2bfe2c008 =
       [ "drawRoomba", "d1/d07/class_simulator_1_1draw_objects_1_1draw_roomba.xhtml", "d1/d07/class_simulator_1_1draw_objects_1_1draw_roomba" ]
     ] ],
     [ "drawTable.cs", "d1/d1a/draw_table_8cs.xhtml", [
-      [ "drawTable", "de/d49/class_simulator_1_1draw_objects_1_1draw_table.xhtml", "de/d49/class_simulator_1_1draw_objects_1_1draw_table" ]
+      [ "drawTable", "de/d49/class_simulator_1_1draw_objects_1_1draw_table.xhtml", "de/d49/class_simulator_1_1draw_objects_1_1draw_table" ],
+      [ "drawPool", "d5/dd8/class_simulator_1_1draw_objects_1_1draw_pool.xhtml", "d5/dd8/class_simulator_1_1draw_objects_1_1draw_pool" ],
+      [ "drawDock", "d2/d23/class_simulator_1_1draw_objects_1_1draw_dock.xhtml", "d2/d23/class_simulator_1_1draw_objects_1_1draw_dock" ]
     ] ]
 ];

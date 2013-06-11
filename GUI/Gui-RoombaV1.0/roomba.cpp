@@ -46,11 +46,6 @@ void Roomba::sendSensorDataRequest()
 {
     QList<QVariant> sensors;
     QVariant sendData;
-    sensors.append(QVariant(7));  //Bump and Wheel drops 1
-    sensors.append(QVariant(9));  //Cliff Left 1
-    sensors.append(QVariant(10)); //Cliff FrontLeft 1
-    sensors.append(QVariant(11)); //Cliff FrontRight 1
-    sensors.append(QVariant(12)); //Cliff Right 1
     sensors.append(QVariant(19)); //Distance 2
     sensors.append(QVariant(20)); //Angle 2
     sensors.append(QVariant(21)); //Charging State 1
@@ -87,7 +82,6 @@ void Roomba::disconnectDoIt(bool disconnectDo)
 
 void Roomba::roombaConnected()
 {
-    //Controllingroomba *controlling_roomba = new Controllingroomba(this);
     this->hide();
     controlling_roomba->show();
 

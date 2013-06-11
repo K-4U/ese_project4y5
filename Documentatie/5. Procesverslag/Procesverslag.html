@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+	body { counter-reset: one; max-width: 1100px; padding: 50px; margin: 0 auto; }
+	img { max-width: 100%; }
+	
+	.chapter h1 {
+		counter-reset: two;
+		counter-increment: one;
+	}
+	.chapter h1:before {
+		content: counter(one) ". ";
+	}
+	.chapter h2 {
+		counter-reset: three;
+		counter-increment: two;
+	}
+	.chapter h2:before {
+		content: counter(one) "." counter(two) ". ";
+	}
+	.chapter h3 {
+		counter-increment: three;
+	}
+	.chapter h3:before {
+		content: counter(one) "." counter(two) "." counter(three) ". ";
+	}
+	</style>
+	<title>Procesverslag</title>
+</head>
+<body>
+
+	<section>
+		
+		<h1>Procesverslag</h1>
+		
+		<img src="assets/image001.jpg" alt="">
+		
+		<table>
+			<tr>
+				<td>Document</td>
+				<td>Procesverslag</td>
+			</tr>
+			<tr>
+				<td>Opdrachtnemer</td>
+				<td>Hogeschool van Arnhem en Nijmegen</td>
+			</tr>
+			<tr>
+				<td>Opleidingsdeel</td>
+				<td>Hoofdfase ESE</td>
+			</tr>
+			<tr>
+				<td>Vakcode</td>
+				<td>PRJ4</td>
+			</tr>
+			<tr>
+				<td>Projectgroep</td>
+				<td>ES2-y5</td>
+			</tr>
+			<tr>
+				<td>Projectleden</td>
+				<td>Koen Beckers, Erik de Boer, Léon Gersen, Maarten Kompanje & Tim Rijssemus.</td>
+			</tr>
+			<tr>
+				<td>Opdrachtgever</td>
+				<td>Ruud Elsinghorst</td>
+			</tr>
+			<tr>
+				<td>Beoordelaar</td>
+				<td>Nico Bouwman</td>
+			</tr>
+			<tr>
+				<td>Datum en plaats</td>
+				<td>21-05-2013, Arnhem</td>
+			</tr>
+			<tr>
+				<td>Versie</td>
+				<td>1.0</td>
+			</tr>
+		</table>
+		
+	</section>
+	
+	<section>
+		
+		<h1>Inhoudsopgave</h1>
+		
+	</section>
+	
+	<section class="chapter">
+		
+		<h1>Inleiding</h1>
+		
+		<p>Als projectgroep hebben wij de opdracht gekregen om een Roomba te kunnen besturen via een User Interface. Diezelfde User Interface moet ook een Roomba simulator kunnen aansturen. In dit verslag wordt beschreven hoe het proces van begin tot eind is verlopen. Het doel van dit verslag is om duidelijkheid te geven over hoe het project is verlopen. Dit document is bedoeld voor de opdrachtgever, de projectmanager en de beoordelaars.</p>
+		
+		<p>Eerst staat beschreven hoe de opdracht en probleemstelling luidt en wat de bijpassende aanpak daarvoor is. Daarna staat beschreven hoe de planning is en welke fases daarbij een rol speelden. Vervolgens staan de problemen die daarbij een rol hadden beschreven. Daarna staat de samen werking beschreven en de individuele projectvaardigheden. Ten slotte staat de conclusie beschreven.</p>
+		
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Opdracht</h1>
+	
+		<div>
+		
+			<h2>Opdracht</h2>
+		
+			<p>De opdracht is om een Roomba te kunnen besturen en het uitlezen van de sensoren die op deze Roomba zitten. De Roomba is te bedienen via de User Interface en ook de sensoren zijn uit te lezen via deze interface. Er wordt een Simulator gemaakt die dezelfde functies heeft als de “echte” Roomba. Het verwerken van alle gegevens moet in de software Rose RealTime gebeuren.</p>
+		
+		</div>
+		
+		<div>
+		
+			<h2>Probleemstelling</h2>
+		
+			<p>Hogeschool van Arnhem en Nijmegen wilde een via de computer besturen Roomba met hierbij een simulator en heeft daarvoor de hulp van de projectgroep ingeroepen. Aan de hand van een plan van aanpak wordt de opdracht door de projectgroep uitgevoerd.</p>
+		
+		</div>
+		
+		<div>
+		
+			<h2>Aanpak</h2>
+		
+			<p>De manier van aanpak was als volgt: Eerst zijn de documenten ontwikkeld:</p>
+		
+			<h3>Plan van aanpak</h3>
+		
+			<p>Als eerste is er een plan van aanpak gemaakt. Hierin staan vermeld: </p>
+			
+			<ol>
+				<li><strong>Achtergronden van het project</strong><br>Informatie over de opdrachtgever en de opdrachtnemer staan hier vermeld.</li>
+				<li><strong>Projectresultaat</strong><br>Hierin staat vermeld dat er wordt gewerkt volgens het SMART principe:
+					<br><i>S</i>pecifiek,
+					<br><i>M</i>eetbaar,
+					<br><i>A</i>cceptabel,
+					<br><i>R</i>ealistisch en
+					<br><i>T</i>ijdgebonden.</li>
+				<li><strong>Projectactiviteiten</strong><br>
+					<br>a. Initiële fase 
+					<br>b. Definitie fase 
+					<br>c. Functioneel ontwerp fase 
+					<br>d. Technisch ontwerp fase 
+					<br>e. Realisatie Fase 
+					<br>f. Nazorg Fase</li>
+				<li><strong>Projectgrenzen</strong><br>
+				Wat hoort nog wel bij het project en wat niet.</li>
+				<li><strong>Kwaliteitsbewaking</strong></li>
+				<li><strong>Projectorganisatie</strong><br>
+				Hoe ziet de projectgroep eruit.</li>
+				<li><strong>Planning</strong></li>
+				<li><strong>Kosten en baten </strong></li>
+				<li><strong>Risico's</strong></li>
+			</ol>
+			
+			<h3>Functioneel Ontwerp</h3>
+			
+			<p>In het functioneel ontwerp staat beschreven hoe het eindproduct functioneel gaat werken. Door middel van schema’s, tabellen en illustraties wordt duidelijk hoe het eindproduct werkt. Daarnaast staat er de volgende informatie in beschreven:</p>
+			
+			<ol>
+				<li>Globaal invoer-proces-uitvoer schema</li>
+				<li>Functionele specificaties</li>
+				<li>User interface</li>
+				<li>Gebruikershandleiding</li>
+			</ol>
+			
+			<h3>Technisch ontwerp</h3>
+			
+			<p>In het technisch ontwerp staat ontwerpen hoe de functionele eisen technisch worden verwerkt. Er staat in beschreven hoe de softwarestructuur er uit komt te zien en welke hardware er wordt gebruikt. Daarnaast staan de volgende schema’s in het technisch ontwerp:</p>
+			
+			<ol>
+				<li>Hiërarchisch schema</li>
+				<li>Architectuurschema</li>
+				<li>Invoer-proces-uitvoer schema</li>
+			</ol>
+			
+			<h3>Procesverslag</h3>
+			
+			<p>Hierin staat vermeld hoe het project procesmatig is verlopen. Welk project lid heeft welke taak op zich genomen en wat is het totaal aandeel van de projectleden in het project.</p>
+			
+			<h3>Productverslag</h3>
+			
+			<p>Hierin staat uitgebreid beschreven hoe het product tot stand is gekomen. Alle functionele en technische informatie is in dit rapport terug te vinden met de motivatie waarom er voor deze functionele of technische oplossing is gekozen.</p>
+			
+			<h3>Handleiding</h3>
+			
+			<p>Hierin staat vermeld hoe de Roomba gebruikt en onderhouden kan worden. Het gebruik van de simulator staat hierin ook uitgelegd. Tevens staat er vermeld hoe de Roomba aangesloten moet worden en wat te doen bij problemen.</p>
+			
+		</div>
+
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Planning</h1>
+		
+		<div>
+		
+			<h2>Planning</h2>
+		
+			<p>Er wordt gewerkt volgens de volgende structuur.</p>
+			
+			<ol>
+				<li><strong>Initiële fase</strong><br>
+				In deze fase bekijken we de haalbaarheid van het project tegenover de wensen van opdrachtgever. we bekijken alle mogelijkheden zodat het resultaat maximaal wordt.</li>
+				<li><strong>Definitie fase</strong><br>
+				In deze fase definiëren we hoe we het beste aan de eisen van de klant kunnen voldoen.</li>
+				<li><strong>Functioneel ontwerp</strong><br>
+				In deze fase maken we van de eisen een gedetailleerde functionele specificatie. Hierin staan de functies van ons product uitgebreid beschreven.</li>
+				<li><strong>Technisch ontwerp</strong><br>
+				In deze fase vertalen we de functies uit de vorige fase naar een technisch schema/ontwerp. Dit gebeurt zo nauwkeurig mogelijk zodat we bij de volgende fases niet voor onaangename verassingen komen.</li>
+				<li><strong>Realisatie fase</strong><br>
+				In deze fase wordt het technisch ontwerp uitgevoerd. Er wordt een prototype ontwikkeld om te testen of de idee.</li>
+				<li><strong>Testfase</strong><br>
+				In deze fase wordt het ontwerp getest door middel van een prototype.</li>
+				<li><strong>Nazorg</strong><br>
+				In deze fase wordt bekeken of de klant nog uitbreidingen wenst. Ook maken we in deze fase een handleiding en zorgen we voor verdere documentatie. Het voordeel van het werken op de bovenstaande manier is dat het aantal fouten dat gemaakt wordt tot het minimum is gereduceerd. Dit omdat stap voor stap elke fase gestructureerd wordt afgehandeld.</li>
+			</ol>
+			
+		</div>
+		
+		<div>
+		
+			<h2>Activiteiten</h2>
+		
+			<p>Tijdens het project hebben de volgende activiteiten afgespeeld:</p>
+			
+			<ol>
+				<li>Documentatie schrijven</li>
+				<li>Brainstormen over het ontwerp</li>
+				<li>Realiseren van het ontwerp</li>
+				<li>Testen van het ontwerp</li>
+			</ol>
+			
+		</div>
+		
+		<div>
+
+			<h2>Problemen</h2>
+		
+			<p>Tijdens het project hebben zich de volgende problemen voorgedaan:</p>
+		
+			<p>Sommige onderdelen van het project kostten meer tijd dan dat op de planning stond. Oplossing: Planning aanpassen en zoveel mogelijk de verloren tijd inhalen. Tegenvallende resultaten na het testen van code. Oplossing: Proberen de code te verbeteren.</p>
+			
+			/* */
+		
+		</div>
+	
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Samenwerking</h1>
+		
+		<div>
+		
+			<h2>Bijdragen</h2>
+			
+			<p>Op de volgende schema's is te zien wat het aandeel van welk project lid was in welk onderdeel.</p>
+			
+			<p>De bijdragefactoren zijn dus als volgt verdeeld.</p>
+			<table>
+				<tr><td>Erik</td><td>X</td></tr>
+				<tr><td>Léon</td><td>X</td></tr>
+				<tr><td>Koen</td><td>X</td></tr>
+				<tr><td>Tim</td><td>X</td></tr>
+				<tr><td>Maarten</td><td>X</td></tr>
+			</table>
+			
+		</div>
+		
+		<div>
+		
+			<h2>Resultaat</h2>
+			<p>Het resultaat van ons project is een User Interface waarmee de Roomba aan te sturen is. In deze User Interface zijn verschillende sensoren uit te lezen die op de Roomba zitten. Er is een simulator ontworpen die precies hetzelfde kan als de “echte” Roomba. Ook deze simulator is aan te sturen via de User Interface.</p>
+		
+		</div>
+			
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Vaardigheden</h1>
+		
+		<p>Aan het begin van het project was het lastig om het technisch ontwerp te maken. Dit omdat de projectgroep nog niet in detail wist wat er precies moest gebeuren. Zoals welke sensoren moeten er allemaal gebruikt worden en hoe gaan we dit met de simulator aanpakken?</p>
+		
+		<p>In de loop van het project hebben de projectleden veel technische kennis opgedaan. Iedereen heeft geprogrammeerd. De één in C++ de ander in Rose RealTime. Met Rose RealTime had voor dit project nog niemand ervaring. Door te werken met deze software hebben we veel ervaring opgedaan.</p>
+		
+		<p>Het was voor de projectleden lastig om het overzicht te bewaren over het project en om de planning bij te houden. Daarom moest er erg veel gedaan worden aan het einde van het project. De projectleden hebben geleerd om elkaar objectief en eerlijk te beoordelen. Als een project lid negatief werd beoordeeld dan probeerde dit lid het negatieve punt te verbeteren. Ook hiervan leerde het desbetreffende project lid.</p>
+		
+	</section>
+	
+	<section class="chapter">
+	
+		<h1>Individuele reflectie</h1>
+		
+		<div>
+			
+			<h2>Reflectie Maarten</h2>
+
+			<p>Ik ben uiteindelijk tevreden hoe dit project verlopen is. De opdracht was leuk en uitdagend. Met name het programmeren in Rose RealTime was een grote uitdaging. Dit omdat hier nog niemand uit onze groep er ervaring mee had. Zowel de onderlinge relatie als de samenwerking was goed. Op software gebied heeft iedereen ervaring opgedaan. Een verbeterpunt is het nakomen van de planning. Halverwege gingen we achterlopen en kwamen hierdoor in tijdnood. Ik ben tevreden met het product dat we gemaakt hebben.</p>
+
+		</div>
+
+
+		<div>
+			
+			<h2>Reflectie Koen</h2>
+			
+		</div>
+
+		<div>
+			
+			<h2>Reflectie Léon</h2>
+			
+		</div>
+
+		<div>
+			
+			<h2>Reflectie Tim</h2>
+			
+		</div>
+
+		<div>
+			
+			<h2>Reflectie Erik</h2>
+			
+		</div>
+	
+	</section>
+	
+</body>
+</html>

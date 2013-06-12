@@ -83,11 +83,11 @@
 	
 		<h1>Voorwoord</h1>
 
-		<p>Terugkijkend op dit project was dit een lastig maar geslaagd project. We hebben het allen zeer leerzaam ervaren om dieper in te gaan op het programmeren in C++ en met name het gebruik van Rose Real Time. Voordat dit project startte had nog geen van ons ervaring met Rose Real Time. Zo hebben we geleerd hoe we een TCP/IP verbinding en Seriële communicatie kunnen programmeren in Rose Real Time.</p>
+		<p>Terugkijkend op dit project was dit een lastig maar geslaagd project. We hebben het allen als zeer leerzaam ervaren om dieper in te gaan op het programmeren in C++ en met name het gebruik van Rose Real Time. Voordat dit project startte had nog geen van ons ervaring met Rose Real Time. Zo hebben we geleerd hoe we een TCP/IP verbinding en Seriële communicatie kunnen programmeren in Rose Real Time.</p>
 
 		<p>Het is goed om te zien dat de User Interface en de simulator werken in samenwerking met Rose Real Time.</p>
 
-		<p>Een verbeterpunt voor een volgend project is om alle opdrachten beter in te plannen en ons aan dit tijd schema te houden. Het kwam vaak voor dat we achter liepen op schema. Dit kwam mede doordat onze project lid (Stefan Broekman) met de opleiding stopte. Uiteindelijk is dit door hard werken geen tijdsprobleem geworden.</p>
+		<p>Een verbeterpunt voor een volgend project is om alle opdrachten beter in te plannen en ons aan het tijdschema te houden. Het kwam vaak voor dat we achter liepen op schema. Dit kwam mede doordat onze projectlid (Stefan Broekman) met de opleiding stopte. Uiteindelijk is dit door hard werken geen tijdsprobleem geworden.</p>
 
 		<p>We kijken terug op een geslaagd project en zijn tevreden met het product dat we hebben opgeleverd. Dit is onder andere mogelijk geweest door een goede samenwerking.</p>
 	
@@ -122,7 +122,7 @@
 		
 		<h1>Inleiding</h1>
 		
-		<p>Dit document is bedoeld om inzicht te krijgen in het product dat wij hebben opgeleverd. De opdracht luid als volgt: 'Lever een werkend prototype, van een Roombacontroller, die kan worden gebruikt om een iRobot Roomba robotstofzuiger mee te besturen'.</p>
+		<p>Dit document is bedoeld om uitleg en inzicht te geven over het product dat deze porjectgroep heeft opgeleverd. De opdracht luid als volgt: 'Lever een werkend prototype, van een Roombacontroller, die kan worden gebruikt om een iRobot Roomba robotstofzuiger mee te besturen'.</p>
 
 		<p>De opdrachtgever is de heer Ruud Elsinghorst, de contactpersoon met de HAN is Nico Bouwman. De leden van projectgroep 5 van de ES2 (opleiding Embedded Systems Engineering) klas zijn verantwoordelijk voor  het uitvoeren van dit project.</p>
 
@@ -146,27 +146,29 @@
 		
 			<h2>Doelstelling Functioneel ontwerp</h2>
 			
-			<p>Dit document is gemaakt in opdracht van de opdrachtgever en heeft als doel het verkrijgen van een complete specificatie van het te ontwikkelen product. Dit document geeft duidelijk weer wat de functionele werking van de nieuwe besturing is. Een onderdeel hiervan is een beschrijving van de gebruikersinterface en een ontwerp van de handleiding. Het functioneel ontwerp dient te worden voldaan aan de eisen en wensen van de opdrachtgever.</p>
+			<p>Dit document heeft als doel het verkrijgen van een complete specificatie van het te ontwikkelen product. Er wordt duidelijk gemaakt wat de functionele werking van de nieuwe besturing is. Een onderdeel hiervan is een beschrijving van de gebruikersinterface en een ontwerp van de handleiding. Het functioneel ontwerp moet voldoen aan de eisen en wensen van de opdrachtgever.</p>
 		
 		</div>
 	
 		<div>
 		
-			<h2>Globaal IPO schema</h2>
+			<h2>Globaal Input Output schema</h2>
 			
 			<h3>Het Systeem</h3>
+			
+			<p>De Roomba moet het volgende kunnen:</p>
 		
 			<ol>
-				<li>De Roomba gaat rijden(stofzuigen) als dit signaal gegeven wordt;</li>
-				<li>De Roomba ontwijkt obstakels en herkent afstapjes;</li>
-				<li>Verrichtingen van de Roomba kunnen op afstand gevolgd worden;</li>
+				<li>Gaat rijden(stofzuigen) als dit signaal gegeven wordt;</li>
+				<li>Ontwijkt obstakels en herkent afstapjes;</li>
+				<li>Verrichtingen kunnen op afstand gevolgd worden;</li>
 				<li>Instellingen kunnen op afstand worden aangebracht;</li>
-				<li>De Roomba kan via de GUI op afstand bestuurd worden;</li>
+				<li>Kan via de GUI op afstand bestuurd worden;</li>
 			</ol>
 			
 			<h3>Hoofdfunctie</h3>
 			
-			<p>De hoofdfunctie van de Roomba is het schoonmaken van een ruimte zonder obstakels te raken of ergens van af te vallen. Als de Roomba klaar is met dit proces gaat deze terug naar zijn beginpunt. De instellingen kunnen op de computer ingesteld worden.</p>
+			<p>De hoofdfunctie van de Roomba is het schoonmaken van een ruimte zonder obstakels te raken of ergens van af te vallen. Als de Roomba klaar is met dit proces gaat deze terug naar zijn beginpunt. De instellingen kunnen op de computer aangepast worden.</p>
 			
 			<h3>Subfuncties</h3>
 			
@@ -178,29 +180,32 @@
 				<li>De Roomba moet handmatig via de PC te bedienen zijn;</li>
 			</ol>
 			
-			<h3>Globaal IPO Schema</h3>
+			<h3>Globaal Input Otput Schema</h3>
 			
 			<img src="assets/image003.png" alt="">
+			<sup>Afbeelding 2.1 - Globaal IPO schema</sup>
 			
-			<h3>IPO schema's Roomba</h3>
+			<h3>Input Output schema's Roomba</h3>
 			
 			<p>Het project bestaat uit een aantal functionele blokken waartussen onderlinge connecties bestaan. Deze blokken hebben betrekking op ingevoerde en uitgevoerde gegevens, en zijn afgebeeld in onderstaande figuur.</p>
 			
 			<img src="assets/image005.png" alt="">
+			<sup>Afbeelding 2.2 - IPO schema Roomba</sup>
 			
 			<ol>
-				<li><strong>Uitlezen</strong><br>De Roomba zal tijdens zijn geautomatiseerde route een logboek bijhouden, wat in dit blok uit te lezen is.</li>
-				<li><strong>Besturing</strong><br>De externe besturing laat de gebruiker de Roomba zonder automatisch plan bedienen.</li>
-				<li><strong>GUI</strong><br>De grafische user interface, waarin de gebruiker de besturing kan bedienen, en de gegevens van de Roomba kan uitlezen.</li>
-				<li><strong>Roomba controller</strong><br>In de controller wordt de daadwerkelijke bestuursopdracht voor de Roomba opgesteld.</li>
-				<li><strong>Internet</strong><br>De GUI moet via internet benaderbaar zijn. Dit gebeurt via het TCP/IP protocol.</li>
-				<li><strong>Interface</strong><br>De Roomba beschikt over een SCI interface, maar de meeste laptops niet. Deze verbinding moet dus worden omgezet.</li>
-				<li><strong>Simulator/Roomba</strong><br>Omdat de Roomba hardware niet altijd beschikbaar is, moet een simulator worden ingericht om de Roomba controller te kunnen testen.</li>
+				<li>Uitlezen: De Roomba zal tijdens zijn geautomatiseerde route een logboek bijhouden, wat in dit blok uit te lezen is.</li>
+				<li>Besturing: De externe besturing laat de gebruiker de Roomba zonder automatisch plan bedienen.</li>
+				<li>GUI: De grafische user interface, waarin de gebruiker de besturing kan bedienen, en de gegevens van de Roomba kan uitlezen.</li>
+				<li>Roomba controller: In de controller wordt de daadwerkelijke bestuursopdracht voor de Roomba opgesteld.</li>
+				<li>Internet: De GUI moet via internet benaderbaar zijn. Dit gebeurt via het TCP/IP protocol.</li>
+				<li>Interface: De Roomba beschikt over een SCI interface, maar de meeste laptops niet. Deze verbinding moet dus worden omgezet.</li>
+				<li>Simulator/Roomba: Omdat de Roomba hardware niet altijd beschikbaar is, moet een simulator worden ingericht om de Roomba controller te kunnen testen.</li>
 			</ol>
 
 			<p>In het onderstaande schema is een globaal IPO schema van de sensoren en actuatoren weergegeven. Hier wordt verder op in gegaan in het technisch ontwerp.</p>
 			
 			<img src="assets/image007.jpg" alt="">
+			<sup>Afbeelding 2.3 - Globaal IPO schema van de sensoren en actuatoren</sup>
 			
 		</div>
 		
@@ -208,7 +213,7 @@
 			
 			<h2>Functionele specificaties</h2>
 			
-			<p>In dit hoofdstuk wordt ingegaan op de functionaliteit van het product. Het product is een werkend prototype van een Roombacontroller, welke gebruikt kan worden om een Irobot Roomba robotstofzuiger te besturen. Deze moet aan de onderstaande eisen voldoen.</p>
+			<p>In dit hoofdstuk wordt ingegaan op de functionaliteit van het product. Het product is een werkend prototype van een Roombacontroller, die gebruikt kan worden om een Irobot Roomba robotstofzuiger te besturen. Deze moet aan de onderstaande eisen voldoen.</p>
 	 
 			<strong>Functionele eisen:</strong>
 			<ol>
@@ -234,15 +239,18 @@
 		
 			<h2>User Interface</h2>
 			
-			<p>De GUI moet een heel aantal zaken bevatten. Deze worden overzichtelijk in de onderstaande grafiek weergegeven. De GUI wordt ontworpen in QT Creator met C++.</p>
+			<p>De GUI moet een heel aantal zaken bevatten. Zo zijn er instelling voor de Roomba, moet de besturing geregeld kunnen worden met behulp van de sensoren. Deze worden overzichtelijk in de onderstaande grafiek weergegeven. De GUI wordt ontworpen in QT Creator in C++.</p>
 			
 			<img src="assets/image009.png" alt="">
+			<sup>Afbeelding 2.4 - Overzicht User Interface</sup>
 			
 		</div>
 		
 		<div>
 		
 			<h2>Gebruikershandleiding</h2>
+			
+			<p>De gebruikershandleiding is bedoeld om de gebruiker van het product duidelijk te maken hoe deze gebruikt moet worden, wat te doen bij storing en hoe deze te onderhouden.</p>
 			
 			<h3>Inhoud</h3>
 
@@ -260,7 +268,7 @@
 				<li>Houd de wielen en bezems vrij van haar en andere rotzooi door regelmatig de onderkant na te kijken;</li>
 			</ol>
  
-			<strong>De Roomba heeft drie hardware matige knoppen:</strong>
+			<strong>De Roomba heeft drie hardwarematige knoppen:</strong>
 			<ol>
 				<li><strong>Spot</strong><br>De Spot knop zorgt ervoor dat de Roomba in een cirkel van ongeveer 1 meter zal schoonmaken, waarna hij terug zal gaan naar waar hij is begonnen.</li>
 				<li><strong>Clean</strong><br>De Clean knop zorgt ervoor dat de Roomba de hele kamer zal schoonmaken. Hij berekent hiervoor de beste route zodat hij binnen 60 minuten klaar is.</li>

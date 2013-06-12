@@ -16,11 +16,12 @@ class DisplayLogs : public QWidget
     Q_OBJECT
 
 public:
+    void logsUpdated(QVector<eventLogging::logEntry> logEntries);
     explicit DisplayLogs(QVector<eventLogging::logEntry> logEntries);
     ~DisplayLogs();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pbCloseDisplayLogs_clicked();
 
 private:
     Ui::DisplayLogs *ui;

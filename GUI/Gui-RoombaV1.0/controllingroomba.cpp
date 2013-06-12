@@ -1,7 +1,6 @@
 #include "controllingroomba.h"
 #include "ui_controllingroomba.h"
 #include "roomba.h"
-#include "displaylogs.h"
 #include "mytimer.h"
 #include "QtCore"
 
@@ -155,6 +154,10 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue)
 
 void Controllingroomba::logsReceived(QVector<eventLogging::logEntry> entries){
     this->logEntries = entries;
+    if(logsOpened == true)
+    {
+        display_logs->logsUpdated(entries);
+    }
 }
 
 void Controllingroomba::on_pbDisonnect_clicked()
@@ -164,6 +167,8 @@ void Controllingroomba::on_pbDisonnect_clicked()
 
 void Controllingroomba::on_pbDisplayLogs_clicked()
 {
-    DisplayLogs *display_logs = new DisplayLogs(this->logEntries);
+    display_logs = new DisplayLogs(this->logEntries);
+    logsOpened = true;
+
     display_logs->show();
 }

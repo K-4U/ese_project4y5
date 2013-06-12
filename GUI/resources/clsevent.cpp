@@ -62,7 +62,7 @@ namespace shared{
                 ret = EVENTTYPE_BRUSHVACUUMDATA;
             }else if(eventString == "CURRENTACTIONDATA"){
                 ret = EVENTTYPE_CURRENTACTIONDATA;
-            }else if(eventString == "LOGGINGDATA"){
+            }else if(eventString == "LOGS"){
                 ret = EVENTTYPE_LOGGINGDATA;
             }
             this->ourType = ret;
@@ -102,7 +102,7 @@ namespace shared{
                     ret = "CURRENTACTIONDATA";
                     break;
                 case EVENTTYPE_LOGGINGDATA:
-                    ret = "LOGGINGDATA";
+                    ret = "LOGS";
                     break;
             }
             return ret;

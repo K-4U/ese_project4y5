@@ -11,6 +11,7 @@
 #include <QSlider>
 #include <QtCore>
 #include "loggingdata.h"
+#include "displaylogs.h"
 
 using namespace K4U;
 using namespace client;
@@ -72,6 +73,8 @@ private slots:
     void on_pbDisplayLogs_clicked();
 
 private:
+    DisplayLogs *display_logs;
+    bool logsOpened;
     Ui::Controllingroomba *ui;
     clsLog log;
     QTcpSocket *sock;

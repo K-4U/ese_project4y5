@@ -88,6 +88,7 @@ namespace client{
         switch(myEvent.getType()){
             case EVENTTYPE_SENSORDATA:
                 emit this->sensorDataReceived(new eventSensor(data));
+            break;
             case EVENTTYPE_LOGGINGDATA:
                 this->handleLogs(new eventLogging(data));
             break;

@@ -49,6 +49,9 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_SETMOTORBRUSHVACUUM:
             ret = "SETMOTORBRUSHVACUUM";
             break;
+        case JSONCOMMAND_GETMOTORBRUSHVACUUM:
+            ret = "GETMOTORBRUSHVACUUM";
+            break;
         case JSONCOMMAND_READMOTOR:
             ret = "READMOTOR";
             break;
@@ -76,6 +79,8 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_NEWMODE;
     }else if(command == "SETMOTORBRUSHVACUUM"){
         set = JSONCOMMAND_SETMOTORBRUSHVACUUM;
+    }else if(command == "GETMOTORBRUSHVACUUM"){
+        set = JSONCOMMAND_GETMOTORBRUSHVACUUM;
     }else if(command == "READMOTOR"){
         set = JSONCOMMAND_READMOTOR;
     }else if(command == "SETMOTOR"){

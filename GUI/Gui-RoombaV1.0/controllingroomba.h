@@ -74,6 +74,7 @@ private:
     clsLog log;
     QTcpSocket *sock;
     QWidget *parent;
+    int totalDistance;
 
 signals:
     void disconnectDo(bool disconnect);

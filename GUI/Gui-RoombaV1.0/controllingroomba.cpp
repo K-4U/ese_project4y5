@@ -101,19 +101,63 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
 
 void Controllingroomba::allSensorData(int sensorID, int sensorValue)
 {
+    QString temp;
     switch(sensorID)
     {
-        case 7:
-            //iets
+        case 19:
+            totalDistance += sensorValue;
+            temp = "Distance: %1";
+            temp = temp.arg(sensorValue);
+            ui->lbDistance->setText(temp);
+
+            temp = "Total distance: %1";
+            temp = temp.arg(totalDistance);
+            ui->lbTotalDistance->setText(temp);
+            break;
+        case 20:
+            temp = "Angle: %1";
+            temp = temp.arg(sensorValue);
+            // angle needs fix
+            break;
+        case 21:
+            temp = "Battery charge state";
+            temp = temp.arg(sensorValue);
+            ui->lbBatteryChargingState->setText(temp);
+            break;
+        case 22:
+            temp = "Battery status";
+            temp = temp.arg(sensorValue);
+            ui->lbBattery->setText(temp);
             break;
         case 24:
-            QString temp = "Temperature: ";
-            temp += QString(sensorValue);
+            temp = "Temperature: %1";
+            temp = temp.arg(sensorValue);
             ui->lbTemperature->setText(temp);
             break;
+        case 35:
+            if(sensorValue == 0)
+            {
+                temp = "Operating mode OFF";
+                ui->lbOperatingMode->setText(temp);
+            }
+            else if(sensorValue == 1)
+            {
+                temp = "Operating mode PASSIVE";
+                ui->lbOperatingMode->setText(temp);
+            }
+            else if(sensorValue == 2)
+            {
+                temp = "Operating mode SAFE";
+                ui->lbOperatingMode->setText(temp);
+            }
+            else if(sensorValue == 3)
+            {
+                temp = "Operating mode FULL";
+                ui->lbOperatingMode->setText(temp);
+            }
+            break;
     }
-
-    //ui->cbMainBrush->setChecked();
+    //
 }
 
 void Controllingroomba::on_pbDisonnect_clicked()

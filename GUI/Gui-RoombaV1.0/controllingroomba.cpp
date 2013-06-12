@@ -19,13 +19,6 @@ Controllingroomba::~Controllingroomba()
     delete ui;
 }
 
-void Controllingroomba::on_pbDiplayLogs_clicked()
-{
-    DisplayLogs *display_logs = new DisplayLogs();
-    display_logs->show();
-    this->hide();
-}
-
 void Controllingroomba::on_pbClose_clicked()
 {
     this->parent->show();
@@ -160,7 +153,17 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue)
     }
 }
 
+void Controllingroomba::logsReceived(QVector<eventLogging::logEntry> entries){
+    this->logEntries = entries;
+}
+
 void Controllingroomba::on_pbDisonnect_clicked()
 {
     emit disconnectDo(true);
+}
+
+void Controllingroomba::on_pbDisplayLogs_clicked()
+{
+    DisplayLogs *display_logs = new DisplayLogs(this->logEntries);
+    display_logs->show();
 }

@@ -1,6 +1,5 @@
 #include "roomba.h"
 #include "ui_roomba.h"
-#include "displaylogs.h"
 #include "mytimer.h"
 #include <QtGui>
 
@@ -8,7 +7,8 @@ Roomba::Roomba(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Roomba),
     server(),
-    controlling_roomba(new Controllingroomba(this))
+    controlling_roomba(new Controllingroomba(this)),
+    log(LOGTAGS_ROOMBA)
 {
     ui->setupUi(this);
 }
@@ -59,7 +59,7 @@ void Roomba::sendSensorDataRequest()
     jsonCommand toSend(JSONCOMMAND_SENDSENSORDATAREQUEST);
     toSend.addToData("Sensors", sendData);
     this->server->sendCommand(toSend);
-    getBrushVacuum->start(1000);
+    readDataTimer->start(1000);
 }
 
 void Roomba::readSensorData(eventSensor *theMessage)
@@ -75,21 +75,25 @@ void Roomba::getMotorBrushVacuum()
 {
     jsonCommand toSend(JSONCOMMAND_GETMOTORBRUSHVACUUM);
     this->server->sendCommand(toSend);
-    getCurrentModeAction->start(1000);
+    getBrushVacuum->start(1000);
 }
 
 void Roomba::getCurrentAction()
 {
     jsonCommand toSend(JSONCOMMAND_GETCURRENTACTION);
     this->server->sendCommand(toSend);
-    getLogs->start(1000);
+    getCurrentModeAction->start(1000);
 }
 
 void Roomba::getLogging()
 {
     jsonCommand toSend(JSONCOMMAND_GETLOGS);
     this->server->sendCommand(toSend);
-    readDataTimer->start(1000);
+    getLogs->start(1000);
+}
+
+void Roomba::logsReceived(QVector<eventLogging::logEntry> entries){
+    controlling_roomba->logsReceived(entries);
 }
 
 void Roomba::roombaConnected()
@@ -105,14 +109,18 @@ void Roomba::roombaConnected()
     getBrushVacuum = new QTimer(this);
     connect(getBrushVacuum, SIGNAL(timeout()),
             this, SLOT(getMotorBrushVacuum()));
+    getBrushVacuum->start(1000);
 
     getLogs = new QTimer(this);
     connect(getLogs, SIGNAL(timeout()),
             this, SLOT(getLogging()));
+    getLogs->start(1000);
+
 
     getCurrentModeAction = new QTimer(this);
     connect(getCurrentModeAction, SIGNAL(timeout()),
             this, SLOT(getCurrentAction()));
+    getCurrentModeAction->start(1000);
 
     connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
             this, SLOT(disconnectDoIt(bool)));
@@ -128,6 +136,9 @@ void Roomba::roombaConnected()
 
     connect(this->server, SIGNAL (sensorDataReceived(eventSensor*)),
             this, SLOT(readSensorData(eventSensor*)));
+
+    connect(this->server, SIGNAL(logsReceived(QVector<eventLogging::logEntry>)),
+            this, SLOT(logsReceived(QVector<eventLogging::logEntry>)));
 }
 
 void Roomba::on_pbConnect_clicked()

@@ -2,6 +2,10 @@
 #define DISPLAYLOGS_H
 
 #include <QWidget>
+#include "loggingdata.h"
+
+using namespace shared;
+using namespace events;
 
 namespace Ui {
 class DisplayLogs;
@@ -12,7 +16,7 @@ class DisplayLogs : public QWidget
     Q_OBJECT
 
 public:
-    explicit DisplayLogs(QWidget *parent = 0);
+    explicit DisplayLogs(QVector<eventLogging::logEntry> logEntries);
     ~DisplayLogs();
 
 private slots:

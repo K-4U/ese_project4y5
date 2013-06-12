@@ -18,6 +18,7 @@
 #include "../resources/json.h"
 #include "../resources/clslog.h"
 #include "../resources/clsevent.h"
+#include "loggingdata.h"
 
 using namespace client;
 
@@ -56,6 +57,8 @@ private slots:
 
     void getLogging();
 
+    void logsReceived(QVector<eventLogging::logEntry> entries);
+
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
@@ -65,6 +68,7 @@ private:
     QTimer *getLogs;
     Controllingroomba *controlling_roomba;
 
+    clsLog log;
 signals:
 
 };

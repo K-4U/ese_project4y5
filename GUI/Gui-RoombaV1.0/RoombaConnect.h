@@ -14,6 +14,7 @@
 #include "../resources/json.h"
 #include "../resources/clsevent.h"
 #include "sensordata.h"
+#include "loggingdata.h"
 
 
 #define MAX_CONNECT_TIMEOUT_IN_MS 5000
@@ -98,6 +99,8 @@ namespace client{
              * \brief Triggered when it cannot connect.
              */
             void sgnConnectTimeout();
+
+            void logsReceived(QVector<eventLogging::logEntry>);
         public slots:
             void srvDisconnected();
             void srvConnected();
@@ -119,6 +122,9 @@ namespace client{
             bool isConnecting;
             bool inString;
             bool isDisconnected;
+
+
+            void handleLogs(eventLogging *event);
     };
 }
 

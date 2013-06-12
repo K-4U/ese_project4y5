@@ -10,6 +10,7 @@
 #include <QTcpSocket>
 #include <QSlider>
 #include <QtCore>
+#include "loggingdata.h"
 
 using namespace K4U;
 using namespace client;
@@ -34,6 +35,7 @@ public:
     ~Controllingroomba();
 
     void allSensorData(int, int);
+    void logsReceived(QVector<eventLogging::logEntry> entries);
 
 public slots:
     void on_pbStop_clicked();
@@ -67,7 +69,7 @@ private slots:
 
     void on_pbDisonnect_clicked();
 
-    void on_pbDiplayLogs_clicked();
+    void on_pbDisplayLogs_clicked();
 
 private:
     Ui::Controllingroomba *ui;
@@ -76,6 +78,8 @@ private:
     QWidget *parent;
     int totalDistance;
     int batteryCharge;
+
+    QVector<eventLogging::logEntry> logEntries;
 
 signals:
     void disconnectDo(bool disconnect);

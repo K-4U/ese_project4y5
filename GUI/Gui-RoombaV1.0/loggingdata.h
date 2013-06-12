@@ -3,6 +3,7 @@
 
 #include "../resources/clsevent.h"
 #include <QVariant>
+#include <QVector>
 
 namespace shared{
     namespace events{
@@ -10,10 +11,13 @@ namespace shared{
     class eventLogging : public clsEvent
         {
             public:
+                struct logEntry{
+                    QString time;
+                    QString entry;
+                };
                 eventLogging(QString time, QString entry);
                 eventLogging(QVariantMap data);
-                QString getTime() const;
-                QString getEntry() const;
+                QVector<logEntry> getEntries() const;
         };
     }
 }

@@ -14,6 +14,19 @@ namespace shared{
             :clsEvent(loggingData)
         { }
 
+        QVector<eventLogging::logEntry> eventLogging::getEntries() const{
+            QVector<eventLogging::logEntry> ret;
+            foreach(QVariant logEntry, this->getData("Logs").toList()){
+                eventLogging::logEntry tEntry;
+                QVariantMap logMapEntry = logEntry.toMap();
+                tEntry.time = logMapEntry["Time"].toString();
+                tEntry.entry = logMapEntry["Entry"].toString();
+                ret.append(tEntry);
+            }
+
+            return ret;
+        }
+/*
         QString eventLogging::getTime() const
         {
             return this->getData("Time").toString();
@@ -22,6 +35,6 @@ namespace shared{
         QString eventLogging::getEntry() const
         {
             return this->getData("Entry").toString();
-        }
+        }*/
     }
 }

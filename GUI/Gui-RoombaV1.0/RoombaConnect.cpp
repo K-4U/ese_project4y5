@@ -1,4 +1,6 @@
 #include "RoombaConnect.h"
+#include "displaylogs.h"
+
 #include "../resources/jsoncommand.h"
 
 namespace client{
@@ -75,11 +77,19 @@ namespace client{
         }
     }
 
+    void clsServerConn::handleLogs(eventLogging *event){
+        //Fetch all
+        emit this->logsReceived(event->getEntries());
+    }
+
+
     void clsServerConn::handleEventReceived(QVariantMap data){
         clsEvent myEvent(data);
         switch(myEvent.getType()){
             case EVENTTYPE_SENSORDATA:
-            emit this->sensorDataReceived(new eventSensor(data));
+                emit this->sensorDataReceived(new eventSensor(data));
+            case EVENTTYPE_LOGGINGDATA:
+                this->handleLogs(new eventLogging(data));
             break;
  //           case EVENTTYPE_SERVERMSG:
  //               emit this->serverMessageReceived(new eventServerMessage(data));

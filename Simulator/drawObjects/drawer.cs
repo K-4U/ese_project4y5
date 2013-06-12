@@ -40,7 +40,17 @@ namespace Simulator.drawObjects {
 		}
 
 		private void doDraw(Graphics g) {
-            g.Clear(this.pbParent.BackColor);
+
+            Region baseR = new Region(new Rectangle(0, 0, this.pbParent.Width, this.pbParent.Height));
+
+            foreach (KeyValuePair<String, drawObject> item in drawObjects) {
+                if (item.Key.Substring(0, 5) == "table") {
+                    baseR.Exclude(Rectangle.Round(item.Value.loc));
+                }
+            }
+            
+            g.FillRegion(new SolidBrush(this.pbParent.BackColor), baseR);
+         
 			foreach (KeyValuePair<String, drawObject> item in drawObjects) {
 				item.Value.draw(g);
 			}

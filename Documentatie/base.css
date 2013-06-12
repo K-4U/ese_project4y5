@@ -3,7 +3,7 @@
 	 * Elements
 	 */
 	body {
-		counter-reset: one;
+		counter-reset: one, page 1;
 		max-width: 800px;
 		margin: 0 auto;
 		font-family: Cambria;
@@ -23,6 +23,27 @@
 	section div {
 		page-break-inside: avoid;
 		padding-left: 30px;
+	}
+	
+	table {
+		page-break-inside: avoid;
+	}
+	
+	@page {
+		counter-increment: page;
+		@bottom-right {
+			content: counter(page);
+		}
+	}
+	
+	.imagelist {
+		width: 100%;
+	}
+	.imagelist td {
+		padding: 15px 0 15px 15px;
+	}
+	.imagelist td:first-child {
+		padding-left: 0;
 	}
 
 	/**

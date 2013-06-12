@@ -22,7 +22,10 @@ namespace shared{
 			EVENTTYPE_USER_JOIN, /*!< For when a user joins the channel */
 			EVENTTYPE_USER_NICK, /*!< For when a user updates his or her nick */
             EVENTTYPE_SERVERMSG, /*!< For when the server wants to tell something to the client */
-            EVENTTYPE_SENSORDATA
+            EVENTTYPE_SENSORDATA,
+            EVENTTYPE_BRUSHVACUUMDATA,
+            EVENTTYPE_CURRENTACTIONDATA,
+            EVENTTYPE_LOGGINGDATA
         };
 
 

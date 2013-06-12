@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     ../resources/clslog.cpp \
     ../resources/clsevent.cpp \
     displayLogs.cpp \
-    sensordata.cpp
+    sensordata.cpp \
+    brushvacuumdata.cpp \
+    currentactiondata.cpp \
+    loggingdata.cpp
 
 HEADERS  += roomba.h \
     controllingroomba.h \
@@ -31,7 +34,10 @@ HEADERS  += roomba.h \
     ../resources/clslog.h \
     ../resources/clsevent.h \
     displayLogs.h \
-    sensordata.h
+    sensordata.h \
+    brushvacuumdata.h \
+    loggingdata.h \
+    currentactiondata.h
 
 FORMS    += roomba.ui \
     controllingroomba.ui \

@@ -75,6 +75,7 @@ private:
     QTcpSocket *sock;
     QWidget *parent;
     int totalDistance;
+    int batteryCharge;
 
 signals:
     void disconnectDo(bool disconnect);

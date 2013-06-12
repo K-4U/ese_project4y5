@@ -36,9 +36,9 @@ void Roomba::MotorBrushVacuumChanged(bool MainBrush, bool SideBrush, bool Vacuum
 
 void Roomba::MotorSpeedChanged(int setLeftMotorSpeed, int setRightMotorSpeed)
 {
-    jsonCommand toSend(JSONCOMMAND_SETMOTOR);
-    toSend.addToData("LeftMotorSpeed", setLeftMotorSpeed);
-    toSend.addToData("RightMotorSpeed", setRightMotorSpeed);
+    jsonCommand toSend(JSONCOMMAND_SETMOTORSPEED);
+    toSend.addToData("Left", setLeftMotorSpeed);
+    toSend.addToData("Right", setRightMotorSpeed);
     this->server->sendCommand(toSend);
 }
 
@@ -54,12 +54,12 @@ void Roomba::sendSensorDataRequest()
     sensors.append(QVariant(26)); //Battery Capacity 2
     sensors.append(QVariant(35)); //OI Mode 1
 
-    readDataTimer->start(1000);
     sendData = QVariant::fromValue(sensors);
 
     jsonCommand toSend(JSONCOMMAND_SENDSENSORDATAREQUEST);
     toSend.addToData("Sensors", sendData);
     this->server->sendCommand(toSend);
+    getBrushVacuum->start(1000);
 }
 
 void Roomba::readSensorData(eventSensor *theMessage)
@@ -71,13 +71,25 @@ void Roomba::readSensorData(eventSensor *theMessage)
     }
 }
 
-void Roomba::disconnectDoIt(bool disconnectDo)
+void Roomba::getMotorBrushVacuum()
 {
-    if(disconnectDo == true)
-    {
-        this->server->doDisconnect();
-    }
-    readDataTimer->stop();
+    jsonCommand toSend(JSONCOMMAND_GETMOTORBRUSHVACUUM);
+    this->server->sendCommand(toSend);
+    getCurrentModeAction->start(1000);
+}
+
+void Roomba::getCurrentAction()
+{
+    jsonCommand toSend(JSONCOMMAND_GETCURRENTACTION);
+    this->server->sendCommand(toSend);
+    getLogs->start(1000);
+}
+
+void Roomba::getLogging()
+{
+    jsonCommand toSend(JSONCOMMAND_GETLOGS);
+    this->server->sendCommand(toSend);
+    readDataTimer->start(1000);
 }
 
 void Roomba::roombaConnected()
@@ -89,6 +101,18 @@ void Roomba::roombaConnected()
     connect(readDataTimer, SIGNAL(timeout()),
             this, SLOT(sendSensorDataRequest()));
     readDataTimer->start(1000);
+
+    getBrushVacuum = new QTimer(this);
+    connect(getBrushVacuum, SIGNAL(timeout()),
+            this, SLOT(getMotorBrushVacuum()));
+
+    getLogs = new QTimer(this);
+    connect(getLogs, SIGNAL(timeout()),
+            this, SLOT(getLogging()));
+
+    getCurrentModeAction = new QTimer(this);
+    connect(getCurrentModeAction, SIGNAL(timeout()),
+            this, SLOT(getCurrentAction()));
 
     connect(controlling_roomba, SIGNAL(disconnectDo(bool)),
             this, SLOT(disconnectDoIt(bool)));
@@ -116,4 +140,16 @@ void Roomba::on_pbConnect_clicked()
             this, SLOT(roombaConnected()));
 
     this->server->doConnect();
+}
+
+void Roomba::disconnectDoIt(bool disconnectDo)
+{
+    if(disconnectDo == true)
+    {
+        this->server->doDisconnect();
+    }
+    readDataTimer->stop();
+    getBrushVacuum->stop();
+    getCurrentModeAction->stop();
+    getLogs->stop();
 }

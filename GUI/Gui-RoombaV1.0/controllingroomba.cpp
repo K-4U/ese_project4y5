@@ -120,19 +120,20 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue)
             // angle needs fix
             break;
         case 21:
-            temp = "Battery charge state";
+            temp = "Battery charge state: %1";
             temp = temp.arg(sensorValue);
             ui->lbBatteryChargingState->setText(temp);
-            break;
-        case 22:
-            temp = "Battery status";
-            temp = temp.arg(sensorValue);
-            ui->lbBattery->setText(temp);
             break;
         case 24:
             temp = "Temperature: %1";
             temp = temp.arg(sensorValue);
             ui->lbTemperature->setText(temp);
+            break;
+        case 25:
+            batteryCharge = sensorValue;
+            break;
+        case 26:
+            ui->prBattery->setValue((100*batteryCharge)/sensorValue);
             break;
         case 35:
             if(sensorValue == 0)
@@ -157,7 +158,6 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue)
             }
             break;
     }
-    //
 }
 
 void Controllingroomba::on_pbDisonnect_clicked()

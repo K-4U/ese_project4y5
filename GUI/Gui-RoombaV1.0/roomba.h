@@ -50,10 +50,19 @@ private slots:
 
     void roombaConnected();
 
+    void getMotorBrushVacuum();
+
+    void getCurrentAction();
+
+    void getLogging();
+
 private:
     Ui::Roomba *ui;
     clsServerConn *server;
     QTimer *readDataTimer;
+    QTimer *getBrushVacuum;
+    QTimer *getCurrentModeAction;
+    QTimer *getLogs;
     Controllingroomba *controlling_roomba;
 
 signals:

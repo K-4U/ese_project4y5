@@ -58,6 +58,12 @@ namespace shared{
 				ret = EVENTTYPE_SERVERMSG;
             }else if(eventString == "SENSORDATA"){
                 ret = EVENTTYPE_SENSORDATA;
+            }else if(eventString == "BRUSHVACUUMDATA"){
+                ret = EVENTTYPE_BRUSHVACUUMDATA;
+            }else if(eventString == "CURRENTACTIONDATA"){
+                ret = EVENTTYPE_CURRENTACTIONDATA;
+            }else if(eventString == "LOGGINGDATA"){
+                ret = EVENTTYPE_LOGGINGDATA;
             }
             this->ourType = ret;
         }
@@ -88,6 +94,15 @@ namespace shared{
                     break;
                 case EVENTTYPE_SENSORDATA:
                     ret = "SENSORDATA";
+                    break;
+                case EVENTTYPE_BRUSHVACUUMDATA:
+                    ret = "BRUSHVACUUMDATA";
+                    break;
+                case EVENTTYPE_CURRENTACTIONDATA:
+                    ret = "CURRENTACTIONDATA";
+                    break;
+                case EVENTTYPE_LOGGINGDATA:
+                    ret = "LOGGINGDATA";
                     break;
             }
             return ret;

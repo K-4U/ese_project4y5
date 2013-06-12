@@ -55,11 +55,17 @@ QString jsonCommand::getCommandString() const{
         case JSONCOMMAND_READMOTOR:
             ret = "READMOTOR";
             break;
-        case JSONCOMMAND_SETMOTOR:
-            ret = "SETMOTOR";
+        case JSONCOMMAND_SETMOTORSPEED:
+            ret = "SETMOTORSPEED";
             break;
         case JSONCOMMAND_SENDSENSORDATAREQUEST:
             ret = "SENDSENSORDATAREQUEST";
+            break;
+        case JSONCOMMAND_GETCURRENTACTION:
+            ret = "GETCURRENTACTION";
+            break;
+        case JSONCOMMAND_GETLOGS:
+            ret = "GETLOGS";
             break;
         }
     return ret;
@@ -83,10 +89,14 @@ void jsonCommand::setCommandInt(QString command){
         set = JSONCOMMAND_GETMOTORBRUSHVACUUM;
     }else if(command == "READMOTOR"){
         set = JSONCOMMAND_READMOTOR;
-    }else if(command == "SETMOTOR"){
-        set = JSONCOMMAND_SETMOTOR;
+    }else if(command == "SETMOTORSPEED"){
+        set = JSONCOMMAND_SETMOTORSPEED;
     }else if(command == "SENDSENSORDATAREQUEST"){
         set = JSONCOMMAND_SENDSENSORDATAREQUEST;
+    }else if(command == "GETCURRENTACTION"){
+        set = JSONCOMMAND_GETCURRENTACTION;
+    }else if(command == "GETLOGS"){
+        set = JSONCOMMAND_GETLOGS;
     }
     this->command = set;
 }

@@ -1,7 +1,0 @@
-# This file is not read by the Makefile,
-# but changing its contents may trigger a regenerate.
-RTS_HOME = C:/Program Files (x86)/Rational/Rose RealTime/C++/TargetRTS
-# How to handle possible spaces in RTS_HOME for GNU make
-RTempty =
-RTspace = $(RTempty) $(RTempty)
-RTS_MKHOME = $(subst $(RTspace),\$(RTspace),$(RTS_HOME))

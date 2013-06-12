@@ -83,10 +83,21 @@ namespace Simulator {
             drawRoomba roombaDrawer = new drawRoomba((pbRoom.Width / 6)*2, pbRoom.Height / 2, -90);
             roombaDrawer.setSensorFunction(setSensor);
             mDrawer.addToDrawer("roomba", roombaDrawer);
+
 			mDrawer.addToDrawer("table-1", new drawTable(0, 260));
-			mDrawer.addToDrawer("table-2", new drawTable(260, 0));
-			mDrawer.addToDrawer("table-3", new drawTable(520, 260));
-			mDrawer.addToDrawer("table-4", new drawTable(260, 520));
+
+			mDrawer.addToDrawer("table-2-1", new drawTable(260, 0));
+            mDrawer.addToDrawer("table-2-2", new drawTable(520, 0));
+            mDrawer.addToDrawer("table-2-3", new drawTable(780, 0));
+
+			mDrawer.addToDrawer("table-3", new drawTable(1040, 260));
+
+			mDrawer.addToDrawer("table-4-1", new drawTable(260, 520));
+            mDrawer.addToDrawer("table-4-2", new drawTable(520, 400));
+            mDrawer.addToDrawer("table-4-3", new drawTable(780, 520));
+
+
+
        //     mDrawer.addToDrawer("pool_1", new drawPool(550, 400));
         //    mDrawer.addToDrawer("dock_1", new drawDock(800, 200));
         }

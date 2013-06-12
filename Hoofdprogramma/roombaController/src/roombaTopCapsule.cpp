@@ -89,7 +89,6 @@ void roombaTopCapsule_Actor::sendRoombaCommandSetMotors( void )
 	std::cout << "RMB: MainBrush: " << mainBrush << endl;
 
 	byteArray b;
-	std::cout << "Starting full mode" << endl;
 	b.append(130);
 	toMain.sendData(b).send();
 	b.clear();
@@ -155,6 +154,9 @@ int roombaTopCapsule_Actor::_followOutV( RTBindingEnd & rtg_end, int rtg_compId,
 INLINE_METHODS void roombaTopCapsule_Actor::transition1_comReady( const void * rtdata, roombaProtocol::Base * rtport )
 {
 	// {{{USR
+	logEntry l("Roomba Ready");
+	this->log.push_back(l);
+
 	cout << "RMB: Ready received!" << endl;
 	//Start query
 	byteArray b;
@@ -291,6 +293,11 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	                this->isOperating = true;
 	                int battLevel = (100 * this->roomba.getSensor(25)) / this->roomba.getSensor(26);
 	                program.start(battLevel).send();
+	                Sleep(100);
+	                program.isCharging(this->roomba.getSensor(21)).send();
+	                b.append(131);
+
+	                toMain.sendData(b).send();
 	            }
 	            cout << "clean" << endl;
 	            break;
@@ -317,16 +324,24 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	            cout << "DOCK" << endl;
 	            break;
 	    }
-	}else if(c.command == "MOTORSPEED"){
+	}else if(c.command == "SETMOTORSPEED"){
 	    if(!this->isOperating){
 	        b.append(145);
-	        b.append(c.data["right"].asInt() >> 8);
-	        b.append(c.data["right"].asInt() & 0xFF);
-	        b.append(c.data["left"].asInt() >> 8);
-	        b.append(c.data["left"].asInt() & 0xFF);
+	        b.append(c.data["Right"].asInt() >> 8);
+	        b.append(c.data["Right"].asInt() & 0xFF);
+	        b.append(c.data["Left"].asInt() >> 8);
+	        b.append(c.data["Left"].asInt() & 0xFF);
 
 	        toMain.sendData(b).send();
-	    }       
+
+	        std::stringstream ss;
+	        ss << "Changed speed. L: " << c.data["Left"].asInt() << " R: " << c.data["Right"].asInt();
+
+	        cout << ss.str() << endl;
+
+	        logEntry l(ss.str());
+	        this->log.push_back(l);
+	    }
 	}else if(c.command == "SENDSENSORDATAREQUEST"){
 	    const Json::Value sensors = c.data["Sensors"];
 	    //Build event:
@@ -357,27 +372,61 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 
 	}else if(c.command == "GETCURRENTACTION"){
 	    //What are we doing?
-	    Json::Value root;
+	    Json::Value event;
+	    Json::Value eventData;
+	    event["type"] = "CURRENTACTION";
+
 	    if(this->isOperating){
-	        root["CurrentAction"] = 1;
+	        eventData["CurrentAction"] = 1;
 	    }else if(this->searchingDock){
-	        root["CurrentAction"] = 2;
+	        eventData["CurrentAction"] = 2;
 	    }else{
-	        root["CurrentAction"] = 0;
+	        eventData["CurrentAction"] = 0;
 	    }
 
-	    jsonCommand ret("CURRENTACTION", root);
+	    event["data"] = eventData;
+	    Json::Value root;
+	    root["event"] = event;
+
+	    jsonCommand ret("EVENT", root);
 
 	    toMain.sendCommand(ret).send();
 	}else if(c.command == "GETMOTORBRUSHVACUUM"){
 	    clsRoomba::clsMotors m = this->roomba.getMotors();
-	    Json::Value root;
-	    root["MainBrush"] = m.mainBrush;
-	    root["SideBrush"] = m.sideBrush;
-	    root["Vacuum"] = m.vacuum;
+	    Json::Value event;
+	    Json::Value eventData;
+	    event["type"] = "MOTORBRUSHVACUUM";
+	    
+	    eventData["MainBrush"] = m.mainBrush;
+	    eventData["SideBrush"] = m.sideBrush;
+	    eventData["Vacuum"] = m.vacuum;
 
-	    jsonCommand ret("MOTORBRUSHVACUUM", root);
+	    event["data"] = eventData;
+	    Json::Value root;
+	    root["event"] = event;
+
+	    jsonCommand ret("EVENT", root);
+	    toMain.sendCommand(ret).send();
+	}else if(c.command == "GETLOGS"){
+	    Json::Value event;
+	    Json::Value eventData;
+	    event["type"] = "LOGS";
+	    
+	    Json::Value logsToSend;
+
+	    for ( int index = 0; index < this->log.size(); ++index ){  
+	        logsToSend.append(this->log[index].generateJson());
+	    }
+	    eventData["Logs"] = logsToSend;
+
+	    event["data"] = eventData;
+	    Json::Value root;
+	    root["event"] = event;
+	    jsonCommand ret("EVENT", root);
+	    toMain.sendCommand(ret).send();
 	}
+
+
 	// }}}USR
 }
 // }}}RME
@@ -551,6 +600,11 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition8_stopProgram( const int *
 	this->isOperating = false;
 
 
+	std::stringstream ss;
+	ss << "Program stopped. RC: " << *rtdata;
+
+	logEntry l(ss.str());
+	this->log.push_back(l);
 	// }}}USR
 }
 // }}}RME
@@ -570,6 +624,12 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition9_drive( const clsDriveCom
 
 
 	toMain.sendData(b).send();
+
+	std::stringstream ss;
+	ss << "Changed speed. L: " << dr.left << " R: " << dr.right;
+
+	logEntry l(ss.str());
+	this->log.push_back(l);
 	// }}}USR
 }
 // }}}RME
@@ -591,6 +651,15 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition11_SetMotors( const clsRoo
 
 	roomba.setMotors(m.mainBrush, m.sideBrush, m.vacuum);
 	this->sendRoombaCommandSetMotors();
+	// }}}USR
+}
+// }}}RME
+
+// {{{RME transition ':TOP:Ready:J51B8418C0150:Log'
+INLINE_METHODS void roombaTopCapsule_Actor::transition12_Log( const logEntry * rtdata, programProtocol::Conjugate * rtport )
+{
+	// {{{USR
+	this->log.push_back(*rtdata);
 	// }}}USR
 }
 // }}}RME
@@ -704,6 +773,17 @@ INLINE_CHAINS void roombaTopCapsule_Actor::chain11_SetMotors( void )
 	enterState( 2 );
 }
 
+INLINE_CHAINS void roombaTopCapsule_Actor::chain12_Log( void )
+{
+	// transition ':TOP:Ready:J51B8418C0150:Log'
+	rtgChainBegin( 2, "Log" );
+	exitState( rtg_parent_state );
+	rtgTransitionBegin();
+	transition12_Log( (const logEntry *)msg->data, (programProtocol::Conjugate *)msg->sap() );
+	rtgTransitionEnd();
+	enterState( 2 );
+}
+
 INLINE_CHAINS void roombaTopCapsule_Actor::chain1_comReady( void )
 {
 	// transition ':TOP:waitForCom:J519B68FC0073:comReady'
@@ -799,6 +879,9 @@ void roombaTopCapsule_Actor::rtsBehavior( int signalIndex, int portIndex )
 				case programProtocol::Conjugate::rti_setMotors:
 					chain11_SetMotors();
 					return;
+				case programProtocol::Conjugate::rti_log:
+					chain12_Log();
+					return;
 				default:
 					break;
 				}
@@ -863,7 +946,7 @@ const RTActor_class roombaTopCapsule_Actor::rtg_class =
   , roombaTopCapsule_Actor::rtg_ports
   , 0
   , (const RTLocalBindingDescriptor *)0
-  , 5
+  , 6
   , roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields
 };
 
@@ -987,6 +1070,18 @@ const RTFieldDescriptor roombaTopCapsule_Actor::rtg_roombaTopCapsule_fields[] =
 	  , RTOffsetOf( roombaTopCapsule_Actor, searchingDock )
 		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
 	  , &RTType_bool
+		// }}}RME
+		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
+	  , (const RTTypeModifier *)0
+		// }}}RME
+	}
+	// }}}RME
+	// {{{RME classAttribute 'log'
+  , {
+		"log"
+	  , RTOffsetOf( roombaTopCapsule_Actor, log )
+		// {{{RME tool 'OT::CppTargetRTS' property 'TypeDescriptor'
+	  , (const RTObject_class *)0
 		// }}}RME
 		// {{{RME tool 'OT::CppTargetRTS' property 'GenerateTypeModifier'
 	  , (const RTTypeModifier *)0

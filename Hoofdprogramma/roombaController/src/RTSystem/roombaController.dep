@@ -1,6 +1,6 @@
 roombaController_SYSTARGET = RTSystem/roombaController.dep
 roombaController_SYSDEPS = \
-	E:/repositories/git/ese_project4y5/Hoofdprogramma/test.rtmdl \
+	E:/repositories/git/ese_project4y5/Hoofdprogramma/roombaController.rtmdl \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTComponents.rtcmppkg \
 	C:/Program\ Files\ (x86)/Rational/Rose\ RealTime/C++/RTClasses.rtlogpkg
 
@@ -48,6 +48,8 @@ roombaController_SYSDEPS_CS = \
 	tcpProtocol.h \
 	tcpTopCapsule.cpp \
 	tcpTopCapsule.h \
+	logEntry.cpp \
+	logEntry.h \
 	mainCapsule.cpp \
 	mainCapsule.h \
 	topCap.cpp \

@@ -65,7 +65,7 @@ const RTProtocolDescriptor programProtocol::Conjugate::rt_class =
   , &programProtocol::Base::rt_class
   , "programProtocol"
   , 0
-  , 8
+  , 9
   , programProtocol::Conjugate::rt_signals
 #if RTRUNTIMEBC
   , &RTProtocolDescriptor::getUnknownGlobalSignal, &RTProtocolDescriptor::getUnknownLocalSignal
@@ -88,6 +88,11 @@ const RTSignalDescriptor programProtocol::Conjugate::rt_signals[] =
 		"getSensor"
 	  , &RTType_byteArray
 	  , programProtocol::Conjugate::rti_getSensor
+	}
+  , {
+		"log"
+	  , &RTType_logEntry
+	  , programProtocol::Conjugate::rti_log
 	}
   , {
 		"playSong"

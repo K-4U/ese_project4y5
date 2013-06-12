@@ -4,7 +4,7 @@ RTempty =
 RTspace = $(RTempty) $(RTempty)
 RTS_MKHOME = $(subst $(RTspace),\$(RTspace),$(RTS_HOME))
 include $(RTS_MKHOME)/codegen/rtgen.mk
-MODEL = E:/repositories/git/ese_project4y5/Hoofdprogramma/test.rtmdl
+MODEL = E:/repositories/git/ese_project4y5/Hoofdprogramma/roombaController.rtmdl
 COMPONENT = "Component View::roombaController"
 RTGEN_FLAGS = -codesync -model $(MODEL) -component $(COMPONENT) -spacedeps bs
 include RTSystem/roombaController.dep

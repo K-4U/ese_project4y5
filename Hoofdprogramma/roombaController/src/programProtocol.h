@@ -11,6 +11,7 @@
 #include <byteArray.h>
 #include <clsDriveCommand.h>
 #include <clsRoomba.h>
+#include <logEntry.h>
 
 struct programProtocol
 {
@@ -122,6 +123,14 @@ struct programProtocol
 		// }}}RME
 		inline RTOutSignal setMotors( const clsRoomba::RTTypedValue_clsMotors & data );
 		// }}}RME
+		// {{{RME inSignal 'log'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTOutSignal log( const RTTypedValue_logEntry & data );
+		// }}}RME
 		static const RTProtocolDescriptor rt_class;
 
 	private:
@@ -140,10 +149,11 @@ struct programProtocol
 		  , rti_getSensor
 		  , rti_doSend
 		  , rti_setMotors
+		  , rti_log
 		};
 
 	protected:
-		enum { rtiLast_programProtocol = rti_setMotors };
+		enum { rtiLast_programProtocol = rti_log };
 
 	public:
 		// {{{RME outSignal 'playSong'
@@ -195,6 +205,14 @@ struct programProtocol
 		   }}}USR */
 		// }}}RME
 		inline RTInSignal setMotors( void );
+		// }}}RME
+		// {{{RME outSignal 'log'
+		// {{{RME general 'documentation'
+		/* {{{USR
+
+		   }}}USR */
+		// }}}RME
+		inline RTInSignal log( void );
 		// }}}RME
 		// {{{RME outSignal 'start'
 		// {{{RME general 'documentation'
@@ -386,6 +404,18 @@ inline RTOutSignal programProtocol::Base::setMotors( const clsRoomba::RTTypedVal
 }
 // }}}RME
 
+// {{{RME inSignal 'log'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTOutSignal programProtocol::Base::log( const RTTypedValue_logEntry & data )
+{
+	return RTOutSignal( this, Conjugate::rti_log, data.data, data.type );
+}
+// }}}RME
+
 inline programProtocol::Conjugate::Conjugate( void )
 	: RTRootProtocol()
 {
@@ -466,6 +496,18 @@ inline RTInSignal programProtocol::Conjugate::doSend( void )
 inline RTInSignal programProtocol::Conjugate::setMotors( void )
 {
 	return RTInSignal( this, rti_setMotors );
+}
+// }}}RME
+
+// {{{RME outSignal 'log'
+// {{{RME general 'documentation'
+/* {{{USR
+
+   }}}USR */
+// }}}RME
+inline RTInSignal programProtocol::Conjugate::log( void )
+{
+	return RTInSignal( this, rti_log );
 }
 // }}}RME
 

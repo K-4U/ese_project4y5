@@ -15,9 +15,15 @@ class clsRoomba;
 // {{{RME tool 'OT::Cpp' property 'HeaderPreface'
 // {{{USR
 #include <clsRoomba.h>
+#include <logEntry.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../include/json.h"
+#include <vector>
+#include <iostream>
+
+#include <sstream>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -71,6 +77,9 @@ private:
 	// }}}RME
 	// {{{RME classAttribute 'searchingDock'
 	bool searchingDock;
+	// }}}RME
+	// {{{RME classAttribute 'log'
+	vector< logEntry > log;
 	// }}}RME
 
 protected:
@@ -137,6 +146,9 @@ protected:
 	// {{{RME transition ':TOP:Ready:J51B718480383:SetMotors'
 	INLINE_METHODS void transition11_SetMotors( const clsRoomba::clsMotors * rtdata, programProtocol::Conjugate * rtport );
 	// }}}RME
+	// {{{RME transition ':TOP:Ready:J51B8418C0150:Log'
+	INLINE_METHODS void transition12_Log( const logEntry * rtdata, programProtocol::Conjugate * rtport );
+	// }}}RME
 
 private:
 	INLINE_CHAINS void chain4_Initial( void );
@@ -148,6 +160,7 @@ private:
 	INLINE_CHAINS void chain9_drive( void );
 	INLINE_CHAINS void chain10_doSend( void );
 	INLINE_CHAINS void chain11_SetMotors( void );
+	INLINE_CHAINS void chain12_Log( void );
 	INLINE_CHAINS void chain1_comReady( void );
 
 public:

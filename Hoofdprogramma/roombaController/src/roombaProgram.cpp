@@ -95,7 +95,8 @@ int roombaProgram_Actor::calculateTimeToRotateAngle( int leftSpeed, int rightSpe
 	//When we aply some magic formulas to that(see below)
 	//We get the angle the roomba has rotated
 	double d = dDistance / 2;
-	double f = (d / 225);
+	//double f = (d / 225);
+	double f = (d / 258);
 	double sinCalc = asin(f);
 	double angleAdj = ((sinCalc / M_PI) * 180);
 	angleAdj = (angleAdj * 2);
@@ -188,7 +189,7 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.right){
 	    this->drive(-100, 100);
-	    int theTime = calculateTimeToRotateAngle(-100, 100, -1);
+	    int theTime = calculateTimeToRotateAngle(-100, 100, -10);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}
@@ -215,7 +216,6 @@ INLINE_METHODS void roombaProgram_Actor::transition2_batteryTooLow( const int * 
 	// {{{USR
 	Roomba.playSong(0).send();
 	Roomba.stopProgram(0).send(); //RC 0 = Low Battery
-
 	// }}}USR
 }
 // }}}RME
@@ -226,6 +226,9 @@ INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rt
 	// {{{USR
 	cout << "Program starting!" << endl;
 	Roomba.playSong(1).send();
+
+	logEntry l("Program started");
+	Roomba.log(l).send();
 	// }}}USR
 }
 // }}}RME
@@ -298,7 +301,7 @@ INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, pr
 INLINE_METHODS void roombaProgram_Actor::transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	speedRight = 150;
+	speedRight = 120;
 	// }}}USR
 }
 // }}}RME

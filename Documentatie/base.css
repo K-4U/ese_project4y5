@@ -1,12 +1,12 @@
 
+	/**
+	 * Elements
+	 */
 	body {
 		counter-reset: one;
 		max-width: 800px;
 		margin: 0 auto;
 		font-family: Cambria;
-	}
-	h1 {
-	
 	}
 	h2 {
 		font-size: 1.3em;
@@ -24,7 +24,10 @@
 		page-break-inside: avoid;
 		padding-left: 30px;
 	}
-	
+
+	/**
+	 * Numbering
+	 */
 	.chapter h1 {
 		counter-reset: two;
 		counter-increment: one;
@@ -45,25 +48,12 @@
 	.chapter h3:before {
 		content: counter(one) "." counter(two) "." counter(three) ". ";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * prism.js default theme for JavaScript, CSS and HTML
 	 * Based on dabblet (http://dabblet.com)
 	 * @author Lea Verou
 	 */
-
 	code[class*="language-"],
 	pre[class*="language-"] {
 		color: black;
@@ -151,7 +141,6 @@
 	.token.keyword {
 		color: #07a;
 	}
-
 
 	.token.regex,
 	.token.important {

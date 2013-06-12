@@ -536,7 +536,7 @@
 	
 			<p>Een van de lastige zaken is het bereken van de raakvlakken in de simulator. Dit is uiteindelijk met de volgende - naar code omgezette - berekening opgelost:</p>
 	
-<pre>
+<pre><code class="language-clike">
 if (!collisionArea.IsEmpty) {
 	// shows collisions on screen;
 	g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
@@ -553,7 +553,7 @@ if (!collisionArea.IsEmpty) {
 
 	}
 }
-</pre>
+</code></pre>
 <sub>Code voor het berekenen van raakhoeken.</sub>
 	
 			<p>In deze code wordt rekening gehouden van de raakvlakken van de 'tafels' en de Roomba, evenals met orientatie te opzichte van het horizontale vlak.</p>
@@ -614,6 +614,8 @@ if (!collisionArea.IsEmpty) {
 		<strong>Programmalistings</strong>
 	
 	</section>
+	
+	<script src="../prism.js"></script>
 	
 </body>
 </html>

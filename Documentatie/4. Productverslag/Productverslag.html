@@ -83,7 +83,7 @@
 	
 		<h1>Voorwoord</h1>
 
-		<p>Terugkijkend op dit project was dit een lastig maar geslaagd project. We hebben het allen als zeer leerzaam ervaren om dieper in te gaan op het programmeren in C++ en met name het gebruik van Rose Real Time. Voordat dit project startte had nog geen van ons ervaring met Rose Real Time. Zo hebben we geleerd hoe we een TCP/IP verbinding en Seriële communicatie kunnen programmeren in Rose Real Time.</p>
+		<p>Terugkijkend op dit project was dit een lastig maar geslaagd project. We hebben het allen als zeer leerzaam ervaren om dieper in te gaan op het programmeren in C++ en met name het gebruik van Rose Real Time. Bij aanvang van dit project had nog geen van ons ervaring met Rose Real Time. De groep heeft over veel verschillende onderwerpen kennis opgedaan, zoals het opzetten van een TCP/IP verbinding of het programmeren van een seriële communicatie in Rose Real Time.</p>
 
 		<p>Het is goed om te zien dat de User Interface en de simulator werken in samenwerking met Rose Real Time.</p>
 
@@ -101,7 +101,7 @@
 			<thead>
 				<tr>
 					<th>Datum</th>
-					<th>Opgewaardeerd door</th>
+					<th>Opwaarderder</th>
 					<th>Revisie</th>
 					<th>Commentaar</th>
 				</tr>
@@ -109,12 +109,20 @@
 			<tbody>
 				<tr>
 					<td>04-06-2013</td>
-					<td>0</td>
 					<td>Maarten Kompanje</td>
-					<td>Start productrapport</td>				
+					<td>0.9</td>
+					<td>Conceptrapport</td>				
+				</tr>
+				<tr>
+					<td>18-06-2013</td>
+					<td>Léon Gersen</td>
+					<td>1.0</td>
+					<td>Eindversie</td>				
 				</tr>
 			</tbody>
 		</table>
+	
+		<p><em>N.b: (sub)revisies en revisies voor versie 0.9 (conceptrapport) zijn niet opgenomen.</em></p>
 	
 	</section>
 
@@ -265,7 +273,7 @@
 				<li>Leeg de Roomba en zijn filter na drie keer gebruiken;</li>
 				<li>Maak de borstels van de Roomba na drie keer gebruiken schoon;</li>
 				<li>Laat de Roomba altijd verbonden met zijn oplader;</li>
-				<li>Houd de wielen en bezems vrij van haar en andere rotzooi door regelmatig de onderkant na te kijken;</li>
+				<li>Houd de wielen en bezems vrij van haar en andere rommel door regelmatig de onderkant na te kijken;</li>
 			</ol>
  
 			<strong>De Roomba heeft drie hardwarematige knoppen:</strong>
@@ -276,15 +284,27 @@
 			</ol>
  
 			<strong>Batterijleven:</strong>
-			<p>Om het meeste uit de batterij te halen raden wij u aan om de Roomba altijd weg te zetten terwijl deze aan de oplader hangt.</p>
+			<p>Om het meeste uit de batterij te halen raad de projectgroep u aan om de Roomba altijd op te bergen terwijl deze met het laadstation verbonden is.</p>
 			 
 			<p>Het beste is om de batterij volledige op te laden voordat u een schoonmaak ronde begint. Een volle batterij kan één schoonmaakronde volhouden.</p>
 			 
 			<p>Als de Roomba voor de eerste keer wordt opgeladen, of een lange tijd niet is opgeladen geweest, zal de Roomba een speciale 16 uur durende laadcyclus starten. Dit verlengt de levensduur van de batterij.</p>
 			
+			<strong>Simulator:</strong>
+			
+			<p>/* */</p>
+			
+			<strong>Besturing:</strong>
+			
+			<p>/* */</p>
+			
+			<strong>User interface:</strong>
+			
+			<p>/* */</p>
+			
 			<h3>Fouten en oplossingen</h3>
 			
-			<p>Er kunnen zich complicaties voordoen tijdens het gebruik van het apparaat. In de officiële user manual zullen wij de gebruiker zo goed mogelijk proberen te begeleiden om deze eventuele problemen op te lossen. Bij een probleem zullen we de gebruiker door middel van een overzichtelijke tabel, dat je hieronder kunt vinden, eerst zelf een aantal standaard controles laten uitvoeren.</p>
+			<p>Er kunnen zich complicaties voordoen tijdens het gebruik van het apparaat. In de officiële user manual zal de gebruiker zo goed mogelijk proberen te begeleid worden om deze eventuele problemen op te lossen. Bij een probleem zullen we de gebruiker door middel van een overzichtelijke tabel, dat je hieronder kunt vinden, eerst zelf een aantal standaard controles laten uitvoeren.</p>
 			
 			<img src="assets/image011.png" alt=""><br>
 			<img src="assets/image013.png" alt=""><br>
@@ -433,7 +453,7 @@
 		
 			<h2>Doestelling realisatiefase</h2>
 			
-			<p>Het doel van de realisatiefase is om een werkend eindproduct te krijgen. Alle onderdelen die wij hebben toegepast in dit project worden hierin beschreven en zal bestaan uit Rose RealTime, User Interface en de Simulator.</p>
+			<p>Het doel van de realisatiefase is om een werkend eindproduct te krijgen. Alle gebruikte onderdelen die zijn toegepast in dit project worden hierin beschreven. Deze onderdelen zijn Rose RealTime, de User Interface en de Simulator.</p>
 		
 		</div>
 	
@@ -455,7 +475,7 @@
 	
 			<h3>Seriële communicatie met Rose RealTime </h3>
 	
-			<p>Voor het sturen van de informatie naar de Roomba wordt gebruik gemaakt van Seriële communicatie. Hierbij is gebruik gemaakt van een library (<a href="http://www.teuniz.net/RS-232/">http://www.teuniz.net/RS-232/</a>). In deze library staan verschillende functies waarvan wij de volgende functies hebben gebruikt:</p>
+			<p>Voor het sturen van de informatie naar de Roomba wordt gebruik gemaakt van Seriële communicatie. Hierbij is gebruik gemaakt van een library (<a href="http://www.teuniz.net/RS-232/">http://www.teuniz.net/RS-232/</a>). In deze library staan verschillende functies waarvan de volgende functies zijn gebruikt:</p>
 			
 			<code>int RS232_OpenComport(int comport_number, int baudrate)</code>
 			

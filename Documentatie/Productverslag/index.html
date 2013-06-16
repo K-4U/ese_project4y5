@@ -7,7 +7,7 @@
 </head>
 <body>
 
-	<section>
+	<div>
 	
 		<h1>Productrapport</h1>
 		<h2>iRobot Roomba</h2>
@@ -57,15 +57,15 @@
 			</tr>
 		</table>
 	
-	</section>
+	</div>
 	
-	<section>
+	<div>
 		
 		<h1>Inhoudsopgave</h1>
 		
-	</section>
+	</div>
 
-	<section>
+	<div>
 	
 		<h1>Summary</h1>
 		
@@ -77,9 +77,9 @@
 
 		<p>We thought it was a fun project. There was a lot of challenge , as no one had before programmed with Rose RealTime. Here we take a lot of experience. We are pleased to be working within the group.</p>
 	
-	</section>
+	</div>
 
-	<section>
+	<div>
 	
 		<h1>Voorwoord</h1>
 
@@ -91,9 +91,9 @@
 
 		<p>We kijken terug op een geslaagd project en zijn tevreden met het product dat we hebben opgeleverd. Dit is onder andere mogelijk geweest door een goede samenwerking.</p>
 	
-	</section>
+	</div>
 
-	<section>
+	<div>
 	
 		<h1>Revisiehistorie</h1>
 	
@@ -124,9 +124,9 @@
 	
 		<p><em>N.b: (sub)revisies en revisies voor versie 0.9 (conceptrapport) zijn niet opgenomen.</em></p>
 	
-	</section>
+	</div>
 
-	<section class="chapter">
+	<div class="chapter">
 		
 		<h1>Inleiding</h1>
 		
@@ -142,9 +142,9 @@
 		
 		<p>Naast deze inleiding is dit verslag in 5 hoofdstukken opgebouwd. In het tweede hoofdstuk worden de functionele specificaties van het project beschreven. In dit hoofdstuk is te vinden wat het systeem moet doen, en hoe de gebruiker het systeem ziet. Daarnaast worden functionele blokken en connecties daartussen gedefineerd. In hoofdstuk 3 wordt het technisch ontwerp uit de doeken gedaan. Dit hoofdstuk bevat blok- en hiërarchische schema's, maakt een onderscheid tussen hardware en software en weegt alternatieve mogelijkheden tegen elkaar af. In hoofdstuk 4 wordt de realisatie van het project beschreven. Dit deel van het verslag bevat detailontwerpen, beschrijvingen van toegepaste oplossingen en onderdelen en gemaakte berekeningen. Het testen van het project wordt in het vijfde hoofdstuk toegelicht. Naast een beschrijving van de testopzet en testresultaten komen tests per module en integratietest aan bod. In hoofdstuk 6 zijn conclusies en aanbevelingen toegevoegd, en worden product aanvullingen, uitgebreidingen en verbeteringen behandeld.</p>
 	
-	</section>
+	</div>
 	
-	<section class="chapter">
+	<div class="chapter">
 	
 		<h1>Functioneel ontwerp</h1>
 	
@@ -313,9 +313,9 @@
 			
 		</div>
 
-	</section>
+	</div>
 
-	<section class="chapter">
+	<div class="chapter">
 	
 		<h1>Technisch Ontwerp</h1>
 		
@@ -443,9 +443,9 @@
 			
 		</div>
 	
-	</section>
+	</div>
 	
-	<section class="chapter">
+	<div class="chapter">
 	
 		<h1>Realisatie</h1>
 	
@@ -548,11 +548,11 @@
 	
 			<p>Omdat de Roomba over verschillende methoden van motoraansturing beschikt, is er aan het begin een keuze gemaakt om een van deze manieren te selecteren, en de andere niet te gebruiken. De roomba kan aangestuurd worden doormiddel van PWM waarden voor beide wielen, een vectorwaarde voor snelheid met een hoek waarin deze vector moet worden uitgevoerd en een directe snelheidsinput in millimeter per seconde voor de wielen. De groep heeft hierin een <strong>afweging</strong> gemaakt. Het aansturen met een PWM waarde is niet relevant voor de besturing vanuit de ontwikkelde controller, en is daarnaast niet goed voor te stellen. Deze aansturingsmogelijkheid viel dus af. De aansturing met een vector is evengoed lastig in te schatten, aangezien het besturen van achterwaartse bewegingen fouten in de door de Roomba aangeleverde data oplevert. Daarmee valt deze mogelijkheid dus ook af. Er is dus gekozen voor mogelijkheid drie; aansturen doormiddel van directe snelheden. Deze aansturingsmethode is dus ook de basis geweest van het opbouwen van de simulator.</p>
 	
-			<p>De tests voor het tekenen van van de Roomba in het simulatorscherm leverde een <strong>probleem</strong> op. Alle combinaties van voor en achterwaartse snelheden kwamen goed uit de tekentests, met uitzondering van een variabele (dus niet aan beide zijden gelijke) tegengestelde snelheid. Een dergelijke beweging zou een spiraal-achtige vorm opleveren, maar werd niet correct afgehandeld door de ontworpen berekeningen. Besloten is om deze uiterste <italic>edge-case</italic> niet te implementeren, aangezien achteruit rijden met de Roomba onhandig is. De Roomba beschikt namelijk niet over sensoren aan de achterzijde.</p>
+			<p>De tests voor het tekenen van van de Roomba in het simulatorscherm leverde een <strong>probleem</strong> op. Alle combinaties van voor en achterwaartse snelheden kwamen goed uit de tekentests, met uitzondering van een variabele (dus niet aan beide zijden gelijke) tegengestelde snelheid. Een dergelijke beweging zou een spiraal-achtige vorm opleveren, maar werd niet correct afgehandeld door de ontworpen berekeningen. Besloten is om deze uiterste <em>edge-case</em> niet te implementeren, aangezien achteruit rijden met de Roomba onhandig is. De Roomba beschikt namelijk niet over sensoren aan de achterzijde.</p>
 	
-			<p>De simulator zelf is geschreven in C#, waarbij gebruikt is gemaakt van de Microsoft Visual Studio <italic>IDE</italic>. De tekeningen van de Roomba stofzuiger en andere elementen in de 'kamer' zijn basaal, en bestaan uit simpele - al dan niet ingekleurde - geometrische vormen. In de simulator is een tabel opgenomen waarin verschillende waarden kunnen worden weergegeven die op de daadwerkelijke stofzuiger overduidelijk zijn, maar die niet in de tekening zijn opgenomen, zoals de aan/uit status van de stofzuiger.</p>
+			<p>De simulator zelf is geschreven in C#, waarbij gebruikt is gemaakt van de Microsoft Visual Studio <em>IDE</em>. De tekeningen van de Roomba stofzuiger en andere elementen in de 'kamer' zijn basaal, en bestaan uit simpele - al dan niet ingekleurde - geometrische vormen. In de simulator is een tabel opgenomen waarin verschillende waarden kunnen worden weergegeven die op de daadwerkelijke stofzuiger overduidelijk zijn, maar die niet in de tekening zijn opgenomen, zoals de aan/uit status van de stofzuiger.</p>
 	
-			<p>De simulatorcode bestaat uit een aantal onderdelen, waarvan het onderdeel 'serieel' als eerst ontwikkeld is. Dit onderdeel communiceerd met gebruik van een aantal standaard <italic>libraries</italic> met de COM-poort op de pc, waarvan vervolgens data kan worden gelezen. Deze data wordt vervolgens omgezet naar bruikbare gegevens, door deze door een <italic>Lookup-table</italic> te halen. In deze tabel staan gegevens over pakket-grootte en aan te roepen functies. Zodra de data correct ontvangen is, worden de benodigde functies aangeroepen. Deze functies behandelen de waarden die in de simulator worden bijgehouden. Los daarvan voert de simulatie elke 100 milliseconden een simulatie-routine uit, de de gevolgen van deze waarden berekent, plot en tekent op het scherm.</p>
+			<p>De simulatorcode bestaat uit een aantal onderdelen, waarvan het onderdeel 'serieel' als eerst ontwikkeld is. Dit onderdeel communiceerd met gebruik van een aantal standaard <em>libraries</em> met de COM-poort op de pc, waarvan vervolgens data kan worden gelezen. Deze data wordt vervolgens omgezet naar bruikbare gegevens, door deze door een <em>Lookup-table</em> te halen. In deze tabel staan gegevens over pakket-grootte en aan te roepen functies. Zodra de data correct ontvangen is, worden de benodigde functies aangeroepen. Deze functies behandelen de waarden die in de simulator worden bijgehouden. Los daarvan voert de simulatie elke 100 milliseconden een simulatie-routine uit, de de gevolgen van deze waarden berekent, plot en tekent op het scherm.</p>
 	
 			<p>Een van de lastige zaken is het bereken van de raakvlakken in de simulator. Dit is uiteindelijk met de volgende - naar code omgezette - berekening opgelost:</p>
 	
@@ -590,17 +590,17 @@ if (!collisionArea.IsEmpty) {
 	
 		</div>
 	
-	</section>
+	</div>
 	
-	<section class="chapter">
+	<div class="chapter">
 		
 		<h1>Testen en resultaten</h1>
 	
 		/* */
 	
-	</section>
+	</div>
 	
-	<section class="chapter">
+	<div class="chapter">
 		
 		<h1>Conclusie en aanbevelingen</h1>
 	
@@ -610,9 +610,9 @@ if (!collisionArea.IsEmpty) {
 
 		<p>We zijn tevreden over het eindproduct. Via de User Interface kunnen we de Roomba alles laten doen. Via dezelfde User Interface kunnen we tevens de simulator aansturen.</p>
 	
-	</section>
+	</div>
 	
-	<section>
+	<div>
 		
 		<h1>Literatuurlijst</h1>
 	
@@ -625,15 +625,15 @@ if (!collisionArea.IsEmpty) {
 		<h4>Voorbeeld warme drankautomaat op HAN Scholar</h4>
 		<a href="http://nl.wikipedia.org/wiki/TCP/IP">http://nl.wikipedia.org/wiki/TCP/IP</a>
 
-	</section>
+	</div>
 	
-	<section>
+	<div>
 		
 		<h1>Bijlagen</h1>
 	
 		<strong>Programmalistings</strong>
 	
-	</section>
+	</div>
 	
 	<script src="../prism.js"></script>
 	

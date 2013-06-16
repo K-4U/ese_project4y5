@@ -17,10 +17,10 @@
 	img {
 		max-width: 100%;
 	}
-	section {
+	body > div {
 		page-break-after: always;
 	}
-	section div {
+	body > div div {
 		page-break-inside: avoid;
 		padding-left: 30px;
 	}

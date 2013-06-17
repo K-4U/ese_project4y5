@@ -58,9 +58,9 @@ namespace shared{
 				ret = EVENTTYPE_SERVERMSG;
             }else if(eventString == "SENSORDATA"){
                 ret = EVENTTYPE_SENSORDATA;
-            }else if(eventString == "BRUSHVACUUMDATA"){
+            }else if(eventString == "MOTORBRUSHVACUUM"){
                 ret = EVENTTYPE_BRUSHVACUUMDATA;
-            }else if(eventString == "CURRENTACTIONDATA"){
+            }else if(eventString == "CURRENTACTION"){
                 ret = EVENTTYPE_CURRENTACTIONDATA;
             }else if(eventString == "LOGS"){
                 ret = EVENTTYPE_LOGGINGDATA;
@@ -96,10 +96,10 @@ namespace shared{
                     ret = "SENSORDATA";
                     break;
                 case EVENTTYPE_BRUSHVACUUMDATA:
-                    ret = "BRUSHVACUUMDATA";
+                    ret = "MOTORBRUSHVACUUM";
                     break;
                 case EVENTTYPE_CURRENTACTIONDATA:
-                    ret = "CURRENTACTIONDATA";
+                    ret = "CURRENTACTION";
                     break;
                 case EVENTTYPE_LOGGINGDATA:
                     ret = "LOGS";

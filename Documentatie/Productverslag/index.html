@@ -206,14 +206,14 @@
 			<h3>Globaal Input Otput Schema</h3>
 			
 			<img src="assets/image003.png" alt="">
-			<sup>Afbeelding 2.1 - Globaal IPO schema</sup>
+			<sub>Afbeelding 2.1 - Globaal IPO schema</sub>
 			
 			<h3>Input Output schema's Roomba</h3>
 			
 			<p>Het project bestaat uit een aantal functionele blokken waartussen onderlinge connecties bestaan. Deze blokken hebben betrekking op ingevoerde en uitgevoerde gegevens, en zijn afgebeeld in onderstaande figuur.</p>
 			
 			<img src="assets/image005.png" alt="">
-			<sup>Afbeelding 2.2 - IPO schema Roomba</sup>
+			<sub>Afbeelding 2.2 - IPO schema Roomba</sub>
 			
 			<ol>
 				<li>Uitlezen: De Roomba zal tijdens zijn geautomatiseerde route een logboek bijhouden, wat in dit blok uit te lezen is.</li>
@@ -228,7 +228,7 @@
 			<p>In het onderstaande schema is een globaal IPO schema van de sensoren en actuatoren weergegeven. Hier wordt verder op in gegaan in het technisch ontwerp.</p>
 			
 			<img src="assets/image007.jpg" alt="">
-			<sup>Afbeelding 2.3 - Globaal IPO schema van de sensoren en actuatoren</sup>
+			<sub>Afbeelding 2.3 - Globaal IPO schema van de sensoren en actuatoren</sub>
 			
 		</div>
 		
@@ -265,7 +265,7 @@
 			<p>De GUI moet een heel aantal zaken bevatten. Zo zijn er instelling voor de Roomba, moet de besturing geregeld kunnen worden met behulp van de sensoren. Deze worden overzichtelijk in de onderstaande grafiek weergegeven. De GUI wordt ontworpen in QT Creator in C++.</p>
 			
 			<img src="assets/image009.png" alt="">
-			<sup>Afbeelding 2.4 - Overzicht User Interface</sup>
+			<sub>Afbeelding 2.4 - Overzicht User Interface</sub>
 			
 		</div>
 		
@@ -354,19 +354,19 @@
 			<p>In Afbeelding 3.1 is het schema van het gehele systeem te zien. Het gehele systeem bestaat uit het Docking station en de Roomba.</p>
 			
 			<img src="assets/image019.jpg" alt="">
-			<sup>Afbeelding 3.1 - Hierarchisch schema systeem</sup>
+			<sub>Afbeelding 3.1 - Hierarchisch schema systeem</sub>
 			
 			<h3>iRobot Roomba</h3>
 			
 			<img src="assets/image021.jpg" alt="">
-			<sup>Afbeelding 3.2 - Hierarchisch schema Roomba</sup>
+			<sub>Afbeelding 3.2 - Hierarchisch schema Roomba</sub>
 			
 			<h3>Dock</h3>
 			
 			<p>Afbeelding 3.3 laat het schema van het Docking station zien. De volgende onderdelen zijn aanwezig op het Docking station: Infrarood om te zenden naar de Roomba waardoor deze het docking station terug kan vinden. Laden voor het opladen van de Roomba.</p>
 			
 			<img src="assets/image023.jpg" alt="">
-			<sup>Afbeelding 3.3 - Hierarchisch schema Docking station</sup>
+			<sub>Afbeelding 3.3 - Hierarchisch schema Docking station</sub>
 			
 		</div>
 		
@@ -491,7 +491,7 @@
 			<p>Een TCP/IP verbinding is een netwerkprotocol om via het netwerk verbinding met een andere computer te krijgen. Deze verbinding wordt gebruikt om de User Interface te koppelen met het systeem waar Rose RealTime op draait. Het state diagram van de TCP/IP capsule is te zien in Afbeelding 4.1.</p>
 			
 			<img src="assets/image061.png" alt="">
-			<sup>Afbeelding 4.1 - State diagram TCP/IP verbinding</sup>
+			<sub>Afbeelding 4.1 - State diagram TCP/IP verbinding</sub>
 	
 			<p>Als eerste wordt de Winsock geïnitialiseerd. Dit zorgt voor  verbinding tussen en TCP/IP en Windows. Er wordt gekeken of de opgegeven poort en het lokale adres correct is(adressCorrect).  Nu wordt er gekeken of er gebruik wordt gemaakt van een IPv4v of IPv6(ValidSocket) verbinding. De verbinding is nu succesvol(bindingSuccesfull). Nadat de socket is geboden aan een IP-adres en een poort moet de moet de verbinding worden gelegd. Dit gebeurd in listening. Als deze verbinding correct is wordt de verbinding geaccepteerd(acceptConnection). De data wordt nu in getBytes binnengehaald. Dit choise point zit in een lus om alle data die binnenkomt te ontvangen. Als de connectie nu beëindigd wordt komt deze in de Reset terecht, is dit niet het geval gaat deze weer naar het acceptConnection choise point. Als elk ander beschreven choise point de waarde false krijgt gaat deze terug naar de reset en wordt er een foutmelding weergegeven.</p>
 	
@@ -547,7 +547,7 @@
 			<p>Het state diagram van door de seriële communicatie is te zien in Afbeelding 4.2.</p>
 
 			<img src="assets/image062.png" alt="">
-			<sup>Afbeelding 4.2 - State diagram Seriële communicatie</sup>
+			<sub>Afbeelding 4.2 - State diagram Seriële communicatie</sub>
 
 			<p>Er wordt eerst gekeken of de COM-poort geopend kan worden. Vervolgens wordt de buffer binnengehaald die serieel verstuurd is (getChars). Deze choise point zit in een lus zodat constant gecontroleerd kan worden over er nieuwe data binnenkomt. In een ander deel van het programma zal de COM-poort gesloten worden.</p>
 	
@@ -558,7 +558,7 @@
 			<p>In Afbeeldig 4.3 is de topCapsule van het Roomba deel te zien. Hierin wordt de status van de verschillende sensoren van de Roomba opgevraagd.</p>
 			
 			<img src="assets/image063.png" alt="">
-			<sup>Afbeelding 4.3 - topCapsule Roomba</sup>
+			<sub>Afbeelding 4.3 - topCapsule Roomba</sub>
 	
 	
 			/* */
@@ -629,7 +629,7 @@ if (!collisionArea.IsEmpty) {
 		
 		<h1>Conclusie en aanbevelingen</h1>
 	
-		<p>Het uiteindelijke resultaat is een User Interface die een Roomba kan laten rijden en verschillende sensoren kan uitlezen in samenwerking met Rose RealTime. Er is een simulator gemaakt die gebaseerd is op de echte Roomba. Deze simulator is ook aan te sturen met de User Interface. De simulator bestaat uit een “virtuele” Roomba. In het programma zijn objecten, muren en kuilen geplaatst. Deze zal de Roomba ontwijken.</p>
+		<p>De hoofdvraag voor het realiseren van dit product was: hoe komen we tot een succesvol eindproduct? Het uiteindelijke resultaat is een User Interface die een Roomba kan laten rijden en verschillende sensoren kan uitlezen in samenwerking met Rose RealTime. Er is een simulator gemaakt die gebaseerd is op de echte Roomba. Deze simulator is ook aan te sturen met de User Interface. De simulator bestaat uit een “virtuele” Roomba. In het programma zijn objecten, muren en kuilen geplaatst. Deze zal de Roomba ontwijken. Er kan gesproken van een succesvol eindproduct</p>
 
 		<p>We hebben niet kunnen realiseren dat het mogelijk is het zien welke afstand en/of welke weg de Roomba heeft afgelegd. Dit komt door het gebrek aan tijd. Wat een mogelijk verbeterpunt aan het product kan zijn is het maken van een Android app, zodat het mogelijk is de Roomba User Interface op een smartphone te kunnen gebruiken.</p>
 

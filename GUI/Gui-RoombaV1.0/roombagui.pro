@@ -42,3 +42,6 @@ HEADERS  += roomba.h \
 FORMS    += roomba.ui \
     controllingroomba.ui \
     displaylogs.ui
+
+RESOURCES += \
+    roombaresource.qrc

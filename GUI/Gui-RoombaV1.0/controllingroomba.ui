@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>469</width>
-    <height>392</height>
+    <width>509</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pbDisonnect">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>280</y>
+     <x>260</x>
+     <y>300</y>
      <width>201</width>
      <height>81</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="pbDisplayLogs">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>210</y>
+     <x>260</x>
+     <y>230</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -42,7 +42,7 @@
   <widget class="QGroupBox" name="gbroombaStatus">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>240</x>
      <y>20</y>
      <width>211</width>
      <height>181</height>
@@ -148,8 +148,8 @@
     <rect>
      <x>10</x>
      <y>180</y>
-     <width>201</width>
-     <height>171</height>
+     <width>211</width>
+     <height>211</height>
     </rect>
    </property>
    <property name="title">
@@ -158,14 +158,27 @@
    <widget class="QPushButton" name="pbDriveRight">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>50</y>
-      <width>75</width>
-      <height>23</height>
+      <x>120</x>
+      <y>70</y>
+      <width>101</width>
+      <height>61</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pbDriveRight {
+			 image:  url(:/buttons/right.png)10 20 10 20;
+             border-top: 10px transparent;
+             border-bottom: 10px transparent;
+             border-right: 20px transparent;
+             border-left: 20px transparent;
+         }
+
+QPushButton#pbDriveRight:pressed {
+			image: url(:/buttons/right2.png)10 20 10 20;
+ }</string>
+    </property>
     <property name="text">
-     <string>Right</string>
+     <string/>
     </property>
     <property name="shortcut">
      <string>Right</string>
@@ -174,8 +187,8 @@
    <widget class="QSlider" name="hsMotorSpeed">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>140</y>
+      <x>10</x>
+      <y>170</y>
       <width>160</width>
       <height>19</height>
      </rect>
@@ -197,13 +210,26 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>20</y>
+      <y>0</y>
       <width>75</width>
-      <height>23</height>
+      <height>61</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pbDriveForward {
+			 image: url(:/buttons/up.png) 10 20 10 20;
+             border-top: 10px transparent;
+             border-bottom: 10px transparent;
+             border-right: 20px transparent;
+             border-left: 20px transparent;
+         }
+
+QPushButton#pbDriveForward:pressed {
+			image: url(:/buttons/up2.png)10 20 10 20;
+ }</string>
+    </property>
     <property name="text">
-     <string>Forward</string>
+     <string/>
     </property>
     <property name="shortcut">
      <string>Up</string>
@@ -215,14 +241,27 @@
    <widget class="QPushButton" name="pbDriveBackward">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>80</y>
-      <width>75</width>
-      <height>23</height>
+      <x>40</x>
+      <y>70</y>
+      <width>121</width>
+      <height>61</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pbDriveBackward {
+			 image: url(:/buttons/down.png) 10 20 10 20;
+             border-top: 10px transparent;
+             border-bottom: 10px transparent;
+             border-right: 20px transparent;
+             border-left: 20px transparent;
+         }
+
+QPushButton#pbDriveBackward:pressed {
+			image: url(:/buttons/down2.png)10 20 10 20;
+ }</string>
+    </property>
     <property name="text">
-     <string>Backward</string>
+     <string/>
     </property>
     <property name="shortcut">
      <string>Down</string>
@@ -231,8 +270,8 @@
    <widget class="QLabel" name="lbMotorSpeed">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>120</y>
+      <x>10</x>
+      <y>150</y>
       <width>111</width>
       <height>16</height>
      </rect>
@@ -244,37 +283,32 @@
    <widget class="QPushButton" name="pbDriveLeft">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>75</width>
-      <height>23</height>
+      <x>-30</x>
+      <y>70</y>
+      <width>131</width>
+      <height>61</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#pbDriveLeft {
+			 image: url(:/buttons/left.png) 10 20 10 20;
+             border-top: 10px transparent;
+             border-bottom: 10px transparent;
+             border-right: 20px transparent;
+             border-left: 20px transparent;
+         }
+
+QPushButton#pbDriveLeft:pressed {
+			image: url(:/buttons/left2.png)10 20 10 20;
+ }</string>
+    </property>
     <property name="text">
-     <string>Left</string>
+     <string/>
     </property>
     <property name="shortcut">
      <string>Left</string>
     </property>
    </widget>
-   <zorder>pbDriveBackward</zorder>
-   <zorder>pbDriveForward</zorder>
-   <zorder>hsMotorSpeed</zorder>
-   <zorder>lbMotorSpeed</zorder>
-   <zorder>pbDriveLeft</zorder>
-   <zorder>pbDriveRight</zorder>
-   <zorder>pbDriveRight</zorder>
-   <zorder>pbDriveForward</zorder>
-   <zorder>hsMotorSpeed</zorder>
-   <zorder>pbDriveBackward</zorder>
-   <zorder>lbMotorSpeed</zorder>
-   <zorder>pbDriveLeft</zorder>
-   <zorder>pbDriveRight</zorder>
-   <zorder>hsMotorSpeed</zorder>
-   <zorder>pbDriveForward</zorder>
-   <zorder>pbDriveBackward</zorder>
-   <zorder>lbMotorSpeed</zorder>
-   <zorder>pbDriveLeft</zorder>
   </widget>
   <widget class="QGroupBox" name="gbSetModes">
    <property name="geometry">
@@ -392,12 +426,6 @@
     </property>
    </widget>
   </widget>
-  <zorder>pbDisonnect</zorder>
-  <zorder>pbDisplayLogs</zorder>
-  <zorder>gbroombaStatus</zorder>
-  <zorder>gbDrive</zorder>
-  <zorder>gbSetModes</zorder>
-  <zorder>lbTemperature</zorder>
  </widget>
  <resources/>
  <connections>

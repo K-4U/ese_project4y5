@@ -3,6 +3,7 @@ var searchData=
   ['getcommand',['getCommand',['../d2/dc1/class_k4_u_1_1json_command.xhtml#a2db6f8da6bc5a4c677201f044b69bb10',1,'K4U::jsonCommand']]],
   ['getcommandstring',['getCommandString',['../d2/dc1/class_k4_u_1_1json_command.xhtml#ac6bc0d606265f47db9bae5a6a40cb244',1,'K4U::jsonCommand']]],
   ['getdata',['getData',['../db/d8b/classshared_1_1events_1_1cls_event.xhtml#ac3acc2e80a92d28a980a50595517bf4a',1,'shared::events::clsEvent::getData()'],['../d2/dc1/class_k4_u_1_1json_command.xhtml#ae829f45e11a50fa00024a5d9951cd748',1,'K4U::jsonCommand::getData(const QString key)'],['../d2/dc1/class_k4_u_1_1json_command.xhtml#ab408a8b051e005a7156e19ea8a1f7f3a',1,'K4U::jsonCommand::getData() const ']]],
+  ['getentries',['getEntries',['../df/d92/classshared_1_1events_1_1event_logging.xhtml#aee08d1704e1cf46ef53d496db2ea2b7c',1,'shared::events::eventLogging']]],
   ['geteventtype',['getEventType',['../db/d8b/classshared_1_1events_1_1cls_event.xhtml#abd4a458aec7673de426a8995a349bf4b',1,'shared::events::clsEvent']]],
   ['getid',['getID',['../d6/d35/classshared_1_1events_1_1event_sensor.xhtml#aea074336e3315a46124c57e1519d542e',1,'shared::events::eventSensor']]],
   ['getlevel',['getLevel',['../d6/dfe/classshared_1_1events_1_1event_server_message.xhtml#a578aacc79570f1c7302c6c69be564ac1',1,'shared::events::eventServerMessage']]],

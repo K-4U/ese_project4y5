@@ -1,7 +1,15 @@
 var dir_737cf77e168c1785336c935ecc5b9559 =
 [
+    [ "brushvacuumdata.cpp", "d8/da8/brushvacuumdata_8cpp.xhtml", null ],
+    [ "brushvacuumdata.h", "d1/da1/brushvacuumdata_8h.xhtml", [
+      [ "eventBrushVacuumData", "dd/d16/classshared_1_1events_1_1event_brush_vacuum_data.xhtml", "dd/d16/classshared_1_1events_1_1event_brush_vacuum_data" ]
+    ] ],
     [ "controllingroomba.cpp", "d5/dd2/controllingroomba_8cpp.xhtml", null ],
     [ "controllingroomba.h", "da/d4b/controllingroomba_8h.xhtml", "da/d4b/controllingroomba_8h" ],
+    [ "currentactiondata.cpp", "d1/d1a/currentactiondata_8cpp.xhtml", null ],
+    [ "currentactiondata.h", "de/d51/currentactiondata_8h.xhtml", [
+      [ "eventCurrentActionData", "d2/de8/classshared_1_1events_1_1event_current_action_data.xhtml", "d2/de8/classshared_1_1events_1_1event_current_action_data" ]
+    ] ],
     [ "displaylogs.cpp", "d1/d10/displaylogs_8cpp.xhtml", null ],
     [ "displaylogs.h", "d7/d82/displaylogs_8h.xhtml", [
       [ "DisplayLogs", "df/d99/class_display_logs.xhtml", "df/d99/class_display_logs" ]
@@ -9,6 +17,11 @@ var dir_737cf77e168c1785336c935ecc5b9559 =
     [ "information.cpp", "da/d0b/information_8cpp.xhtml", null ],
     [ "information.h", "db/d3a/information_8h.xhtml", [
       [ "Information", "d1/d35/class_information.xhtml", "d1/d35/class_information" ]
+    ] ],
+    [ "loggingdata.cpp", "d6/deb/loggingdata_8cpp.xhtml", null ],
+    [ "loggingdata.h", "da/d69/loggingdata_8h.xhtml", [
+      [ "eventLogging", "df/d92/classshared_1_1events_1_1event_logging.xhtml", "df/d92/classshared_1_1events_1_1event_logging" ],
+      [ "logEntry", "dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry.xhtml", "dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry" ]
     ] ],
     [ "main.cpp", "d8/da8/_gui-_roomba_v1_80_2main_8cpp.xhtml", "d8/da8/_gui-_roomba_v1_80_2main_8cpp" ],
     [ "mytimer.cpp", "d6/d07/_gui-_roomba_v1_80_2mytimer_8cpp.xhtml", null ],

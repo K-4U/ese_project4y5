@@ -1,7 +1,10 @@
 var hierarchy =
 [
     [ "shared::events::clsEvent", "db/d8b/classshared_1_1events_1_1cls_event.xhtml", [
+      [ "shared::events::eventBrushVacuumData", "dd/d16/classshared_1_1events_1_1event_brush_vacuum_data.xhtml", null ],
       [ "shared::events::eventChat", "d1/d68/classshared_1_1events_1_1event_chat.xhtml", null ],
+      [ "shared::events::eventCurrentActionData", "d2/de8/classshared_1_1events_1_1event_current_action_data.xhtml", null ],
+      [ "shared::events::eventLogging", "df/d92/classshared_1_1events_1_1event_logging.xhtml", null ],
       [ "shared::events::eventSensor", "d6/d35/classshared_1_1events_1_1event_sensor.xhtml", null ],
       [ "shared::events::eventServerMessage", "d6/dfe/classshared_1_1events_1_1event_server_message.xhtml", null ],
       [ "shared::events::eventUserChangeNick", "d5/de1/classshared_1_1events_1_1event_user_change_nick.xhtml", null ],
@@ -11,6 +14,7 @@ var hierarchy =
     ] ],
     [ "K4U::clsLog", "da/d64/class_k4_u_1_1cls_log.xhtml", null ],
     [ "K4U::jsonCommand", "d2/dc1/class_k4_u_1_1json_command.xhtml", null ],
+    [ "shared::events::eventLogging::logEntry", "dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry.xhtml", null ],
     [ "QMainWindow", null, [
       [ "Roomba", "d5/d2a/class_roomba.xhtml", null ]
     ] ],
@@ -32,15 +36,18 @@ var hierarchy =
       [ "SettingsRoomba", "d1/d84/class_settings_roomba.xhtml", null ]
     ] ],
     [ "Ui_Controllingroomba", "d3/d58/class_ui___controllingroomba.xhtml", [
+      [ "Ui::Controllingroomba", "df/dbf/class_ui_1_1_controllingroomba.xhtml", null ],
       [ "Ui::Controllingroomba", "df/dbf/class_ui_1_1_controllingroomba.xhtml", null ]
     ] ],
     [ "Ui_DisplayLogs", "db/dfa/class_ui___display_logs.xhtml", [
+      [ "Ui::DisplayLogs", "d8/d0f/class_ui_1_1_display_logs.xhtml", null ],
       [ "Ui::DisplayLogs", "d8/d0f/class_ui_1_1_display_logs.xhtml", null ]
     ] ],
     [ "Ui_Information", "dc/d24/class_ui___information.xhtml", [
       [ "Ui::Information", "d8/d8c/class_ui_1_1_information.xhtml", null ]
     ] ],
     [ "Ui_Roomba", "d8/de5/class_ui___roomba.xhtml", [
+      [ "Ui::Roomba", "d8/d0a/class_ui_1_1_roomba.xhtml", null ],
       [ "Ui::Roomba", "d8/d0a/class_ui_1_1_roomba.xhtml", null ]
     ] ],
     [ "Ui_SettingsRoomba", "d5/d57/class_ui___settings_roomba.xhtml", [

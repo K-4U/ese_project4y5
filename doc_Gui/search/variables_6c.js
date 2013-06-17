@@ -1,17 +1,21 @@
 var searchData=
 [
-  ['lbbattery',['lbBattery',['../d3/d58/class_ui___controllingroomba.xhtml#af76ffdfdfecf6983c6831cdf21d93ebe',1,'Ui_Controllingroomba']]],
+  ['label',['label',['../d8/de5/class_ui___roomba.xhtml#a3069f0bd83178194a0f508e50a7b33fd',1,'Ui_Roomba']]],
+  ['lbbattery',['lbBattery',['../d3/d58/class_ui___controllingroomba.xhtml#ac3e0b215cdfbf56b925ede42db214b5e',1,'Ui_Controllingroomba']]],
+  ['lbbatterychargingstate',['lbBatteryChargingState',['../d3/d58/class_ui___controllingroomba.xhtml#ae670ee9ff790da3e4a6effcf4aec22d0',1,'Ui_Controllingroomba']]],
   ['lbbatterystatus',['lbBatteryStatus',['../dc/d24/class_ui___information.xhtml#ace4a650520ce97c7e0d2e5a7d2a11e30',1,'Ui_Information']]],
   ['lbdate',['lbDate',['../d5/d57/class_ui___settings_roomba.xhtml#a3ef0cda4f173f0b304eb54f10ebbfa00',1,'Ui_SettingsRoomba']]],
-  ['lbdistance',['lbDistance',['../d3/d58/class_ui___controllingroomba.xhtml#a28c69f724807032f79b8e093275b1cff',1,'Ui_Controllingroomba']]],
+  ['lbdistance',['lbDistance',['../d3/d58/class_ui___controllingroomba.xhtml#aadcfc52675cd2f047adf45cf475b780d',1,'Ui_Controllingroomba']]],
   ['lbdistancetraveled',['lbDistanceTraveled',['../dc/d24/class_ui___information.xhtml#abd6622d6f4e59bf26d279009879abeaf',1,'Ui_Information']]],
-  ['lbmotorspeed',['lbMotorSpeed',['../d3/d58/class_ui___controllingroomba.xhtml#afc2edec91941f65ee7f75b39f4136e04',1,'Ui_Controllingroomba']]],
-  ['lbtemperature',['lbTemperature',['../d3/d58/class_ui___controllingroomba.xhtml#a2d8d1f492d3668718fb7393229c71717',1,'Ui_Controllingroomba::lbTemperature()'],['../dc/d24/class_ui___information.xhtml#a0fb51e7a5136af468fafe540406a42ff',1,'Ui_Information::lbTemperature()']]],
-  ['lbtotaldistance',['lbTotalDistance',['../d3/d58/class_ui___controllingroomba.xhtml#ae8562bfd921814e177577511ccddd5b9',1,'Ui_Controllingroomba']]],
+  ['lbmotorspeed',['lbMotorSpeed',['../d3/d58/class_ui___controllingroomba.xhtml#a57b12448c75a0c5f0630ab664cbd1c6b',1,'Ui_Controllingroomba']]],
+  ['lboperatingmode',['lbOperatingMode',['../d3/d58/class_ui___controllingroomba.xhtml#a8e7740729cd9f3d5311ed56220bcee6f',1,'Ui_Controllingroomba']]],
+  ['lbtemperature',['lbTemperature',['../d3/d58/class_ui___controllingroomba.xhtml#ac197a8aafbb9196f7cd179bc9b70ac0b',1,'Ui_Controllingroomba::lbTemperature()'],['../dc/d24/class_ui___information.xhtml#a0fb51e7a5136af468fafe540406a42ff',1,'Ui_Information::lbTemperature()']]],
+  ['lbtotaldistance',['lbTotalDistance',['../d3/d58/class_ui___controllingroomba.xhtml#a721de94f59bd5224085c3b8cb721751f',1,'Ui_Controllingroomba']]],
   ['lbtotaltraveled',['lbTotalTraveled',['../dc/d24/class_ui___information.xhtml#a70a1ff718316704d06f18a0e0ab823ba',1,'Ui_Information']]],
   ['ledistancetraveled',['leDistanceTraveled',['../dc/d24/class_ui___information.xhtml#a34b67fcc519b912dac661da57157604d',1,'Ui_Information']]],
+  ['leip',['leIP',['../d8/de5/class_ui___roomba.xhtml#ae744d1f2fc481573a960ad483f459106',1,'Ui_Roomba']]],
   ['letemperature',['leTemperature',['../dc/d24/class_ui___information.xhtml#a34a70ed3ace8dbf0458e0e084d919e33',1,'Ui_Information']]],
   ['letotaltraveled',['leTotalTraveled',['../dc/d24/class_ui___information.xhtml#a53ae8c8d728d568ee6132a3fba618ea7',1,'Ui_Information']]],
   ['log',['log',['../db/d8b/classshared_1_1events_1_1cls_event.xhtml#ac7f241779485316bf8a6016ee35d21db',1,'shared::events::clsEvent']]],
-  ['lvlogs',['lvLogs',['../db/dfa/class_ui___display_logs.xhtml#ae8d57ba5aee32133137c51299f3b0a9b',1,'Ui_DisplayLogs']]]
+  ['lvlogs',['lvLogs',['../db/dfa/class_ui___display_logs.xhtml#a7f4556efdf82d0c4ec59334f2df03b84',1,'Ui_DisplayLogs']]]
 ];

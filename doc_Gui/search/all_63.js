@@ -1,12 +1,13 @@
 var searchData=
 [
   ['cbbatterycharging',['cbBatteryCharging',['../dc/d24/class_ui___information.xhtml#a581ece90615abc5da6a03a9d2698546b',1,'Ui_Information']]],
-  ['cbmainbrush',['cbMainBrush',['../d3/d58/class_ui___controllingroomba.xhtml#a9d998eea810696918373228e88c840c5',1,'Ui_Controllingroomba']]],
+  ['cbmainbrush',['cbMainBrush',['../d3/d58/class_ui___controllingroomba.xhtml#a820bb8041429994af84b900c9afae43d',1,'Ui_Controllingroomba']]],
   ['cbmotorbrushvacuumhandler',['cbMotorBrushVacuumHandler',['../dc/dd3/class_controllingroomba.xhtml#a7c7243c1adfc4dc486dbc52aed685177',1,'Controllingroomba']]],
+  ['cbrefresh',['cbRefresh',['../d3/d58/class_ui___controllingroomba.xhtml#a32f256d4928c9e5f5df1b74d0849da47',1,'Ui_Controllingroomba']]],
   ['cbroombaconnected',['cbRoombaConnected',['../dc/d24/class_ui___information.xhtml#a54baf8ea2739c8a405241d8effb8f6d1',1,'Ui_Information']]],
-  ['cbsidebrush',['cbSideBrush',['../d3/d58/class_ui___controllingroomba.xhtml#a596c81035d773c6f831c56054a136e21',1,'Ui_Controllingroomba']]],
-  ['cbvacuum',['cbVacuum',['../d3/d58/class_ui___controllingroomba.xhtml#a21b5b18db5e7483238915716bf2ed6f5',1,'Ui_Controllingroomba']]],
-  ['centralwidget',['centralWidget',['../d8/de5/class_ui___roomba.xhtml#a1868057caa88974ab361e0f6b404f470',1,'Ui_Roomba']]],
+  ['cbsidebrush',['cbSideBrush',['../d3/d58/class_ui___controllingroomba.xhtml#a5c426d911bdb2e3a875d3449aeb5b55f',1,'Ui_Controllingroomba']]],
+  ['cbvacuum',['cbVacuum',['../d3/d58/class_ui___controllingroomba.xhtml#a6a35e172b38f5af4f87e99bf6c181ab6',1,'Ui_Controllingroomba']]],
+  ['centralwidget',['centralWidget',['../d8/de5/class_ui___roomba.xhtml#a61be085b9a9803aec025f4ecf4a16646',1,'Ui_Roomba']]],
   ['client',['client',['../d7/d1c/namespaceclient.xhtml',1,'']]],
   ['clsevent',['clsEvent',['../db/d8b/classshared_1_1events_1_1cls_event.xhtml#a365cd41df39086701ec250126da6e026',1,'shared::events::clsEvent::clsEvent()'],['../db/d8b/classshared_1_1events_1_1cls_event.xhtml#a192623e78217baaf5b286790d809521b',1,'shared::events::clsEvent::clsEvent(QVariantMap data)']]],
   ['clsevent',['clsEvent',['../db/d8b/classshared_1_1events_1_1cls_event.xhtml',1,'shared::events']]],
@@ -20,8 +21,11 @@ var searchData=
   ['clsserverconn',['clsServerConn',['../d3/d65/classclient_1_1cls_server_conn.xhtml',1,'client']]],
   ['connected',['connected',['../d3/d65/classclient_1_1cls_server_conn.xhtml#af4d99891fc606ce032facfd9e27692ca',1,'client::clsServerConn']]],
   ['connecttimeout',['connectTimeout',['../d3/d65/classclient_1_1cls_server_conn.xhtml#a5ec4520ae6b50789ef650436b6339d43',1,'client::clsServerConn']]],
-  ['controllingroomba',['Controllingroomba',['../df/dbf/class_ui_1_1_controllingroomba.xhtml',1,'Ui']]],
   ['controllingroomba',['Controllingroomba',['../dc/dd3/class_controllingroomba.xhtml',1,'Controllingroomba'],['../dc/dd3/class_controllingroomba.xhtml#ab0ddd4e349f26db9979c6ed1783a7924',1,'Controllingroomba::Controllingroomba()']]],
+  ['controllingroomba',['Controllingroomba',['../df/dbf/class_ui_1_1_controllingroomba.xhtml',1,'Ui']]],
   ['controllingroomba_2ecpp',['controllingroomba.cpp',['../d5/dd2/controllingroomba_8cpp.xhtml',1,'']]],
-  ['controllingroomba_2eh',['controllingroomba.h',['../da/d4b/controllingroomba_8h.xhtml',1,'']]]
+  ['controllingroomba_2eh',['controllingroomba.h',['../da/d4b/controllingroomba_8h.xhtml',1,'']]],
+  ['currentaction',['currentAction',['../d2/de8/classshared_1_1events_1_1event_current_action_data.xhtml#a60ba56aa210af24d017ef90c1a330052',1,'shared::events::eventCurrentActionData']]],
+  ['currentactiondata_2ecpp',['currentactiondata.cpp',['../d1/d1a/currentactiondata_8cpp.xhtml',1,'']]],
+  ['currentactiondata_2eh',['currentactiondata.h',['../de/d51/currentactiondata_8h.xhtml',1,'']]]
 ];

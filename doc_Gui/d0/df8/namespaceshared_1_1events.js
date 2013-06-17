@@ -1,5 +1,8 @@
 var namespaceshared_1_1events =
 [
+    [ "eventBrushVacuumData", "dd/d16/classshared_1_1events_1_1event_brush_vacuum_data.xhtml", "dd/d16/classshared_1_1events_1_1event_brush_vacuum_data" ],
+    [ "eventCurrentActionData", "d2/de8/classshared_1_1events_1_1event_current_action_data.xhtml", "d2/de8/classshared_1_1events_1_1event_current_action_data" ],
+    [ "eventLogging", "df/d92/classshared_1_1events_1_1event_logging.xhtml", "df/d92/classshared_1_1events_1_1event_logging" ],
     [ "eventSensor", "d6/d35/classshared_1_1events_1_1event_sensor.xhtml", "d6/d35/classshared_1_1events_1_1event_sensor" ],
     [ "clsEvent", "db/d8b/classshared_1_1events_1_1cls_event.xhtml", "db/d8b/classshared_1_1events_1_1cls_event" ],
     [ "eventChat", "d1/d68/classshared_1_1events_1_1event_chat.xhtml", "d1/d68/classshared_1_1events_1_1event_chat" ],

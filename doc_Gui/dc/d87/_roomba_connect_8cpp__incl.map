@@ -1,8 +1,12 @@
 <map id="GUI/Gui&#45;RoombaV1.0/RoombaConnect.cpp" name="GUI/Gui&#45;RoombaV1.0/RoombaConnect.cpp">
-<area shape="rect" id="node2" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="441,96,569,123"/>
-<area shape="rect" id="node15" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="40,171,227,197"/>
-<area shape="rect" id="node9" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="195,320,335,347"/>
-<area shape="rect" id="node17" href="$d4/d05/json_8h.xhtml" title="json.h" alt="" coords="479,245,536,272"/>
-<area shape="rect" id="node20" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="302,245,455,272"/>
-<area shape="rect" id="node21" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="353,171,449,197"/>
+<area shape="rect" id="node2" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="546,96,674,123"/>
+<area shape="rect" id="node26" href="$d7/d82/displaylogs_8h.xhtml" title="displaylogs.h" alt="" coords="1394,96,1493,123"/>
+<area shape="rect" id="node15" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="642,171,829,197"/>
+<area shape="rect" id="node9" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="730,320,869,347"/>
+<area shape="rect" id="node17" href="$d4/d05/json_8h.xhtml" title="json.h" alt="" coords="838,245,894,272"/>
+<area shape="rect" id="node20" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="971,245,1124,272"/>
+<area shape="rect" id="node21" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="904,171,1001,197"/>
+<area shape="rect" id="node22" href="$d1/da1/brushvacuumdata_8h.xhtml" title="brushvacuumdata.h" alt="" coords="1078,171,1212,197"/>
+<area shape="rect" id="node23" href="$de/d51/currentactiondata_8h.xhtml" title="currentactiondata.h" alt="" coords="1237,171,1370,197"/>
+<area shape="rect" id="node24" href="$da/d69/loggingdata_8h.xhtml" title="loggingdata.h" alt="" coords="1394,171,1493,197"/>
 </map>

@@ -1,9 +1,13 @@
 <map id="GUI/Gui&#45;RoombaV1.0/roomba.h" name="GUI/Gui&#45;RoombaV1.0/roomba.h">
-<area shape="rect" id="node11" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="697,171,825,197"/>
-<area shape="rect" id="node25" href="$da/d4b/controllingroomba_8h.xhtml" title="controllingroomba.h" alt="" coords="978,96,1112,123"/>
+<area shape="rect" id="node11" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="979,171,1108,197"/>
+<area shape="rect" id="node28" href="$da/d4b/controllingroomba_8h.xhtml" title="controllingroomba.h" alt="" coords="1423,96,1557,123"/>
 <area shape="rect" id="node24" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="297,245,393,272"/>
-<area shape="rect" id="node20" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="1227,245,1413,272"/>
-<area shape="rect" id="node21" href="$d4/d05/json_8h.xhtml" title="json.h" alt="" coords="162,320,219,347"/>
-<area shape="rect" id="node15" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="1127,395,1267,421"/>
-<area shape="rect" id="node23" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="406,320,559,347"/>
+<area shape="rect" id="node20" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="1816,245,2003,272"/>
+<area shape="rect" id="node21" href="$d4/d05/json_8h.xhtml" title="json.h" alt="" coords="230,320,287,347"/>
+<area shape="rect" id="node15" href="$d7/d62/clslog_8h.xhtml" title="../resources/clslog.h" alt="" coords="1759,395,1899,421"/>
+<area shape="rect" id="node23" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="961,320,1113,347"/>
+<area shape="rect" id="node27" href="$da/d69/loggingdata_8h.xhtml" title="loggingdata.h" alt="" coords="1405,245,1504,272"/>
+<area shape="rect" id="node25" href="$d1/da1/brushvacuumdata_8h.xhtml" title="brushvacuumdata.h" alt="" coords="923,245,1057,272"/>
+<area shape="rect" id="node26" href="$de/d51/currentactiondata_8h.xhtml" title="currentactiondata.h" alt="" coords="419,245,552,272"/>
+<area shape="rect" id="node31" href="$d7/d82/displaylogs_8h.xhtml" title="displaylogs.h" alt="" coords="1441,171,1540,197"/>
 </map>

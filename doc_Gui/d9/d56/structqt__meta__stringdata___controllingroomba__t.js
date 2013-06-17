@@ -1,5 +1,5 @@
 var structqt__meta__stringdata___controllingroomba__t =
 [
-    [ "data", "d9/d56/structqt__meta__stringdata___controllingroomba__t.xhtml#a0c0b62bb5d5c0ab274c150b0bdcd2d17", null ],
-    [ "stringdata", "d9/d56/structqt__meta__stringdata___controllingroomba__t.xhtml#a3e0d0136060e37c47c7f1dc5c231e5e5", null ]
+    [ "data", "d9/d56/structqt__meta__stringdata___controllingroomba__t.xhtml#a725440cffa8e39255c2d2d01a9c077f0", null ],
+    [ "stringdata", "d9/d56/structqt__meta__stringdata___controllingroomba__t.xhtml#ac120d2b5593a7a28202b391c066a23d4", null ]
 ];

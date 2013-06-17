@@ -107,35 +107,58 @@ $(document).ready(function(){initNavTree('d1/d10/displaylogs_8cpp_source.xhtml',
 </div><!--header-->
 <div class="contents">
 <a href="../../d1/d10/displaylogs_8cpp.xhtml">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d82/displaylogs_8h.xhtml">displaylogs.h</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d0/dd0/ui__displaylogs_8h.xhtml">ui_displaylogs.h</a>&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;ui_displaylogs.h&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dd/da1/roomba_8h.xhtml">roomba.h</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;QStandardItemModel&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="../../df/d99/class_display_logs.xhtml#a0567389e38e75a2628c5b24255756bb8">    6</a></span>&#160;<a class="code" href="../../df/d99/class_display_logs.xhtml#a0567389e38e75a2628c5b24255756bb8">DisplayLogs::DisplayLogs</a>(QWidget *parent):</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    QWidget(parent),</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    ui(new Ui::<a class="code" href="../../df/d99/class_display_logs.xhtml">DisplayLogs</a>)</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    ui-&gt;<a class="code" href="../../db/dfa/class_ui___display_logs.xhtml#a06ed3380bbdaf86e63acc3381fe08c7f">setupUi</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="../../df/d99/class_display_logs.xhtml#a458bfd54f8b04955039ffab637133229">    7</a></span>&#160;<a class="code" href="../../df/d99/class_display_logs.xhtml#a458bfd54f8b04955039ffab637133229">DisplayLogs::DisplayLogs</a>(QVector&lt;eventLogging::logEntry&gt; logEntries):</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    QWidget(0),</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    ui(new Ui::<a class="code" href="../../df/d99/class_display_logs.xhtml">DisplayLogs</a>)</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    ui-&gt;<a class="code" href="../../db/dfa/class_ui___display_logs.xhtml#a06ed3380bbdaf86e63acc3381fe08c7f">setupUi</a>(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="../../df/d99/class_display_logs.xhtml#a3dd98ec9b308f6cb765d04c127c01a5a">   13</a></span>&#160;<a class="code" href="../../df/d99/class_display_logs.xhtml#a3dd98ec9b308f6cb765d04c127c01a5a">DisplayLogs::~DisplayLogs</a>()</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">delete</span> ui;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> DisplayLogs::on_pushButton_clicked()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="../../d5/d2a/class_roomba.xhtml">Roomba</a> *roomba = <span class="keyword">new</span> <a class="code" href="../../d5/d2a/class_roomba.xhtml">Roomba</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    roomba-&gt;show();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    this-&gt;close();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    QStandardItemModel *model = <span class="keyword">new</span> QStandardItemModel(logEntries.size(),0);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> i = logEntries.size()-1;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">foreach</span>(<a class="code" href="../../dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry.xhtml">eventLogging::logEntry</a> entry, logEntries){</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        QString str = entry.<a class="code" href="../../dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry.xhtml#a5fa85f1027561621dfdbddafdf419c1d">time</a> + <span class="stringliteral">&quot; &quot;</span> + entry.<a class="code" href="../../dc/dc3/structshared_1_1events_1_1event_logging_1_1log_entry.xhtml#af5db4beb51db6bf57e3f09428c4dd3a3">entry</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        QStandardItem *item = <span class="keyword">new</span> QStandardItem(str);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        model-&gt;setItem(i, item);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        i--;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    this-&gt;ui-&gt;<a class="code" href="../../db/dfa/class_ui___display_logs.xhtml#a7f4556efdf82d0c4ec59334f2df03b84">lvLogs</a>-&gt;setModel(model);</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="code" href="../../df/d99/class_display_logs.xhtml#a3dd98ec9b308f6cb765d04c127c01a5a">   24</a></span>&#160;<a class="code" href="../../df/d99/class_display_logs.xhtml#a3dd98ec9b308f6cb765d04c127c01a5a">DisplayLogs::~DisplayLogs</a>()</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">delete</span> ui;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> DisplayLogs::on_pbCloseDisplayLogs_clicked()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    this-&gt;close();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="../../df/d99/class_display_logs.xhtml#aa118ba6299559b240700c5f20af964fa">   35</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../df/d99/class_display_logs.xhtml#aa118ba6299559b240700c5f20af964fa">DisplayLogs::logsUpdated</a>(QVector&lt;eventLogging::logEntry&gt; logEntries)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//    QStandardItemModel *model = new QStandardItemModel(logEntries.size(),0);</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//    int i = logEntries.size()-1;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//    foreach(eventLogging::logEntry entry, logEntries){</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//        QString str = entry.time + &quot; &quot; + entry.entry;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//        QStandardItem *item = new QStandardItem(str);</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">//        model-&gt;setItem(i, item);</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//        i--;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//    }</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//    this-&gt;ui-&gt;lvLogs-&gt;setModel(model);</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_171b764decf33d63a7df2fab4f4bc6d8.xhtml">GUI</a></li><li class="navelem"><a class="el" href="../../dir_737cf77e168c1785336c935ecc5b9559.xhtml">Gui-RoombaV1.0</a></li><li class="navelem"><a class="el" href="../../d1/d10/displaylogs_8cpp.xhtml">displaylogs.cpp</a></li>
-    <li class="footer">Generated on Tue Jun 11 2013 13:14:23 for ESE Project 4 by
+    <li class="footer">Generated on Mon Jun 17 2013 13:56:38 for ESE Project 4 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.3.1 </li>
   </ul>

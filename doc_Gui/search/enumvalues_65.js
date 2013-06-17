@@ -1,6 +1,9 @@
 var searchData=
 [
+  ['eventtype_5fbrushvacuumdata',['EVENTTYPE_BRUSHVACUUMDATA',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0d413240703e07a139da3b6f06346fcb',1,'shared::events']]],
   ['eventtype_5fchat',['EVENTTYPE_CHAT',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a5ab6f914eb6843be3d428f43169810c5',1,'shared::events']]],
+  ['eventtype_5fcurrentactiondata',['EVENTTYPE_CURRENTACTIONDATA',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a3ea23a00edf5826d4c7bd9b8b809d1d5',1,'shared::events']]],
+  ['eventtype_5floggingdata',['EVENTTYPE_LOGGINGDATA',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a3cde6442a4c68f56c46b39761f6c9b79',1,'shared::events']]],
   ['eventtype_5fnone',['EVENTTYPE_NONE',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7aa9e485704f21f82413549a0228364596',1,'shared::events']]],
   ['eventtype_5fsensordata',['EVENTTYPE_SENSORDATA',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0db14bad84e44f20d465db50022c43ad',1,'shared::events']]],
   ['eventtype_5fservermsg',['EVENTTYPE_SERVERMSG',['../d0/df8/namespaceshared_1_1events.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7ad90944ea70ecf0dcf722b0d44d35cac9',1,'shared::events']]],

@@ -9,6 +9,9 @@ var clsevent_8h =
       [ "EVENTTYPE_USER_JOIN", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a9cb818acb5b5437a704503b7ac27a7ae", null ],
       [ "EVENTTYPE_USER_NICK", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7adec15b9d171b2e8ab5955a675ef3d6e9", null ],
       [ "EVENTTYPE_SERVERMSG", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7ad90944ea70ecf0dcf722b0d44d35cac9", null ],
-      [ "EVENTTYPE_SENSORDATA", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0db14bad84e44f20d465db50022c43ad", null ]
+      [ "EVENTTYPE_SENSORDATA", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0db14bad84e44f20d465db50022c43ad", null ],
+      [ "EVENTTYPE_BRUSHVACUUMDATA", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a0d413240703e07a139da3b6f06346fcb", null ],
+      [ "EVENTTYPE_CURRENTACTIONDATA", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a3ea23a00edf5826d4c7bd9b8b809d1d5", null ],
+      [ "EVENTTYPE_LOGGINGDATA", "db/d97/clsevent_8h.xhtml#a758b1a88b2eb1c9ef9388755f8869ad7a3cde6442a4c68f56c46b39761f6c9b79", null ]
     ] ]
 ];

@@ -1,8 +1,12 @@
 <map id="GUI/Gui&#45;RoombaV1.0/controllingroomba.h" name="GUI/Gui&#45;RoombaV1.0/controllingroomba.h">
-<area shape="rect" id="node2" href="$d4/d05/json_8h.xhtml" title="../resources/json.h" alt="" coords="5,245,136,272"/>
-<area shape="rect" id="node5" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="116,171,303,197"/>
-<area shape="rect" id="node14" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="690,96,819,123"/>
-<area shape="rect" id="node8" href="$d7/d62/clslog_8h.xhtml" title="clslog.h" alt="" coords="876,320,943,347"/>
-<area shape="rect" id="node20" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="385,245,537,272"/>
-<area shape="rect" id="node21" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="327,171,424,197"/>
+<area shape="rect" id="node2" href="$d4/d05/json_8h.xhtml" title="../resources/json.h" alt="" coords="700,245,831,272"/>
+<area shape="rect" id="node5" href="$dc/d96/jsoncommand_8h.xhtml" title="../resources/jsoncommand.h" alt="" coords="137,171,324,197"/>
+<area shape="rect" id="node14" href="$d4/dca/_roomba_connect_8h.xhtml" title="RoombaConnect.h" alt="" coords="798,96,927,123"/>
+<area shape="rect" id="node8" href="$d7/d62/clslog_8h.xhtml" title="clslog.h" alt="" coords="87,320,153,347"/>
+<area shape="rect" id="node20" href="$db/d97/clsevent_8h.xhtml" title="../resources/clsevent.h" alt="" coords="522,245,675,272"/>
+<area shape="rect" id="node24" href="$da/d69/loggingdata_8h.xhtml" title="loggingdata.h" alt="" coords="1593,171,1692,197"/>
+<area shape="rect" id="node28" href="$d7/d82/displaylogs_8h.xhtml" title="displaylogs.h" alt="" coords="1617,96,1716,123"/>
+<area shape="rect" id="node21" href="$d4/d25/sensordata_8h.xhtml" title="sensordata.h" alt="" coords="1215,171,1312,197"/>
+<area shape="rect" id="node22" href="$d1/da1/brushvacuumdata_8h.xhtml" title="brushvacuumdata.h" alt="" coords="602,171,736,197"/>
+<area shape="rect" id="node23" href="$de/d51/currentactiondata_8h.xhtml" title="currentactiondata.h" alt="" coords="1057,171,1191,197"/>
 </map>

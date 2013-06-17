@@ -1,3 +1,3 @@
 <map id="Ui::Roomba" name="Ui::Roomba">
-<area shape="rect" id="node2" href="$d8/de5/class_ui___roomba.xhtml" title="Ui_Roomba" alt="" coords="6,5,95,32"/>
+<area shape="rect" id="node2" href="$d8/de5/class_ui___roomba.xhtml" title="{Ui_Roomba\n|+ actionEinde\l+ centralWidget\l+ pbCloseRoomba\l+ pbControlRoomba\l+ pbInformation\l+ pbDisplayLogs\l+ pbConnect\l+ pbDisonnect\l+ menuBar\l+ menuStart\land 8 more...\l|+ setupUi()\l+ retranslateUi()\l+ setupUi()\l+ retranslateUi()\l}" alt="" coords="5,6,141,274"/>
 </map>

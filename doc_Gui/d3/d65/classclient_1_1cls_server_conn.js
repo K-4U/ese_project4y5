@@ -6,6 +6,8 @@ var classclient_1_1cls_server_conn =
     [ "disconnected", "d3/d65/classclient_1_1cls_server_conn.xhtml#ad5a08372105d83e34538e457374525f6", null ],
     [ "doConnect", "d3/d65/classclient_1_1cls_server_conn.xhtml#af4589d93eb4b606423cb4b5e4a583f4e", null ],
     [ "doDisconnect", "d3/d65/classclient_1_1cls_server_conn.xhtml#afc2a5295649e3f39c545227b3c4985cc", null ],
+    [ "logsReceived", "d3/d65/classclient_1_1cls_server_conn.xhtml#a6609285b3c9241d0de182828c7815a0e", null ],
+    [ "motorBrushVacuumReceived", "d3/d65/classclient_1_1cls_server_conn.xhtml#a6a2a6a0dc27a74943bce177bcd043fb0", null ],
     [ "readData", "d3/d65/classclient_1_1cls_server_conn.xhtml#a0f7c8da07639a563b9d88780eb22748e", null ],
     [ "sendCommand", "d3/d65/classclient_1_1cls_server_conn.xhtml#a997f9cd3d63321807f60472308acc459", null ],
     [ "sensorDataReceived", "d3/d65/classclient_1_1cls_server_conn.xhtml#a3d0bfa9115b030296f550804c58642a5", null ],

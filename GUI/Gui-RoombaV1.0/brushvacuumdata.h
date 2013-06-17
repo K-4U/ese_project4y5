@@ -10,11 +10,11 @@ namespace shared{
     class eventBrushVacuumData : public clsEvent
         {
             public:
-                eventBrushVacuumData(int mainBrush, int sideBrush, int vacuum);
+                eventBrushVacuumData(bool mainBrush, bool sideBrush, bool vacuum);
                 eventBrushVacuumData(QVariantMap brushVacuumData);
-                int mainBrush() const;
-                int sideBrush() const;
-                int vacuum() const;
+                bool mainBrush() const;
+                bool sideBrush() const;
+                bool vacuum() const;
         };
     }
 }

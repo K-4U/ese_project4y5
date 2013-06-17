@@ -3,7 +3,7 @@
 namespace shared{
     namespace events{
 
-        eventBrushVacuumData::eventBrushVacuumData(int mainBrush, int sideBrush, int vacuum)
+        eventBrushVacuumData::eventBrushVacuumData(bool mainBrush, bool sideBrush, bool vacuum)
         {
             ourType = EVENTTYPE_BRUSHVACUUMDATA;
             this->addToData("MainBrush", mainBrush);
@@ -15,19 +15,19 @@ namespace shared{
         :clsEvent(data)
         { }
 
-        int eventBrushVacuumData::mainBrush() const
+        bool eventBrushVacuumData::mainBrush() const
         {
-            return this->getData("MainBrush").toInt();
+            return this->getData("MainBrush").toBool();
         }
 
-        int eventBrushVacuumData::sideBrush() const
+        bool eventBrushVacuumData::sideBrush() const
         {
-            return this->getData("SideBrush").toInt();
+            return this->getData("SideBrush").toBool();
         }
 
-        int eventBrushVacuumData::vacuum() const
+        bool eventBrushVacuumData::vacuum() const
         {
-            return this->getData("Vacuum").toInt();
+            return this->getData("Vacuum").toBool();
         }
     }
 }

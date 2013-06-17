@@ -78,6 +78,11 @@ void Roomba::getMotorBrushVacuum()
     getBrushVacuum->start(1000);
 }
 
+void Roomba::readMotorBrushVacuumData(eventBrushVacuumData *theMessage)
+{
+    this->controlling_roomba->allMotorBrushVacuumData(theMessage->mainBrush(), theMessage->sideBrush(), theMessage->vacuum());
+}
+
 void Roomba::getCurrentAction()
 {
     jsonCommand toSend(JSONCOMMAND_GETCURRENTACTION);
@@ -134,8 +139,11 @@ void Roomba::roombaConnected()
     connect(controlling_roomba, SIGNAL(setMotorSpeed(int, int)),
             this, SLOT(MotorSpeedChanged(int, int)));
 
-    connect(this->server, SIGNAL (sensorDataReceived(eventSensor*)),
+    connect(this->server, SIGNAL(sensorDataReceived(eventSensor*)),
             this, SLOT(readSensorData(eventSensor*)));
+
+    connect(this->server, SIGNAL(motorBrushVacuumReceived(eventBrushVacuumData*)),
+            this, SLOT(readMotorBrushVacuumData(eventBrushVacuumData*)));
 
     connect(this->server, SIGNAL(logsReceived(QVector<eventLogging::logEntry>)),
             this, SLOT(logsReceived(QVector<eventLogging::logEntry>)));

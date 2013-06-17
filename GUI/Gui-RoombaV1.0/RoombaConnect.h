@@ -14,6 +14,8 @@
 #include "../resources/json.h"
 #include "../resources/clsevent.h"
 #include "sensordata.h"
+#include "brushvacuumdata.h"
+#include "currentactiondata.h"
 #include "loggingdata.h"
 
 
@@ -94,6 +96,8 @@ namespace client{
              * \param theMessage The message it sends
              */
             void sensorDataReceived(eventSensor *theMessage);
+
+            void motorBrushVacuumReceived(eventBrushVacuumData *theMessage);
 
             /*!
              * \brief Triggered when it cannot connect.

@@ -92,6 +92,9 @@ namespace client{
             case EVENTTYPE_LOGGINGDATA:
                 this->handleLogs(new eventLogging(data));
             break;
+            case EVENTTYPE_BRUSHVACUUMDATA:
+                this->motorBrushVacuumReceived(new eventBrushVacuumData(data));
+                break;
  //           case EVENTTYPE_SERVERMSG:
  //               emit this->serverMessageReceived(new eventServerMessage(data));
  //               break;

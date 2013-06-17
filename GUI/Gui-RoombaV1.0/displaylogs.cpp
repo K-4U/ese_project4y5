@@ -34,13 +34,13 @@ void DisplayLogs::on_pbCloseDisplayLogs_clicked()
 
 void DisplayLogs::logsUpdated(QVector<eventLogging::logEntry> logEntries)
 {
-    QStandardItemModel *model = new QStandardItemModel(logEntries.size(),0);
-    int i = logEntries.size()-1;
-    foreach(eventLogging::logEntry entry, logEntries){
-        QString str = entry.time + " " + entry.entry;
-        QStandardItem *item = new QStandardItem(str);
-        model->setItem(i, item);
-        i--;
-    }
-    this->ui->lvLogs->setModel(model);
+//    QStandardItemModel *model = new QStandardItemModel(logEntries.size(),0);
+//    int i = logEntries.size()-1;
+//    foreach(eventLogging::logEntry entry, logEntries){
+//        QString str = entry.time + " " + entry.entry;
+//        QStandardItem *item = new QStandardItem(str);
+//        model->setItem(i, item);
+//        i--;
+//    }
+//    this->ui->lvLogs->setModel(model);
 }

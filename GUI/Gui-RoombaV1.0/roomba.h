@@ -45,6 +45,8 @@ private slots:
 
     void readSensorData(eventSensor *theMessage);
 
+    void readMotorBrushVacuumData(eventBrushVacuumData *theMessage);
+
     void sendSensorDataRequest();
 
     void disconnectDoIt(bool);

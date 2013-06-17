@@ -86,6 +86,36 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
             ui->cbVacuum->checkState() == Qt::Checked);
 }
 
+void Controllingroomba::allMotorBrushVacuumData(bool mainBrush, bool sideBrush, bool vacuum)
+{
+    if(mainBrush == true)
+    {
+        ui->cbMainBrush->setChecked(true);
+    }
+    else
+    {
+        ui->cbMainBrush->setChecked(false);
+    }
+
+    if(sideBrush == true)
+    {
+        ui->cbSideBrush->setChecked(true);
+    }
+    else
+    {
+        ui->cbSideBrush->setChecked(false);
+    }
+
+    if(vacuum == true)
+    {
+        ui->cbVacuum->setChecked(true);
+    }
+    else
+    {
+        ui->cbVacuum->setChecked(false);
+    }
+}
+
 void Controllingroomba::allSensorData(int sensorID, int sensorValue)
 {
     QString temp;

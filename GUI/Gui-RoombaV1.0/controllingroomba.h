@@ -37,6 +37,7 @@ public:
     ~Controllingroomba();
 
     void allSensorData(int, int);
+    void allMotorBrushVacuumData(bool, bool, bool);
     void logsReceived(QVector<eventLogging::logEntry> entries);
 
 public slots:

@@ -10,6 +10,7 @@
 #include <QTcpSocket>
 #include <QSlider>
 #include <QtCore>
+#include <QObject>
 #include "loggingdata.h"
 #include "displaylogs.h"
 
@@ -48,8 +49,6 @@ private slots:
 
     void on_pbCleanSpot_clicked();
 
-    void on_pbClose_clicked();
-
     void on_pbDock_clicked();
 
     void on_pbDriveLeft_pressed();
@@ -81,6 +80,7 @@ private:
     QWidget *parent;
     int totalDistance;
     int batteryCharge;
+    QTimer *driveTimer;
 
     QVector<eventLogging::logEntry> logEntries;
 

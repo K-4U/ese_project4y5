@@ -12,8 +12,9 @@ namespace shared{
             public:
                 eventBrushVacuumData(int mainBrush, int sideBrush, int vacuum);
                 eventBrushVacuumData(QVariantMap brushVacuumData);
-                int getID() const;
-                int getValue() const;
+                int mainBrush() const;
+                int sideBrush() const;
+                int vacuum() const;
         };
     }
 }

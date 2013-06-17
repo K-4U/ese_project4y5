@@ -45,9 +45,6 @@
         <property name="text">
          <string>connect</string>
         </property>
-        <property name="shortcut">
-         <string>Enter</string>
-        </property>
        </widget>
       </item>
      </layout>

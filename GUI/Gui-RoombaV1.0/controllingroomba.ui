@@ -6,289 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1047</width>
-    <height>619</height>
+    <width>469</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QCheckBox" name="cbSideBrush">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>70</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Side brush</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbClean">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>190</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clean</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbDock">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>110</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>ArrowCursor</cursorShape>
-   </property>
-   <property name="text">
-    <string>Dock</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbCleanSpot">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clean on spot</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="cbMainBrush">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>70</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Main brush</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="cbVacuum">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>80</y>
-     <width>70</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Vacuum</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbClose">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>450</y>
-     <width>91</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Close</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbDriveForward">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>380</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Forward</string>
-   </property>
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbStop">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Stop</string>
-   </property>
-  </widget>
-  <widget class="QProgressBar" name="prBattery">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>50</y>
-     <width>191</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="value">
-    <number>0</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbBattery">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>30</y>
-     <width>91</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Battery </string>
-   </property>
-  </widget>
-  <widget class="QSlider" name="hsMotorSpeed">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>510</y>
-     <width>160</width>
-     <height>19</height>
-    </rect>
-   </property>
-   <property name="minimum">
-    <number>0</number>
-   </property>
-   <property name="maximum">
-    <number>100</number>
-   </property>
-   <property name="value">
-    <number>50</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbMotorSpeed">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>480</y>
-     <width>111</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Motor speed</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbDistance">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>120</y>
-     <width>91</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Distance traveled:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbTotalDistance">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>140</y>
-     <width>141</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Total distance traveled:</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lbTemperature">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>100</y>
-     <width>151</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Temperature</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbDriveLeft">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>410</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Left</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbDriveRight">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>410</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Right</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pbDriveBackward">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>440</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Backward</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pbDisonnect">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>320</y>
+     <x>220</x>
+     <y>280</y>
      <width>201</width>
      <height>81</height>
     </rect>
@@ -300,8 +29,8 @@
   <widget class="QPushButton" name="pbDisplayLogs">
    <property name="geometry">
     <rect>
-     <x>840</x>
-     <y>370</y>
+     <x>220</x>
+     <y>210</y>
      <width>151</width>
      <height>51</height>
     </rect>
@@ -310,45 +39,365 @@
     <string>Display Logs</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cbRefresh">
+  <widget class="QGroupBox" name="gbroombaStatus">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>190</y>
-     <width>70</width>
-     <height>17</height>
+     <x>220</x>
+     <y>20</y>
+     <width>211</width>
+     <height>181</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Refresh</string>
+   <property name="title">
+    <string>Roomba status</string>
    </property>
+   <widget class="QLabel" name="lbBatteryChargingState">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Temperature</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbOperatingMode">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>160</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total distance traveled:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbDistance">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Distance traveled:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbTotalDistance">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>140</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total distance traveled:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbBattery">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Battery </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbTemperature">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>100</y>
+      <width>151</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Temperature</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="prBattery">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>191</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
   </widget>
-  <widget class="QLabel" name="lbOperatingMode">
+  <widget class="QGroupBox" name="gbDrive">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>160</y>
-     <width>141</width>
-     <height>16</height>
+     <x>10</x>
+     <y>180</y>
+     <width>201</width>
+     <height>171</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Total distance traveled:</string>
+   <property name="title">
+    <string>Drive</string>
    </property>
+   <widget class="QPushButton" name="pbDriveRight">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>50</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Right</string>
+    </property>
+    <property name="shortcut">
+     <string>Right</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="hsMotorSpeed">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>160</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>50</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDriveForward">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Forward</string>
+    </property>
+    <property name="shortcut">
+     <string>Up</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDriveBackward">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Backward</string>
+    </property>
+    <property name="shortcut">
+     <string>Down</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbMotorSpeed">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>120</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Motor speed</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDriveLeft">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Left</string>
+    </property>
+    <property name="shortcut">
+     <string>Left</string>
+    </property>
+   </widget>
+   <zorder>pbDriveBackward</zorder>
+   <zorder>pbDriveForward</zorder>
+   <zorder>hsMotorSpeed</zorder>
+   <zorder>lbMotorSpeed</zorder>
+   <zorder>pbDriveLeft</zorder>
+   <zorder>pbDriveRight</zorder>
+   <zorder>pbDriveRight</zorder>
+   <zorder>pbDriveForward</zorder>
+   <zorder>hsMotorSpeed</zorder>
+   <zorder>pbDriveBackward</zorder>
+   <zorder>lbMotorSpeed</zorder>
+   <zorder>pbDriveLeft</zorder>
+   <zorder>pbDriveRight</zorder>
+   <zorder>hsMotorSpeed</zorder>
+   <zorder>pbDriveForward</zorder>
+   <zorder>pbDriveBackward</zorder>
+   <zorder>lbMotorSpeed</zorder>
+   <zorder>pbDriveLeft</zorder>
   </widget>
-  <widget class="QLabel" name="lbBatteryChargingState">
+  <widget class="QGroupBox" name="gbSetModes">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>80</y>
-     <width>151</width>
-     <height>16</height>
+     <x>10</x>
+     <y>20</y>
+     <width>181</width>
+     <height>151</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Temperature</string>
+   <property name="title">
+    <string>Settings</string>
    </property>
+   <widget class="QPushButton" name="pbStop">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbDock">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="text">
+     <string>Dock</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbCleanSpot">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Clean on spot</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pbClean">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Clean</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbVacuum">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>80</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vacuum</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbMainBrush">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>20</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Main brush</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="cbSideBrush">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>50</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Side brush</string>
+    </property>
+   </widget>
   </widget>
+  <zorder>pbDisonnect</zorder>
+  <zorder>pbDisplayLogs</zorder>
+  <zorder>gbroombaStatus</zorder>
+  <zorder>gbDrive</zorder>
+  <zorder>gbSetModes</zorder>
+  <zorder>lbTemperature</zorder>
  </widget>
  <resources/>
  <connections>
@@ -359,8 +408,8 @@
    <slot>hsMotorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>260</x>
-     <y>516</y>
+     <x>190</x>
+     <y>436</y>
     </hint>
     <hint type="destinationlabel">
      <x>287</x>

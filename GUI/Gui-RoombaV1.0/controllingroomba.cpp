@@ -3,6 +3,7 @@
 #include "roomba.h"
 #include "mytimer.h"
 #include "QtCore"
+#include <QtGui>
 
 Controllingroomba::Controllingroomba(QWidget *parent) :
     QWidget(),
@@ -16,12 +17,6 @@ Controllingroomba::Controllingroomba(QWidget *parent) :
 Controllingroomba::~Controllingroomba()
 {
     delete ui;
-}
-
-void Controllingroomba::on_pbClose_clicked()
-{
-    this->parent->show();
-    this->close();
 }
 
 void Controllingroomba::on_pbClean_clicked()
@@ -163,6 +158,8 @@ void Controllingroomba::logsReceived(QVector<eventLogging::logEntry> entries){
 void Controllingroomba::on_pbDisonnect_clicked()
 {
     emit disconnectDo(true);
+    this->parent->show();
+    this->close();
 }
 
 void Controllingroomba::on_pbDisplayLogs_clicked()

@@ -308,11 +308,14 @@
 			
 			<strong>Simulator:</strong>
 			
-			<p>/* */</p>
+			<p>De simulator kan worden opgestart door het 'Simulator.exe' bestand uit te voeren. Er kan vervolgens een seriele poort worden geselecteerd door rechts bovenin het programma op 'file' te klikken, en vervolgens de correcte poort te kiezen, zoals aangegeven in afbeelding 2.5. Het indrukken van knoppen op de Roomba kan met het 'buttons' menu gesimuleerd worden.</p>
 			
 			<strong>Besturing:</strong>
 			
-			<p>/* */</p>
+			<p>Het opstarten van de besturing is eenvoudig: start het 'roombaController.exe' bestand op door er op te dubbelklikken.</p>
+			
+			<img src="assets/serial.png" alt="">
+			<sub>Afbeelding 2.5 - Seriele connectie aanmaken.</sub>
 			
 			<strong>User interface:</strong>
 			
@@ -479,7 +482,7 @@
 	
 			<h3>Klasse diagram eindprogramma</h3>
 	
-			<p>/* */</p>
+			<p>Het volledige klassdiagram voor de controller is enorm; deze is dus in de bijlagen voor dit verslag opgenomen.</p>
 	
 			<h3>TCP/IP verbinding met Rose RealTime</h3>
 			
@@ -606,7 +609,212 @@ if (!collisionArea.IsEmpty) {
 		
 			<h2>De User Interface</h2>
 	
+			<h3>UML diagram eindprogramma</h3>
+
 			/* */
+
+			<h3>Opbouw programma</h3>
+			<p>Het programma is opgedeeld in die onderdelen:</p>
+
+			<ol>
+			<li>Het geven van commando’s naar de Roomba</li>
+			<li>Het ontvangen  van commando’s;</li>
+			<li>Het afhandelen van ontvangen commando’s;</li>
+			</ol>
+
+			<p>Het sturen en ontvangen van commando’s gaat via ethernet. Hierbij maken we gebruik van ons zelfgeschreven protocol, wat we in json hebben opgesteld. Zodra het programma gestart wordt krijgt de gebruiker een venster waar deze het ip adress kan invullen om connectie te maken met de Roomba. Zodra deze connectie tot stand is gekomen zal er een nieuw window openen met hierin:</p>
+			
+			<ol>
+				<li>Knoppen, welke commando’s sturen om de mode van de Roomba te veranderen;</li>
+				<li>Een lijst met opgevraagde gegevens. Deze gegevens worden om de seconde ververst;</li>
+				<li>De manuele besturing;</li>
+				<li>Een disconnect knop;</li>
+				<li>Een knop die een nieuw window opent. Dit nieuwe window zal de laatste x aantal moves, bumbs en gevonden cliffs van de Roomba zien;</li>
+			</ol>
+ 
+			<h3>Data ontvangen</h3>
+			<p>Het ontvangen van data, het omzetten en gebruiken van data gebeurd in 3 verschillende files. Dit zijn de volgende files:</p>
+
+			<ol>
+				<li>Roomba.cpp wordt de data ontvangen en een event getriggerd;</li>
+				<li>Sensordata.cpp wordt de ontvangen data omgezet en leesbaar gemaakt;</li>
+				<li>Controllingroomba.cpp wordt de omgezette data naar de GUI gezonden;</li>
+			</ol>
+
+			<strong>Roomba.cpp</strong>
+			<p>In het onderstaande stukje code wordt er een data request gedaan. Alle uit te lezen sensoren wordt hier toegevoegd aan een Qlist. Als voorbeeld zijn de sensoren “19” de distance sensor en “21” de accu charging state hieronder te vinden.</p>
+
+<pre><code class="language-clike">
+void Roomba::sendSensorDataRequest(){
+    QList<QVariant> sensors;
+    QVariant sendData;
+    sensors.append(QVariant(19)); //Distance 2
+    sensors.append(QVariant(21)); //Charging State 1
+
+    readDataTimer->start(1000);
+    sendData = QVariant::fromValue(sensors);
+
+    jsonCommand toSend(JSONCOMMAND_SENDSENSORDATAREQUEST);
+    toSend.addToData("Sensors", sendData);
+    this->server->sendCommand(toSend);
+}
+</code></pre>
+
+<pre><code class="language-clike">
+void Roomba::readSensorData(eventSensor *theMessage){
+    foreach(QVariant sensor, theMessage->getData("Sensors").toList()){
+        QVariantMap sensorMap = sensor.toMap();
+        this->controlling_roomba->allSensorData(
+			sensorMap["id"].toInt(), 
+			sensorMap["value"].toInt()
+		);
+    }
+}
+</code></pre>
+ 
+			<p>De verzonden data ziet er als volgt uit:</p>
+
+<pre>
+[SERVER] ma 17. jun 12:11:48 2013 Sending JSON: JSON command: SENDSENSORDATAREQUEST Data: 
+[SERVER] ma 17. jun 12:11:48 2013 Sensors
+</pre>
+
+			<p>De ontvangen data zo:</p>
+
+<pre>
+[SERVER]	ma 17. jun 12:59:52 2013			Data received: 	
+{
+   "command" : "EVENT",
+   "data" : {
+      "event" : {
+         "data" : {
+            "Sensors" : [
+               {
+                  "id" : 19,
+                  "value" : 0
+               },
+               {
+                  "id" : 21,
+                  "value" : 0
+               }
+            ]
+         },
+         "type" : "SENSORDATA"
+      }
+   }
+</pre>
+
+			<strong>Sensordata.cpp</strong>
+			
+			<p>Alle ontvangen data wordt in een event gestopt, deze string van data wordt hieronder ontleed in Sensor identificatie nummer, en de bijgevoegde waarde.</p>
+
+<pre><code class="language-clike">
+namespace shared{
+    namespace events{
+
+        eventSensor::eventSensor(int sensorID, int value){
+            ourType = EVENTTYPE_SENSORDATA;
+            this->addToData("SensorID", sensorID);
+            this->addToData("Value", value);
+        }
+
+        eventSensor::eventSensor(QVariantMap data):clsEvent(data){ }
+
+        int eventSensor::getID() const {
+            return this->getData("SensorID").toInt();
+        }
+
+        int eventSensor::getValue() const {
+            return this->getData("Value").toInt();
+        }
+    }
+}
+</code></pre>
+
+			<strong>Controllingroomba.cpp</strong>
+
+			<p>In deze file wordt de waarde van de sensor toegevoegd aan de gui. Ook hier weer een voorbeeld van slechts 2 sensoren.</p>
+
+<pre><code class="language-clike">
+void Controllingroomba::allSensorData(int sensorID, int sensorValue){
+    QString temp;
+    switch(sensorID)    {
+        case 19:
+            totalDistance += sensorValue;
+            temp = "Distance: %1";
+            temp = temp.arg(sensorValue);
+            ui->lbDistance->setText(temp);
+
+            temp = "Total distance: %1";
+            temp = temp.arg(totalDistance);
+            ui->lbTotalDistance->setText(temp);
+            break;
+        case 21:
+            temp = "Battery charge state";
+            temp = temp.arg(sensorValue);
+            ui->lbBatteryChargingState->setText(temp);
+            break;
+	}
+}
+</code></pre>
+
+			<h3>Data/commando’s versturen.</h3>
+			<p>Het sturen van commands gaat via 2 files:</p>
+			<ol>
+				<li>Controllingroomba.cpp waarin alleen een emit in staat;</li>
+				<li>Roomba.cpp waarin de emit word afgevangen en de data verzend;</li>
+			</ol>
+
+			<strong>ControllingRoomba .cpp</strong>
+
+<pre><code class="language-clike">
+void Controllingroomba::on_pbCleanSpot_clicked(){
+    emit ModeChanged(MODECLEANONSPOT);
+}
+
+void Controllingroomba::on_pbDock_clicked(){
+    emit ModeChanged(MODEDOCK);
+}
+
+void Controllingroomba::on_pbDriveForward_pressed(){
+    emit setMotorSpeed(ui->hsMotorSpeed->value(), ui->hsMotorSpeed->value());
+}
+
+void Controllingroomba::on_pbDriveForward_released(){
+    emit setMotorSpeed(0,0);
+}
+</code></pre>
+
+			<strong>Roomba.cpp</strong>
+
+<pre><code class="language-clike">
+void Roomba::RoombaModeChanged(Modes newMode){
+    jsonCommand toSend(JSONCOMMAND_NEWMODE);
+    toSend.addToData("newmode", newMode);
+    this->server->sendCommand(toSend);
+}
+
+void Roomba::MotorBrushVacuumChanged(bool MainBrush, bool SideBrush, bool Vacuum){
+    jsonCommand toSend(JSONCOMMAND_SETMOTORBRUSHVACUUM);
+    toSend.addToData("MainBrush", MainBrush);
+    toSend.addToData("SideBrush", SideBrush);
+    toSend.addToData("Vacuum", Vacuum);
+    this->server->sendCommand(toSend);
+}
+</code></pre>
+
+			<p>Het verzonden commando ziet er als volgt uit:</p>
+
+<pre>
+[SERVER] ma 17. jun 12:34:37 2013 Sending JSON: JSON command: NEWMODE Data: 
+[SERVER] ma 17. jun 12:34:37 2013 newmode 3
+
+[SERVER] ma 17. jun 12:34:34 2013 Sending JSON: JSON command: SETMOTORBRUSHVACUUM Data: 
+[SERVER] ma 17. jun 12:34:34 2013 MainBrush true
+[SERVER] ma 17. jun 12:34:34 2013 SideBrush false
+[SERVER] ma 17. jun 12:34:34 2013 Vacuum false
+</pre>
+
 	
 		</div>
 	

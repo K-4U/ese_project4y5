@@ -7191,7 +7191,7 @@
 										name "AttributeKind"
 										value ("AttributeKindSet" 1)))
 								quid "519225C500D1"
-								initv "2"
+								initv "3"
 								type "int"
 								scope "Classifier"
 								visibility "Public")
@@ -9370,29 +9370,54 @@
 			(object ClassDiagram "Main"
 				quid "3619364703D4"
 				items (list diagram_item_list
-					(object CapsuleVw "mainCapsule" @679
+					(object CapsuleVw "topCap" @679
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D8110030"
-						pos (1982,977)
+						quid "51BEC7860081"
+						pos (7069,2618)
 						label (object ItemLabel
-							quid "5188D8110031"
-							pos (1721,882)
+							quid "51BEC7860082"
+							pos (6985,2607)
+							max_width 168
+							label "topCap")
+						stereotype (object ItemLabel
+							quid "51BEC7860083"
+							pos (6985,2573)
+							anchor 10
+							max_width 168
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "5176795702F3"
+						width 186
+						height 244
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleVw "mainCapsule" @680
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC78702DF"
+						pos (4527,345)
+						label (object ItemLabel
+							quid "51BEC78702E0"
+							pos (4266,249)
 							max_width 522
 							label "mainCapsule")
 						stereotype (object ItemLabel
-							quid "5188D8110037"
-							pos (1721,848)
+							quid "51BEC78702EF"
+							pos (4266,215)
 							anchor 10
 							max_width 522
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "517679F9026D"
 						compartment (object Compartment
-							quid "5188D8110042"
-							pos (1721,934)
+							quid "51BEC78702F0"
+							pos (4266,301)
 							anchor 2
 							nlines 7
 							max_width 497
@@ -9402,212 +9427,268 @@
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "topCap" @680
+					(object CapsuleRoleRelVw ":Structure:mainCapsuleR1" @681
+						quid "51BEC78702FF"
+						uses_fill_color FALSE
+						quidu "5188E41C02D9"
+						label (object SegLabel @682
+							quid "51BEC7870300"
+							pos (5928,1601)
+							positionBySuperclass FALSE
+							max_width 256
+							label "mainCapsuleR1"
+							pctDist 0.528653
+							height 3
+							orientation 1)
+						positionBySuperclass FALSE
+						client @680
+						supplier @679
+						vertices (list Points
+							(4757,552)
+							(6975,2533))
+						line_style 6144
+						label (object SegLabel @683
+							quid "51BEC7870301"
+							pos (5949,1618)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.537728
+							height 1
+							orientation 1))
+					(object ClassView "Class" "Logical View::logEntry" @684
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D812025A"
-						pos (1490,250)
+						quid "51BEC7910262"
+						pos (9733,274)
 						label (object ItemLabel
-							quid "5188D812025B"
-							pos (1401,239)
-							max_width 178
-							label "topCap")
-						stereotype (object ItemLabel
-							quid "5188D812025C"
-							pos (1401,205)
-							anchor 10
-							max_width 178
-							label "<<Capsule>>")
+							quid "51BEC7910263"
+							pos (9543,127)
+							max_width 381
+							label "logEntry")
 						icon_style "Decoration"
-						quidu "5176795702F3"
-						width 196
-						height 244
+						quidu "51B832850372"
+						compartment (object Compartment
+							quid "51BEC7910264"
+							pos (9543,183)
+							anchor 2
+							nlines 6
+							max_width 369
+							justify 1)
+						width 399
+						height 312
 						annotation 8
-						autoResize TRUE
-						showPorts TRUE)
-					(object CapsuleVw "tcpTopCapsule" @681
+						autoResize TRUE)
+					(object CapsuleVw "tcpTopCapsule" @685
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D81D00EB"
-						pos (958,746)
+						quid "51BEC79B008E"
+						pos (4527,1254)
 						label (object ItemLabel
-							quid "5188D81D00EC"
-							pos (628,650)
+							quid "51BEC79B008F"
+							pos (4197,1158)
 							max_width 660
 							label "tcpTopCapsule")
 						stereotype (object ItemLabel
-							quid "5188D81D00ED"
-							pos (628,616)
+							quid "51BEC79B0090"
+							pos (4197,1124)
 							anchor 10
 							max_width 660
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "51875E79036D"
 						compartment (object Compartment
-							quid "5188D81D00F1"
-							pos (628,745)
+							quid "51BEC79B0091"
+							pos (4197,1258)
 							anchor 2
 							nlines 6
-							max_width 621
+							max_width 625
 							justify 1)
 						width 678
 						height 414
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleVw "tcpCapsule" @682
+					(object CapsuleRoleRelVw ":Structure:tcpTopCapsuleR1" @686
+						quid "51BEC79B00AD"
+						uses_fill_color FALSE
+						quidu "5188DAE703A0"
+						label (object SegLabel @687
+							quid "51BEC79B00AE"
+							pos (5979,2063)
+							positionBySuperclass FALSE
+							max_width 288
+							label "tcpTopCapsuleR1"
+							pctDist 0.533886
+							height 27
+							orientation 1)
+						positionBySuperclass FALSE
+						client @685
+						supplier @679
+						vertices (list Points
+							(4866,1435)
+							(6975,2566))
+						line_style 6144
+						label (object SegLabel @688
+							quid "51BEC79B00AF"
+							pos (5998,2082)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.544635
+							height 35
+							orientation 1))
+					(object CapsuleVw "tcpCapsule" @689
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D825023F"
-						pos (357,1437)
+						quid "51BEC79E0309"
+						pos (2544,1542)
 						label (object ItemLabel
-							quid "5188D8250240"
-							pos (9,1199)
+							quid "51BEC79E030A"
+							pos (2196,1304)
 							max_width 696
 							label "tcpCapsule")
 						stereotype (object ItemLabel
-							quid "5188D8250241"
-							pos (9,1165)
+							quid "51BEC79E030B"
+							pos (2196,1270)
 							anchor 10
 							max_width 696
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "517678490259"
 						compartment (object Compartment
-							quid "5188D8250244"
-							pos (9,1294)
+							quid "51BEC79E0318"
+							pos (2196,1404)
 							anchor 2
 							nlines 13
-							max_width 653
+							max_width 659
 							justify 1)
 						width 714
 						height 699
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleRoleRelVw ":Structure:tcpInstance" @683
-						quid "5188D8250272"
+					(object CapsuleRoleRelVw ":Structure:tcpInstance" @690
+						quid "51BEC79E0337"
 						uses_fill_color FALSE
 						quidu "51875EA901A5"
-						label (object SegLabel @684
-							quid "5188D8250273"
-							pos (152,1012)
+						label (object SegLabel @691
+							quid "51BEC79E0338"
+							pos (3475,1419)
+							positionBySuperclass FALSE
 							max_width 225
 							label "tcpInstance"
-							pctDist -1.547577
-							height 433)
-						client @682
-						supplier @681
-						vertices (list Points
-							(659,1087)
-							(774,953))
-						line_style 6144
-						label (object SegLabel @685
-							quid "5188D8250275"
-							pos (49,1024)
-							hidden TRUE
-							anchor 1
-							max_width 15
-							label ""
-							pctDist -1.979026
-							height 503))
-					(object ProtocolVw "jsonProtocol" @686
-						ShowCompartmentStereotypes TRUE
-						IncludeAttribute TRUE
-						IncludeOperation TRUE
-						showAggregations TRUE
-						quid "5188D82C02EB"
-						pos (1531,1487)
-						label (object ItemLabel
-							quid "5188D82C02EC"
-							pos (1261,1402)
-							max_width 540
-							label "jsonProtocol")
-						stereotype (object ItemLabel
-							quid "5188D82C02ED"
-							pos (1261,1368)
-							anchor 10
-							max_width 540
-							label "<<Protocol>>")
-						icon_style "Decoration"
-						quidu "51875F9A015E"
-						compartment (object Compartment
-							quid "5188D82C02F0"
-							pos (1261,1497)
-							anchor 2
-							nlines 3
-							max_width 512
-							justify 1)
-						width 558
-						height 321
-						annotation 8
-						autoResize TRUE
-						showInSignals TRUE
-						showOutSignals TRUE)
-					(object PortRelVw ":Structure:internalJsonPort" @687
-						quid "5188D82C0321"
-						uses_fill_color FALSE
-						quidu "51875FA2029B"
-						label (object SegLabel @688
-							quid "5188D82C0322"
-							pos (1458,1167)
-							positionBySuperclass FALSE
-							max_width 338
-							label "internalJsonPort"
-							pctDist 0.199423
-							height 138
+							pctDist 0.444854
+							height 13
 							orientation 1)
 						positionBySuperclass FALSE
-						client @686
-						supplier @681
+						client @689
+						supplier @685
 						vertices (list Points
-							(1407,1326)
-							(1117,953))
+							(2901,1489)
+							(4187,1302))
 						line_style 6144
-						label (object SegLabel @689
-							quid "5188D82C0325"
-							pos (1832,80)
+						label (object SegLabel @692
+							quid "51BEC79E0339"
+							pos (3453,1428)
 							hidden TRUE
 							positionBySuperclass FALSE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist 1.529855
-							height 1100
-							orientation 1)
-						label (object SegLabel @690
-							quid "5188D82C0323"
-							pos (1878,117)
-							positionBySuperclass FALSE
-							anchor 2
-							max_width 128
-							label "<<Port>>"
-							pctDist 1.408271
-							height 1114
+							pctDist 0.427104
+							height 19
 							orientation 1))
-					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @691
+					(object CapsuleVw "jsonTranslateCapsule" @693
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D84A017F"
-						pos (2373,1441)
+						quid "51BEC7A00382"
+						pos (2458,2461)
 						label (object ItemLabel
-							quid "5188D84A0180"
-							pos (2138,1238)
+							quid "51BEC7A00383"
+							pos (2205,2285)
+							max_width 507
+							label "jsonTranslateCapsule")
+						stereotype (object ItemLabel
+							quid "51BEC7A00384"
+							pos (2205,2247)
+							anchor 10
+							max_width 507
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "5188E92D03D2"
+						compartment (object Compartment
+							quid "51BEC7A00392"
+							pos (2205,2384)
+							anchor 2
+							nlines 10
+							max_width 481
+							justify 1)
+						width 525
+						height 585
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleRoleRelVw ":Structure:jsonTranslateInstance" @694
+						quid "51BEC7A003B1"
+						uses_fill_color FALSE
+						quidu "5188E9A30035"
+						label (object SegLabel @695
+							quid "51BEC7A003B2"
+							pos (3452,1963)
+							positionBySuperclass FALSE
+							max_width 384
+							label "jsonTranslateInstance"
+							pctDist 0.473988
+							height 73
+							orientation 1)
+						positionBySuperclass FALSE
+						client @693
+						supplier @685
+						vertices (list Points
+							(2720,2307)
+							(4187,1449))
+						line_style 6144
+						label (object SegLabel @696
+							quid "51BEC7A003B3"
+							pos (3454,1991)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.466686
+							height 97
+							orientation 1))
+					(object ClassView "Class" "Logical View::TCPIP::jsonCommand" @697
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7A30052"
+						pos (9817,1017)
+						label (object ItemLabel
+							quid "51BEC7A30053"
+							pos (9582,814)
 							max_width 471
 							label "jsonCommand")
 						icon_style "Decoration"
 						quidu "518764D2025A"
 						compartment (object Compartment
-							quid "5188D84A0181"
-							pos (2138,1333)
+							quid "51BEC7A30054"
+							pos (9582,913)
 							anchor 2
 							nlines 8
 							max_width 450
@@ -9616,136 +9697,1266 @@
 						height 425
 						annotation 8
 						autoResize TRUE)
-					(object ProtocolVw "tcpProtocol" @692
+					(object ProtocolVw "jsonProtocol" @698
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "5188D852010D"
-						pos (401,2266)
+						quid "51BEC7A4039B"
+						pos (418,1328)
 						label (object ItemLabel
-							quid "5188D852010E"
-							pos (185,2171)
-							max_width 433
-							label "tcpProtocol")
+							quid "51BEC7A4039C"
+							pos (148,1243)
+							max_width 540
+							label "jsonProtocol")
 						stereotype (object ItemLabel
-							quid "5188D852010F"
-							pos (185,2137)
+							quid "51BEC7A4039D"
+							pos (148,1209)
 							anchor 10
-							max_width 433
+							max_width 540
 							label "<<Protocol>>")
 						icon_style "Decoration"
-						quidu "5176788B0049"
+						quidu "51875F9A015E"
 						compartment (object Compartment
-							quid "5188D8520113"
-							pos (185,2266)
+							quid "51BEC7A403AB"
+							pos (148,1343)
+							anchor 2
+							nlines 3
+							max_width 513
+							justify 1)
+						width 558
+						height 321
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object PortRelVw ":Structure:jsonPort" @699
+						quid "51BEC7A403BA"
+						uses_fill_color FALSE
+						quidu "5188E97C01FA"
+						label (object SegLabel @700
+							quid "51BEC7A403BB"
+							pos (1263,1973)
+							positionBySuperclass FALSE
+							max_width 191
+							label "jsonPort"
+							pctDist 0.428097
+							height 154
+							orientation 1)
+						positionBySuperclass FALSE
+						client @698
+						supplier @693
+						vertices (list Points
+							(697,1481)
+							(2195,2314))
+						line_style 6144
+						label (object SegLabel @701
+							quid "51BEC7A403BD"
+							pos (1204,2001)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.405953
+							height 208
+							orientation 1)
+						label (object SegLabel @702
+							quid "51BEC7A403BC"
+							pos (1423,1863)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.478491
+							height 19))
+					(object PortRelVw ":Structure:externalJsonPort" @703
+						quid "51BEC7A403CA"
+						uses_fill_color FALSE
+						quidu "518A19870013"
+						label (object SegLabel @704
+							quid "51BEC7A403CB"
+							pos (3933,3324)
+							positionBySuperclass FALSE
+							max_width 319
+							label "externalJsonPort"
+							pctDist 0.477179
+							height 301
+							orientation 1)
+						positionBySuperclass FALSE
+						client @698
+						supplier @685
+						vertices (list Points
+							(665,1488)
+							(3030,3023)
+							(5986,3023)
+							(4697,1461))
+						line_style 6144
+						label (object SegLabel @705
+							quid "51BEC7A403D9"
+							pos (3875,3424)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.469744
+							height 401
+							orientation 1)
+						label (object SegLabel @706
+							quid "51BEC7A403CC"
+							pos (4073,3007)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.495128
+							height 16))
+					(object PortRelVw ":Structure:internalJsonPort" @707
+						quid "51BEC7A403DA"
+						uses_fill_color FALSE
+						quidu "51875FA2029B"
+						label (object SegLabel @708
+							quid "51BEC7A403DB"
+							pos (3983,3924)
+							positionBySuperclass FALSE
+							max_width 338
+							label "internalJsonPort"
+							pctDist 0.479665
+							height 301
+							orientation 1)
+						positionBySuperclass FALSE
+						client @698
+						supplier @685
+						vertices (list Points
+							(601,1488)
+							(3030,3623)
+							(5986,3623)
+							(4654,1461))
+						line_style 6144
+						label (object SegLabel @709
+							quid "51BEC7A403DD"
+							pos (3925,4024)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.473021
+							height 401
+							orientation 1)
+						label (object SegLabel @710
+							quid "51BEC7A403DC"
+							pos (4123,3607)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.495704
+							height 16))
+					(object PortRelVw ":Structure:GUI" @711
+						quid "51BEC7A50001"
+						uses_fill_color FALSE
+						quidu "518A1D7E0221"
+						label (object SegLabel @712
+							quid "51BEC7A50002"
+							pos (4825,3692)
+							positionBySuperclass FALSE
+							max_width 128
+							label "GUI"
+							pctDist 0.531495
+							height 369
+							orientation 1)
+						positionBySuperclass FALSE
+						client @698
+						supplier @680
+						vertices (list Points
+							(628,1488)
+							(3030,3323)
+							(5986,3323)
+							(4628,552))
+						line_style 6144
+						label (object SegLabel @713
+							quid "51BEC7A50004"
+							pos (4922,3814)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.542195
+							height 491
+							orientation 1)
+						label (object SegLabel @714
+							quid "51BEC7A50003"
+							pos (4510,3352)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.496746
+							height 29
+							orientation 1))
+					(object CapsuleVw "serialTranslateCapsule" @715
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7C402FB"
+						pos (2515,6993)
+						label (object ItemLabel
+							quid "51BEC7C402FC"
+							pos (2202,6779)
+							max_width 627
+							label "serialTranslateCapsule")
+						stereotype (object ItemLabel
+							quid "51BEC7C4030A"
+							pos (2202,6741)
+							anchor 10
+							max_width 627
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "51922E6202AF"
+						compartment (object Compartment
+							quid "51BEC7C4030B"
+							pos (2202,6878)
+							anchor 2
+							nlines 12
+							max_width 594
+							justify 1)
+						width 645
+						height 661
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleVw "serialTopCapsule" @716
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7C601FE"
+						pos (4527,5860)
+						label (object ItemLabel
+							quid "51BEC7C601FF"
+							pos (4197,5769)
+							max_width 660
+							label "serialTopCapsule")
+						stereotype (object ItemLabel
+							quid "51BEC7C6020D"
+							pos (4197,5731)
+							anchor 10
+							max_width 660
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "519224D302D1"
+						compartment (object Compartment
+							quid "51BEC7C6021D"
+							pos (4197,5868)
+							anchor 2
+							nlines 6
+							max_width 625
+							justify 1)
+						width 678
+						height 414
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleRoleRelVw ":Structure:serialTranslateCapsuleR1" @717
+						quid "51BEC7C6022D"
+						uses_fill_color FALSE
+						quidu "51922E83032C"
+						label (object SegLabel @718
+							quid "51BEC7C6022E"
+							pos (3638,6322)
+							positionBySuperclass FALSE
+							max_width 431
+							label "serialTranslateCapsuleR1"
+							pctDist 0.604754
+							height 31)
+						positionBySuperclass FALSE
+						client @715
+						supplier @716
+						vertices (list Points
+							(2837,6809)
+							(4187,6049))
+						line_style 6144
+						label (object SegLabel @719
+							quid "51BEC7C6022F"
+							pos (3679,6286)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.639215
+							height 43))
+					(object CapsuleRoleRelVw ":Structure:serialTopCapsuleR1" @720
+						quid "51BEC7C6024C"
+						uses_fill_color FALSE
+						quidu "5192286A034B"
+						label (object SegLabel @721
+							quid "51BEC7C6024D"
+							pos (5968,4345)
+							positionBySuperclass FALSE
+							max_width 338
+							label "serialTopCapsuleR1"
+							pctDist 0.490653
+							height 201
+							orientation 1)
+						positionBySuperclass FALSE
+						client @716
+						supplier @679
+						vertices (list Points
+							(4687,5652)
+							(6975,2735))
+						line_style 6144
+						label (object SegLabel @722
+							quid "51BEC7C6024E"
+							pos (6015,4394)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.488077
+							height 268
+							orientation 1))
+					(object ProtocolVw "serialRawProtocol" @723
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7CA01F7"
+						pos (367,7466)
+						label (object ItemLabel
+							quid "51BEC7CA01F8"
+							pos (142,7376)
+							max_width 451
+							label "serialRawProtocol")
+						stereotype (object ItemLabel
+							quid "51BEC7CA0207"
+							pos (142,7338)
+							anchor 10
+							max_width 451
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "5192268101C9"
+						compartment (object Compartment
+							quid "51BEC7CA0208"
+							pos (142,7475)
 							anchor 2
 							nlines 4
-							max_width 418
+							max_width 434
 							justify 1)
-						width 451
+						width 469
 						height 340
 						annotation 8
 						autoResize TRUE
 						showInSignals TRUE
 						showOutSignals TRUE)
-					(object PortRelVw ":Structure:mainConnection" @693
-						quid "5188D8520145"
+					(object PortRelVw ":Structure:serialRaw" @724
+						quid "51BEC7CA0226"
 						uses_fill_color FALSE
-						quidu "5176786302E2"
-						label (object SegLabel @694
-							quid "5188D8520146"
-							pos (214,2524)
+						quidu "51922E70037B"
+						label (object SegLabel @725
+							quid "51BEC7CA0227"
+							pos (1427,7498)
 							positionBySuperclass FALSE
-							max_width 288
-							label "mainConnection"
-							pctDist -1.355056
-							height 199)
+							max_width 225
+							label "serialRaw"
+							pctDist 0.483835
+							height 261
+							orientation 1)
 						positionBySuperclass FALSE
-						client @692
-						supplier @682
+						client @723
+						supplier @715
 						vertices (list Points
-							(391,2095)
-							(375,1786))
+							(601,7413)
+							(2192,7062))
 						line_style 6144
-						label (object SegLabel @695
-							quid "5188D8520149"
-							pos (270,1862)
+						label (object SegLabel @726
+							quid "51BEC7CA0229"
+							pos (1439,7585)
 							hidden TRUE
 							positionBySuperclass FALSE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist 0.772251
-							height 109)
-						label (object SegLabel @696
-							quid "5188D8520147"
-							pos (276,1934)
+							pctDist 0.479523
+							height 348
+							orientation 1)
+						label (object SegLabel @727
+							quid "51BEC7CA0228"
+							pos (1358,7248)
 							positionBySuperclass FALSE
 							anchor 2
 							max_width 128
 							label "<<Port>>"
-							pctDist 0.538862
-							height 106))
-					(object CapsuleVw "roombaTopCapsule" @697
+							pctDist 0.475536
+							height 2
+							orientation 1))
+					(object ProtocolVw "serialProtocol" @728
 						ShowCompartmentStereotypes TRUE
 						IncludeAttribute TRUE
 						IncludeOperation TRUE
 						showAggregations TRUE
-						quid "519B5DF80172"
-						pos (2816,421)
+						quid "51BEC7CB037C"
+						pos (438,4255)
 						label (object ItemLabel
-							quid "519B5DF80173"
-							pos (1958,116)
-							max_width 1716
+							quid "51BEC7CB037D"
+							pos (186,4118)
+							max_width 504
+							label "serialProtocol")
+						stereotype (object ItemLabel
+							quid "51BEC7CB037E"
+							pos (186,4080)
+							anchor 10
+							max_width 504
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "51922EBB029C"
+						compartment (object Compartment
+							quid "51BEC7CB038B"
+							pos (186,4217)
+							anchor 2
+							nlines 6
+							max_width 481
+							justify 1)
+						width 522
+						height 435
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object PortRelVw ":Structure:serialOut" @729
+						quid "51BEC7CB039B"
+						uses_fill_color FALSE
+						quidu "51922F0F009A"
+						label (object SegLabel @730
+							quid "51BEC7CB039C"
+							pos (1544,5693)
+							positionBySuperclass FALSE
+							max_width 209
+							label "serialOut"
+							pctDist 0.560794
+							height 11)
+						positionBySuperclass FALSE
+						client @728
+						supplier @715
+						vertices (list Points
+							(602,4472)
+							(2265,6662))
+						line_style 6144
+						label (object SegLabel @731
+							quid "51BEC7CB039E"
+							pos (1582,5733)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.580736
+							height 18)
+						label (object SegLabel @732
+							quid "51BEC7CB039D"
+							pos (1411,5602)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.505188
+							height 39
+							orientation 1))
+					(object PortRelVw ":Structure:externalSerial" @733
+						quid "51BEC7CB03BA"
+						uses_fill_color FALSE
+						quidu "51922F6D000E"
+						label (object SegLabel @734
+							quid "51BEC7CB03BB"
+							pos (2758,5530)
+							positionBySuperclass FALSE
+							max_width 288
+							label "externalSerial"
+							pctDist 0.576049
+							height 287)
+						positionBySuperclass FALSE
+						client @728
+						supplier @716
+						vertices (list Points
+							(699,4438)
+							(3030,6071)
+							(4187,5905))
+						line_style 6144
+						label (object SegLabel @735
+							quid "51BEC7CB03BD"
+							pos (2896,5507)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.600912
+							height 385)
+						label (object SegLabel @736
+							quid "51BEC7CB03BC"
+							pos (2353,5631)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.507869
+							height 28
+							orientation 1))
+					(object PortRelVw ":Structure:internalSerial" @737
+						quid "51BEC7CB03BE"
+						uses_fill_color FALSE
+						quidu "51922F060327"
+						label (object SegLabel @738
+							quid "51BEC7CB03BF"
+							pos (4011,6311)
+							positionBySuperclass FALSE
+							max_width 303
+							label "internalSerial"
+							pctDist 0.557886
+							height 60)
+						positionBySuperclass FALSE
+						client @728
+						supplier @716
+						vertices (list Points
+							(699,4468)
+							(3030,6371)
+							(5986,6371)
+							(4866,5978))
+						line_style 6144
+						label (object SegLabel @739
+							quid "51BEC7CB03CA"
+							pos (4149,6288)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.577181
+							height 83)
+						label (object SegLabel @740
+							quid "51BEC7CB03C0"
+							pos (3606,6412)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.501258
+							height 41
+							orientation 1))
+					(object PortRelVw ":Structure:Serial" @741
+						quid "51BEC7CB03CB"
+						uses_fill_color FALSE
+						quidu "51922FF401F5"
+						label (object SegLabel @742
+							quid "51BEC7CB03CC"
+							pos (6621,6021)
+							positionBySuperclass FALSE
+							max_width 175
+							label "Serial"
+							pctDist 1.214817
+							height 250
+							orientation 1)
+						positionBySuperclass FALSE
+						client @728
+						supplier @680
+						vertices (list Points
+							(699,4407)
+							(3030,5771)
+							(5986,5771)
+							(4581,552))
+						line_style 6144
+						label (object SegLabel @743
+							quid "51BEC7CB03CE"
+							pos (6875,6102)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 1.300744
+							height 331
+							orientation 1)
+						label (object SegLabel @744
+							quid "51BEC7CB03CD"
+							pos (5849,5812)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.499006
+							height 41
+							orientation 1))
+					(object ClassView "ClassUtility" "Logical View::Serial::serialProperties" @745
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7CE0193"
+						pos (4407,7466)
+						label (object ItemLabel
+							quid "51BEC7CE0194"
+							pos (4221,7348)
+							max_width 372
+							label "serialProperties")
+						icon_style "Decoration"
+						quidu "519225AE02B5"
+						compartment (object Compartment
+							quid "51BEC7CE0195"
+							pos (4221,7447)
+							anchor 2
+							nlines 4
+							max_width 369
+							justify 1)
+						width 390
+						height 254
+						annotation 8
+						autoResize TRUE)
+					(object UsesView "" @746
+						quid "51BEC7CE01B3"
+						stereotype TRUE
+						uses_fill_color FALSE
+						quidu "519355CE01AA"
+						positionBySuperclass FALSE
+						client @715
+						supplier @745
+						vertices (list Points
+							(2837,7072)
+							(4211,7416))
+						line_style 6144)
+					(object CapsuleVw "serialCommunicationCapsule" @747
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7D00299"
+						pos (2302,7939)
+						label (object ItemLabel
+							quid "51BEC7D0029A"
+							pos (1987,7867)
+							max_width 631
+							label "serialCommunicationCapsule")
+						stereotype (object ItemLabel
+							quid "51BEC7D002A9"
+							pos (1987,7829)
+							anchor 10
+							max_width 631
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "519224DC0230"
+						compartment (object Compartment
+							quid "51BEC7D002AA"
+							pos (1987,7966)
+							anchor 2
+							nlines 5
+							max_width 594
+							justify 1)
+						width 649
+						height 376
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object UsesView "" @748
+						quid "51BEC7D002C8"
+						stereotype TRUE
+						uses_fill_color FALSE
+						quidu "5192280603DD"
+						positionBySuperclass FALSE
+						client @747
+						supplier @745
+						vertices (list Points
+							(2626,7864)
+							(4211,7509))
+						line_style 6144)
+					(object PortRelVw ":Structure:serialPort" @749
+						quid "51BEC7D002E7"
+						uses_fill_color FALSE
+						quidu "5192270202FA"
+						label (object SegLabel @750
+							quid "51BEC7D002E8"
+							pos (1131,8095)
+							positionBySuperclass FALSE
+							max_width 225
+							label "serialPort"
+							pctDist 0.459164
+							height 430
+							orientation 1)
+						positionBySuperclass FALSE
+						client @723
+						supplier @747
+						vertices (list Points
+							(601,7523)
+							(1977,7858))
+						line_style 6144
+						label (object SegLabel @751
+							quid "51BEC7D002EA"
+							pos (1080,8231)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.446890
+							height 574
+							orientation 1)
+						label (object SegLabel @752
+							quid "51BEC7D002E9"
+							pos (1250,7679)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.471322
+							height 2))
+					(object CapsuleRoleRelVw ":Structure:serialCommunicationInstance" @753
+						quid "51BEC7D002F7"
+						uses_fill_color FALSE
+						quidu "5192273B0109"
+						label (object SegLabel @754
+							quid "51BEC7D002F8"
+							pos (3836,6579)
+							positionBySuperclass FALSE
+							max_width 481
+							label "serialCommunicationInstance"
+							pctDist 0.719878
+							height 56
+							orientation 1)
+						positionBySuperclass FALSE
+						client @747
+						supplier @716
+						vertices (list Points
+							(2503,7750)
+							(4302,6067))
+						line_style 6144
+						label (object SegLabel @755
+							quid "51BEC7D002F9"
+							pos (3980,6467)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.793623
+							height 72
+							orientation 1))
+					(object ClassView "Class" "Logical View::Serial::byteArray" @756
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7D20342"
+						pos (9903,1828)
+						label (object ItemLabel
+							quid "51BEC7D20343"
+							pos (9645,1568)
+							max_width 516
+							label "byteArray")
+						icon_style "Decoration"
+						quidu "519230B50055"
+						compartment (object Compartment
+							quid "51BEC7D20344"
+							pos (9645,1667)
+							anchor 2
+							nlines 11
+							max_width 497
+							justify 1)
+						width 534
+						height 539
+						annotation 8
+						autoResize TRUE)
+					(object CapsuleVw "roombaTopCapsule" @757
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7EC026D"
+						pos (5202,3048)
+						label (object ItemLabel
+							quid "51BEC7EC026E"
+							pos (4056,2507)
+							max_width 2292
 							label "roombaTopCapsule")
 						stereotype (object ItemLabel
-							quid "519B5DF80176"
-							pos (1958,78)
+							quid "51BEC7EC026F"
+							pos (4056,2469)
 							anchor 10
-							max_width 1716
+							max_width 2292
 							label "<<Capsule>>")
 						icon_style "Decoration"
 						quidu "518A226F036A"
 						compartment (object Compartment
-							quid "519B5DF8017A"
-							pos (1958,215)
+							quid "51BEC7EC027C"
+							pos (4056,2606)
 							anchor 2
 							nlines 16
-							max_width 1710
+							max_width 1553
 							justify 1)
-						width 1734
-						height 842
+						width 2310
+						height 1315
 						annotation 8
 						autoResize TRUE
 						showPorts TRUE)
-					(object CapsuleRoleRelVw ":Structure:roombaTopCapsuleR1" @698
-						quid "519B5DF80192"
+					(object CapsuleRoleRelVw ":Structure:roombaTopCapsuleR1" @758
+						quid "51BEC7EC028C"
 						uses_fill_color FALSE
 						quidu "519B57A40170"
-						label (object SegLabel @699
-							quid "519B5DF80193"
-							pos (2029,311)
+						label (object SegLabel @759
+							quid "51BEC7EC028D"
+							pos (6579,2662)
+							positionBySuperclass FALSE
 							max_width 338
 							label "roombaTopCapsuleR1"
-							pctDist -0.222782
-							height 6
-							orientation 1)
-						client @697
-						supplier @680
+							pctDist 0.382903
+							height 65)
+						positionBySuperclass FALSE
+						client @757
+						supplier @679
 						vertices (list Points
-							(1948,307)
-							(1588,261))
+							(6357,2780)
+							(6975,2637))
 						line_style 6144
-						label (object SegLabel @700
-							quid "519B5DF80195"
-							pos (1870,300)
+						label (object SegLabel @760
+							quid "51BEC7EC028E"
+							pos (7664,2923)
 							hidden TRUE
+							positionBySuperclass FALSE
 							anchor 1
 							max_width 15
 							label ""
-							pctDist 0.215631
-							height 3))))))
+							pctDist 1.956585
+							height 434
+							orientation 1))
+					(object ProtocolVw "roombaProtocol" @761
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7EE0057"
+						pos (2578,480)
+						label (object ItemLabel
+							quid "51BEC7EE0058"
+							pos (2182,183)
+							max_width 792
+							label "roombaProtocol")
+						stereotype (object ItemLabel
+							quid "51BEC7EE0059"
+							pos (2182,149)
+							anchor 10
+							max_width 792
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "519B588C0151"
+						compartment (object Compartment
+							quid "51BEC7EE005A"
+							pos (2182,283)
+							anchor 2
+							nlines 7
+							max_width 513
+							justify 1)
+						width 810
+						height 744
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object PortRelVw ":Structure:toMain" @762
+						quid "51BEC7EE0067"
+						uses_fill_color FALSE
+						quidu "519B58B70323"
+						label (object SegLabel @763
+							quid "51BEC7EE0068"
+							pos (3844,1303)
+							positionBySuperclass FALSE
+							max_width 159
+							label "toMain"
+							pctDist 0.431381
+							height 297)
+						positionBySuperclass FALSE
+						client @761
+						supplier @757
+						vertices (list Points
+							(2958,852)
+							(4530,2390))
+						line_style 6144
+						label (object SegLabel @764
+							quid "51BEC7EE006A"
+							pos (3875,1198)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.408068
+							height 395)
+						label (object SegLabel @765
+							quid "51BEC7EE0069"
+							pos (3785,1628)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.515552
+							height 24))
+					(object PortRelVw ":Structure:Roomba" @766
+						quid "51BEC7EE0076"
+						uses_fill_color FALSE
+						quidu "519B58CA021E"
+						label (object SegLabel @767
+							quid "51BEC7EE0077"
+							pos (4814,83)
+							positionBySuperclass FALSE
+							max_width 175
+							label "Roomba"
+							pctDist 1.451451
+							height 240)
+						positionBySuperclass FALSE
+						client @761
+						supplier @680
+						vertices (list Points
+							(2983,451)
+							(4256,362))
+						line_style 6144
+						label (object SegLabel @768
+							quid "51BEC7EE0079"
+							pos (5213,20)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 1.766802
+							height 275)
+						label (object SegLabel @769
+							quid "51BEC7EE0078"
+							pos (3631,447)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.506776
+							height 41
+							orientation 1))
+					(object CapsuleVw "roombaProgram" @770
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7F00073"
+						pos (3006,4547)
+						label (object ItemLabel
+							quid "51BEC7F00074"
+							pos (2391,4006)
+							max_width 1230
+							label "roombaProgram")
+						stereotype (object ItemLabel
+							quid "51BEC7F00075"
+							pos (2391,3968)
+							anchor 10
+							max_width 1230
+							label "<<Capsule>>")
+						icon_style "Decoration"
+						quidu "51AB48870299"
+						compartment (object Compartment
+							quid "51BEC7F00083"
+							pos (2391,4105)
+							anchor 2
+							nlines 16
+							max_width 819
+							justify 1)
+						width 1248
+						height 1315
+						annotation 8
+						autoResize TRUE
+						showPorts TRUE)
+					(object CapsuleRoleRelVw ":Structure:roombaProgramInstance" @771
+						quid "51BEC7F00092"
+						uses_fill_color FALSE
+						quidu "51AB4BEC0082"
+						label (object SegLabel @772
+							quid "51BEC7F00093"
+							pos (4242,3716)
+							positionBySuperclass FALSE
+							max_width 384
+							label "roombaProgramInstance"
+							pctDist 0.998296
+							height 12
+							orientation 1)
+						positionBySuperclass FALSE
+						client @770
+						supplier @757
+						vertices (list Points
+							(3630,4119)
+							(4236,3705))
+						line_style 6144
+						label (object SegLabel @773
+							quid "51BEC7F00094"
+							pos (4344,3649)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 1.164550
+							height 14
+							orientation 1))
+					(object ProtocolVw "programProtocol" @774
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7F20263"
+						pos (954,3070)
+						label (object ItemLabel
+							quid "51BEC7F20264"
+							pos (339,2589)
+							max_width 1230
+							label "programProtocol")
+						stereotype (object ItemLabel
+							quid "51BEC7F20273"
+							pos (339,2551)
+							anchor 10
+							max_width 1230
+							label "<<Protocol>>")
+						icon_style "Decoration"
+						quidu "51AB493C03BB"
+						compartment (object Compartment
+							quid "51BEC7F20274"
+							pos (339,2688)
+							anchor 2
+							nlines 13
+							max_width 819
+							justify 1)
+						width 1248
+						height 1122
+						annotation 8
+						autoResize TRUE
+						showInSignals TRUE
+						showOutSignals TRUE)
+					(object ClassView "Class" "Logical View::Roomba::clsRoomba" @775
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7F5023F"
+						pos (7866,3412)
+						label (object ItemLabel
+							quid "51BEC7F50240"
+							pos (7482,2452)
+							max_width 768
+							label "clsRoomba")
+						icon_style "Decoration"
+						quidu "5190996D030D"
+						compartment (object Compartment
+							quid "51BEC7F50241"
+							pos (7482,2551)
+							anchor 2
+							nlines 28
+							max_width 497
+							justify 1)
+						width 786
+						height 1939
+						annotation 8
+						autoResize TRUE)
+					(object UsesView "" @776
+						quid "51BEC7F5024F"
+						stereotype TRUE
+						uses_fill_color FALSE
+						quidu "519B59F700C9"
+						positionBySuperclass FALSE
+						client @757
+						supplier @775
+						vertices (list Points
+							(6357,3205)
+							(7472,3357))
+						line_style 6144)
+					(object ClassView "Class" "Logical View::Roomba::clsDriveCommand" @777
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7F702D8"
+						pos (9867,2663)
+						label (object ItemLabel
+							quid "51BEC7F702D9"
+							pos (9608,2427)
+							max_width 518
+							label "clsDriveCommand")
+						icon_style "Decoration"
+						quidu "51AB5B160096"
+						compartment (object Compartment
+							quid "51BEC7F702E8"
+							pos (9608,2526)
+							anchor 2
+							nlines 5
+							max_width 322
+							justify 1)
+						width 536
+						height 490
+						annotation 8
+						autoResize TRUE)
+					(object ClassView "Class" "Logical View::Roomba::clsRoomba::clsBumpersAndCliff" @778
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7FC01E6"
+						pos (9889,3593)
+						label (object ItemLabel
+							quid "51BEC7FC01E7"
+							pos (9536,3342)
+							max_width 706
+							label "clsBumpersAndCliff")
+						icon_style "Decoration"
+						quidu "519B56930157"
+						compartment (object Compartment
+							quid "51BEC7FC01E8"
+							pos (9536,3441)
+							anchor 2
+							nlines 6
+							max_width 450
+							justify 1)
+						width 724
+						height 521
+						annotation 8
+						autoResize TRUE)
+					(object ClassView "Class" "Logical View::Roomba::clsRoomba::clsButtons" @779
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC7FF0116"
+						pos (9843,4558)
+						label (object ItemLabel
+							quid "51BEC7FF0117"
+							pos (9549,4338)
+							max_width 588
+							label "clsButtons")
+						icon_style "Decoration"
+						quidu "51A5DAF90102"
+						compartment (object Compartment
+							quid "51BEC7FF0118"
+							pos (9549,4437)
+							anchor 2
+							nlines 5
+							max_width 369
+							justify 1)
+						width 606
+						height 458
+						annotation 8
+						autoResize TRUE)
+					(object ClassView "Class" "Logical View::Roomba::clsRoomba::clsMotors" @780
+						ShowCompartmentStereotypes TRUE
+						IncludeAttribute TRUE
+						IncludeOperation TRUE
+						showAggregations TRUE
+						quid "51BEC80100B6"
+						pos (9843,5417)
+						label (object ItemLabel
+							quid "51BEC80100B7"
+							pos (9596,5197)
+							max_width 494
+							label "clsMotors")
+						icon_style "Decoration"
+						quidu "51A478DB03AD"
+						compartment (object Compartment
+							quid "51BEC80100B8"
+							pos (9596,5296)
+							anchor 2
+							nlines 5
+							max_width 304
+							justify 1)
+						width 512
+						height 458
+						annotation 8
+						autoResize TRUE)
+					(object PortRelVw ":Structure:Roomba" @781
+						quid "51BEC7F20282"
+						uses_fill_color FALSE
+						quidu "51AB4A9901B5"
+						label (object SegLabel @782
+							quid "51BEC7F20283"
+							pos (1913,4501)
+							positionBySuperclass FALSE
+							max_width 159
+							label "Roomba"
+							pctDist 0.855235
+							height 603
+							orientation 1)
+						positionBySuperclass FALSE
+						client @774
+						supplier @770
+						vertices (list Points
+							(1578,3518)
+							(2381,4095))
+						line_style 6144
+						label (object SegLabel @783
+							quid "51BEC7F20285"
+							pos (1893,4732)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.975131
+							height 802
+							orientation 1)
+						label (object SegLabel @784
+							quid "51BEC7F20284"
+							pos (1939,3806)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.466443
+							height 24
+							orientation 1))
+					(object PortRelVw ":Structure:program" @785
+						quid "51BEC7F20292"
+						uses_fill_color FALSE
+						quidu "51AB4A6F02B3"
+						label (object SegLabel @786
+							quid "51BEC7F20293"
+							pos (4258,5659)
+							positionBySuperclass FALSE
+							max_width 191
+							label "program"
+							pctDist 0.526699
+							height 183
+							orientation 1)
+						positionBySuperclass FALSE
+						client @774
+						supplier @757
+						vertices (list Points
+							(1439,3631)
+							(3031,5472)
+							(5731,5481)
+							(5344,3705))
+						line_style 6144
+						label (object SegLabel @787
+							quid "51BEC7F20295"
+							pos (4323,5720)
+							hidden TRUE
+							positionBySuperclass FALSE
+							anchor 1
+							max_width 15
+							label ""
+							pctDist 0.536078
+							height 244
+							orientation 1)
+						label (object SegLabel @788
+							quid "51BEC7F20294"
+							pos (4049,5509)
+							positionBySuperclass FALSE
+							anchor 2
+							max_width 128
+							label "<<Port>>"
+							pctDist 0.496564
+							height 34
+							orientation 1))))))
 	root_subsystem (object SubSystem "Component View"
 		quid "5176778400A5"
 		physical_models (list unit_reference_list
@@ -9932,7 +11143,7 @@
 			(object Module_Diagram "Main"
 				quid "36641F810172"
 				items (list diagram_item_list
-					(object ComponentVw "Component View::roombaController" @701
+					(object ComponentVw "Component View::roombaController" @789
 						quid "5176859B0172"
 						pos (1514,433)
 						font (object Font
@@ -9955,7 +11166,7 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ComponentVw "Component View::RTComponents::RTComponent" @702
+					(object ComponentVw "Component View::RTComponents::RTComponent" @790
 						quid "5176859C02A3"
 						pos (2192,925)
 						font (object Font
@@ -9978,18 +11189,18 @@
 						height 186
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @703
+					(object ModVisView "" @791
 						quid "517685AC0182"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517685AD00B8"
-						client @701
-						supplier @702
+						client @789
+						supplier @790
 						vertices (list Points
 							(1611,508)
 							(2067,837))
 						line_style 6144)
-					(object ComponentVw "Component View::tcpIpLib" @704
+					(object ComponentVw "Component View::tcpIpLib" @792
 						quid "517686A800C3"
 						pos (528,321)
 						font (object Font
@@ -10012,18 +11223,18 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @705
+					(object ModVisView "" @793
 						quid "517686AD00DB"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "517686AE00BD"
-						client @701
-						supplier @704
+						client @789
+						supplier @792
 						vertices (list Points
 							(1260,403)
 							(845,356))
 						line_style 6144)
-					(object ComponentVw "Component View::jsonLib" @706
+					(object ComponentVw "Component View::jsonLib" @794
 						quid "51876F7902A7"
 						pos (903,944)
 						font (object Font
@@ -10046,18 +11257,18 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @707
+					(object ModVisView "" @795
 						quid "51876F7C003B"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "51876F7C03A2"
-						client @701
-						supplier @706
+						client @789
+						supplier @794
 						vertices (list Points
 							(1416,508)
 							(987,867))
 						line_style 6144)
-					(object ComponentVw "Component View::serialCommunicationLib" @708
+					(object ComponentVw "Component View::serialCommunicationLib" @796
 						quid "5192279200E5"
 						pos (1683,145)
 						label (object ItemLabel
@@ -10078,13 +11289,13 @@
 						height 162
 						annotation 1
 						autoResize TRUE)
-					(object ModVisView "" @709
+					(object ModVisView "" @797
 						quid "519227940185"
 						stereotype TRUE
 						uses_fill_color FALSE
 						quidu "519227940351"
-						client @701
-						supplier @708
+						client @789
+						supplier @796
 						vertices (list Points
 							(1551,356)
 							(1626,220))

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/cmdDock"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dock" />
+
+    <Button
+        android:id="@+id/cmdClean"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clean" />
+
+    <Button
+        android:id="@+id/cmdCleanOnSPot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cleanOnSpot" />
+
+    <Button
+        android:id="@+id/cmdStop"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stop" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sensors"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

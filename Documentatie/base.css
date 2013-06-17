@@ -33,6 +33,11 @@
 		text-align: left;
 	}
 	
+	sub {
+		display: block;
+		margin: 15px 0 0 15px;
+	}
+	
 	@page {
 		counter-increment: page;
 		size: A4;
@@ -42,14 +47,14 @@
 		}
 	}
 	
-	.imagelist {
-		width: 100%;
-	}
 	.imagelist td {
 		padding: 15px 0 15px 15px;
 	}
 	.imagelist td:first-child {
 		padding-left: 0;
+	}
+	.imagelist img {
+		width: 300px;
 	}
 
 	/**
@@ -75,12 +80,18 @@
 	.chapter h3:before {
 		content: counter(one) "." counter(two) "." counter(three) ". ";
 	}
-
+	
+	
+	
+	
+	
+	ul.toc a {
+		text-decoration: none;
+		color: inherit;
+	}
 	ul.toc a::after {
 		content: leader('.') target-counter(attr(href), page);
 	}
-	
-	
 	
 	
 	

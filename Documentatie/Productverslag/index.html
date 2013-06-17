@@ -87,7 +87,7 @@
 
 		<p>The programming of the user interface and the simulator have been written in C++. The transmission and reception of data and the softening thereof is programmed in Rose Real Time.</p>
 
-		<p>The project has resulted in three products: a simulator, a controller and a user interface. The simulator accepts signals from the controller, plots the roomba movement and returns simulated sensor data. This product has been completed within specifications. The controller has been completed as well, the roomba or the simulator can both be controlled, and a basic cleaning system has been implemented. Finally, the user interface can be used to control the roomba (or the simulator) remotely. It also works as planned, so all products have been realised.</p>
+		<p>The project has resulted in three products: a simulator, a controller and a user interface. The simulator accepts signals from the controller, plots the Roomba movement and returns simulated sensor data. This product has been completed within specifications. The controller has been completed as well, the Roomba or the simulator can both be controlled, and a basic cleaning system has been implemented. Finally, the user interface can be used to control the Roomba (or the simulator) remotely. It also works as planned, so all products have been realised.</p>
 		
 		<p>We thought it was a fun project. There were many challenges, as no one had  programmed with Rose RealTime before. All in all the group has enjoyed working together, and many new ESE-related skills have been aquired.</p>
 	
@@ -383,12 +383,6 @@
 		
 			<h2>IPO's</h2>
 			
-			<h3>Software</h3>
-			
-			/* */
-			
-			<h3>Hardware</h3>
-			
 			<p>In dit hoofdstuk worden de verschillende typen hardware besproken die gebruikt worden in dit project.</p>
 			
 			<h4>Bump sensor</h4>
@@ -485,7 +479,7 @@
 	
 			<h3>Klasse diagram eindprogramma</h3>
 	
-			/* */
+			<p>/* */</p>
 	
 			<h3>TCP/IP verbinding met Rose RealTime</h3>
 			
@@ -561,9 +555,6 @@
 			<img src="assets/image063.png" alt="">
 			<sub>Afbeelding 4.3 - topCapsule Roomba</sub>
 	
-	
-			/* */
-	
 		</div>
 	
 		<div>
@@ -572,7 +563,7 @@
 
 			<p>Omdat er binnen het project, waaraan vijf projectgroepen deelnamen, slechts twee iRobot Roomba stofzuigers beschikbaar waren, moesten de praktijktests van de stofzuigerbesturing op een andere manier plaatsvinden. De projectgroep heeft daartoe een simulator ontwikkeld, waarin de verscheidene signalen die de Roomba ontvangt worden geïnterpreteerd. De simulator kan het traject dat de Roomba aflegt monitoren op een veel hogere snelheid dan de daadwerkelijke stofzuiger dat kan. Op deze manier kunnen reacties van de Roomba-besturing veel sneller worden getest en eventueel gecorrigeerd. Binnen de simulatoromgeving is een 'kamer' ingericht, waarin 'tafels' staan. Zodra de Roomba met een 'tafel' contact maakt, worden de juiste sensorwaarden bepaald en verstuurd. Hiervoor worden hoek- en impactberekeningen gemaakt, zodat ook de aangegeven hoeken precies kloppen. Het besturen van de simulator of het besturen van een daadwerkelijke stofzuiger maakt voor het aansturingsprogramma dus geen verschil.</p>
 	
-			<p>Omdat de Roomba over verschillende methoden van motoraansturing beschikt, is er aan het begin een keuze gemaakt om een van deze manieren te selecteren, en de andere niet te gebruiken. De roomba kan aangestuurd worden doormiddel van PWM waarden voor beide wielen, een vectorwaarde voor snelheid met een hoek waarin deze vector moet worden uitgevoerd en een directe snelheidsinput in millimeter per seconde voor de wielen. De groep heeft hierin een <strong>afweging</strong> gemaakt. Het aansturen met een PWM waarde is niet relevant voor de besturing vanuit de ontwikkelde controller, en is daarnaast niet goed voor te stellen. Deze aansturingsmogelijkheid viel dus af. De aansturing met een vector is evengoed lastig in te schatten, aangezien het besturen van achterwaartse bewegingen fouten in de door de Roomba aangeleverde data oplevert. Daarmee valt deze mogelijkheid dus ook af. Er is dus gekozen voor mogelijkheid drie; aansturen doormiddel van directe snelheden. Deze aansturingsmethode is dus ook de basis geweest van het opbouwen van de simulator.</p>
+			<p>Omdat de Roomba over verschillende methoden van motoraansturing beschikt, is er aan het begin een keuze gemaakt om een van deze manieren te selecteren, en de andere niet te gebruiken. De Roomba kan aangestuurd worden doormiddel van PWM waarden voor beide wielen, een vectorwaarde voor snelheid met een hoek waarin deze vector moet worden uitgevoerd en een directe snelheidsinput in millimeter per seconde voor de wielen. De groep heeft hierin een <strong>afweging</strong> gemaakt. Het aansturen met een PWM waarde is niet relevant voor de besturing vanuit de ontwikkelde controller, en is daarnaast niet goed voor te stellen. Deze aansturingsmogelijkheid viel dus af. De aansturing met een vector is evengoed lastig in te schatten, aangezien het besturen van achterwaartse bewegingen fouten in de door de Roomba aangeleverde data oplevert. Daarmee valt deze mogelijkheid dus ook af. Er is dus gekozen voor mogelijkheid drie; aansturen doormiddel van directe snelheden. Deze aansturingsmethode is dus ook de basis geweest van het opbouwen van de simulator.</p>
 	
 			<p>De tests voor het tekenen van van de Roomba in het simulatorscherm leverde een <strong>probleem</strong> op. Alle combinaties van voor en achterwaartse snelheden kwamen goed uit de tekentests, met uitzondering van een variabele (dus niet aan beide zijden gelijke) tegengestelde snelheid. Een dergelijke beweging zou een spiraal-achtige vorm opleveren, maar werd niet correct afgehandeld door de ontworpen berekeningen. Besloten is om deze uiterste <em>edge-case</em> niet te implementeren, aangezien achteruit rijden met de Roomba onhandig is. De Roomba beschikt namelijk niet over sensoren aan de achterzijde.</p>
 	
@@ -633,7 +624,7 @@ if (!collisionArea.IsEmpty) {
 		
 			<h3>Test</h3>
 			
-			<p>Om bruikbaar te zijn binnen het project, moet de simulator de signalen die de controller verstuurd op de zelfde manier afhandelen als de echte roomba dat doet. De bewegingen die de roomba maakt moeten op het scherm worden weergegeven, en de teruggezonden sensorwaarden moeten reflecteren wat de echte Roomba terug zal zenden.</p>
+			<p>Om bruikbaar te zijn binnen het project, moet de simulator de signalen die de controller verstuurd op de zelfde manier afhandelen als de echte Roomba dat doet. De bewegingen die de Roomba maakt moeten op het scherm worden weergegeven, en de teruggezonden sensorwaarden moeten reflecteren wat de echte Roomba terug zal zenden.</p>
 			
 			<h3>Testomschrijving</h3>
 			
@@ -649,15 +640,40 @@ if (!collisionArea.IsEmpty) {
 		
 			<h2>Controller</h2>
 		
+			<h3>Test</h3>
+			
+			<p>Om de roombaController te kunnen gebruiken moet deze een compleet programma zonder problemen doorlopen. Ook is het de bedoeling dat de roombaController TCP verbindingen afhandelt en communicatie met de Roomba vast houd. De sensorwaarden die worden geïnterpreteerd moeten ook reëel zijn.</p>
+
+			<h3>Testomschrijving</h3>
+			
+			<p>De roombaController is getest op vier verschillende punten: Het behandelen van TCP verbindingen, het openen van de seriele poort en hiermee communiceren, het programma foutloos aflopen en de JSON vertaling maken.</p>
+
+			<h3>Reproductie</h3>
 		
-		
+			<p>Door op de UI op Connect te klikken en het correcte IP adres in te vullen wordt de TCP verbinding getest. Indien de UI correcte data binnen krijgt werkt de TCP verbinding.</p>
+
+			<p>Door op de Roomba op de "Clean" knop te duwen, moet de Roomba zijn programma gaan aflopen. Let op, als de Roomba een muziekje afspeelt is het niet het programma van de roombaController, maar het eigen programma.</p>
+
 		</div>
 		
 		<div>
 		
 			<h2>User interface</h2>
 		
-		
+			<h3>Test</h3>
+			
+			<p>De userinterface dient om de Roomba stofzuiger (of de simulator) met de hand te kunnen bedienen. De signalen die de simultor stuurt zullen door de controller begrepen moeten worden, en de userinterface moet data kunnen ontvangen en afhandelen.</p>
+			
+			<h3>Testomschrijving</h3>
+			
+			<p>De user interface kan worden getest door de signalen in het output logboek te bestuderen, en de Roomba op de controller aan te sluiten. Zodra in de user interface bijvoorbeeld de checkbox "MainBrush" wordt aangevinkt zal er naar de Roomba Controller gestuurd worden: "MainBrush true" "SideBrush false" "Vacuum false". Als de Roomba reageert op de signalen zoals die door de user interface verzonden worden, is de user interface met success getest, zoals te zien in figuur 5.1.</p>
+			
+			<img src="assets/guitest.jpg" alt="">
+			<sub>Afbeelding 5.1 - User interface test</sub>
+			
+			<h3>Reproductie</h3>
+			
+			<p>Het testen van de user interface kan worden nagedaan door de user interface aan te sluiten op de controller, en deze vervolgens weer op de Roomba of de simulator aan te sluiten. Als de Roomba zich gedraagt zoals de verwachte signalen van de User Interface is de test geslaagd.</p>
 		
 		</div>
 	

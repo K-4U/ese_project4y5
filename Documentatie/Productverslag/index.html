@@ -574,8 +574,11 @@
 	
 			<p>De tests voor het tekenen van van de Roomba in het simulatorscherm leverde een <strong>probleem</strong> op. Alle combinaties van voor en achterwaartse snelheden kwamen goed uit de tekentests, met uitzondering van een variabele (dus niet aan beide zijden gelijke) tegengestelde snelheid. Een dergelijke beweging zou een spiraal-achtige vorm opleveren, maar werd niet correct afgehandeld door de ontworpen berekeningen. Besloten is om deze uiterste <em>edge-case</em> niet te implementeren, aangezien achteruit rijden met de Roomba onhandig is. De Roomba beschikt namelijk niet over sensoren aan de achterzijde.</p>
 	
-			<p>De simulator zelf is geschreven in C#, waarbij gebruikt is gemaakt van de Microsoft Visual Studio <em>IDE</em>. De tekeningen van de Roomba stofzuiger en andere elementen in de 'kamer' zijn basaal, en bestaan uit simpele - al dan niet ingekleurde - geometrische vormen. In de simulator is een tabel opgenomen waarin verschillende waarden kunnen worden weergegeven die op de daadwerkelijke stofzuiger overduidelijk zijn, maar die niet in de tekening zijn opgenomen, zoals de aan/uit status van de stofzuiger.</p>
+			<p>De simulator zelf is geschreven in C#, waarbij gebruikt is gemaakt van de Microsoft Visual Studio <em>IDE</em>. De tekeningen van de Roomba stofzuiger en andere elementen in de 'kamer' zijn basaal, en bestaan uit simpele - al dan niet ingekleurde - geometrische vormen, zoals in Afbeelding 4.4. In de simulator is een tabel opgenomen waarin verschillende waarden kunnen worden weergegeven die op de daadwerkelijke stofzuiger overduidelijk zijn, maar die niet in de tekening zijn opgenomen, zoals de aan/uit status van de stofzuiger.</p>
 	
+			<img src="assets/simulator.png" alt="">
+			<sub>Afbeelding 4.4 - Simulatorweergave</sub>
+	 
 			<p>De simulatorcode bestaat uit een aantal onderdelen, waarvan het onderdeel 'serieel' als eerst ontwikkeld is. Dit onderdeel communiceerd met gebruik van een aantal standaard <em>libraries</em> met de COM-poort op de pc, waarvan vervolgens data kan worden gelezen. Deze data wordt vervolgens omgezet naar bruikbare gegevens, door deze door een <em>Lookup-table</em> te halen. In deze tabel staan gegevens over pakket-grootte en aan te roepen functies. Zodra de data correct ontvangen is, worden de benodigde functies aangeroepen. Deze functies behandelen de waarden die in de simulator worden bijgehouden. Los daarvan voert de simulatie elke 100 milliseconden een simulatie-routine uit, de de gevolgen van deze waarden berekent, plot en tekent op het scherm.</p>
 	
 			<p>Een van de lastige zaken is het bereken van de raakvlakken in de simulator. Dit is uiteindelijk met de volgende - naar code omgezette - berekening opgelost:</p>
@@ -620,7 +623,41 @@ if (!collisionArea.IsEmpty) {
 		
 		<h1>Testen en resultaten</h1>
 	
-		/* */
+		<p>In dit hoofdstuk, testen en resultaten, wordt weergeven hoe de ontwikkelde software getest is. Hierbij wordt gekeken of het geteste onderdeel aan de gestelde eisen voldoet, en of er problemen optreden die nog verholpen moeten worden. Voor alle testen in dit hoofdstuk is een paragraaf 'reproductie' opgenomen, waarin beschreven is hoe deze test herhaald kan worden.</p>
+		
+		<div>
+		
+			<h2>Simulator</h2>
+		
+			<h3>Test</h3>
+			
+			<p>Om bruikbaar te zijn binnen het project, moet de simulator de signalen die de controller verstuurd op de zelfde manier afhandelen als de echte roomba dat doet. De bewegingen die de roomba maakt moeten op het scherm worden weergegeven, en de teruggezonden sensorwaarden moeten reflecteren wat de echte Roomba terug zal zenden.</p>
+			
+			<h3>Testomschrijving</h3>
+			
+			<p>De simulator is op twee punten getest: het ontwikkelen van een goed tekensysteem en het afhandelen van de signalen van en naar de controller. Deze signalen en tekeningen zijn getest aan de hand van het narekenen van afgelegde afstanden en hoeken, en met vergelijken van signalen met een daadwerkelijke Roomba.</p>
+			
+			<h3>Reproductie</h3>
+		
+			<p>Het testen van de Roomba kan worden nagedaan door de controller op de simulator aan te sluiten en een programma uit te voeren. De waarden die op het scherm worden weergegeven moeten dan overeen komen met de verwachte output.</p>
+		
+		</div>
+		
+		<div>
+		
+			<h2>Controller</h2>
+		
+		
+		
+		</div>
+		
+		<div>
+		
+			<h2>User interface</h2>
+		
+		
+		
+		</div>
 	
 	</div>
 	

@@ -93,7 +93,7 @@ namespace client{
                 this->handleLogs(new eventLogging(data));
             break;
             case EVENTTYPE_BRUSHVACUUMDATA:
-                this->motorBrushVacuumReceived(new eventBrushVacuumData(data));
+                emit this->motorBrushVacuumReceived(new eventBrushVacuumData(data));
                 break;
  //           case EVENTTYPE_SERVERMSG:
  //               emit this->serverMessageReceived(new eventServerMessage(data));

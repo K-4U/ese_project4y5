@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html><head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<link href="../base.css" rel="stylesheet">
 	<title>Productrapport</title>
@@ -15,7 +14,7 @@
 		<img src="assets/image001.jpg" alt="">
 		
 		<table>
-			<tr>
+			<tbody><tr>
 				<td>Document</td>
 				<td>Productrapport</td>
 			</tr>
@@ -37,7 +36,7 @@
 			</tr>
 			<tr>
 				<td>Projectleden</td>
-				<td>Koen Beckers, Erik de Boer, Léon Gersen, Maarten Kompanje & Tim Rijssemus.</td>
+				<td>Koen Beckers, Erik de Boer, Léon Gersen, Maarten Kompanje &amp; Tim Rijssemus.</td>
 			</tr>
 			<tr>
 				<td>Opdrachtgever</td>
@@ -55,7 +54,7 @@
 				<td>Versie</td>
 				<td>1.0</td>
 			</tr>
-		</table>
+		</tbody></table>
 	
 	</div>
 	
@@ -588,23 +587,23 @@
 	
 			<p>Een van de lastige zaken is het bereken van de raakvlakken in de simulator. Dit is uiteindelijk met de volgende - naar code omgezette - berekening opgelost:</p>
 	
-<pre><code class="language-clike">
-if (!collisionArea.IsEmpty) {
-	// shows collisions on screen;
-	g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
+<pre class=" language-clike"><code class=" language-clike">
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>collisionArea<span class="token punctuation">.</span>IsEmpty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token comment" spellcheck="true">	// shows collisions on screen;
+</span>	g<span class="token punctuation">.</span><span class="token function">DrawRectangle<span class="token punctuation">(</span></span>debugPen<span class="token punctuation">,</span> Rectangle<span class="token punctuation">.</span><span class="token function">Round<span class="token punctuation">(</span></span>collisionArea<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-	double toRadian = (Math.PI / 180.0);
-	double toDegree = (180.0 / Math.PI);
+	double toRadian <span class="token operator">=</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span>PI <span class="token operator">/</span> <span class="token number">180.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	double toDegree <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">180.0</span> <span class="token operator">/</span> Math<span class="token punctuation">.</span>PI<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-	if (collisionArea.Width > collisionArea.Height) {
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>collisionArea<span class="token punctuation">.</span>Width <span class="token operator">&gt;</span> collisionArea<span class="token punctuation">.</span>Height<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		
-		double invAngle = ((double)180.0 - a);
-		double sin = Math.Sin(invAngle * toRadian);
-		double sz = (WHEELBASE / 2.0) / sin;
-		a = Math.Acos((WHEELBASE/2)/sz)*toDegree;
+		double invAngle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>double<span class="token punctuation">)</span><span class="token number">180.0</span> <span class="token operator">-</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		double sin <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">Sin<span class="token punctuation">(</span></span>invAngle <span class="token operator">*</span> toRadian<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		double sz <span class="token operator">=</span> <span class="token punctuation">(</span>WHEELBASE <span class="token operator">/</span> <span class="token number">2.0</span><span class="token punctuation">)</span> <span class="token operator">/</span> sin<span class="token punctuation">;</span>
+		a <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">Acos<span class="token punctuation">(</span></span><span class="token punctuation">(</span>WHEELBASE<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">/</span>sz<span class="token punctuation">)</span><span class="token operator">*</span>toDegree<span class="token punctuation">;</span>
 
-	}
-}
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <sub>Code voor het berekenen van raakhoeken.</sub>
 	
@@ -656,45 +655,43 @@ if (!collisionArea.IsEmpty) {
 			<strong>Roomba.cpp</strong>
 			<p>In het onderstaande stukje code wordt er een data request gedaan. Alle uit te lezen sensoren wordt hier toegevoegd aan een Qlist. Als voorbeeld zijn de sensoren “19” de distance sensor en “21” de accu charging state hieronder te vinden.</p>
 
-<pre><code class="language-clike">
-void Roomba::sendSensorDataRequest(){
-    QList<QVariant> sensors;
-    QVariant sendData;
-    sensors.append(QVariant(19)); //Distance 2
-    sensors.append(QVariant(21)); //Charging State 1
+<pre class=" language-clike"><code class=" language-clike">
+void Roomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">sendSensorDataRequest<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    QList sensors<span class="token punctuation">;</span>
+    QVariant sendData<span class="token punctuation">;</span>
+    sensors<span class="token punctuation">.</span><span class="token function">append<span class="token punctuation">(</span></span><span class="token function">QVariant<span class="token punctuation">(</span></span><span class="token number">19</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true"> //Distance 2
+</span>    sensors<span class="token punctuation">.</span><span class="token function">append<span class="token punctuation">(</span></span><span class="token function">QVariant<span class="token punctuation">(</span></span><span class="token number">21</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true"> //Charging State 1
+</span>
+    readDataTimer<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">start<span class="token punctuation">(</span></span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sendData <span class="token operator">=</span> QVariant<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">fromValue<span class="token punctuation">(</span></span>sensors<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    readDataTimer->start(1000);
-    sendData = QVariant::fromValue(sensors);
-
-    jsonCommand toSend(JSONCOMMAND_SENDSENSORDATAREQUEST);
-    toSend.addToData("Sensors", sendData);
-    this->server->sendCommand(toSend);
-}
+    jsonCommand <span class="token function">toSend<span class="token punctuation">(</span></span>JSONCOMMAND_SENDSENSORDATAREQUEST<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    toSend<span class="token punctuation">.</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"Sensors"</span><span class="token punctuation">,</span> sendData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    this<span class="token operator">-</span><span class="token operator">&gt;</span>server<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">sendCommand<span class="token punctuation">(</span></span>toSend<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
-<pre><code class="language-clike">
-void Roomba::readSensorData(eventSensor *theMessage){
-    foreach(QVariant sensor, theMessage->getData("Sensors").toList()){
-        QVariantMap sensorMap = sensor.toMap();
-        this->controlling_roomba->allSensorData(
-			sensorMap["id"].toInt(), 
-			sensorMap["value"].toInt()
-		);
-    }
-}
+<pre class=" language-clike"><code class=" language-clike">
+void Roomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">readSensorData<span class="token punctuation">(</span></span>eventSensor <span class="token operator">*</span>theMessage<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">foreach<span class="token punctuation">(</span></span>QVariant sensor<span class="token punctuation">,</span> theMessage<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token string">"Sensors"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toList<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        QVariantMap sensorMap <span class="token operator">=</span> sensor<span class="token punctuation">.</span><span class="token function">toMap<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        this<span class="token operator">-</span><span class="token operator">&gt;</span>controlling_roomba<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">allSensorData<span class="token punctuation">(</span></span>
+			sensorMap<span class="token punctuation">[</span><span class="token string">"id"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">toInt<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+			sensorMap<span class="token punctuation">[</span><span class="token string">"value"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">toInt<span class="token punctuation">(</span></span><span class="token punctuation">)</span>
+		<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
  
 			<p>De verzonden data ziet er als volgt uit:</p>
 
-<pre>
-[SERVER] ma 17. jun 12:11:48 2013 Sending JSON: JSON command: SENDSENSORDATAREQUEST Data: 
+<pre>[SERVER] ma 17. jun 12:11:48 2013 Sending JSON: JSON command: SENDSENSORDATAREQUEST Data: 
 [SERVER] ma 17. jun 12:11:48 2013 Sensors
 </pre>
 
 			<p>De ontvangen data zo:</p>
 
-<pre>
-[SERVER]	ma 17. jun 12:59:52 2013			Data received: 	
+<pre>[SERVER]	ma 17. jun 12:59:52 2013			Data received: 	
 {
    "command" : "EVENT",
    "data" : {
@@ -720,54 +717,54 @@ void Roomba::readSensorData(eventSensor *theMessage){
 			
 			<p>Alle ontvangen data wordt in een event gestopt, deze string van data wordt hieronder ontleed in Sensor identificatie nummer, en de bijgevoegde waarde.</p>
 
-<pre><code class="language-clike">
-namespace shared{
-    namespace events{
+<pre class=" language-clike"><code class=" language-clike">
+namespace shared<span class="token punctuation">{</span>
+    namespace events<span class="token punctuation">{</span>
 
-        eventSensor::eventSensor(int sensorID, int value){
-            ourType = EVENTTYPE_SENSORDATA;
-            this->addToData("SensorID", sensorID);
-            this->addToData("Value", value);
-        }
+        eventSensor<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">eventSensor<span class="token punctuation">(</span></span>int sensorID<span class="token punctuation">,</span> int value<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            ourType <span class="token operator">=</span> EVENTTYPE_SENSORDATA<span class="token punctuation">;</span>
+            this<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"SensorID"</span><span class="token punctuation">,</span> sensorID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            this<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"Value"</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        eventSensor::eventSensor(QVariantMap data):clsEvent(data){ }
+        eventSensor<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">eventSensor<span class="token punctuation">(</span></span>QVariantMap data<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">clsEvent<span class="token punctuation">(</span></span>data<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
 
-        int eventSensor::getID() const {
-            return this->getData("SensorID").toInt();
-        }
+        int eventSensor<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">getID<span class="token punctuation">(</span></span><span class="token punctuation">)</span> const <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> this<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token string">"SensorID"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-        int eventSensor::getValue() const {
-            return this->getData("Value").toInt();
-        }
-    }
-}
+        int eventSensor<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">getValue<span class="token punctuation">(</span></span><span class="token punctuation">)</span> const <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> this<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token string">"Value"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
 			<strong>Controllingroomba.cpp</strong>
 
 			<p>In deze file wordt de waarde van de sensor toegevoegd aan de gui. Ook hier weer een voorbeeld van slechts 2 sensoren.</p>
 
-<pre><code class="language-clike">
-void Controllingroomba::allSensorData(int sensorID, int sensorValue){
-    QString temp;
-    switch(sensorID)    {
-        case 19:
-            totalDistance += sensorValue;
-            temp = "Distance: %1";
-            temp = temp.arg(sensorValue);
-            ui->lbDistance->setText(temp);
+<pre class=" language-clike"><code class=" language-clike">
+void Controllingroomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">allSensorData<span class="token punctuation">(</span></span>int sensorID<span class="token punctuation">,</span> int sensorValue<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    QString temp<span class="token punctuation">;</span>
+    <span class="token function">switch<span class="token punctuation">(</span></span>sensorID<span class="token punctuation">)</span>    <span class="token punctuation">{</span>
+        case <span class="token number">19</span><span class="token punctuation">:</span>
+            totalDistance <span class="token operator">+</span><span class="token operator">=</span> sensorValue<span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> <span class="token string">"Distance: %1"</span><span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> temp<span class="token punctuation">.</span><span class="token function">arg<span class="token punctuation">(</span></span>sensorValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ui<span class="token operator">-</span><span class="token operator">&gt;</span>lbDistance<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setText<span class="token punctuation">(</span></span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-            temp = "Total distance: %1";
-            temp = temp.arg(totalDistance);
-            ui->lbTotalDistance->setText(temp);
-            break;
-        case 21:
-            temp = "Battery charge state";
-            temp = temp.arg(sensorValue);
-            ui->lbBatteryChargingState->setText(temp);
-            break;
-	}
-}
+            temp <span class="token operator">=</span> <span class="token string">"Total distance: %1"</span><span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> temp<span class="token punctuation">.</span><span class="token function">arg<span class="token punctuation">(</span></span>totalDistance<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ui<span class="token operator">-</span><span class="token operator">&gt;</span>lbTotalDistance<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setText<span class="token punctuation">(</span></span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case <span class="token number">21</span><span class="token punctuation">:</span>
+            temp <span class="token operator">=</span> <span class="token string">"Battery charge state"</span><span class="token punctuation">;</span>
+            temp <span class="token operator">=</span> temp<span class="token punctuation">.</span><span class="token function">arg<span class="token punctuation">(</span></span>sensorValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ui<span class="token operator">-</span><span class="token operator">&gt;</span>lbBatteryChargingState<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setText<span class="token punctuation">(</span></span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
 			<h3>Data/commando’s versturen.</h3>
@@ -779,46 +776,45 @@ void Controllingroomba::allSensorData(int sensorID, int sensorValue){
 
 			<strong>ControllingRoomba .cpp</strong>
 
-<pre><code class="language-clike">
-void Controllingroomba::on_pbCleanSpot_clicked(){
-    emit ModeChanged(MODECLEANONSPOT);
-}
+<pre class=" language-clike"><code class=" language-clike">
+void Controllingroomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">on_pbCleanSpot_clicked<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    emit <span class="token function">ModeChanged<span class="token punctuation">(</span></span>MODECLEANONSPOT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-void Controllingroomba::on_pbDock_clicked(){
-    emit ModeChanged(MODEDOCK);
-}
+void Controllingroomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">on_pbDock_clicked<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    emit <span class="token function">ModeChanged<span class="token punctuation">(</span></span>MODEDOCK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-void Controllingroomba::on_pbDriveForward_pressed(){
-    emit setMotorSpeed(ui->hsMotorSpeed->value(), ui->hsMotorSpeed->value());
-}
+void Controllingroomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">on_pbDriveForward_pressed<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    emit <span class="token function">setMotorSpeed<span class="token punctuation">(</span></span>ui<span class="token operator">-</span><span class="token operator">&gt;</span>hsMotorSpeed<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">value<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span> ui<span class="token operator">-</span><span class="token operator">&gt;</span>hsMotorSpeed<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">value<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-void Controllingroomba::on_pbDriveForward_released(){
-    emit setMotorSpeed(0,0);
-}
+void Controllingroomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">on_pbDriveForward_released<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    emit <span class="token function">setMotorSpeed<span class="token punctuation">(</span></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
 			<strong>Roomba.cpp</strong>
 
-<pre><code class="language-clike">
-void Roomba::RoombaModeChanged(Modes newMode){
-    jsonCommand toSend(JSONCOMMAND_NEWMODE);
-    toSend.addToData("newmode", newMode);
-    this->server->sendCommand(toSend);
-}
+<pre class=" language-clike"><code class=" language-clike">
+void Roomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">RoombaModeChanged<span class="token punctuation">(</span></span>Modes newMode<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    jsonCommand <span class="token function">toSend<span class="token punctuation">(</span></span>JSONCOMMAND_NEWMODE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    toSend<span class="token punctuation">.</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"newmode"</span><span class="token punctuation">,</span> newMode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    this<span class="token operator">-</span><span class="token operator">&gt;</span>server<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">sendCommand<span class="token punctuation">(</span></span>toSend<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-void Roomba::MotorBrushVacuumChanged(bool MainBrush, bool SideBrush, bool Vacuum){
-    jsonCommand toSend(JSONCOMMAND_SETMOTORBRUSHVACUUM);
-    toSend.addToData("MainBrush", MainBrush);
-    toSend.addToData("SideBrush", SideBrush);
-    toSend.addToData("Vacuum", Vacuum);
-    this->server->sendCommand(toSend);
-}
+void Roomba<span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token function">MotorBrushVacuumChanged<span class="token punctuation">(</span></span>bool MainBrush<span class="token punctuation">,</span> bool SideBrush<span class="token punctuation">,</span> bool Vacuum<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    jsonCommand <span class="token function">toSend<span class="token punctuation">(</span></span>JSONCOMMAND_SETMOTORBRUSHVACUUM<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    toSend<span class="token punctuation">.</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"MainBrush"</span><span class="token punctuation">,</span> MainBrush<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    toSend<span class="token punctuation">.</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"SideBrush"</span><span class="token punctuation">,</span> SideBrush<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    toSend<span class="token punctuation">.</span><span class="token function">addToData<span class="token punctuation">(</span></span><span class="token string">"Vacuum"</span><span class="token punctuation">,</span> Vacuum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    this<span class="token operator">-</span><span class="token operator">&gt;</span>server<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">sendCommand<span class="token punctuation">(</span></span>toSend<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
 			<p>Het verzonden commando ziet er als volgt uit:</p>
 
-<pre>
-[SERVER] ma 17. jun 12:34:37 2013 Sending JSON: JSON command: NEWMODE Data: 
+<pre>[SERVER] ma 17. jun 12:34:37 2013 Sending JSON: JSON command: NEWMODE Data: 
 [SERVER] ma 17. jun 12:34:37 2013 newmode 3
 
 [SERVER] ma 17. jun 12:34:34 2013 Sending JSON: JSON command: SETMOTORBRUSHVACUUM Data: 
@@ -941,5 +937,5 @@ void Roomba::MotorBrushVacuumChanged(bool MainBrush, bool SideBrush, bool Vacuum
 	
 	<script src="../prism.js"></script>
 	
-</body>
-</html>
+
+</body></html>

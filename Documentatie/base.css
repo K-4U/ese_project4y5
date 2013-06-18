@@ -35,7 +35,7 @@
 	
 	sub {
 		display: block;
-		margin: 15px 0 0 15px;
+		margin: 15px 0 30px 15px;
 	}
 	
 	@page {
@@ -82,7 +82,9 @@
 	}
 	
 	
-	
+	.tilted {
+		height: 750px;
+	}
 	
 	
 	ul.toc a {

@@ -88,32 +88,9 @@ void Controllingroomba::cbMotorBrushVacuumHandler()
 
 void Controllingroomba::allMotorBrushVacuumData(bool mainBrush, bool sideBrush, bool vacuum)
 {
-    if(mainBrush == true)
-    {
-        ui->cbMainBrush->setChecked(true);
-    }
-    else
-    {
-        ui->cbMainBrush->setChecked(false);
-    }
-
-    if(sideBrush == true)
-    {
-        ui->cbSideBrush->setChecked(true);
-    }
-    else
-    {
-        ui->cbSideBrush->setChecked(false);
-    }
-
-    if(vacuum == true)
-    {
-        ui->cbVacuum->setChecked(true);
-    }
-    else
-    {
-        ui->cbVacuum->setChecked(false);
-    }
+    ui->cbMainBrush->setChecked(mainBrush);
+    ui->cbSideBrush->setChecked(sideBrush);
+    ui->cbVacuum->setChecked(vacuum);
 }
 
 void Controllingroomba::allSensorData(int sensorID, int sensorValue)

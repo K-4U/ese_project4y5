@@ -25,13 +25,13 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.NetworkOnMainThreadException;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 @SuppressLint("HandlerLeak")
@@ -52,7 +52,8 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 	public static final int MESSAGE_ERROR = 1;
 	public static final int MESSAGE_TOAST = 2;
 	public static final int MESSAGE_UPDATELOGS = 3;
-	public static final String MESSAGE_SETRGB = "SETRGB";
+	public static final int MESSAGE_UPDATEBATTERY = 4;
+	//public static final String MESSAGE_UPDATEBATTERY = "UPDATEBATTERY";
 	public static final String TOAST = "toast";
 	public static final String ERROR = "error";
 	public static final String TAG = "MainActivity";
@@ -157,6 +158,11 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
             		mLog.setLogs(logs);
             	}
             	break;
+            case MESSAGE_UPDATEBATTERY:
+            	manualControlPage mPage = (manualControlPage) mSectionsPagerAdapter.getFragment(0);
+            	if(mPage != null){
+            		mPage.setBatteryLevel(batteryLevel);
+            	}
         	}
         }
     };
@@ -205,7 +211,6 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
     	    	//System.exit(1);
     	    	connected = false;
     	    }
-        	boolean startup = true;
     	    if(connected){
 	    	    Log.i("Socket","Connected!");
 	    	    showToast("Connected!");
@@ -217,7 +222,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 	    	    	Log.e("Socket", "Cannot ask for color: " + e.getMessage());
 	    	    }*/
 	    	    TimerTask sdGet = new getSensorData();
-	    	    new Timer().scheduleAtFixedRate(sdGet, 0, 500);
+	    	    new Timer().scheduleAtFixedRate(sdGet, 0, 10000);
     	    }else{
     	    	//showError("Not connected!");
     	    }
@@ -239,7 +244,9 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 	                    	depth = depth - 1;
 	                    }
                     }
-                    buffer += (char)recvByte;
+                    if(depth > 0 || recvByte == ']' || recvByte == '}'){
+                    	buffer += (char)recvByte;
+                    }
                     if(depth == 0 && buffer.length() > 2){
                     	JSONObject command = new JSONObject(buffer);
                         String cmdS = command.getString("command");
@@ -260,7 +267,9 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
                         		setBatteryLevel();
                         		
                         	}else if(ev.getString("type").equals("LOGS")){
-                        		
+                        		logs = ev.getJSONObject("data").getJSONArray("Logs");
+                        		Message msgUpdateLogs = mHandler.obtainMessage(MESSAGE_UPDATELOGS);
+                                mHandler.sendMessage(msgUpdateLogs);
                         	}
                         }
                         buffer = "";
@@ -279,29 +288,42 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
     }
 	
 	void setBatteryLevel(){
-		batteryLevel = (batteryMax / batteryCurrent) * 100;
-		ProgressBar pbBattery = (ProgressBar) findViewById(R.id.pbBattery);
-		pbBattery.setProgress(batteryLevel);
+		if(batteryCurrent != 0 && batteryMax != 0){
+			batteryLevel = (batteryCurrent / batteryMax) * 100;
+			
+			Message msgUpdateBattery = mHandler.obtainMessage(MESSAGE_UPDATEBATTERY);
+            mHandler.sendMessage(msgUpdateBattery);
+		}
 	}
 	
 	class getSensorData extends TimerTask {
-		   public void run() {
-			   JSONObject comm = new JSONObject();
-			   JSONObject args = new JSONObject();
-			   String command = "SENDSENSORDATAREQUEST";
-			   try {
-				   comm.put("command", command);
-				   JSONArray sensors = new JSONArray();
-				   sensors.put(25);
-				   sensors.put(26);
-				   args.put("Sensors",sensors);
-				   comm.put("data", args);
-			   } catch (JSONException e) {
-				   e.printStackTrace();
-			   }
-			   sendCommand(comm);
-		   }
+		public void run() {
+			JSONObject comm = new JSONObject();
+			JSONObject args = new JSONObject();
+			String command = "SENDSENSORDATAREQUEST";
+			try {
+				comm.put("command", command);
+				JSONArray sensors = new JSONArray();
+				sensors.put(25);
+				sensors.put(26);
+				args.put("Sensors",sensors);
+				comm.put("data", args);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			sendCommand(comm);
+			   
+			command = "GETLOGS";
+			comm = new JSONObject();
+			try {
+				comm.put("command", command);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			sendCommand(comm);
+					   
 		}
+	}
 
 	
 	@Override
@@ -332,6 +354,10 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 		public Fragment getFragment(int position){
 			return fm.findFragmentByTag(getFragmentTag(position));
 		}
+		
+		public ListFragment getListFragment(int position){
+			return (ListFragment) fm.findFragmentByTag(getFragmentTag(position));
+		}
 
 		private String getFragmentTag(int pos){
 		    return "android:switcher:"+R.id.pager+":"+pos;
@@ -340,7 +366,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 		@Override
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
-			Bundle args = new Bundle();
+			//Bundle args = new Bundle();
 			switch(position){
 				case 0:
 					fragment = new manualControlPage();
@@ -348,7 +374,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 					break;
 				case 1:
 					fragment = new programPage();
-					fragments.add(1,fragment.getTag());
+					fragments.add(1, fragment.getTag());
 					break;
 				case 2:
 					fragment = new settingsPage();
@@ -357,6 +383,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 					break;	
 				case 3:
 					fragment = new logginPage();
+					((logginPage)fragment).setLogs(logs);
 					fragments.add(3, fragment.getTag());
 					break;
 					

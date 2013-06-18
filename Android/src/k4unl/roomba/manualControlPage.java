@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class manualControlPage extends Fragment {
 	public manualControlPage() {
@@ -26,7 +27,8 @@ public class manualControlPage extends Fragment {
         public void drive(int left, int right);
     }
 
-	
+    View rootView;
+    
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -40,12 +42,17 @@ public class manualControlPage extends Fragment {
                     + " must implement ledstripListener");
         }
     }
+    
+    public void setBatteryLevel(int level){
+    	ProgressBar pbBattery = (ProgressBar) rootView.findViewById(R.id.pbBattery);
+		pbBattery.setProgress(level);
+    }
 
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.manual_control,
+		rootView = inflater.inflate(R.layout.manual_control,
 				container, false);
 		
 		Button cmdUp = (Button) rootView.findViewById(R.id.btnUp);

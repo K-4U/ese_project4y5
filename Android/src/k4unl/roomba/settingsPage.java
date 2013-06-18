@@ -39,7 +39,7 @@ public class settingsPage extends Fragment {
 		View rootView = inflater.inflate(R.layout.settings,
 				container, false);
 		
-		Bundle args = getArguments();
+		//Bundle args = getArguments();
 		SeekBar motorSpeed = (SeekBar) rootView.findViewById(R.id.sbMotorSpeed);
 		motorSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {			
 			@Override

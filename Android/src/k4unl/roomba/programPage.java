@@ -41,7 +41,7 @@ public class programPage extends Fragment {
 		View rootView = inflater.inflate(R.layout.program_page,
 				container, false);
 		
-		Bundle args = getArguments();
+		//Bundle args = getArguments();
 		
 		Button cleanButton = (Button) rootView.findViewById(R.id.cmdClean);
 		cleanButton.setOnClickListener(buttonListener);

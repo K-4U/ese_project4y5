@@ -7,20 +7,14 @@ import org.json.JSONObject;
 import k4unl.roomba.manualControlPage.roombaListener;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
-public class logginPage extends Fragment {
+public class logginPage extends ListFragment {
 	public logginPage() {
 	}
 	roombaListener mCallback;
-	
-	View rootView;
+	logArrayAdapter adapter;
 	
 	@Override
     public void onAttach(Activity activity) {
@@ -38,37 +32,37 @@ public class logginPage extends Fragment {
     }
 
     public void setLogs(JSONArray logs){
-    	TextView txtLogs = (TextView) rootView.findViewById(R.id.txtLog);
-    	txtLogs.setText("");
-    	for (int i = logs.length(); i > 0; i--) {
-    		JSONObject log = new JSONObject();
-			try {
-				log = logs.getJSONObject(i);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-    		try {
-				txtLogs.setText(log.getString("Time") + " " + log.getString("Entry")
-						+ txtLogs.getText());
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+    	if(adapter != null){
+    		adapter.clear();
+    		for (int i = logs.length()-1; i >= 0; i--) {
+	    		JSONObject log = new JSONObject();
+				try {
+					log = logs.getJSONObject(i);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+	    		try {
+	    			
+	    			logEntry nLog = new logEntry(log.getString("Time"), log.getString("Entry"));
+//	    			if(!adapter.hasEntry(nLog)){
+	    				adapter.add(nLog);
+	//    			}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+	    	}
     	}
     }
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.logging_page,
-				container, false);
-		
-		Bundle args = getArguments();
-		
-		
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		//Bundle args = getArguments();
+	    adapter = new logArrayAdapter(getActivity());
+	    setListAdapter(adapter);
 		/*fadeSwitch = (Switch) rootView.findViewById(R.id.swFade);
 		fadeSwitch.setChecked(args.getBoolean("fade"));
 		fadeSwitch.setOnCheckedChangeListener(fadeListener);
 		*/
-		return rootView;
 	}
 }

@@ -51,12 +51,13 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 	
 	public static final int MESSAGE_ERROR = 1;
 	public static final int MESSAGE_TOAST = 2;
-	public static final int MESSAGE_UPDATERGB = 3;
-	public static final int MESSAGE_UPDATEFADE = 4;
+	public static final int MESSAGE_UPDATELOGS = 3;
 	public static final String MESSAGE_SETRGB = "SETRGB";
 	public static final String TOAST = "toast";
 	public static final String ERROR = "error";
 	public static final String TAG = "MainActivity";
+	
+	public JSONArray logs = new JSONArray();
 	
 	public int batteryMax = 0;
 	public int batteryCurrent = 0;
@@ -83,6 +84,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 
 		alert.setTitle("Connect");
 		alert.setMessage("Please enter IP Address");
+		alert.setCancelable(false);
 
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(this);
@@ -96,12 +98,6 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 			showConnectDialog();
 			Thread cThread = new Thread(new ClientThread());
 		    cThread.start();
-		  }
-		});
-
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		  public void onClick(DialogInterface dialog, int whichButton) {
-		    // Canceled.
 		  }
 		});
 
@@ -154,6 +150,12 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
                 break;
             case MESSAGE_ERROR:
             	showError(msg.getData().getString(ERROR));
+            	break;
+            case MESSAGE_UPDATELOGS:
+            	logginPage mLog = (logginPage) mSectionsPagerAdapter.getFragment(3);
+            	if(mLog!= null){
+            		mLog.setLogs(logs);
+            	}
             	break;
         	}
         }
@@ -238,13 +240,13 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 	                    }
                     }
                     buffer += (char)recvByte;
-                    if(depth == 0){
+                    if(depth == 0 && buffer.length() > 2){
                     	JSONObject command = new JSONObject(buffer);
                         String cmdS = command.getString("command");
                         Log.i("SOCKET",command.toString());
-                        if(cmdS == "EVENT"){
-                        	JSONObject ev = command.getJSONObject("data");
-                        	if(ev.getString("type") == "SENSORDATA"){
+                        if(cmdS.equals("EVENT")){
+                        	JSONObject ev = command.getJSONObject("data").getJSONObject("event");
+                        	if(ev.getString("type").equals("SENSORDATA")){
                         		//Create percentage for battery
                         		JSONArray sensors = ev.getJSONObject("data").getJSONArray("Sensors");
                         		for (int i = 0; i < sensors.length(); i++) {
@@ -257,10 +259,13 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
                         		}
                         		setBatteryLevel();
                         		
+                        	}else if(ev.getString("type").equals("LOGS")){
+                        		
                         	}
                         }
                         buffer = "";
                     }
+                    
                 }
                 sck.close();
                 connected = false;
@@ -268,6 +273,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
             } catch (Exception e) {
                 Log.e("ClientActivity", "C: Error", e);
                 connected = false;
+                showToast("Disconnected!");
             }
         }
     }
@@ -346,16 +352,21 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 					break;
 				case 2:
 					fragment = new settingsPage();
-					fragment.setArguments(args);
+
 					fragments.add(2, fragment.getTag());
 					break;	
+				case 3:
+					fragment = new logginPage();
+					fragments.add(3, fragment.getTag());
+					break;
+					
 			}
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -369,6 +380,8 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 				return getString(R.string.title_program).toUpperCase(l);
 			case 2:
 				return getString(R.string.title_settings).toUpperCase(l);
+			case 3:
+				return getString(R.string.title_logs).toUpperCase(l);
 			}
 			return null;
 		}

@@ -712,7 +712,7 @@ namespace Simulator {
                 //Fix length
                 //btoSend[1] = (byte)byteCount;
 
-                this.send(btoSend.ToArray());
+                this.send(btoSend.ToArray(),false);
                 this.setSensorValue(18, 0);
             } else {
                 throw new notInCorrectMode();

@@ -260,7 +260,9 @@ namespace Simulator {
                         if (mainCommands[i, 0] == bRead) {
                             command = mainCommands[i, 0];
                             byteCount = mainCommands[i, 1];
-                            log(String.Format("Main command received: {0}", bRead), logTags.program);
+							if(bRead != 149){
+								log(String.Format("Main command received: {0}", bRead), logTags.program);
+							}
                             break; // no need to keep looping
                         }
                     }
@@ -268,7 +270,7 @@ namespace Simulator {
                 } else {
 
                     dataBytes.Add(bRead);
-                    log(String.Format("Databyte received: {0}", bRead), logTags.program);
+                    //log(String.Format("Databyte received: {0}", bRead), logTags.program);
 
                     // dynamic byte count
                     if (command == 140 && dataBytes.Count == 2) {

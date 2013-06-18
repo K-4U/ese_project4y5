@@ -16,7 +16,7 @@ namespace Simulator.drawObjects {
 		private const int WHEELWIDTH = 10;
 		private const double TIMEFACTOR = 0.01;
 		private const bool drawPath = true;
-		private const int MAXLENGTHOFPATH = 2500;
+		private const int MAXLENGTHOFPATH = 250000;
 
 		struct wheel {
 			public double speed;
@@ -84,31 +84,65 @@ namespace Simulator.drawObjects {
 
 		}
 
+		enum direction {
+			left = 0x00,
+			right,
+			top,
+			bottom
+		};
+
         public override void checkCollision(RectangleF toCheck, Graphics g, string name) {
             
             Pen debugPen = Pens.Purple;
 			RectangleF collisionArea = RectangleF.Intersect(base.loc, toCheck);
 
-            double a = Math.Abs(this.angle) % 360;
+            double a = this.angle % 360;
+			double posAngle = a;
+			if (a < 0) {
+				posAngle += 360;
+			}
+			a = Math.Abs(a);
             Boolean emerge = (collisionArea.Width == base.loc.Width && collisionArea.Height == base.loc.Height);
 
+			
            
             if (!collisionArea.IsEmpty) {
+				PointF collisionCenter = new PointF(collisionArea.X + (collisionArea.Width / 2), collisionArea.Y + (collisionArea.Height / 2));
+
                 // shows collisions on screen;
                 g.DrawRectangle(debugPen, Rectangle.Round(collisionArea));
 
                 double toRadian = (Math.PI / 180.0);
                 double toDegree = (180.0 / Math.PI);
+				direction dir;
+				
+
+				//Calculate triangle
+				double overstaand = collisionCenter.Y - this.centerPoint.Y;
+				double aanliggend = collisionCenter.X - this.centerPoint.X;
 
                 if (collisionArea.Width > collisionArea.Height) {
-                    
+					overstaand = collisionCenter.X - this.centerPoint.X;
+					aanliggend = collisionCenter.Y - this.centerPoint.Y;
+					
+
+					
                     double invAngle = ((double)180.0 - a);
                     double sin = Math.Sin(invAngle * toRadian);
                     double sz = (WHEELBASE / 2.0) / sin;
                     a = Math.Acos((WHEELBASE/2)/sz)*toDegree;
-
                 }
 
+				
+				double origA = a;
+				if (posAngle < 135) {
+					if (a > 180) {
+						a -= 180;
+					}
+				} else if (posAngle > 315) {
+					//a = 180 - a;
+				}
+				
                 int returning = 0;
 
                 if (name.Substring(0,4) == "pool") {
@@ -138,18 +172,29 @@ namespace Simulator.drawObjects {
 
 				} else if (name.Substring(0, 5) == "table") {
 
-                    if (a >= 0 && a <= 112.5) {
-                        returning += 2;
-                    }
-                    if (a >= 67.5 && a <= 180) {
-                        returning += 1;
-                    }
+					if ((posAngle < 270) || posAngle < 135) {
+						if (a >= 0 && a <= 112.5) {
+							returning += 2;
+						}
+						if (a >= 67.5 && a <= 180) {
+							returning += 1;
+						}
+					}else{
+
+					//if (posAngle > 315 || (posAngle > 135 && posAngle < 180)) {
+						if (a >= 0 && a <= 112.5) {
+							returning += 1;
+						}
+						if (a >= 67.5 && a <= 180) {
+							returning += 2;
+						}
+					}
 
                     byte[] bytes = { (byte)returning };
                     sensor(7, bytes);
 
                     if (!this.isColliding) {
-                        Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle: {1};", (int)this.angle, (int)a));
+                        Debug.WriteLine(String.Format("Roomba angle: {0}; Impact angle before: {3}; Impact angle: {1}; PosAngle: {2};", (int)this.angle, (int)a, (int) posAngle, (int) origA));
                     }
 
 					this.interactionObject = name;

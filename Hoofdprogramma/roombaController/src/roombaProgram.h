@@ -32,11 +32,11 @@
 // }}}RME
 
 // {{{RME classAttribute 'MOTORNORMAL'
-#define MOTORNORMAL 500
+#define MOTORNORMAL 200
 // }}}RME
 
 // {{{RME classAttribute 'MOTORFASTER'
-#define MOTORFASTER 700
+#define MOTORFASTER 300
 // }}}RME
 
 extern const RTActorClass roombaProgram;

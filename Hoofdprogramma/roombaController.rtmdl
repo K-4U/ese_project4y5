@@ -5920,7 +5920,7 @@
 								type "int")
 							(object ClassAttribute "speedLeft"
 								quid "51B5A6E10342"
-								initv "MOTORFASTER"
+								initv "MOTORNORMAL"
 								type "int")
 							(object ClassAttribute "speedRight"
 								quid "51B5A6ED0217"
@@ -5942,7 +5942,7 @@
 										name "AttributeKind"
 										value ("AttributeKindSet" 2)))
 								quid "51C01F64034D"
-								initv "500"
+								initv "200"
 								type "int")
 							(object ClassAttribute "MOTORFASTER"
 								attributes (list Attribute_Set
@@ -5951,7 +5951,7 @@
 										name "AttributeKind"
 										value ("AttributeKindSet" 2)))
 								quid "51C01F6D03B8"
-								initv "700"
+								initv "300"
 								type "int"))
 						operations (list Operations
 							(object Operation "drive"
@@ -6119,11 +6119,11 @@
 											body 
 |//Check sensors:
 |if(bumpersTriggered.left && bumpersTriggered.right){
-|    //Head on collision! rotate 90 degrees and try again!
+|    //Head on collision! rotate 30 degrees and try again!
 |    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
 |
 |    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, 30);
-|    //cout << "The Time = " << theTime << endl;
+|    cout << "The Time = " << theTime << endl;
 |    timer.informIn(theTime/10);
 |}else if(bumpersTriggered.left){
 |    this->drive(MOTORNORMAL, MOTORNORMAL*-1);
@@ -6213,7 +6213,7 @@
 										action (object Action
 											quid "51AB686A03A8"
 											body 
-|//cout << "Program starting!" << endl;
+|cout << "Program starting!" << endl;
 |Roomba.playSong(1).send();
 |
 |logEntry l("Program started");
@@ -6706,7 +6706,8 @@
 															pos (1494,972)
 															label (object ItemLabel
 																quid "51ADCE6F0028"
-																pos (1524,1012))))
+																pos (1524,1012)
+																max_width 31)))
 													(object JuncPtVw ":TOP:bumperTriggered:J51ADCE6F002A" @448
 														quid "51ADCE6F002B"
 														pos (1470,1134)
@@ -6716,7 +6717,8 @@
 															pos (1470,1044)
 															label (object ItemLabel
 																quid "51ADCE6F002D"
-																pos (1510,1074))))
+																pos (1510,1074)
+																max_width 31)))
 													(object JuncPtVw ":TOP:bumperTriggered:J51ADAD540256" @450
 														quid "51ADAD540257"
 														pos (1155,96)
@@ -6726,7 +6728,8 @@
 															pos (1155,186)
 															label (object ItemLabel
 																quid "51ADAD540259"
-																pos (1195,156))))
+																pos (1195,156)
+																max_width 225)))
 													(object JuncPtVw ":TOP:bumperTriggered:J51ADB8DA02CF" @452
 														quid "51ADB8DA02D0"
 														pos (735,96)
@@ -6736,7 +6739,8 @@
 															pos (735,186)
 															label (object ItemLabel
 																quid "51ADB8DA02D2"
-																pos (775,156))))))
+																pos (775,156)
+																max_width 113)))))
 											(object StateView "StartState" "Initial" @454
 												quid "51AB61DE0172"
 												pos (180,180)

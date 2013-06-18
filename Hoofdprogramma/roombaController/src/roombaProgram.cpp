@@ -51,7 +51,7 @@ static const char * const rtg_state_names[] =
 
 roombaProgram_Actor::roombaProgram_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 	: RTActor( rtg_rts, rtg_ref )
-	, speedLeft( MOTORFASTER )
+	, speedLeft( MOTORNORMAL )
 	, speedRight( MOTORNORMAL )
 {
 }
@@ -180,7 +180,7 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
 
 	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, 30);
-	    //cout << "The Time = " << theTime << endl;
+	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.left){
 	    this->drive(MOTORNORMAL, MOTORNORMAL*-1);
@@ -224,7 +224,7 @@ INLINE_METHODS void roombaProgram_Actor::transition2_batteryTooLow( const int * 
 INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	//cout << "Program starting!" << endl;
+	cout << "Program starting!" << endl;
 	Roomba.playSong(1).send();
 
 	logEntry l("Program started");

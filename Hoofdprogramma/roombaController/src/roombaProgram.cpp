@@ -51,8 +51,8 @@ static const char * const rtg_state_names[] =
 
 roombaProgram_Actor::roombaProgram_Actor( RTController * rtg_rts, RTActorRef * rtg_ref )
 	: RTActor( rtg_rts, rtg_ref )
-	, speedLeft( 150 )
-	, speedRight( 100 )
+	, speedLeft( MOTORFASTER )
+	, speedRight( MOTORNORMAL )
 {
 }
 
@@ -103,7 +103,7 @@ int roombaProgram_Actor::calculateTimeToRotateAngle( int leftSpeed, int rightSpe
 
 	//AngleAdj now contains the value this thing will turn in 1 second.
 	angleAdj = angleAdj;
-	cout << "AA = " << angleAdj;
+	//cout << "AA = " << angleAdj;
 	//And now in 1 ms
 	return abs((int)((angleToRotate / angleAdj) * 1000));
 	// }}}USR
@@ -177,19 +177,19 @@ INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
 	//Check sensors:
 	if(bumpersTriggered.left && bumpersTriggered.right){
 	    //Head on collision! rotate 90 degrees and try again!
-	    this->drive(-100, 100);
+	    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
 
-	    int theTime = calculateTimeToRotateAngle(-100, 100, 30);
-	    cout << "The Time = " << theTime << endl;
+	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, 30);
+	    //cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.left){
-	    this->drive(100, -100);
-	    int theTime = calculateTimeToRotateAngle(100, -100, 180);
+	    this->drive(MOTORNORMAL, MOTORNORMAL*-1);
+	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL, MOTORNORMAL*-1, 180);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}else if(bumpersTriggered.right){
-	    this->drive(-100, 100);
-	    int theTime = calculateTimeToRotateAngle(-100, 100, -10);
+	    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
+	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, -10);
 	    cout << "The Time = " << theTime << endl;
 	    timer.informIn(theTime/10);
 	}
@@ -224,7 +224,7 @@ INLINE_METHODS void roombaProgram_Actor::transition2_batteryTooLow( const int * 
 INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	cout << "Program starting!" << endl;
+	//cout << "Program starting!" << endl;
 	Roomba.playSong(1).send();
 
 	logEntry l("Program started");
@@ -241,7 +241,7 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 	this->stop();
 	this->setMotors(true, false, true);
 	//Drive backwards for just a bit please
-	this->drive(-100,-100);
+	this->drive(MOTORNORMAL*-1,MOTORNORMAL*-1);
 	Sleep(650);
 	// }}}USR
 }
@@ -270,8 +270,8 @@ INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdat
 {
 	// {{{USR
 	this->stop();
-	speedLeft = 100;
-	speedRight = 100;
+	speedLeft = MOTORNORMAL;
+	speedRight = MOTORNORMAL;
 	// }}}USR
 }
 // }}}RME
@@ -283,14 +283,13 @@ INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, pr
 	//if we are charging, please drive backwards for a short period and then rotate 180
 	//THEN we start the program:
 	int whereAreWe = *rtdata;
-	std::cout << "PRM: WAW: " << whereAreWe << endl;
+	//std::cout << "PRM: WAW: " << whereAreWe << endl;
 	if(whereAreWe > 0 && whereAreWe != 4){
 	    //We are charging
-	    drive(-100, -100);
+	    drive(MOTORNORMAL*-1, MOTORNORMAL*-1);
 	    Sleep(1000);
-	    this->drive(-100, 100);
-	    int theTime = calculateTimeToRotateAngle(-100, 100, 180);
-	    cout << "The Time = " << theTime << endl;
+	    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
+	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, 180);
 	    Sleep(theTime);
 	}
 	// }}}USR
@@ -301,7 +300,7 @@ INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, pr
 INLINE_METHODS void roombaProgram_Actor::transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	speedRight = 120;
+	speedRight = MOTORFASTER;
 	// }}}USR
 }
 // }}}RME

@@ -86,7 +86,7 @@ void roombaTopCapsule_Actor::sendRoombaCommandSetMotors( void )
 
 	this->roomba.getMotors(&mainBrush, &sideBrush, &vacuum);
 
-	std::cout << "RMB: MainBrush: " << mainBrush << endl;
+	//std::cout << "RMB: MainBrush: " << mainBrush << endl;
 
 	byteArray b;
 	b.append(130);
@@ -97,8 +97,8 @@ void roombaTopCapsule_Actor::sendRoombaCommandSetMotors( void )
 	b.append(138);
 	b.append((mainBrush << 2) | (sideBrush << 0) | (vacuum << 1));
 
-	std::cout << "RMB: Sending";
-	b.print();
+	/*std::cout << "RMB: Sending";
+	b.print();*/
 	toMain.sendData(b).send();
 	// }}}USR
 }
@@ -270,7 +270,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	//Parse command:
 	byteArray b;
 	jsonCommand c = *rtdata;
-	cout << "RMB: Json received: " << c.command << endl;
+	//cout << "RMB: Json received: " << c.command << endl;
 	if(c.command == "SETMOTORBRUSHVACUUM"){
 	    //std::cout << "RMB: Main: " << c.data["MainBrush"].asBool() << endl;
 	    this->roomba.setMotors(c.data["MainBrush"].asBool(), 
@@ -571,30 +571,31 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition8_stopProgram( const int *
 	std::cout << "RMB: Stopped program, RC " << *rtdata << endl;
 
 	byteArray b;
-	if(this->isOperating){
-	    //Stop motors! OHMYGOD!
-	    
-	    b.append(145);
-	    b.append(0);
-	    b.append(0);
-	    b.append(0);
-	    b.append(0);
+	//Stop motors! OHMYGOD!
+
+	b.append(145);
+	b.append(0);
+	b.append(0);
+	b.append(0);
+	b.append(0);
 
 
-	    b.append(138);
-	    b.append(0);
+	b.append(138);
+	b.append(0);
 
-	    toMain.sendData(b).send();
+	toMain.sendData(b).send();
 
-	    Sleep(1000);
-	    b.clear();
-	}
+	Sleep(1000);
+	b.clear();
 
 	b.append(141);
 	b.append(0);
 
 	toMain.sendData(b).send();
 
+
+	roomba.setMotors(false, false, false);
+	this->sendRoombaCommandSetMotors();
 
 
 	this->isOperating = false;

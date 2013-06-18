@@ -176,7 +176,7 @@ INLINE_METHODS void jsonTranslateCapsule_Actor::transition5_sendCommand( const j
 	    printf("send failed: %d\n", WSAGetLastError());
 	    closesocket(this->socket);
 	}
-	printf("Bytes sent: %d\n", iSendResult);
+	//printf("Bytes sent: %d\n", iSendResult);
 	// }}}USR
 }
 // }}}RME

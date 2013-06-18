@@ -112,7 +112,7 @@ INLINE_METHODS void tcpCapsule_Actor::enter2_Reset( void )
 	// {{{USR
 	// hier een zinvolle actie opnemen om te reageren op fouten
 	// voorlopig na een timeout opnieuw beginnen
-	cout << "SOC: in reset terecht gekomen" << endl;
+	//cout << "SOC: in reset terecht gekomen" << endl;
 	timer.informIn(RTTimespec(4,0));
 	// }}}USR
 }

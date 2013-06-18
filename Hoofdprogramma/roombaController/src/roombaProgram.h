@@ -31,6 +31,14 @@
 #define MINBATTERY 90
 // }}}RME
 
+// {{{RME classAttribute 'MOTORNORMAL'
+#define MOTORNORMAL 500
+// }}}RME
+
+// {{{RME classAttribute 'MOTORFASTER'
+#define MOTORFASTER 700
+// }}}RME
+
 extern const RTActorClass roombaProgram;
 
 #define SUPER RTActor

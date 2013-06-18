@@ -134,7 +134,7 @@ jsonCommand::jsonCommand( std::string jsonCommand, Json::Value data )
 	// }}}RME
 {
 	// {{{USR
-	cout << "New JSON command: " << jsonCommand << endl;
+	//cout << "New JSON command: " << jsonCommand << endl;
 
 	this->command = jsonCommand;
 	this->data = data;

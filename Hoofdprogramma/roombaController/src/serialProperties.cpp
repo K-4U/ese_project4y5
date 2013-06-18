@@ -14,7 +14,7 @@
 // }}}RME
 
 // {{{RME classAttribute 'COM_PORT'
-int COM_PORT( 3 );
+int COM_PORT( 2 );
 // }}}RME
 
 // {{{RME tool 'OT::Cpp' property 'ImplementationEnding'

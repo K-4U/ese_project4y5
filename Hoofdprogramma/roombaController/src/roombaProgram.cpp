@@ -42,7 +42,7 @@ static const char * const rtg_state_names[] =
 	"TOP"
   , "roombaWaitForStart"
   , "roombaStart"
-  , "bumperTriggered"
+  , "rotating"
   , "CheckWhereWeAre"
   , "checkBatteryLevel"
 };
@@ -162,7 +162,7 @@ void roombaProgram_Actor::enterStateV( void )
 		enter3_roombaStart();
 		break;
 	case 4:
-		enter4_bumperTriggered();
+		enter4_rotating();
 		break;
 	default:
 		RTActor::enterStateV();
@@ -170,13 +170,13 @@ void roombaProgram_Actor::enterStateV( void )
 	}
 }
 
-// {{{RME enter ':TOP:bumperTriggered'
-INLINE_METHODS void roombaProgram_Actor::enter4_bumperTriggered( void )
+// {{{RME enter ':TOP:rotating'
+INLINE_METHODS void roombaProgram_Actor::enter4_rotating( void )
 {
 	// {{{USR
 	//Check sensors:
 	if(bumpersTriggered.left && bumpersTriggered.right){
-	    //Head on collision! rotate 90 degrees and try again!
+	    //Head on collision! rotate 30 degrees and try again!
 	    this->drive(MOTORNORMAL*-1, MOTORNORMAL);
 
 	    int theTime = calculateTimeToRotateAngle(MOTORNORMAL*-1, MOTORNORMAL, 30);
@@ -233,8 +233,8 @@ INLINE_METHODS void roombaProgram_Actor::transition3_batteryFull( const int * rt
 }
 // }}}RME
 
-// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumper'
-INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport )
+// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumperTriggered'
+INLINE_METHODS void roombaProgram_Actor::transition4_bumperTriggered( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
 	this->bumpersTriggered = *rtdata;
@@ -247,8 +247,8 @@ INLINE_METHODS void roombaProgram_Actor::transition4_bumper( const clsRoomba::cl
 }
 // }}}RME
 
-// {{{RME transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
-INLINE_METHODS void roombaProgram_Actor::transition6_StopHammerTime( const void * rtdata, programProtocol::Base * rtport )
+// {{{RME transition ':TOP:rotating:J51ADAD540256:Stop'
+INLINE_METHODS void roombaProgram_Actor::transition6_Stop( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
 	Roomba.stopProgram(2).send();
@@ -265,8 +265,8 @@ INLINE_METHODS void roombaProgram_Actor::transition7_Stop( const void * rtdata, 
 }
 // }}}RME
 
-// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
-INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdata, Timing::Base * rtport )
+// {{{RME transition ':TOP:rotating:J51ADB8DA02CF:doneRotating'
+INLINE_METHODS void roombaProgram_Actor::transition8_doneRotating( const void * rtdata, Timing::Base * rtport )
 {
 	// {{{USR
 	this->stop();
@@ -276,8 +276,8 @@ INLINE_METHODS void roombaProgram_Actor::transition8_pijltje( const void * rtdat
 }
 // }}}RME
 
-// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
-INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, programProtocol::Base * rtport )
+// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:Start'
+INLINE_METHODS void roombaProgram_Actor::transition10_Start( const int * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
 	//if we are charging, please drive backwards for a short period and then rotate 180
@@ -296,11 +296,11 @@ INLINE_METHODS void roombaProgram_Actor::transition10_t1( const int * rtdata, pr
 }
 // }}}RME
 
-// {{{RME transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
-INLINE_METHODS void roombaProgram_Actor::transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport )
+// {{{RME transition ':TOP:roombaStart:J51B5A7140151:noOverCurrent'
+INLINE_METHODS void roombaProgram_Actor::transition11_noOverCurrent( const void * rtdata, programProtocol::Base * rtport )
 {
 	// {{{USR
-	speedRight = MOTORFASTER;
+	speedLeft = MOTORFASTER;
 	// }}}USR
 }
 // }}}RME
@@ -361,13 +361,13 @@ INLINE_CHAINS void roombaProgram_Actor::chain2_batteryTooLow( void )
 	enterState( 2 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain4_bumper( void )
+INLINE_CHAINS void roombaProgram_Actor::chain4_bumperTriggered( void )
 {
-	// transition ':TOP:roombaStart:J51AB5CF303CA:bumper'
-	rtgChainBegin( 3, "bumper" );
+	// transition ':TOP:roombaStart:J51AB5CF303CA:bumperTriggered'
+	rtgChainBegin( 3, "bumperTriggered" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition4_bumper( (const clsRoomba::clsBumpersAndCliff *)msg->data, (programProtocol::Base *)msg->sap() );
+	transition4_bumperTriggered( (const clsRoomba::clsBumpersAndCliff *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 4 );
 }
@@ -383,56 +383,56 @@ INLINE_CHAINS void roombaProgram_Actor::chain7_Stop( void )
 	enterState( 2 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain11_overCurrent( void )
+INLINE_CHAINS void roombaProgram_Actor::chain11_noOverCurrent( void )
 {
-	// transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
-	rtgChainBegin( 3, "overCurrent" );
+	// transition ':TOP:roombaStart:J51B5A7140151:noOverCurrent'
+	rtgChainBegin( 3, "noOverCurrent" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition11_overCurrent( msg->data, (programProtocol::Base *)msg->sap() );
+	transition11_noOverCurrent( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 3 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain9_t1( void )
+INLINE_CHAINS void roombaProgram_Actor::chain9_bumperTriggered( void )
 {
-	// transition ':TOP:bumperTriggered:J51ADCE6F0025:t1'
-	rtgChainBegin( 4, "t1" );
+	// transition ':TOP:rotating:J51ADCE6F0025:bumperTriggered'
+	rtgChainBegin( 4, "bumperTriggered" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
 	rtgTransitionEnd();
 	enterState( 4 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain6_StopHammerTime( void )
+INLINE_CHAINS void roombaProgram_Actor::chain6_Stop( void )
 {
-	// transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
-	rtgChainBegin( 4, "StopHammerTime" );
+	// transition ':TOP:rotating:J51ADAD540256:Stop'
+	rtgChainBegin( 4, "Stop" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition6_StopHammerTime( msg->data, (programProtocol::Base *)msg->sap() );
+	transition6_Stop( msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 2 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain8_pijltje( void )
+INLINE_CHAINS void roombaProgram_Actor::chain8_doneRotating( void )
 {
-	// transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
-	rtgChainBegin( 4, "pijltje" );
+	// transition ':TOP:rotating:J51ADB8DA02CF:doneRotating'
+	rtgChainBegin( 4, "doneRotating" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition8_pijltje( msg->data, (Timing::Base *)msg->sap() );
+	transition8_doneRotating( msg->data, (Timing::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 3 );
 }
 
-INLINE_CHAINS void roombaProgram_Actor::chain10_t1( void )
+INLINE_CHAINS void roombaProgram_Actor::chain10_Start( void )
 {
-	// transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
-	rtgChainBegin( 5, "t1" );
+	// transition ':TOP:CheckWhereWeAre:J51B5A22101B3:Start'
+	rtgChainBegin( 5, "Start" );
 	exitState( rtg_parent_state );
 	rtgTransitionBegin();
-	transition10_t1( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
+	transition10_Start( (const int *)msg->data, (programProtocol::Base *)msg->sap() );
 	rtgTransitionEnd();
 	enterState( 3 );
 }
@@ -510,13 +510,13 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				switch( signalIndex )
 				{
 				case programProtocol::Base::rti_bumpersTriggered:
-					chain4_bumper();
+					chain4_bumperTriggered();
 					return;
 				case programProtocol::Base::rti_stop:
 					chain7_Stop();
 					return;
 				case programProtocol::Base::rti_sideBrushOverCurrent:
-					chain11_overCurrent();
+					chain11_noOverCurrent();
 					return;
 				default:
 					break;
@@ -529,7 +529,7 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 			break;
 			// }}}RME
 		case 4:
-			// {{{RME state ':TOP:bumperTriggered'
+			// {{{RME state ':TOP:rotating'
 			switch( portIndex )
 			{
 			case 0:
@@ -546,10 +546,10 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				switch( signalIndex )
 				{
 				case programProtocol::Base::rti_bumpersTriggered:
-					chain9_t1();
+					chain9_bumperTriggered();
 					return;
 				case programProtocol::Base::rti_stop:
-					chain6_StopHammerTime();
+					chain6_Stop();
 					return;
 				default:
 					break;
@@ -561,7 +561,7 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				switch( signalIndex )
 				{
 				case Timing::Base::rti_timeout:
-					chain8_pijltje();
+					chain8_doneRotating();
 					return;
 				default:
 					break;
@@ -591,7 +591,7 @@ void roombaProgram_Actor::rtsBehavior( int signalIndex, int portIndex )
 				switch( signalIndex )
 				{
 				case programProtocol::Base::rti_isCharging:
-					chain10_t1();
+					chain10_Start();
 					return;
 				default:
 					break;

@@ -117,8 +117,8 @@ protected:
 	INLINE_METHODS void enter3_roombaStart( void );
 	// }}}RME
 	virtual void enterStateV( void );
-	// {{{RME enter ':TOP:bumperTriggered'
-	INLINE_METHODS void enter4_bumperTriggered( void );
+	// {{{RME enter ':TOP:rotating'
+	INLINE_METHODS void enter4_rotating( void );
 	// }}}RME
 	// {{{RME transition ':TOP:roombaWaitForStart:J51AB5A2600DB:Start'
 	INLINE_METHODS void transition1_Start( const int * rtdata, programProtocol::Base * rtport );
@@ -129,23 +129,23 @@ protected:
 	// {{{RME transition ':TOP:checkBatteryLevel:batteryFull'
 	INLINE_METHODS void transition3_batteryFull( const int * rtdata, programProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumper'
-	INLINE_METHODS void transition4_bumper( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport );
+	// {{{RME transition ':TOP:roombaStart:J51AB5CF303CA:bumperTriggered'
+	INLINE_METHODS void transition4_bumperTriggered( const clsRoomba::clsBumpersAndCliff * rtdata, programProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:bumperTriggered:J51ADAD540256:StopHammerTime'
-	INLINE_METHODS void transition6_StopHammerTime( const void * rtdata, programProtocol::Base * rtport );
+	// {{{RME transition ':TOP:rotating:J51ADAD540256:Stop'
+	INLINE_METHODS void transition6_Stop( const void * rtdata, programProtocol::Base * rtport );
 	// }}}RME
 	// {{{RME transition ':TOP:roombaStart:J51ADAD78038C:Stop'
 	INLINE_METHODS void transition7_Stop( const void * rtdata, programProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:bumperTriggered:J51ADB8DA02CF:pijltje'
-	INLINE_METHODS void transition8_pijltje( const void * rtdata, Timing::Base * rtport );
+	// {{{RME transition ':TOP:rotating:J51ADB8DA02CF:doneRotating'
+	INLINE_METHODS void transition8_doneRotating( const void * rtdata, Timing::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:t1'
-	INLINE_METHODS void transition10_t1( const int * rtdata, programProtocol::Base * rtport );
+	// {{{RME transition ':TOP:CheckWhereWeAre:J51B5A22101B3:Start'
+	INLINE_METHODS void transition10_Start( const int * rtdata, programProtocol::Base * rtport );
 	// }}}RME
-	// {{{RME transition ':TOP:roombaStart:J51B5A7140151:overCurrent'
-	INLINE_METHODS void transition11_overCurrent( const void * rtdata, programProtocol::Base * rtport );
+	// {{{RME transition ':TOP:roombaStart:J51B5A7140151:noOverCurrent'
+	INLINE_METHODS void transition11_noOverCurrent( const void * rtdata, programProtocol::Base * rtport );
 	// }}}RME
 
 private:
@@ -160,13 +160,13 @@ protected:
 private:
 	INLINE_CHAINS void chain3_batteryFull( void );
 	INLINE_CHAINS void chain2_batteryTooLow( void );
-	INLINE_CHAINS void chain4_bumper( void );
+	INLINE_CHAINS void chain4_bumperTriggered( void );
 	INLINE_CHAINS void chain7_Stop( void );
-	INLINE_CHAINS void chain11_overCurrent( void );
-	INLINE_CHAINS void chain9_t1( void );
-	INLINE_CHAINS void chain6_StopHammerTime( void );
-	INLINE_CHAINS void chain8_pijltje( void );
-	INLINE_CHAINS void chain10_t1( void );
+	INLINE_CHAINS void chain11_noOverCurrent( void );
+	INLINE_CHAINS void chain9_bumperTriggered( void );
+	INLINE_CHAINS void chain6_Stop( void );
+	INLINE_CHAINS void chain8_doneRotating( void );
+	INLINE_CHAINS void chain10_Start( void );
 
 public:
 	virtual void rtsBehavior( int signalIndex, int portIndex );

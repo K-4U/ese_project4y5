@@ -21,8 +21,12 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int roomba=0x7f020001;
+        public static final int arrow_down=0x7f020000;
+        public static final int arrow_left=0x7f020001;
+        public static final int arrow_right=0x7f020002;
+        public static final int arrow_up=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int roomba=0x7f020005;
     }
     public static final class id {
         public static final int ScrollView1=0x7f070004;
@@ -37,11 +41,13 @@ public final class R {
         public static final int headId=0x7f070006;
         public static final int imageView1=0x7f070008;
         public static final int lblEntry=0x7f070003;
+        public static final int lblSpeed=0x7f070012;
         public static final int lblTime=0x7f070002;
         public static final int pager=0x7f070000;
         public static final int pager_title_strip=0x7f070001;
         public static final int pbBattery=0x7f07000c;
         public static final int sbMotorSpeed=0x7f070011;
+        public static final int textView1=0x7f070013;
         public static final int txtLog=0x7f070005;
     }
     public static final class layout {
@@ -62,6 +68,7 @@ public final class R {
         public static final int motorSpeed=0x7f05000c;
         public static final int roomba=0x7f050005;
         public static final int sensors=0x7f05000a;
+        public static final int standardSpeed=0x7f05000d;
         public static final int stop=0x7f050009;
         public static final int title_logs=0x7f050004;
         public static final int title_manual=0x7f050002;

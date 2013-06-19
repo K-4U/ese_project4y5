@@ -22,4 +22,6 @@
     <string name="battery">Battery</string>
     
     <string name="motorSpeed">Motor Speed</string>
+    
+    <string name="standardSpeed">100mm</string>
 </resources>

@@ -51,15 +51,22 @@ public class logginPage extends ListFragment {
 					e.printStackTrace();
 				}
 	    	}
-    	}
+    	}/*else{
+    		this.logs = logs;
+    	}*/
     }
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		//Bundle args = getArguments();
+		Bundle args = getArguments();
+		
 	    adapter = new logArrayAdapter(getActivity());
 	    setListAdapter(adapter);
+	    /*
+	    if(args.getBoolean("alreadySent")){
+	    	setLogs(logs);
+		}*/
 		/*fadeSwitch = (Switch) rootView.findViewById(R.id.swFade);
 		fadeSwitch.setChecked(args.getBoolean("fade"));
 		fadeSwitch.setOnCheckedChangeListener(fadeListener);

@@ -270,7 +270,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	//Parse command:
 	byteArray b;
 	jsonCommand c = *rtdata;
-	//cout << "RMB: Json received: " << c.command << endl;
+	cout << "RMB: Json received: " << c.command << endl;
 	if(c.command == "SETMOTORBRUSHVACUUM"){
 	    //std::cout << "RMB: Main: " << c.data["MainBrush"].asBool() << endl;
 	    this->roomba.setMotors(c.data["MainBrush"].asBool(), 
@@ -325,7 +325,7 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition3_commandReceived( const j
 	            break;
 	    }
 	}else if(c.command == "SETMOTORSPEED"){
-	    if(!this->isOperating){
+	    if(!this->isOperating && !this->searchingDock){
 	        b.append(145);
 	        b.append(c.data["Right"].asInt() >> 8);
 	        b.append(c.data["Right"].asInt() & 0xFF);
@@ -497,19 +497,29 @@ INLINE_METHODS void roombaTopCapsule_Actor::transition5_handleSensors( const byt
 	    clsRoomba::clsBumpersAndCliff bmprs = this->roomba.getBumpers();
 	    //std::cout << "BMPRS: FL " << bmprs.frontLeft << " FR " << bmprs.frontRight;
 	    //std::cout << " L " << bmprs.left << " R " << bmprs.right << endl;
+	    std::stringstream ss;
 	    if((bmprs.left == true) ||
 	       (bmprs.right == true)){
 	        program.bumpersTriggered(bmprs).send();
+	            ss << "Bumpers: "<< " L " << bmprs.left << " R " << bmprs.right;
+
+	            logEntry l(ss.str());
+	            this->log.push_back(l);
+
 	    }
 
 	    int16_t sideCurrent = this->roomba.getSensor(57);
-	    if(sideCurrent > 200){
+	    if(sideCurrent < 200){
 	        program.sideBrushOverCurrent().send();
 	    }
 	}else{
 	    if(this->roomba.getSensor(21) != 4 || this->searchingDock == true){
 	        this->searchingDock = false;
-	        //FOUND IT! :D
+	        std::stringstream ss;
+	        ss << "Dock found!";
+
+	        logEntry l(ss.str());
+	        this->log.push_back(l);
 	    }
 	}
 	// }}}USR

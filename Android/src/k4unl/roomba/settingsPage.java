@@ -10,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 public class settingsPage extends Fragment {
 	public settingsPage() {
 	}
 	roombaListener mCallback;
-	
+	View rootView;
 	
 	@Override
     public void onAttach(Activity activity) {
@@ -36,7 +37,7 @@ public class settingsPage extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.settings,
+		rootView = inflater.inflate(R.layout.settings,
 				container, false);
 		
 		//Bundle args = getArguments();
@@ -44,7 +45,8 @@ public class settingsPage extends Fragment {
 		motorSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {			
 			@Override
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
-				mCallback.setMotorSpeed(arg0.getProgress());
+				TextView lblSpeed = (TextView) rootView.findViewById(R.id.lblSpeed);
+				lblSpeed.setText(arg0.getProgress() + "mm");
 			}
 
 			@Override
@@ -54,6 +56,7 @@ public class settingsPage extends Fragment {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar arg0) {
+				mCallback.setMotorSpeed(arg0.getProgress());
 				
 			}
 		});

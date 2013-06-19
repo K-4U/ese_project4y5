@@ -220,7 +220,7 @@
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "frmMain";
-			this.Text = "Form1";
+			this.Text = "Roomba Simulator";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.statusStrip1.ResumeLayout(false);
@@ -256,7 +256,7 @@
         private System.Windows.Forms.ToolStripMenuItem sendSensorsToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Engine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn State;
+		private System.Windows.Forms.DataGridViewTextBoxColumn State;
     }
 }
 

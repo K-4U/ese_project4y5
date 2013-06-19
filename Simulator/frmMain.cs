@@ -118,7 +118,7 @@ namespace Simulator {
 
             this.initDrawers();
 
-            roomba.uncontrolledTest(2000, 2000);
+            //roomba.uncontrolledTest(2000, 2000);
 
             // DEFAULT, since Koen can't divide by 0. Sucker... ;) ============= \\
             roomba.setSensorValue(24, 15);

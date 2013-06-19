@@ -366,7 +366,7 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 		@Override
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
-			//Bundle args = new Bundle();
+			Bundle args = new Bundle();
 			switch(position){
 				case 0:
 					fragment = new manualControlPage();
@@ -384,6 +384,8 @@ public class MainActivity extends FragmentActivity implements manualControlPage.
 				case 3:
 					fragment = new logginPage();
 					((logginPage)fragment).setLogs(logs);
+					args.putBoolean("alreadySent", true);
+					//fragment.setArguments(args);
 					fragments.add(3, fragment.getTag());
 					break;
 					
